@@ -4,21 +4,7 @@
     <meta charset="UTF-8">
     <title>rdfs | iolanta</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
-
-    <template id="entity">
-        <div class="ui card">
-            <div class="content">
-                <div class="header">{{ label }}</div>
-                <div class="meta">
-                    <span class="category">subclass of <strong>{{ superclass.label }}</strong></span>
-                </div>
-                <div class="description">{{ comment }}</div>
-            </div>
-            <div class="extra content">
-                <small class="right floated">{{ prefixed_id }}</small>
-            </div>
-        </div>
-    </template>
+    <!--script type="module" src="lib/Slim.js"></script-->
 </head>
 <body>
 
@@ -36,6 +22,7 @@
 
     <h2 class="ui header">Entities</h2>
 
+    <iolanta-rdfs-entity-cards></iolanta-rdfs-entity-cards>
 
     <div class="ui four cards">
         <div class="ui card">
@@ -76,6 +63,6 @@
   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
   crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
-<script type="module" src="lib/Slim.js"></script>
+<script type="module" src="iolanta-rdfs.js"></script>
 </body>
 </html>
