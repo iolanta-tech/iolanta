@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>rdfs | iolanta</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+</head>
+<body>
+
+<!-- Navigation (dummy for now) -->
+<div class="ui inverted menu">
+    <div class="ui container">
+        <!-- TODO: logo -->
+        <div class="header item">iolanta</div>
+        <a class="active item">RDFS</a>
+    </div>
+</div>
+
+<div class="ui main text container">
+    <h1 class="ui header">The RDF Schema vocabulary (RDFS) <div class="sub header">is an <strong>Ontology</strong></div></h1>
+
+    <h2 class="ui header">Entities</h2>
+    <div class="ui four cards">
+        <div class="ui card">
+            <div class="content">
+                <div class="header">Class</div>
+                <div class="meta">
+                    <span class="category">subclass of <strong>Resource</strong></span>
+                </div>
+                <div class="description">The class of classes.</div>
+            </div>
+            <div class="extra content">
+                <small class="right floated">rdfs:Class</small>
+            </div>
+        </div>
+
+        <div class="ui card">
+            <div class="content">
+                <div class="header">Resource</div>
+                <div class="meta">
+                    <span class="category">
+                        is a Class
+                    </span>
+                </div>
+                <div class="description">
+                    The Class resource, everything.
+                </div>
+            </div>
+            <div class="extra content">
+                <small class="right floated">rdfs:Resource</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+</body>
+</html>
