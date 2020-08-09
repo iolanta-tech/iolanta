@@ -1,0 +1,5 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix iolanta: <https://iolanta.tech/> .
+
+iolanta:rdfs iolanta:sparql <http://localhost:8000/iolanta-rdfs.sparql> ;
+      iolanta:frame  <http://localhost:8000/iolanta-rdfs-frame.json> .

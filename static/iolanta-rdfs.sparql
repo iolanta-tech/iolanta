@@ -9,7 +9,7 @@ CONSTRUCT {
   ?ontology rdfs:label ?ontology_label .
   ?ontology local:meta owl:Ontology .
 
-  # TODO This should be in iolanta-rdfs app ontology, actually
+  # TODO This should be in iolanta-rdfs app ontology or in OWL ontology, actually
   owl:Ontology rdfs:label "Ontology" .
 
 } WHERE {

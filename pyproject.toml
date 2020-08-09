@@ -32,7 +32,7 @@ classifiers = [
 iolanta = 'iolanta.cli:serve'
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.8"
 fastapi = "^0.60.1"
 rdflib = "^5.0.0"
 aiofiles = "^0.5.0"
@@ -58,3 +58,4 @@ sphinx-autodoc-typehints = "^1.10"
 doc8 = "^0.8"
 m2r = "^0.2"
 tomlkit = "^0.7"
+ipython = "^7.17.0"
