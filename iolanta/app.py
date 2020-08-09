@@ -1,14 +1,14 @@
 import functools
 import json
 from pathlib import Path
-from typing import List
 
-import pydantic
 import rdflib
 from fastapi import FastAPI  # type: ignore
 from fastapi.staticfiles import StaticFiles  # type: ignore
 from starlette.requests import Request
 from starlette.responses import JSONResponse
+
+from iolanta.models import Query
 
 
 def some_function(first: int, second: int) -> int:
@@ -43,16 +43,14 @@ def graph():
     return universe
 
 
-def query_graph(query: str) -> dict:    # type: ignore
-    triples = list(graph().query(query))
+def query_graph(query: Query) -> dict:    # type: ignore
+    triples = list(graph().query(query.query))
     response_graph = rdflib.Graph()
 
     for triple in triples:
         response_graph.add(triple)
 
-    context = {
-        "@vocab": "http://www.w3.org/2000/01/rdf-schema#",
-    }
+    context = query.context
 
     jsonld_data = json.loads(response_graph.serialize(
         format='json-ld',
@@ -62,15 +60,10 @@ def query_graph(query: str) -> dict:    # type: ignore
     return jsonld_data
 
 
-class Query(pydantic.BaseModel):
-    # TODO we probably do not need this, do we? Just accept SPARQL body as POST
-    query: str
-
-
 @app.post('/sparql')
 def sparql(query: Query):
     """Execute a SPARQL query via a POST request."""
-    return query_graph(query=query.query)
+    return query_graph(query=query)
 
 
 STATIC_DIRECTORY = Path(__file__).parent.parent / 'static'
