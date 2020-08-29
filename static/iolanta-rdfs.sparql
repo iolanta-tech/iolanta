@@ -12,10 +12,30 @@ CONSTRUCT {
   # TODO This should be in iolanta-rdfs app ontology or in OWL ontology, actually
   owl:Ontology rdfs:label "Ontology" .
 
+  # Categories list
+  ?ontology local:categories ?category .
+  ?category rdfs:label ?category_label .
+  ?category local:parent ?parent_category .
+
+  # And the blocks
+  ?ontology local:blocks ?entity .
+  ?entity rdfs:label ?entity_label .
+  ?entity local:category ?entity_category .
+  ?entity rdfs:isSubclassOf ?super_class .
+
 } WHERE {
   ?ontology a owl:Ontology .
   ?ontology dc:title ?ontology_label .
 
   ?entity rdfs:isDefinedBy <http://www.w3.org/2000/01/rdf-schema#> .
   ?entity rdf:type rdfs:Class .
+  ?entity rdfs:label ?entity_label .
+  ?entity local:category ?entity_category .
+
+  # Fetch categories
+  ?category a local:Category .
+  ?category rdfs:label ?category_label .
+  OPTIONAL {
+    ?category local:parent ?parent_category .
+  }
 }

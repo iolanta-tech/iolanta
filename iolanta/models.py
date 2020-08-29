@@ -12,3 +12,10 @@ class Query(pydantic.BaseModel):
 class Lens(pydantic.BaseModel):
     sparql_text: str
     frame: Optional[dict] = None
+
+
+class LensReference(pydantic.BaseModel):
+    """Reference to a Lens available for certain object."""
+
+    iri: pydantic.AnyUrl
+    label: str

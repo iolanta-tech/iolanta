@@ -2,7 +2,10 @@
   "@context": {
     "@vocab": "http://www.w3.org/2000/01/rdf-schema#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "meta": "https://iolanta.tech/apps/iolanta-rdfs/meta"
+    "meta": "https://iolanta.tech/apps/iolanta-rdfs/meta",
+    "categories": "https://iolanta.tech/apps/iolanta-rdfs/categories",
+    "parent": "https://iolanta.tech/apps/iolanta-rdfs/parent",
+    "category": "https://iolanta.tech/apps/iolanta-rdfs/category"
   },
   "@id": "http://www.w3.org/2000/01/rdf-schema#"
 }

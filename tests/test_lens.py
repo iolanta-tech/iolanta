@@ -12,4 +12,3 @@ def test_lens():
     )
 
     raise Exception(json.dumps(response, indent=4))
-
