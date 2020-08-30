@@ -5,12 +5,12 @@ import './lib/directives/if.js';
 Slim.tag(
   'iolanta-rdfs-blocks',
   `
-    <div>
+    <div s:if="blocks" bind>
       <div class="ui four cards">
           <div class="ui card" s:repeat="blocks as block" bind>
             <div class="content">
               <div class="header">{{block.label}}</div>
-              <div class="meta">:)</div>
+              <div class="meta">∀ 🤷</div>
               <div class="description">{{block.comment}}</div>
             </div>
             <div class="extra content">
@@ -21,7 +21,24 @@ Slim.tag(
     </div>
   `,
   class extends Slim {},
+);
+
+
+Slim.tag(
+  'iolanta-rdfs-subsections',
+  `
+    <div class="ui container" s:if="sections" bind>
+      <div class="ui grid"></div>
+        <div class="four wide column" s:repeat="sections as section" bind>
+          <h3 class="ui header">{{section.label}}</h3>
+          <iolanta-rdfs-blocks bind:blocks="section.blocks"></iolanta-rdfs-blocks>
+        </div>
+      </div>
+    </div>
+  `,
+  class extends Slim {},
 )
+
 
 Slim.tag(
   'iolanta-rdfs-entity-cards',
@@ -35,6 +52,7 @@ Slim.tag(
       <h2 class="ui header">{{section.label}}</h2>
 
       <iolanta-rdfs-blocks bind:blocks="section.blocks"></iolanta-rdfs-blocks>
+      <iolanta-rdfs-subsections bind:sections="section.sections"></iolanta-rdfs-subsections>
     </div>
     `,
   class IolantaRDFSEntityCard extends Slim {
