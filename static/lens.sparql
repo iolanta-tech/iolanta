@@ -1,0 +1,7 @@
+PREFIX iolanta: <https://iolanta.tech/>
+
+
+SELECT ?sparql ?frame WHERE {
+  <$iri> iolanta:sparql ?sparql .
+  <$iri> iolanta:frame ?frame .
+}

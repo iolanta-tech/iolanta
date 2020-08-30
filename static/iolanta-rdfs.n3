@@ -1,0 +1,82 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix iolanta: <https://iolanta.tech/> .
+@prefix : <https://iolanta.tech/apps/iolanta-rdfs/> .
+
+:rdfs-lens
+  a iolanta:Lens;
+  iolanta:sparql <http://localhost:8000/iolanta-rdfs.sparql> ;
+  iolanta:frame  <http://localhost:8000/iolanta-rdfs-frame.json> .
+
+rdfs: iolanta:lens :rdfs-lens .
+
+:entity
+  a :Category;
+  rdfs:label "Entities" ;
+  :index 1 .
+
+:property
+  a :Category ;
+  rdfs:label "Properties" ;
+  :index 2 .
+
+:domain_and_range
+  a :Category ;
+  rdfs:label "Domain & Range" ;
+  :parent :property ;
+  :index 1 .
+
+:textual_description
+  a :Category ;
+  rdfs:label "Textual Descriptions" ;
+  :parent :property ;
+  :index 3 .
+
+:resource_to_resource
+  a :Category ;
+  rdfs:label "Links: Resource → Resource" ;
+  :parent :property ;
+  :index 2 .
+
+:property_to_property
+  a :Category ;
+  rdfs:label "Links: Property → Property" ;
+  :parent :property ;
+  :index 4 .
+
+:container
+  a :Category ;
+  rdfs:label "RDF Containers & Membership" ;
+  :index 3 .
+
+
+rdfs:Class :category :entity .
+rdfs:Resource :category :entity .
+rdfs:Literal :category :entity .
+rdfs:Datatype :category :entity .
+
+rdfs:domain :category :domain_and_range .
+rdfs:range :category :domain_and_range .
+
+rdfs:seeAlso :category :resource_to_resource .
+rdfs:isDefinedBy :category :resource_to_resource .
+
+rdfs:label :category :textual_description .
+rdfs:comment :category :textual_description .
+
+rdfs:subPropertyOf :category :property_to_property .
+
+rdfs:Container :category :container .
+rdfs:ContainerMembershipProperty :category :container .
+rdfs:member :category :container .
+
+# Human readable labels
+rdfs:seeAlso rdfs:label "See Also" .
+rdfs:Datatype rdfs:label "Data Type" .
+rdfs:domain rdfs:label "Domain" .
+rdfs:range rdfs:label "Range" .
+rdfs:isDefinedBy rdfs:label "Defined By" .
+rdfs:label rdfs:label "Label" .
+rdfs:comment rdfs:label "Comment" .
+rdfs:subPropertyOf rdfs:label "Is a SubProperty Of" .
+rdfs:ContainerMembershipProperty rdfs:label "Container Membership" .
+rdfs:member rdfs:label "Member" .
