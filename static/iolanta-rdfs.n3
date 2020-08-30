@@ -61,3 +61,15 @@ rdfs:subPropertyOf :category :property_to_property .
 rdfs:Container :category :container .
 rdfs:ContainerMembershipProperty :category :container .
 rdfs:member :category :container .
+
+# Human readable labels
+rdfs:seeAlso rdfs:label "See Also" .
+rdfs:Datatype rdfs:label "Data Type" .
+rdfs:domain rdfs:label "Domain" .
+rdfs:range rdfs:label "Range" .
+rdfs:isDefinedBy rdfs:label "Defined By" .
+rdfs:label rdfs:label "Label" .
+rdfs:comment rdfs:label "Comment" .
+rdfs:subPropertyOf rdfs:label "Is a SubProperty Of" .
+rdfs:ContainerMembershipProperty rdfs:label "Container Membership" .
+rdfs:member rdfs:label "Member" .

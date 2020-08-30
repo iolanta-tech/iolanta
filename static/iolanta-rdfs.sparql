@@ -5,8 +5,9 @@ PREFIX local: <https://iolanta.tech/apps/iolanta-rdfs/>
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
 
 CONSTRUCT {
-  ?rdfs rdfs:label ?rdfs_label .
-  ?rdfs local:meta owl:Ontology .
+  ?rdfs
+    rdfs:label ?rdfs_label ;
+    local:meta owl:Ontology .
 
   # TODO This should be in iolanta-rdfs app ontology or in OWL ontology, actually
   owl:Ontology rdfs:label "Ontology" .
@@ -17,7 +18,10 @@ CONSTRUCT {
 
   # Blocks in top-level sections
   ?section local:blocks ?entity_in_section .
-  ?entity_in_section rdfs:label ?entity_in_section_label .
+
+  ?entity_in_section
+    rdfs:label ?entity_in_section_label ;
+    rdfs:comment ?entity_in_section_comment .
 
   # Subsections
   ?section local:sections ?subsection .
@@ -25,34 +29,79 @@ CONSTRUCT {
 
   # Blocks in subsections
   ?subsection local:blocks ?entity_in_subsection .
-  ?entity_in_subsection rdfs:label ?entity_in_subsection_label .
-
+  ?entity_in_subsection
+    rdfs:comment ?entity_in_subsection_comment ;
+    rdfs:label ?entity_in_subsection_label .
 } WHERE {
   # RDFS ontology properties
-  ?rdfs a owl:Ontology .
-  ?rdfs dc:title ?rdfs_label .
+  ?rdfs
+    a owl:Ontology ;
+    dc:title ?rdfs_label .
 
   # Top level sections
-  ?section a local:Category .
-  ?section rdfs:label ?section_label .
+  ?section
+    a local:Category ;
+    rdfs:label ?section_label .
   FILTER NOT EXISTS { ?section local:parent ?anything } .
 
   # Subsections, if any
   OPTIONAL {
-    ?subsection a local:Category .
-    ?subsection rdfs:label ?subsection_label .
-    ?subsection local:parent ?section .
+    ?subsection
+      a local:Category ;
+      rdfs:label ?subsection_label ;
+      local:parent ?section .
 
     # If subsection exists, it must have entities
-    ?entity_in_subsection rdfs:isDefinedBy <http://www.w3.org/2000/01/rdf-schema#> .
-    ?entity_in_subsection rdfs:label ?entity_in_subsection_label .
-    ?entity_in_subsection local:category ?subsection .
+    ?entity_in_subsection
+      rdfs:isDefinedBy <http://www.w3.org/2000/01/rdf-schema#> ;
+      local:category ?subsection ;
+      rdfs:comment ?entity_in_subsection_comment .
+
+    # Choose the best label for an ?entity_in_subsection.
+    {
+      # If there is a definition in iolanta-rdfs graph, use it
+      GRAPH local: {
+        ?entity_in_subsection rdfs:label ?entity_in_subsection_label .
+      }
+    } UNION {
+      # Only use definition from rdfs graph if there is none in iolanta-rdfs
+      GRAPH rdfs: {
+        ?entity_in_subsection rdfs:label ?entity_in_subsection_label .
+      }
+
+      FILTER NOT EXISTS {
+        GRAPH local: {
+          ?entity_in_subsection rdfs:label ?x .
+        }
+      }
+    }
   }
 
   # Entities in top-level section, if any
   OPTIONAL {
-    ?entity_in_section rdfs:isDefinedBy <http://www.w3.org/2000/01/rdf-schema#> .
-    ?entity_in_section rdfs:label ?entity_in_section_label .
-    ?entity_in_section local:category ?section .
+    ?entity_in_section
+      rdfs:isDefinedBy <http://www.w3.org/2000/01/rdf-schema#> ;
+      rdfs:label ?entity_in_section_label ;
+      local:category ?section ;
+      rdfs:comment ?entity_in_section_comment .
+
+    # Choose the best label for an ?entity_in_section.
+    {
+      # If there is a definition in iolanta-rdfs graph, use it
+      GRAPH local: {
+        ?entity_in_section rdfs:label ?entity_in_section_label .
+      }
+    } UNION {
+      # Only use definition from rdfs graph if there is none in iolanta-rdfs
+      GRAPH rdfs: {
+        ?entity_in_section rdfs:label ?entity_in_section_label .
+      }
+
+      FILTER NOT EXISTS {
+        GRAPH local: {
+          ?entity_in_section rdfs:label ?x .
+        }
+      }
+    }
   }
 }

@@ -9,6 +9,8 @@ from fastapi import FastAPI  # type: ignore
 from fastapi.staticfiles import StaticFiles  # type: ignore
 from pydantic import AnyUrl
 from pyld import jsonld
+from rdflib import ConjunctiveGraph
+from rdflib.plugins.memory import Memory, IOMemory
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
@@ -45,10 +47,22 @@ async def exception_handler(request: Request, exc: Exception):
 
 # @functools.lru_cache()
 def graph():
-    universe = rdflib.Graph()
-    # universe.parse('https://www.w3.org/2000/01/rdf-schema#')
-    universe.parse(str(STATIC_DIRECTORY / 'rdf-schema.n3'), format='n3')
-    universe.parse(str(STATIC_DIRECTORY / 'iolanta-rdfs.n3'), format='n3')
+    store = IOMemory()
+
+    universe = ConjunctiveGraph(store=store)
+    universe.bind("iolanta", "https://iolanta.tech/")
+
+    # Parse RDFS
+    rdfs_graph = rdflib.Graph(store=store, identifier=rdflib.RDFS.uri)
+    rdfs_graph.parse(str(STATIC_DIRECTORY / 'rdf-schema.n3'), format='n3')
+
+    # And our additions to it
+    iolanta_rdfs_graph = rdflib.Graph(
+        store=store,
+        identifier='https://iolanta.tech/apps/iolanta-rdfs/',
+    )
+    iolanta_rdfs_graph.parse(str(STATIC_DIRECTORY / 'iolanta-rdfs.n3'), format='n3')
+
     return universe
 
 
