@@ -4,38 +4,55 @@ PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX local: <https://iolanta.tech/apps/iolanta-rdfs/>
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
 
-
 CONSTRUCT {
-  ?ontology rdfs:label ?ontology_label .
-  ?ontology local:meta owl:Ontology .
+  ?rdfs rdfs:label ?rdfs_label .
+  ?rdfs local:meta owl:Ontology .
 
   # TODO This should be in iolanta-rdfs app ontology or in OWL ontology, actually
   owl:Ontology rdfs:label "Ontology" .
 
-  # Categories list
-  ?ontology local:categories ?category .
-  ?category rdfs:label ?category_label .
-  ?category local:parent ?parent_category .
+  # Top level sections
+  ?rdfs local:sections ?section .
+  ?section rdfs:label ?section_label .
 
-  # And the blocks
-  ?ontology local:blocks ?entity .
-  ?entity rdfs:label ?entity_label .
-  ?entity local:category ?entity_category .
-  ?entity rdfs:isSubclassOf ?super_class .
+  # Blocks in top-level sections
+  ?section local:blocks ?entity_in_section .
+  ?entity_in_section rdfs:label ?entity_in_section_label .
+
+  # Subsections
+  ?section local:sections ?subsection .
+  ?subsection rdfs:label ?subsection_label .
+
+  # Blocks in subsections
+  ?subsection local:blocks ?entity_in_subsection .
+  ?entity_in_subsection rdfs:label ?entity_in_subsection_label .
 
 } WHERE {
-  ?ontology a owl:Ontology .
-  ?ontology dc:title ?ontology_label .
+  # RDFS ontology properties
+  ?rdfs a owl:Ontology .
+  ?rdfs dc:title ?rdfs_label .
 
-  ?entity rdfs:isDefinedBy <http://www.w3.org/2000/01/rdf-schema#> .
-  ?entity rdf:type rdfs:Class .
-  ?entity rdfs:label ?entity_label .
-  ?entity local:category ?entity_category .
+  # Top level sections
+  ?section a local:Category .
+  ?section rdfs:label ?section_label .
+  FILTER NOT EXISTS { ?section local:parent ?anything } .
 
-  # Fetch categories
-  ?category a local:Category .
-  ?category rdfs:label ?category_label .
+  # Subsections, if any
   OPTIONAL {
-    ?category local:parent ?parent_category .
+    ?subsection a local:Category .
+    ?subsection rdfs:label ?subsection_label .
+    ?subsection local:parent ?section .
+
+    # If subsection exists, it must have entities
+    ?entity_in_subsection rdfs:isDefinedBy <http://www.w3.org/2000/01/rdf-schema#> .
+    ?entity_in_subsection rdfs:label ?entity_in_subsection_label .
+    ?entity_in_subsection local:category ?subsection .
+  }
+
+  # Entities in top-level section, if any
+  OPTIONAL {
+    ?entity_in_section rdfs:isDefinedBy <http://www.w3.org/2000/01/rdf-schema#> .
+    ?entity_in_section rdfs:label ?entity_in_section_label .
+    ?entity_in_section local:category ?section .
   }
 }

@@ -46,3 +46,18 @@ rdfs:Class :category :entity .
 rdfs:Resource :category :entity .
 rdfs:Literal :category :entity .
 rdfs:Datatype :category :entity .
+
+rdfs:domain :category :domain_and_range .
+rdfs:range :category :domain_and_range .
+
+rdfs:seeAlso :category :resource_to_resource .
+rdfs:isDefinedBy :category :resource_to_resource .
+
+rdfs:label :category :textual_description .
+rdfs:comment :category :textual_description .
+
+rdfs:subPropertyOf :category :property_to_property .
+
+rdfs:Container :category :container .
+rdfs:ContainerMembershipProperty :category :container .
+rdfs:member :category :container .

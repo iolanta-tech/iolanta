@@ -161,12 +161,12 @@ def apply_lens(iri: AnyUrl, lens: models.Lens) -> dict:
 
     subgraph = universe.query(lens.sparql_text)
 
-    print(list(subgraph))
-
     # TODO can serialize() return a dict?
     jsonld_subgraph = json.loads(subgraph.serialize(
         format='json-ld',
     ))
+
+    print(subgraph.serialize(format='n3').decode('utf-8'))
 
     jsonld_subgraph = jsonld.frame(jsonld_subgraph, lens.frame)
 
