@@ -11,35 +11,42 @@ rdfs: iolanta:lens :rdfs-lens .
 
 :entity
   a :Category;
-  rdfs:label "Entities" .
+  rdfs:label "Entities" ;
+  :index 1 .
 
 :property
   a :Category ;
-  rdfs:label "Properties" .
+  rdfs:label "Properties" ;
+  :index 2 .
 
 :domain_and_range
   a :Category ;
   rdfs:label "Domain & Range" ;
-  :parent :property .
+  :parent :property ;
+  :index 1 .
 
 :textual_description
   a :Category ;
   rdfs:label "Textual Descriptions" ;
-  :parent :property .
+  :parent :property ;
+  :index 3 .
 
 :resource_to_resource
   a :Category ;
   rdfs:label "Links: Resource → Resource" ;
-  :parent :property .
+  :parent :property ;
+  :index 2 .
 
 :property_to_property
   a :Category ;
   rdfs:label "Links: Property → Property" ;
-  :parent :property .
+  :parent :property ;
+  :index 4 .
 
 :container
   a :Category ;
-  rdfs:label "RDF Containers & Membership" .
+  rdfs:label "RDF Containers & Membership" ;
+  :index 3 .
 
 
 rdfs:Class :category :entity .

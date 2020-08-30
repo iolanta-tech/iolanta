@@ -8,7 +8,8 @@
     "meta": "iolanta-rdfs:meta",
 
     "blocks": "iolanta-rdfs:blocks",
-    "sections": "iolanta-rdfs:sections"
+    "sections": "iolanta-rdfs:sections",
+    "index": "iolanta-rdfs:index"
   },
   "@id": "http://www.w3.org/2000/01/rdf-schema#"
 }

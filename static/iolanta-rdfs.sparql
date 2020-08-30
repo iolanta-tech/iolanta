@@ -14,7 +14,9 @@ CONSTRUCT {
 
   # Top level sections
   ?rdfs local:sections ?section .
-  ?section rdfs:label ?section_label .
+  ?section
+    rdfs:label ?section_label ;
+    local:index ?section_index .
 
   # Blocks in top-level sections
   ?section local:blocks ?entity_in_section .
@@ -25,7 +27,9 @@ CONSTRUCT {
 
   # Subsections
   ?section local:sections ?subsection .
-  ?subsection rdfs:label ?subsection_label .
+  ?subsection
+    rdfs:label ?subsection_label ;
+    local:index ?subsection_index .
 
   # Blocks in subsections
   ?subsection local:blocks ?entity_in_subsection .
@@ -41,15 +45,17 @@ CONSTRUCT {
   # Top level sections
   ?section
     a local:Category ;
-    rdfs:label ?section_label .
+    rdfs:label ?section_label ;
+    local:index ?section_index .
   FILTER NOT EXISTS { ?section local:parent ?anything } .
 
   # Subsections, if any
   OPTIONAL {
     ?subsection
       a local:Category ;
+      local:parent ?section ;
       rdfs:label ?subsection_label ;
-      local:parent ?section .
+      local:index ?subsection_index .
 
     # If subsection exists, it must have entities
     ?entity_in_subsection
