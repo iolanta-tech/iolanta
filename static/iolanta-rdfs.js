@@ -43,15 +43,21 @@ Slim.tag(
   'iolanta-rdfs-subsections',
   `
     <div class="ui two column stackable grid" s:if="sections" bind>
-      <!--div class="ui two column stackable grid"></div-->
-        <div class="column" s:repeat="sections as section" bind>
-          <h3 class="ui header">{{section.label}}</h3>
-          <iolanta-rdfs-blocks bind:blocks="section.blocks"></iolanta-rdfs-blocks>
-        </div>
-      <!--/div-->
+      <div class="column" s:repeat="sections as section" bind>
+        <h3 class="ui header">{{section.label}}</h3>
+        <iolanta-rdfs-blocks bind:blocks="section.blocks"></iolanta-rdfs-blocks>
+      </div>
     </div>
   `,
-  class extends Slim {},
+  class extends Slim {
+    onAdded() {
+      if(this.sections) {
+        this.sections.sort(
+          (section1, section2) => section1.index - section2.index,
+        )
+      }
+    }
+  },
 )
 
 
@@ -88,9 +94,28 @@ Slim.tag(
 
     onBeforeCreated() {
       function process_section(section) {
+        // This function is sorting sections, subsections, and blocks to make sure they don't change
+        // their location between page refreshes.
+        // This does not look very well and is very ad-hoc. I can't sort these in the appropriate
+        // components because either
+        //   1) my lifecycle handler runs too early, meaning the variables are
+        //      not even available yet, or
+        //   2) it runs too late, and the limitations of s:repeat mean that, however I sort the data,
+        //      it will make no changes to what the user sees.
         if (section.blocks) {
-          section.blocks.sort();
+          section.blocks.sort(
+            (block1, block2) => block1.label < block2.label ? -1 : 1,
+          );
         }
+
+        if (section.sections) {
+          section.sections.sort(
+            (section1, section2) => section1.index - section2.index,
+          )
+
+          section.sections = section.sections.map(process_section);
+        }
+
         return section;
       }
 
@@ -99,7 +124,7 @@ Slim.tag(
         data => {
           data.sections = data.sections.map(process_section);
           data.sections.sort(
-            (section1, section2) => section1.index - section2.index
+            (section1, section2) => section1.index - section2.index,
           )
 
           self.ontology = data;
