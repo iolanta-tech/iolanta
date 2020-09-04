@@ -182,7 +182,10 @@ def apply_lens(iri: AnyUrl, lens: models.Lens) -> dict:
 
     print(subgraph.serialize(format='n3').decode('utf-8'))
 
-    jsonld_subgraph = jsonld.frame(jsonld_subgraph, lens.frame)
+    jsonld_subgraph = jsonld.frame(
+        input_=jsonld_subgraph,
+        frame=lens.frame,
+    )
 
     return jsonld_subgraph
 

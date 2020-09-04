@@ -6,7 +6,7 @@ Slim.tag(
   'iolanta-rdfs-blocks',
   `
     <div s:if="blocks" bind>
-      <div class="ui four cards">
+      <div bind:class="cls" bind>
           <div class="ui card" s:repeat="blocks as block" bind>
             <div class="content">
               <div class="header">{{block.label}}</div>
@@ -20,20 +20,35 @@ Slim.tag(
         </div>
     </div>
   `,
-  class extends Slim {},
+  class extends Slim {
+    onAdded() {
+      if(this.blocks) {
+        let word = {
+          1: 'one',
+          2: 'two',
+          3: 'three',
+          4: 'four'
+        }[this.blocks.length];
+
+        this.cls = `ui stackable ${word} cards`;
+      } else {
+        this.cls = 'ui stackable cards';
+      }
+    }
+  },
 );
 
 
 Slim.tag(
   'iolanta-rdfs-subsections',
   `
-    <div class="ui container" s:if="sections" bind>
-      <div class="ui grid"></div>
-        <div class="four wide column" s:repeat="sections as section" bind>
+    <div class="ui two column stackable grid" s:if="sections" bind>
+      <!--div class="ui two column stackable grid"></div-->
+        <div class="column" s:repeat="sections as section" bind>
           <h3 class="ui header">{{section.label}}</h3>
           <iolanta-rdfs-blocks bind:blocks="section.blocks"></iolanta-rdfs-blocks>
         </div>
-      </div>
+      <!--/div-->
     </div>
   `,
   class extends Slim {},
@@ -43,6 +58,9 @@ Slim.tag(
 Slim.tag(
   'iolanta-rdfs-entity-cards',
   `
+    <style>
+      h2.header { margin-top: 1em !important; }
+    </style>
     <h1 class="ui header">
       {{ontology.label}}
       <div class="sub header">is an <strong>{{ontology.meta.label}}</strong></div>
