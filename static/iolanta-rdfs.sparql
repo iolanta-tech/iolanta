@@ -23,7 +23,8 @@ CONSTRUCT {
 
   ?entity_in_section
     rdfs:label ?entity_in_section_label ;
-    rdfs:comment ?entity_in_section_comment .
+    rdfs:comment ?entity_in_section_comment ;
+    a ?entity_in_section_superclass .
 
   # Subsections
   ?section local:sections ?subsection .
@@ -35,7 +36,8 @@ CONSTRUCT {
   ?subsection local:blocks ?entity_in_subsection .
   ?entity_in_subsection
     rdfs:comment ?entity_in_subsection_comment ;
-    rdfs:label ?entity_in_subsection_label .
+    rdfs:label ?entity_in_subsection_label ;
+    a ?entity_in_subsection_superclass .
 } WHERE {
   # RDFS ontology properties
   ?rdfs
@@ -61,7 +63,8 @@ CONSTRUCT {
     ?entity_in_subsection
       rdfs:isDefinedBy <http://www.w3.org/2000/01/rdf-schema#> ;
       local:category ?subsection ;
-      rdfs:comment ?entity_in_subsection_comment .
+      rdfs:comment ?entity_in_subsection_comment ;
+      a ?entity_in_subsection_superclass .
 
     # Choose the best label for an ?entity_in_subsection.
     {
@@ -89,7 +92,8 @@ CONSTRUCT {
       rdfs:isDefinedBy <http://www.w3.org/2000/01/rdf-schema#> ;
       rdfs:label ?entity_in_section_label ;
       local:category ?section ;
-      rdfs:comment ?entity_in_section_comment .
+      rdfs:comment ?entity_in_section_comment ;
+      a ?entity_in_section_superclass .
 
     # Choose the best label for an ?entity_in_section.
     {

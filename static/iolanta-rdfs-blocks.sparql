@@ -1,0 +1,51 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX local: <https://iolanta.tech/apps/iolanta-rdfs/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+
+CONSTRUCT {
+  # Blocks in top-level sections
+  ?section local:blocks ?entity_in_section .
+
+  ?entity_in_section
+    rdfs:label ?entity_in_section_label ;
+    rdfs:comment ?entity_in_section_comment ;
+    a ?entity_in_section_superclass .
+
+} WHERE {
+  # Top level sections
+  ?section
+    a local:Category ;
+    rdfs:label ?section_label ;
+    local:index ?section_index .
+
+  # Entities in top-level section, if any
+  OPTIONAL {
+    ?entity_in_section
+      rdfs:isDefinedBy <http://www.w3.org/2000/01/rdf-schema#> ;
+      rdfs:label ?entity_in_section_label ;
+      local:category ?section ;
+      rdfs:comment ?entity_in_section_comment ;
+      a ?entity_in_section_superclass .
+
+    # Choose the best label for an ?entity_in_section.
+    {
+      # If there is a definition in iolanta-rdfs graph, use it
+      GRAPH local: {
+        ?entity_in_section rdfs:label ?entity_in_section_label .
+      }
+    } UNION {
+      # Only use definition from rdfs graph if there is none in iolanta-rdfs
+      GRAPH rdfs: {
+        ?entity_in_section rdfs:label ?entity_in_section_label .
+      }
+
+      FILTER NOT EXISTS {
+        GRAPH local: {
+          ?entity_in_section rdfs:label ?x .
+        }
+      }
+    }
+  }
+}
