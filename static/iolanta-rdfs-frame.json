@@ -7,12 +7,12 @@
 
     "meta": "iolanta-rdfs:meta",
 
-    "blocks": "iolanta-rdfs:blocks",
+    "blocks": {
+      "@id": "iolanta-rdfs:blocks",
+      "@container": "@set"
+    },
     "sections": "iolanta-rdfs:sections",
     "index": "iolanta-rdfs:index"
   },
-  "@id": "http://www.w3.org/2000/01/rdf-schema#",
-  "sections": {
-    "@container": "@set"
-  }
+  "@id": "http://www.w3.org/2000/01/rdf-schema#"
 }
