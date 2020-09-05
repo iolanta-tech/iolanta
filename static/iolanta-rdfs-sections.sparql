@@ -1,0 +1,37 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX local: <https://iolanta.tech/apps/iolanta-rdfs/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+
+CONSTRUCT {
+  ?rdfs
+    rdfs:label ?rdfs_label ;
+    local:meta owl:Ontology .
+
+  # TODO This should be in iolanta-rdfs app ontology or in OWL ontology, actually
+  owl:Ontology rdfs:label "Ontology" .
+
+  # Top level sections
+  ?rdfs local:sections ?section .
+  ?section
+    rdfs:label ?section_label ;
+    local:index ?section_index .
+
+  # Subsections
+  ?section local:sections ?subsection .
+  ?subsection
+    rdfs:label ?subsection_label ;
+    local:index ?subsection_index .
+} WHERE {
+  # RDFS ontology properties
+  ?rdfs
+    a owl:Ontology ;
+    dc:title ?rdfs_label .
+
+  # Top level sections
+  ?section
+    a local:Category ;
+    rdfs:label ?section_label ;
+    local:index ?section_index .
+}

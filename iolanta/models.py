@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 import pydantic
 
@@ -10,8 +10,10 @@ class Query(pydantic.BaseModel):
 
 
 class Lens(pydantic.BaseModel):
-    sparql_text: str
-    frame: Optional[dict] = None
+    sparql: List[str]
+
+    # We honestly do not know what format the dict will have.
+    frame: Optional[dict] = None  # type: ignore
 
 
 class LensReference(pydantic.BaseModel):

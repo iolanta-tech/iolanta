@@ -1,15 +1,17 @@
 import json
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Dict
 
+import pyparsing
 import rdflib
 import requests
 from fastapi import FastAPI  # type: ignore
 from fastapi.staticfiles import StaticFiles  # type: ignore
 from pydantic import AnyUrl
 from pyld import jsonld
-from rdflib import ConjunctiveGraph
 from rdflib.plugins.memory import IOMemory
+from rdflib.plugins.sparql import prepareQuery
+from rdflib.plugins.sparql.processor import SPARQLResult
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
@@ -28,10 +30,10 @@ async def exception_handler(request: Request, exc: Exception):
 
 
 # @functools.lru_cache()
-def graph():
+def graph() -> rdflib.ConjunctiveGraph:
     store = IOMemory()
 
-    universe = ConjunctiveGraph(store=store)
+    universe = rdflib.ConjunctiveGraph(store=store)
     universe.bind("iolanta", "https://iolanta.tech/")
 
     # Parse RDFS
@@ -48,35 +50,93 @@ def graph():
     return universe
 
 
-LENS_QUERY = '''
+# Find the default lens for the given IRI
+IMPLICIT_LENS_QUERY = '''
 PREFIX iolanta: <https://iolanta.tech/>
 
+CONSTRUCT WHERE {
+    ?lens iolanta:sparql ?sparql .
+    ?lens iolanta:frame ?frame .
+    ?iri iolanta:lens ?lens .
+}
+'''
 
-SELECT ?lens ?sparql ?frame WHERE {
-    <$iri> iolanta:lens ?lens .
+
+# Find the default lens for the given IRI
+EXPLICIT_LENS_QUERY = '''
+PREFIX iolanta: <https://iolanta.tech/>
+
+CONSTRUCT WHERE {
     ?lens iolanta:sparql ?sparql .
     ?lens iolanta:frame ?frame .
 }
 '''
 
 
-def get_lens_for(iri: AnyUrl, via: Optional[AnyUrl] = None) -> models.Lens:
+def get_bindings(iri: AnyUrl, via: Optional[AnyUrl]) -> Dict[str, rdflib.URIRef]:
+    """Construct variable bindings for given IRI and lens (if provided)."""
+    bindings = {
+        'iri': rdflib.URIRef(iri),
+    }
+
+    if via:
+        bindings.update(
+            lens=rdflib.URIRef(via),
+        )
+
+    return bindings
+
+
+def get_sparql_text(url: AnyUrl) -> str:
+    """Download SPARQL text file by its URL."""
+    print(url)
+    response = requests.get(url)
+
+    if response.status_code == 404:
+        raise Exception(f'File with a SPARQL query not found at <{url}>.')
+
+    return response.text
+
+
+def get_lens_for(iri: AnyUrl, via: AnyUrl) -> models.Lens:
     """Fetch a Lens description for further execution."""
     universe = graph()
 
-    query = LENS_QUERY.replace('$iri', iri)
+    query = prepareQuery(EXPLICIT_LENS_QUERY)
 
-    raw_lenses = universe.query(query)
+    bindings = get_bindings(
+        iri=iri,
+        via=via,
+    )
 
-    (lens_ref, sparql_path_ref, frame_path_ref), *etc = raw_lenses
+    lens_graph = json.loads(universe.query(
+        query,
+        initBindings=bindings,
+    ).serialize(format='json-ld'))
 
-    # TODO we automatically assume this is a URIRef, but it can be just text
-    sparql_text = requests.get(str(sparql_path_ref)).text
-    frame_content = requests.get(str(frame_path_ref)).json()
+    frame = {
+        '@context': {
+            '@vocab': 'https://iolanta.tech/',
+            'sparql': {
+                '@type': '@id',
+                '@container': '@set',
+            },
+            'frame': {'@type': '@id'},
+        },
+        '@id': via,
+    }
+
+    lens_data = jsonld.frame(
+        input_=lens_graph,
+        frame=frame,
+    )
 
     return models.Lens(
-        sparql_text=sparql_text,
-        frame=frame_content,
+        frame=requests.get(lens_data['frame']).json(),
+        sparql=list(map(
+            get_sparql_text,
+            lens_data['sparql']
+        ))
     )
 
 
@@ -84,14 +144,21 @@ def apply_lens(iri: AnyUrl, lens: models.Lens) -> dict:
     """Apply lens to given IRI and get the JSON-LD data."""
     universe = graph()
 
-    subgraph = universe.query(lens.sparql_text)
+    result = rdflib.Graph()
+    for query in lens.sparql:
+        try:
+            query_result = universe.query(query)
+        except pyparsing.ParseException as err:
+            raise ValueError(f'Query:\n{query}\n\nError: {err}')
+
+        result += query_result
 
     # TODO can serialize() return a dict?
-    jsonld_subgraph = json.loads(subgraph.serialize(
+    jsonld_subgraph = json.loads(result.serialize(
         format='json-ld',
     ))
 
-    print(subgraph.serialize(format='n3').decode('utf-8'))
+    print(result.serialize(format='n3').decode('utf-8'))
 
     jsonld_subgraph = jsonld.frame(
         input_=jsonld_subgraph,
@@ -101,9 +168,35 @@ def apply_lens(iri: AnyUrl, lens: models.Lens) -> dict:
     return jsonld_subgraph
 
 
+DEFAULT_LENS_URI_QUERY = '''
+PREFIX iolanta: <https://iolanta.tech/>
+
+SELECT ?lens WHERE {
+    $iri iolanta:lens ?lens .
+}
+'''
+
+
+def get_default_lens_uri_for(iri: AnyUrl) -> str:
+    """Search for a suitable lens for a given URI."""
+    candidates = graph().query(DEFAULT_LENS_URI_QUERY, initBindings={
+        'iri': rdflib.URIRef(iri),
+    })
+
+    urls = list(map(
+        lambda singleton: singleton[0].toPython(),
+        candidates,
+    ))
+
+    return urls[0]
+
+
 @app.get('/view/')
 def view(iri: AnyUrl, via: Optional[AnyUrl] = None):
     """List all known lenses for an IRI."""
+    if not via:
+        via = get_default_lens_uri_for(iri)
+
     lens = get_lens_for(
         iri=iri,
         via=via,

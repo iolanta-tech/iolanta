@@ -7,6 +7,12 @@
   iolanta:sparql <http://localhost:8000/iolanta-rdfs.sparql> ;
   iolanta:frame  <http://localhost:8000/iolanta-rdfs-frame.json> .
 
+:blocks-lens
+  a iolanta:Lens;
+  iolanta:sparql <http://localhost:8000/iolanta-rdfs-blocks.sparql> ;
+  iolanta:sparql <http://localhost:8000/iolanta-rdfs-sections.sparql> ;
+  iolanta:frame  <http://localhost:8000/iolanta-rdfs-frame.json> .
+
 rdfs: iolanta:lens :rdfs-lens .
 
 :entity
