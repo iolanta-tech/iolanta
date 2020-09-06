@@ -12,17 +12,13 @@ CONSTRUCT {
   # TODO This should be in iolanta-rdfs app ontology or in OWL ontology, actually
   owl:Ontology rdfs:label "Ontology" .
 
-  # Top level sections
-  ?rdfs local:sections ?section .
+  # Sections which blocks are connected to
   ?section
     rdfs:label ?section_label ;
     local:index ?section_index .
 
-  # Subsections
-  ?section local:sections ?subsection .
-  ?subsection
-    rdfs:label ?subsection_label ;
-    local:index ?subsection_index .
+  # Parent of a section can be either the whole ontology (?rdfs) or another section. See below.
+  ?parent local:sections ?section .
 } WHERE {
   # RDFS ontology properties
   ?rdfs
@@ -34,4 +30,18 @@ CONSTRUCT {
     a local:Category ;
     rdfs:label ?section_label ;
     local:index ?section_index .
+
+  OPTIONAL {
+    # Does this section have a parent section?
+    ?section local:parent ?parent_section .
+  }
+
+  # If it does, we will export this as ?parent. Otherwise, we bind this section to ?rdfs.
+  BIND(
+    IF(
+      BOUND(?parent_section),
+      ?parent_section,
+      ?rdfs
+    ) AS ?parent
+  ) .
 }

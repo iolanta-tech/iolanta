@@ -5,47 +5,39 @@ PREFIX local: <https://iolanta.tech/apps/iolanta-rdfs/>
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
 
 CONSTRUCT {
-  # Blocks in top-level sections
-  ?section local:blocks ?entity_in_section .
+  ?section local:blocks ?entity .
 
-  ?entity_in_section
-    rdfs:label ?entity_in_section_label ;
-    rdfs:comment ?entity_in_section_comment ;
-    a ?entity_in_section_superclass .
+  ?entity
+    rdfs:label ?entity_label ;
+    rdfs:comment ?entity_comment ;
+    a ?entity_superclass .
 
 } WHERE {
-  # Top level sections
   ?section
-    a local:Category ;
-    rdfs:label ?section_label ;
-    local:index ?section_index .
+    a local:Category .
 
-  # Entities in top-level section, if any
+  ?entity
+    rdfs:isDefinedBy <http://www.w3.org/2000/01/rdf-schema#> ;
+    rdfs:label ?entity_label ;
+    local:category ?section ;
+    rdfs:comment ?entity_comment ;
+    a ?entity_superclass .
+
   OPTIONAL {
-    ?entity_in_section
-      rdfs:isDefinedBy <http://www.w3.org/2000/01/rdf-schema#> ;
-      rdfs:label ?entity_in_section_label ;
-      local:category ?section ;
-      rdfs:comment ?entity_in_section_comment ;
-      a ?entity_in_section_superclass .
-
-    # Choose the best label for an ?entity_in_section.
-    {
-      # If there is a definition in iolanta-rdfs graph, use it
-      GRAPH local: {
-        ?entity_in_section rdfs:label ?entity_in_section_label .
-      }
-    } UNION {
-      # Only use definition from rdfs graph if there is none in iolanta-rdfs
-      GRAPH rdfs: {
-        ?entity_in_section rdfs:label ?entity_in_section_label .
-      }
-
-      FILTER NOT EXISTS {
-        GRAPH local: {
-          ?entity_in_section rdfs:label ?x .
-        }
-      }
+    GRAPH local: {
+      ?entity rdfs:label ?preferred_entity_in_section_label .
     }
   }
+
+  GRAPH rdfs: {
+    ?entity rdfs:label ?default_entity_in_section_label .
+  }
+
+  BIND(
+    IF(
+      BOUND(?preferred_entity_in_section_label),
+      ?preferred_entity_in_section_label,
+      ?default_entity_in_section_label
+    ) AS ?entity_label
+  )
 }

@@ -24,9 +24,9 @@ Slim.tag(
     onAdded() {
       if(this.blocks) {
         let word = {
-          1: 'one',
+          1: 'two',
           2: 'two',
-          3: 'three',
+          3: 'four',
           4: 'four'
         }[this.blocks.length];
 

@@ -114,6 +114,12 @@ def get_lens_for(iri: AnyUrl, via: AnyUrl) -> models.Lens:
         initBindings=bindings,
     ).serialize(format='json-ld'))
 
+    if not lens_graph:
+        raise ValueError(
+            f'Lens for IRI {iri} with URL {via} not found. '
+            f'Query: {EXPLICIT_LENS_QUERY}'
+        )
+
     frame = {
         '@context': {
             '@vocab': 'https://iolanta.tech/',
@@ -131,8 +137,16 @@ def get_lens_for(iri: AnyUrl, via: AnyUrl) -> models.Lens:
         frame=frame,
     )
 
+    try:
+        frame = requests.get(lens_data['frame']).json()
+    except KeyError as err:
+        raise Exception(
+            f'Could not obtain the frame URL from: '
+            f'{json.dumps(lens_data, indent=2)}',
+        ) from err
+
     return models.Lens(
-        frame=requests.get(lens_data['frame']).json(),
+        frame=frame,
         sparql=list(map(
             get_sparql_text,
             lens_data['sparql']
