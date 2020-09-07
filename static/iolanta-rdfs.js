@@ -10,7 +10,9 @@ Slim.tag(
           <div class="ui card" s:repeat="blocks as block" bind>
             <div class="content">
               <div class="header">{{block.label}}</div>
-              <div class="meta">∀ 🤷</div>
+              <div class="meta">
+                {{block.@type}}
+              </div>
               <div class="description">{{block.comment}}</div>
             </div>
             <div class="extra content">

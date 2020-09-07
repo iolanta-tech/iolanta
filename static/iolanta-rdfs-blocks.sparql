@@ -10,7 +10,10 @@ CONSTRUCT {
   ?entity
     rdfs:label ?entity_label ;
     rdfs:comment ?entity_comment ;
-    a ?entity_superclass .
+    a ?entity_superclass ;
+
+    rdfs:domain ?domain ;
+    rdfs:range  ?range .
 
 } WHERE {
   ?section
@@ -24,20 +27,25 @@ CONSTRUCT {
     a ?entity_superclass .
 
   OPTIONAL {
+    ?entity rdfs:domain ?domain .
+    ?entity rdfs:range  ?range .
+  }
+
+  OPTIONAL {
     GRAPH local: {
-      ?entity rdfs:label ?preferred_entity_in_section_label .
+      ?entity rdfs:label ?preferred_entity_label .
     }
   }
 
   GRAPH rdfs: {
-    ?entity rdfs:label ?default_entity_in_section_label .
+    ?entity rdfs:label ?default_entity_label .
   }
 
   BIND(
     IF(
-      BOUND(?preferred_entity_in_section_label),
-      ?preferred_entity_in_section_label,
-      ?default_entity_in_section_label
+      BOUND(?preferred_entity_label),
+      ?preferred_entity_label,
+      ?default_entity_label
     ) AS ?entity_label
   )
 }
