@@ -82,12 +82,6 @@ Slim.tag(
     </div>
     `,
   class IolantaRDFSEntityCard extends Slim {
-    retrieve_query_text() {
-      return fetch('/iolanta-rdfs.sparql').then(
-        response => response.text()
-      )
-    }
-
     describe() {
       return fetch('/view/?iri=http://www.w3.org/2000/01/rdf-schema%23').then(
         response => response.json()
