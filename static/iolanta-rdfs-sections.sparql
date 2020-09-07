@@ -19,7 +19,12 @@ CONSTRUCT {
 
   # Parent of a section can be either the whole ontology (?rdfs) or another section. See below.
   ?parent local:sections ?section .
-} WHERE {
+}
+
+FROM NAMED rdfs:
+FROM NAMED <http://localhost:8000/iolanta-rdfs.n3>
+
+WHERE {
   # RDFS ontology properties
   ?rdfs
     a owl:Ontology ;

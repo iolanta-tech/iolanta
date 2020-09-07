@@ -11,7 +11,6 @@ from pydantic import AnyUrl
 from pyld import jsonld
 from rdflib.plugins.memory import IOMemory
 from rdflib.plugins.sparql import prepareQuery
-from rdflib.plugins.sparql.processor import SPARQLResult
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
@@ -37,15 +36,15 @@ def graph() -> rdflib.ConjunctiveGraph:
     universe.bind("iolanta", "https://iolanta.tech/")
 
     # Parse RDFS
-    rdfs_graph = rdflib.Graph(store=store, identifier=rdflib.RDFS.uri)
-    rdfs_graph.parse(str(STATIC_DIRECTORY / 'rdf-schema.n3'), format='n3')
+    # rdfs_graph = rdflib.Graph(store=store, identifier=rdflib.RDFS.uri)
+    # rdfs_graph.parse(str(STATIC_DIRECTORY / 'rdf-schema.n3'), format='n3')
 
     # And our additions to it
-    iolanta_rdfs_graph = rdflib.Graph(
-        store=store,
-        identifier='https://iolanta.tech/apps/iolanta-rdfs/',
-    )
-    iolanta_rdfs_graph.parse(str(STATIC_DIRECTORY / 'iolanta-rdfs.n3'), format='n3')
+    # iolanta_rdfs_graph = rdflib.Graph(
+    #     store=store,
+    #     identifier='https://iolanta.tech/apps/iolanta-rdfs/',
+    # )
+    # iolanta_rdfs_graph.parse(str(STATIC_DIRECTORY / 'iolanta-rdfs.n3'), format='n3')
 
     return universe
 
@@ -66,7 +65,9 @@ CONSTRUCT WHERE {
 EXPLICIT_LENS_QUERY = '''
 PREFIX iolanta: <https://iolanta.tech/>
 
-CONSTRUCT WHERE {
+CONSTRUCT
+FROM <http://localhost:8000/iolanta-rdfs.n3>
+WHERE {
     ?lens iolanta:sparql ?sparql .
     ?lens iolanta:frame ?frame .
 }
@@ -185,7 +186,9 @@ def apply_lens(iri: AnyUrl, lens: models.Lens) -> dict:
 DEFAULT_LENS_URI_QUERY = '''
 PREFIX iolanta: <https://iolanta.tech/>
 
-SELECT ?lens WHERE {
+SELECT ?lens
+FROM <http://localhost:8000/iolanta-rdfs.n3>
+WHERE {
     $iri iolanta:lens ?lens .
 }
 '''
