@@ -2,23 +2,25 @@ from iolanta.app import memoize
 from platonic_mapping_redis.mapping import RedisDBMutableMapping
 
 
-# FIXME this causes the system to fail. I need to determine the serialize
-#   and deserialize functions depending on types.
-class DoublesMapping(RedisDBMutableMapping[int, int]):
+class UppercaseMapping(RedisDBMutableMapping[str, str]):
     """Doubles stored."""
-
-    serialize = bytes
-    deserialize = int
 
 
 def test_memoize():
-    mapping = DoublesMapping()
+    mapping = UppercaseMapping()
+    mapping.clear()
+
+    counter = 0
 
     @memoize(mapping=mapping)
-    def multiply(v: int) -> int:
-        return 2 * v
+    def uppercase(v: str) -> str:
+        nonlocal counter
+        counter += 1
+        return v.upper()
 
-    assert multiply(1) == 2
-    assert multiply(-1) == -2
+    for _ in range(5):
+        assert uppercase('foo') == 'FOO'
 
-    assert len(mapping) == 2
+    assert len(mapping) == 1
+    assert set(iter(mapping)) == {'foo', }
+    assert counter == 1
