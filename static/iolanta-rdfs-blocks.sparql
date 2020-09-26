@@ -1,0 +1,56 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX local: <https://iolanta.tech/apps/iolanta-rdfs/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX iolanta-rdfs: <http://localhost:8000/iolanta-rdfs.n3>
+
+CONSTRUCT {
+  ?section local:blocks ?entity .
+
+  ?entity
+    rdfs:label ?entity_label ;
+    rdfs:comment ?entity_comment ;
+    a ?entity_superclass ;
+
+    rdfs:domain ?domain ;
+    rdfs:range  ?range .
+}
+
+FROM NAMED rdfs:
+FROM NAMED iolanta-rdfs:
+
+WHERE {
+  ?section
+    a local:Category .
+
+  ?entity
+    rdfs:isDefinedBy rdfs: ;
+    rdfs:label ?entity_label ;
+    local:category ?section ;
+    rdfs:comment ?entity_comment ;
+    a ?entity_superclass .
+
+  OPTIONAL {
+    ?entity rdfs:domain ?domain .
+    ?entity rdfs:range  ?range .
+  }
+
+  OPTIONAL {
+    GRAPH iolanta-rdfs: {
+      ?entity rdfs:label ?preferred_entity_label .
+    }
+  }
+
+  GRAPH <http://www.w3.org/2000/01/rdf-schema> {
+    ?entity rdfs:label ?default_entity_label .
+  }
+
+  BIND(
+    IF(
+      BOUND(?preferred_entity_label),
+      ?preferred_entity_label,
+      ?default_entity_label
+    ) AS ?entity_label
+  )
+}

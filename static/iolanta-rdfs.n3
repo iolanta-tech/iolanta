@@ -2,12 +2,24 @@
 @prefix iolanta: <https://iolanta.tech/> .
 @prefix : <https://iolanta.tech/apps/iolanta-rdfs/> .
 
-:rdfs-lens
+
+:graph-union-lens
   a iolanta:Lens;
-  iolanta:sparql <http://localhost:8000/iolanta-rdfs.sparql> ;
+  iolanta:sparql <http://localhost:8000/iolanta-rdfs-blocks.sparql> ;
+  iolanta:sparql <http://localhost:8000/iolanta-rdfs-sections.sparql> ;
   iolanta:frame  <http://localhost:8000/iolanta-rdfs-frame.json> .
 
-rdfs: iolanta:lens :rdfs-lens .
+<http://localhost:8000/iolanta-rdfs-blocks.sparql>
+  iolanta:from-named
+    rdfs: ,
+    <http://localhost:8000/iolanta-rdfs.n3> .
+
+<http://localhost:8000/iolanta-rdfs-sections.sparql>
+  iolanta:from-named
+    rdfs: ,
+    <http://localhost:8000/iolanta-rdfs.n3> .
+
+rdfs: iolanta:lens :graph-union-lens .
 
 :entity
   a :Category;

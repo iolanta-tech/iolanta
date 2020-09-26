@@ -23,14 +23,7 @@ pip install iolanta
 
 ## Example
 
-Showcase how your project can be used:
-
-```python
-from iolanta.example import some_function
-
-print(some_function(3, 4))
-# => 7
-```
+...
 
 ## License
 

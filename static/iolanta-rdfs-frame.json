@@ -12,7 +12,11 @@
       "@container": "@set"
     },
     "sections": "iolanta-rdfs:sections",
-    "index": "iolanta-rdfs:index"
+    "index": "iolanta-rdfs:index",
+
+    "Property": "rdf:Property",
+    "domain": {"@type": "@id"},
+    "range": {"@type": "@id"}
   },
   "@id": "http://www.w3.org/2000/01/rdf-schema#"
 }

@@ -39,6 +39,7 @@ aiofiles = "^0.5.0"
 uvicorn = "^0.11.8"
 rdflib-jsonld = "^0.5.0"
 pyld = "^2.0.3"
+redis = "^3.5.3"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.782"

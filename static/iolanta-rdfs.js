@@ -10,7 +10,9 @@ Slim.tag(
           <div class="ui card" s:repeat="blocks as block" bind>
             <div class="content">
               <div class="header">{{block.label}}</div>
-              <div class="meta">∀ 🤷</div>
+              <div class="meta">
+                {{block.@type}}
+              </div>
               <div class="description">{{block.comment}}</div>
             </div>
             <div class="extra content">
@@ -24,9 +26,9 @@ Slim.tag(
     onAdded() {
       if(this.blocks) {
         let word = {
-          1: 'one',
+          1: 'two',
           2: 'two',
-          3: 'three',
+          3: 'four',
           4: 'four'
         }[this.blocks.length];
 
@@ -80,12 +82,6 @@ Slim.tag(
     </div>
     `,
   class IolantaRDFSEntityCard extends Slim {
-    retrieve_query_text() {
-      return fetch('/iolanta-rdfs.sparql').then(
-        response => response.text()
-      )
-    }
-
     describe() {
       return fetch('/view/?iri=http://www.w3.org/2000/01/rdf-schema%23').then(
         response => response.json()

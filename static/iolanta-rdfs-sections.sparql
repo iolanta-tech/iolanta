@@ -1,0 +1,52 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX local: <https://iolanta.tech/apps/iolanta-rdfs/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+
+CONSTRUCT {
+  ?rdfs
+    rdfs:label ?rdfs_label ;
+    local:meta owl:Ontology .
+
+  # TODO This should be in iolanta-rdfs app ontology or in OWL ontology, actually
+  owl:Ontology rdfs:label "Ontology" .
+
+  # Sections which blocks are connected to
+  ?section
+    rdfs:label ?section_label ;
+    local:index ?section_index .
+
+  # Parent of a section can be either the whole ontology (?rdfs) or another section. See below.
+  ?parent local:sections ?section .
+}
+
+FROM NAMED rdfs:
+FROM NAMED <http://localhost:8000/iolanta-rdfs.n3>
+
+WHERE {
+  # RDFS ontology properties
+  ?rdfs
+    a owl:Ontology ;
+    dc:title ?rdfs_label .
+
+  # Top level sections
+  ?section
+    a local:Category ;
+    rdfs:label ?section_label ;
+    local:index ?section_index .
+
+  OPTIONAL {
+    # Does this section have a parent section?
+    ?section local:parent ?parent_section .
+  }
+
+  # If it does, we will export this as ?parent. Otherwise, we bind this section to ?rdfs.
+  BIND(
+    IF(
+      BOUND(?parent_section),
+      ?parent_section,
+      ?rdfs
+    ) AS ?parent
+  ) .
+}
