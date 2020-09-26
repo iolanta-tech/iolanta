@@ -5,10 +5,19 @@
 
 :graph-union-lens
   a iolanta:Lens;
-  # iolanta:sparql <http://localhost:8000/debug.sparql> ;
   iolanta:sparql <http://localhost:8000/iolanta-rdfs-blocks.sparql> ;
   iolanta:sparql <http://localhost:8000/iolanta-rdfs-sections.sparql> ;
   iolanta:frame  <http://localhost:8000/iolanta-rdfs-frame.json> .
+
+<http://localhost:8000/iolanta-rdfs-blocks.sparql>
+  iolanta:from-named
+    rdfs: ,
+    <http://localhost:8000/iolanta-rdfs.n3> .
+
+<http://localhost:8000/iolanta-rdfs-sections.sparql>
+  iolanta:from-named
+    rdfs: ,
+    <http://localhost:8000/iolanta-rdfs.n3> .
 
 rdfs: iolanta:lens :graph-union-lens .
 

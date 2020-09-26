@@ -3,14 +3,15 @@ from typing import Optional, List
 import pydantic
 
 
-class Query(pydantic.BaseModel):
-    # TODO we probably do not need this, do we? Just accept SPARQL body as POST
+class SPARQLQuery(pydantic.BaseModel):
+    """SPARQL query text and environment."""
+
     query: str
-    context: Optional[dict]
+    from_named: List[str]
 
 
 class Lens(pydantic.BaseModel):
-    sparql: List[str]
+    queries: List[SPARQLQuery]
 
     # We honestly do not know what format the dict will have.
     frame: Optional[dict] = None  # type: ignore

@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from typing import Optional, Dict
+from typing import Optional, Dict, TypedDict, List
 
 import pyparsing
 import rdflib
@@ -35,17 +35,6 @@ def graph() -> rdflib.ConjunctiveGraph:
     universe = rdflib.ConjunctiveGraph(store=store)
     universe.bind("iolanta", "https://iolanta.tech/")
 
-    # Parse RDFS
-    # rdfs_graph = rdflib.Graph(store=store, identifier=rdflib.RDFS.uri)
-    # rdfs_graph.parse(str(STATIC_DIRECTORY / 'rdf-schema.n3'), format='n3')
-
-    # And our additions to it
-    # iolanta_rdfs_graph = rdflib.Graph(
-    #     store=store,
-    #     identifier='https://iolanta.tech/apps/iolanta-rdfs/',
-    # )
-    # iolanta_rdfs_graph.parse(str(STATIC_DIRECTORY / 'iolanta-rdfs.n3'), format='n3')
-
     return universe
 
 
@@ -65,11 +54,19 @@ CONSTRUCT WHERE {
 EXPLICIT_LENS_QUERY = '''
 PREFIX iolanta: <https://iolanta.tech/>
 
-CONSTRUCT
+CONSTRUCT {
+    ?lens iolanta:sparql ?sparql .
+    ?lens iolanta:frame ?frame .
+    ?sparql iolanta:from-named ?named_graph .
+}
 FROM <http://localhost:8000/iolanta-rdfs.n3>
 WHERE {
     ?lens iolanta:sparql ?sparql .
     ?lens iolanta:frame ?frame .
+
+    OPTIONAL {
+        ?sparql iolanta:from-named ?named_graph .
+    }
 }
 '''
 
@@ -88,15 +85,19 @@ def get_bindings(iri: AnyUrl, via: Optional[AnyUrl]) -> Dict[str, rdflib.URIRef]
     return bindings
 
 
-def get_sparql_text(url: AnyUrl) -> str:
+SPARQLQueryFrame = TypedDict('SPARQLQueryFrame', {
+    '@id': AnyUrl,
+    'from-named': List[AnyUrl],
+})
+
+
+def get_sparql_query(query_frame: SPARQLQueryFrame) -> models.SPARQLQuery:
     """Download SPARQL text file by its URL."""
-    print(url)
-    response = requests.get(url)
 
-    if response.status_code == 404:
-        raise Exception(f'File with a SPARQL query not found at <{url}>.')
-
-    return response.text
+    return models.SPARQLQuery(
+        query=requests.get(query_frame['@id']).text,
+        from_named=query_frame['from-named'],
+    )
 
 
 def get_lens_for(iri: AnyUrl, via: AnyUrl) -> models.Lens:
@@ -129,6 +130,7 @@ def get_lens_for(iri: AnyUrl, via: AnyUrl) -> models.Lens:
                 '@container': '@set',
             },
             'frame': {'@type': '@id'},
+            'from-named': {'@type': '@id'},
         },
         '@id': via,
     }
@@ -148,32 +150,37 @@ def get_lens_for(iri: AnyUrl, via: AnyUrl) -> models.Lens:
 
     return models.Lens(
         frame=frame,
-        sparql=list(map(
-            get_sparql_text,
+        queries=list(map(
+            get_sparql_query,
             lens_data['sparql']
         ))
     )
 
 
+def graph_by_query(query: models.SPARQLQuery) -> rdflib.Graph:
+    """Compose an RDF dataset and run query against it."""
+    rdf_dataset = rdflib.ConjunctiveGraph()
+
+    for named_graph_url in query.from_named:
+        rdf_dataset.parse(
+            source=named_graph_url,
+            publicID=named_graph_url,
+            format='n3',
+        )
+
+    return rdf_dataset.query(query.query)
+
+
 def apply_lens(iri: AnyUrl, lens: models.Lens) -> dict:
     """Apply lens to given IRI and get the JSON-LD data."""
-    universe = graph()
-
     result = rdflib.Graph()
-    for query in lens.sparql:
-        try:
-            query_result = universe.query(query)
-        except pyparsing.ParseException as err:
-            raise ValueError(f'Query:\n{query}\n\nError: {err}')
-
-        result += query_result
+    for query in lens.queries:
+        result += graph_by_query(query)
 
     # TODO can serialize() return a dict?
     jsonld_subgraph = json.loads(result.serialize(
         format='json-ld',
     ))
-
-    print(result.serialize(format='n3').decode('utf-8'))
 
     jsonld_subgraph = jsonld.frame(
         input_=jsonld_subgraph,
