@@ -1,10 +1,14 @@
+import functools
 import json
 from pathlib import Path
-from typing import Optional, Dict, TypedDict, List
+from typing import (
+    Optional, Dict, TypedDict, List, MutableMapping, Callable,
+    TypeVar,
+)
 
-import pyparsing
 import rdflib
 import requests
+from decorator import decorate, decorator
 from fastapi import FastAPI  # type: ignore
 from fastapi.staticfiles import StaticFiles  # type: ignore
 from pydantic import AnyUrl
@@ -15,6 +19,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 
 from iolanta import models
+from platonic_mapping_redis.mapping import RedisDBMutableMapping
 
 STATIC_DIRECTORY = Path(__file__).parent.parent / 'static'
 
@@ -157,13 +162,47 @@ def get_lens_for(iri: AnyUrl, via: AnyUrl) -> models.Lens:
     )
 
 
+class NamedGraphByURL(RedisDBMutableMapping):
+    """Cache RDF graph files by URL."""
+
+
+KeyType = TypeVar('KeyType')
+ValueType = TypeVar('ValueType')
+
+
+def memoize(
+    mapping: MutableMapping[KeyType, ValueType],
+) -> Callable[[KeyType], ValueType]:
+    def _decorator(func: Callable[[KeyType], ValueType]):
+        @functools.wraps(func)
+        def wrapper(key: KeyType) -> ValueType:
+            try:
+                return mapping[key]
+
+            except KeyError:
+                calculated_value = func(key)
+                mapping[key] = calculated_value
+                return calculated_value
+
+        return wrapper
+
+    return _decorator
+
+
+@memoize(mapping=RedisDBMutableMapping[str, str]())
+def fetch_graph_content_by_url(url: AnyUrl) -> str:
+    return requests.get(url).text
+
+
 def graph_by_query(query: models.SPARQLQuery) -> rdflib.Graph:
     """Compose an RDF dataset and run query against it."""
     rdf_dataset = rdflib.ConjunctiveGraph()
 
     for named_graph_url in query.from_named:
+        named_graph_content = fetch_graph_content_by_url(named_graph_url)
+
         rdf_dataset.parse(
-            source=named_graph_url,
+            data=named_graph_content,
             publicID=named_graph_url,
             format='n3',
         )
