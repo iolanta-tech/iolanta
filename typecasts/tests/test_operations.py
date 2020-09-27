@@ -3,7 +3,8 @@ from typing import NewType
 import pytest
 
 from typecasts import DefaultTypecasts, identity
-from typecasts.main import Typecasts, TypecastNotFound
+from typecasts.main import Typecasts
+from typecasts.errors import TypecastNotFound, RedundantIdentity
 
 
 class MyType:
@@ -18,3 +19,14 @@ def test_identity():
 def test_not_found():
     with pytest.raises(TypecastNotFound):
         _ = Typecasts()[str, int]
+
+
+def test_set_item():
+    typecasts = Typecasts()
+    typecasts[int, str] = str
+    assert typecasts[int, str] == str
+
+
+def test_redundant_identity():
+    with pytest.raises(RedundantIdentity):
+        Typecasts()[int, int] = identity

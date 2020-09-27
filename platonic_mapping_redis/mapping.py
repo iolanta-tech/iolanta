@@ -1,13 +1,15 @@
-from dataclasses import dataclass
-from functools import cached_property, partial
+from dataclasses import dataclass, field
+from functools import cached_property
 from typing import (
-    Iterator, Callable, TypeVar, MutableMapping, Generic, Mapping, get_args,
-    Type,
+    Iterator, Callable, TypeVar, MutableMapping, Type,
 )
 
 from redis import StrictRedis
 
+from platonic import generic_type_args, const
+from platonic_mapping.mapping import PlatonicMapping
 from typecasts import DefaultTypecasts
+from typecasts.main import Typecasts
 
 KeyType = TypeVar('KeyType')
 ValueType = TypeVar('ValueType')
@@ -35,45 +37,12 @@ ValueToInternalType = Callable[[ValueType], InternalType]
 @dataclass
 class RedisDBMapping(
     RedisMixin,
-    Mapping[KeyType, ValueType],
-    Generic[KeyType, ValueType],
+    PlatonicMapping[KeyType, ValueType],
 ):
     """Redis-backed mapping based on a collection."""
 
     internal_type: type = bytes
-
-    @cached_property
-    def type_args(self):
-        for parent in self.__orig_bases__:  # type: ignore  # noqa: WPS609
-            type_args = get_args(parent)
-            if type_args:
-                return type_args
-
-        return ()
-
-    @cached_property
-    def key_type(self) -> Type[KeyType]:
-        return self.type_args[0]
-
-    @cached_property
-    def value_type(self) -> Type[ValueType]:
-        return self.type_args[1]
-
-    @cached_property
-    def serialize_key(self) -> Callable[[KeyType], InternalType]:
-        return DefaultTypecasts[self.key_type, self.internal_type]
-
-    @cached_property
-    def deserialize_key(self) -> Callable[[InternalType], KeyType]:
-        return DefaultTypecasts[self.internal_type, self.key_type]
-
-    @cached_property
-    def serialize_value(self) -> Callable[[ValueType], InternalType]:
-        return DefaultTypecasts[self.value_type, self.internal_type]
-
-    @cached_property
-    def deserialize_value(self) -> Callable[[InternalType], ValueType]:
-        return DefaultTypecasts[self.internal_type, self.value_type]
+    typecasts: Typecasts = field(default_factory=const(DefaultTypecasts))
 
     def __len__(self) -> int:
         return self.redis.dbsize()
