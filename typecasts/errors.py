@@ -2,7 +2,7 @@ import typing
 from dataclasses import dataclass
 from functools import cached_property
 
-from docerror import DocError
+from documented import DocumentedError
 
 if typing.TYPE_CHECKING:
     # This is to avoid circular imports in the form of
@@ -11,7 +11,7 @@ if typing.TYPE_CHECKING:
 
 
 @dataclass
-class RedundantIdentity(DocError):
+class RedundantIdentity(DocumentedError):
     """
     Attempted to register redundant identity function.
 
@@ -27,7 +27,7 @@ class RedundantIdentity(DocError):
 
 
 @dataclass
-class TypecastNotFound(DocError):
+class TypecastNotFound(DocumentedError):
     """
     A method to cast one type to another was not found.
 
@@ -52,8 +52,8 @@ class TypecastNotFound(DocError):
 
     For further details, see:
 
-        - Examples at docerror.defaults module
-        - Or docs at https://pyplatonic.dev/doxeption
+        - Examples at typecasts.defaults module
+        - Or docs at https://pyplatonic.dev/typecasts/
     """
 
     source_type: type

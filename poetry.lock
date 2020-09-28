@@ -197,6 +197,14 @@ six = "*"
 stevedore = "*"
 
 [[package]]
+category = "main"
+description = "Human readable Python exceptions."
+name = "documented"
+optional = false
+python-versions = ">=3.6,<4.0"
+version = "0.1.0"
+
+[[package]]
 category = "dev"
 description = "Docutils -- Python Documentation Utilities"
 name = "docutils"
@@ -1448,7 +1456,7 @@ pygments = ">=2.4,<3.0"
 typing_extensions = ">=3.6,<4.0"
 
 [metadata]
-content-hash = "f5cc300e855eadbfab533f02e81aa1d5cad06241d61d94174c7fdb4bcb40b2fd"
+content-hash = "7356a20f130150ed1c5bb45c389cd937af6573afd246f0ed1130091cb08c9ec7"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -1560,6 +1568,10 @@ dictdiffer = [
 doc8 = [
     {file = "doc8-0.8.1-py2.py3-none-any.whl", hash = "sha256:4d58a5c8c56cedd2b2c9d6e3153be5d956cf72f6051128f0f2255c66227df721"},
     {file = "doc8-0.8.1.tar.gz", hash = "sha256:4d1df12598807cf08ffa9a1d5ef42d229ee0de42519da01b768ff27211082c12"},
+]
+documented = [
+    {file = "documented-0.1.0-py3-none-any.whl", hash = "sha256:a204fdfe9de4f3d83fa5c1fc2019abe35364ee3a5928dc0924988408fbd77ce9"},
+    {file = "documented-0.1.0.tar.gz", hash = "sha256:cca0d73c8f4c1c4741f493f8b3e020873122004db8607cf68ac5ca7d63ac1b53"},
 ]
 docutils = [
     {file = "docutils-0.16-py2.py3-none-any.whl", hash = "sha256:0c5b78adfbf7762415433f5515cd5c9e762339e23369dbe8000d84a4bf4ab3af"},
