@@ -1,4 +1,3 @@
-import dataclasses
 import json
 from dataclasses import dataclass, asdict
 from typing import NewType
@@ -13,7 +12,7 @@ CountryCode = NewType('CountryCode', str)
 
 @dataclass
 class Country:
-    """Some data about country."""
+    """Some data about a country."""
 
     name: str
     capital: str
@@ -34,9 +33,14 @@ def bytes_to_country(raw_country: bytes) -> Country:
     return Country(**json.loads(raw_country))
 
 
+# CountryCode equals str, so we can define a conversion easily
+DefaultTypecasts[bytes, CountryCode] = DefaultTypecasts[bytes, str]
+
+
 @pytest.fixture
 def countries() -> CountryByCode:
     countries = CountryByCode()
+    countries.clear()
 
     countries[CountryCode('US')] = Country(
         name='United States of America',
@@ -45,7 +49,7 @@ def countries() -> CountryByCode:
 
     countries.update({
         CountryCode('AU'): Country(name='Australia', capital='Canberra'),
-#        'RU': 'b',
+        # 'a': 'b',
     })
 
     return countries

@@ -2,12 +2,12 @@ import dataclasses
 
 import pytest
 
-from errorclass import errorclass
+from docerror import DocError
 
 
 def test_no_parens():
-    @errorclass
-    class WrongAnswer:
+    @dataclasses.dataclass
+    class WrongAnswer(DocError):
         """{self.answer} is wrong!"""
 
         answer: int
@@ -22,25 +22,3 @@ def test_no_parens():
 
     with pytest.raises(WrongAnswer):
         raise WrongAnswer(answer=13)
-
-
-def test_from_scratch():
-    """Construct and test an ad-hoc dataclass-powered Exception."""
-    @dataclasses.dataclass
-    class ColorError(Exception):
-        """I hate {color} color!"""
-
-        color: str
-
-        def __str__(self):
-            return self.__doc__.format(**dataclasses.asdict(self))
-
-    err = ColorError(color='red')
-
-    assert str(err) == 'I hate red color!'
-
-    with pytest.raises(ColorError) as raised_error:
-        raise err
-
-    # noinspection Mypy
-    assert str(raised_error.value) == 'I hate red color!'
