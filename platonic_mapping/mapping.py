@@ -13,7 +13,6 @@ InternalType = TypeVar('InternalType')
 
 class PlatonicMapping(
     Mapping[KeyType, ValueType],
-    # Generic[KeyType, ValueType],
     ABC,
 ):
     """Abstract Mapping definition."""
