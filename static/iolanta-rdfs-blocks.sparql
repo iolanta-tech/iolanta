@@ -17,9 +17,6 @@ CONSTRUCT {
     rdfs:range  ?range .
 }
 
-FROM NAMED rdfs:
-FROM NAMED iolanta-rdfs:
-
 WHERE {
   ?section
     a local:Category .

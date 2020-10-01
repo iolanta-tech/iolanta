@@ -21,9 +21,6 @@ CONSTRUCT {
   ?parent local:sections ?section .
 }
 
-FROM NAMED rdfs:
-FROM NAMED <http://localhost:8000/iolanta-rdfs.n3>
-
 WHERE {
   # RDFS ontology properties
   ?rdfs
