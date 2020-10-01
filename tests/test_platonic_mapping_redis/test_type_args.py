@@ -1,5 +1,5 @@
 from platonic import generic_type_args
-from platonic_mapping_redis.mapping import RedisDBMapping
+from platonic_redis import RedisDBMapping
 
 
 class MyMapping(RedisDBMapping[str, int]):

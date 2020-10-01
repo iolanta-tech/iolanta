@@ -18,7 +18,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 
 from iolanta import models
-from platonic_mapping_redis.mapping import RedisDBMutableMapping
+from platonic_redis import RedisDBMutableMapping
 
 STATIC_DIRECTORY = Path(__file__).parent.parent / 'static'
 

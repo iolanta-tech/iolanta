@@ -4,7 +4,7 @@ from typing import NewType
 
 import pytest
 
-from platonic_mapping_redis.mapping import RedisDBMutableMapping
+from platonic_redis import RedisDBMutableMapping
 from typecasts import DefaultTypecasts
 
 CountryCode = NewType('CountryCode', str)
