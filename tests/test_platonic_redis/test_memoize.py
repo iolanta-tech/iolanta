@@ -1,4 +1,4 @@
-from iolanta.app import memoize
+from platonic.memoize import memoize
 from platonic_redis import RedisDBMutableMapping
 
 

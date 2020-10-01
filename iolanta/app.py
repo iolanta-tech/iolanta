@@ -1,9 +1,7 @@
-import functools
 import json
 from pathlib import Path
 from typing import (
-    Optional, Dict, TypedDict, List, MutableMapping, Callable,
-    TypeVar,
+    Optional, Dict, TypedDict, List,
 )
 
 import rdflib
@@ -18,6 +16,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 
 from iolanta import models
+from platonic.memoize import memoize
 from platonic_redis import RedisDBMutableMapping
 
 STATIC_DIRECTORY = Path(__file__).parent.parent / 'static'
@@ -161,38 +160,11 @@ def get_lens_for(iri: AnyUrl, via: AnyUrl) -> models.Lens:
     )
 
 
-class NamedGraphByURL(RedisDBMutableMapping):
+class ContentByURL(RedisDBMutableMapping[str, str]):
     """Cache RDF graph files by URL."""
 
 
-KeyType = TypeVar('KeyType')
-ValueType = TypeVar('ValueType')
-
-
-def memoize(
-    mapping: MutableMapping[KeyType, ValueType],
-) -> Callable[[KeyType], ValueType]:
-    def _decorator(func: Callable[[KeyType], ValueType]):
-        @functools.wraps(func)
-        def wrapper(key: KeyType) -> ValueType:
-            try:
-                return mapping[key]
-
-            except KeyError:
-                calculated_value = func(key)
-                mapping[key] = calculated_value
-                return calculated_value
-
-        return wrapper
-
-    return _decorator
-
-
-class GraphCache(RedisDBMutableMapping[str, str]):
-    """Cache for RDF files."""
-
-
-@memoize(mapping=GraphCache())
+@memoize(mapping=ContentByURL())
 def fetch_graph_content_by_url(url: AnyUrl) -> str:
     return requests.get(url).text
 
