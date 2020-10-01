@@ -58,4 +58,3 @@ def test_rdf_to_jsonld():
 
     # assert actual_data == expected_data
     print(actual_data)
-    raise Exception()

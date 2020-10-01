@@ -2,7 +2,6 @@ import pytest
 
 from platonic_mapping_redis.mapping import (
     RedisDBMutableMapping,
-    bytes_to_string, string_to_bytes,
 )
 
 
@@ -38,11 +37,3 @@ def test_iteration(mapping: RedisDBMutableMapping[str, str]):
     assert len(mapping) == 2
 
     assert set(iter(mapping)) == {'T1', 'T3'}
-
-
-def test_bytes_to_string():
-    assert bytes_to_string(b'T-800') == 'T-800'
-
-
-def test_string_to_bytes():
-    assert string_to_bytes('T-800') == b'T-800'

@@ -8,7 +8,6 @@ from typing import (
 
 import rdflib
 import requests
-from decorator import decorate, decorator
 from fastapi import FastAPI  # type: ignore
 from fastapi.staticfiles import StaticFiles  # type: ignore
 from pydantic import AnyUrl

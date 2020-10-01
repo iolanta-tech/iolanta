@@ -1,17 +1,19 @@
-from dataclasses import dataclass
-from functools import cached_property, partial
+from dataclasses import dataclass, field
+from functools import cached_property
 from typing import (
-    Iterator, Callable, TypeVar, MutableMapping, Generic, Mapping,
+    Iterator, Callable, TypeVar, MutableMapping, Type,
 )
 
 from redis import StrictRedis
 
-KeyType = TypeVar('KeyType', bound=str)
-InternalType = TypeVar('InternalType', bound=bytes)
-ValueType = TypeVar('ValueType')
+from platonic import generic_type_args, const
+from platonic_mapping.mapping import PlatonicMapping
+from typecasts import DefaultTypecasts
+from typecasts.main import Typecasts
 
-bytes_to_string = partial(bytes.decode, encoding='utf-8')
-string_to_bytes = str.encode
+KeyType = TypeVar('KeyType')
+ValueType = TypeVar('ValueType')
+InternalType = TypeVar('InternalType', bound=bytes)
 
 
 @dataclass
@@ -35,20 +37,19 @@ ValueToInternalType = Callable[[ValueType], InternalType]
 @dataclass
 class RedisDBMapping(
     RedisMixin,
-    Mapping[KeyType, ValueType],
-    Generic[KeyType, ValueType],
+    PlatonicMapping[KeyType, ValueType],
 ):
     """Redis-backed mapping based on a collection."""
 
-    serialize: InternalToValueType = string_to_bytes  # type: ignore
-    deserialize: ValueToInternalType = bytes_to_string  # type: ignore
+    internal_type: type = bytes
+    typecasts: Typecasts = field(default_factory=const(DefaultTypecasts))
 
     def __len__(self) -> int:
         return self.redis.dbsize()
 
     def __iter__(self) -> Iterator[KeyType]:
         return map(
-            bytes_to_string,
+            self.deserialize_key,
             self.redis.scan_iter(),
         )
 
@@ -58,7 +59,7 @@ class RedisDBMapping(
         if raw_value is None:
             raise KeyError(k)
 
-        return self.deserialize(raw_value)
+        return self.deserialize_value(raw_value)
 
 
 @dataclass
@@ -67,10 +68,10 @@ class RedisDBMutableMapping(
     RedisDBMapping[KeyType, ValueType],
 ):
     def __setitem__(self, k: KeyType, v: ValueType) -> None:
-        self.redis.set(k, self.serialize(v))
+        self.redis.set(k, self.serialize_value(v))
 
     def __delitem__(self, k: KeyType) -> None:
-        self.redis.delete(k)
+        self.redis.delete(self.serialize_key(k))
 
     def clear(self) -> None:
         self.redis.flushdb()
