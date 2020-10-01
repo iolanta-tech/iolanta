@@ -188,7 +188,11 @@ def memoize(
     return _decorator
 
 
-@memoize(mapping=RedisDBMutableMapping[str, str]())
+class GraphCache(RedisDBMutableMapping[str, str]):
+    """Cache for RDF files."""
+
+
+@memoize(mapping=GraphCache())
 def fetch_graph_content_by_url(url: AnyUrl) -> str:
     return requests.get(url).text
 
