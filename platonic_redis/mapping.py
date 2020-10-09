@@ -64,8 +64,8 @@ class RedisDBMapping(
 
 @dataclass
 class RedisDBMutableMapping(
-    MutableMapping[KeyType, ValueType],
     RedisDBMapping[KeyType, ValueType],
+    MutableMapping[KeyType, ValueType],
 ):
     def __setitem__(self, k: KeyType, v: ValueType) -> None:
         self.redis.set(k, self.serialize_value(v))
