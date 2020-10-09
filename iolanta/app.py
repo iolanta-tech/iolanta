@@ -1,9 +1,7 @@
-import functools
 import json
 from pathlib import Path
 from typing import (
-    Optional, Dict, TypedDict, List, MutableMapping, Callable,
-    TypeVar,
+    Optional, Dict, TypedDict, List,
 )
 
 import rdflib
@@ -18,7 +16,8 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 
 from iolanta import models
-from platonic_mapping_redis.mapping import RedisDBMutableMapping
+from platonic.memoize import memoize
+from platonic_redis import RedisDBMutableMapping
 
 STATIC_DIRECTORY = Path(__file__).parent.parent / 'static'
 
@@ -63,7 +62,6 @@ CONSTRUCT {
     ?lens iolanta:frame ?frame .
     ?sparql iolanta:from-named ?named_graph .
 }
-FROM <http://localhost:8000/iolanta-rdfs.n3>
 WHERE {
     ?lens iolanta:sparql ?sparql .
     ?lens iolanta:frame ?frame .
@@ -99,7 +97,7 @@ def get_sparql_query(query_frame: SPARQLQueryFrame) -> models.SPARQLQuery:
     """Download SPARQL text file by its URL."""
 
     return models.SPARQLQuery(
-        query=requests.get(query_frame['@id']).text,
+        query=cached_http_get(query_frame['@id']),
         from_named=query_frame['from-named'],
     )
 
@@ -107,6 +105,11 @@ def get_sparql_query(query_frame: SPARQLQueryFrame) -> models.SPARQLQuery:
 def get_lens_for(iri: AnyUrl, via: AnyUrl) -> models.Lens:
     """Fetch a Lens description for further execution."""
     universe = graph()
+
+    universe.parse(
+        data=cached_http_get('http://localhost:8000/iolanta-rdfs.n3'),
+        format='n3',
+    )
 
     query = prepareQuery(EXPLICIT_LENS_QUERY)
 
@@ -145,7 +148,7 @@ def get_lens_for(iri: AnyUrl, via: AnyUrl) -> models.Lens:
     )
 
     try:
-        frame = requests.get(lens_data['frame']).json()
+        frame = json.loads(cached_http_get(lens_data['frame']))
     except KeyError as err:
         raise Exception(
             f'Could not obtain the frame URL from: '
@@ -161,35 +164,12 @@ def get_lens_for(iri: AnyUrl, via: AnyUrl) -> models.Lens:
     )
 
 
-class NamedGraphByURL(RedisDBMutableMapping):
+class ContentByURL(RedisDBMutableMapping[str, str]):
     """Cache RDF graph files by URL."""
 
 
-KeyType = TypeVar('KeyType')
-ValueType = TypeVar('ValueType')
-
-
-def memoize(
-    mapping: MutableMapping[KeyType, ValueType],
-) -> Callable[[KeyType], ValueType]:
-    def _decorator(func: Callable[[KeyType], ValueType]):
-        @functools.wraps(func)
-        def wrapper(key: KeyType) -> ValueType:
-            try:
-                return mapping[key]
-
-            except KeyError:
-                calculated_value = func(key)
-                mapping[key] = calculated_value
-                return calculated_value
-
-        return wrapper
-
-    return _decorator
-
-
-@memoize(mapping=RedisDBMutableMapping[str, str]())
-def fetch_graph_content_by_url(url: AnyUrl) -> str:
+@memoize(mapping=ContentByURL())
+def cached_http_get(url: AnyUrl) -> str:
     return requests.get(url).text
 
 
@@ -198,7 +178,7 @@ def graph_by_query(query: models.SPARQLQuery) -> rdflib.Graph:
     rdf_dataset = rdflib.ConjunctiveGraph()
 
     for named_graph_url in query.from_named:
-        named_graph_content = fetch_graph_content_by_url(named_graph_url)
+        named_graph_content = cached_http_get(named_graph_url)
 
         rdf_dataset.parse(
             data=named_graph_content,
@@ -232,7 +212,6 @@ DEFAULT_LENS_URI_QUERY = '''
 PREFIX iolanta: <https://iolanta.tech/>
 
 SELECT ?lens
-FROM <http://localhost:8000/iolanta-rdfs.n3>
 WHERE {
     $iri iolanta:lens ?lens .
 }
@@ -241,7 +220,14 @@ WHERE {
 
 def get_default_lens_uri_for(iri: AnyUrl) -> str:
     """Search for a suitable lens for a given URI."""
-    candidates = graph().query(DEFAULT_LENS_URI_QUERY, initBindings={
+    universe = graph()
+
+    universe.parse(
+        data=cached_http_get('http://localhost:8000/iolanta-rdfs.n3'),
+        format='n3',
+    )
+
+    candidates = universe.query(DEFAULT_LENS_URI_QUERY, initBindings={
         'iri': rdflib.URIRef(iri),
     })
 

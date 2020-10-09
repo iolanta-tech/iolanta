@@ -1,6 +1,6 @@
 import pytest
 
-from platonic_mapping_redis.mapping import (
+from platonic_redis import (
     RedisDBMutableMapping,
 )
 

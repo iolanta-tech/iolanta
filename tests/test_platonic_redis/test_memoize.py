@@ -1,5 +1,5 @@
-from iolanta.app import memoize
-from platonic_mapping_redis.mapping import RedisDBMutableMapping
+from platonic.memoize import memoize
+from platonic_redis import RedisDBMutableMapping
 
 
 class UppercaseMapping(RedisDBMutableMapping[str, str]):

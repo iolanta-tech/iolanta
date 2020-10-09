@@ -1,13 +1,13 @@
 from dataclasses import dataclass, field
 from functools import cached_property
 from typing import (
-    Iterator, Callable, TypeVar, MutableMapping, Type,
+    Iterator, Callable, TypeVar, MutableMapping,
 )
 
 from redis import StrictRedis
 
-from platonic import generic_type_args, const
-from platonic_mapping.mapping import PlatonicMapping
+from platonic import const
+from platonic.mapping import PlatonicMapping
 from typecasts import DefaultTypecasts
 from typecasts.main import Typecasts
 
@@ -64,8 +64,8 @@ class RedisDBMapping(
 
 @dataclass
 class RedisDBMutableMapping(
-    MutableMapping[KeyType, ValueType],
     RedisDBMapping[KeyType, ValueType],
+    MutableMapping[KeyType, ValueType],
 ):
     def __setitem__(self, k: KeyType, v: ValueType) -> None:
         self.redis.set(k, self.serialize_value(v))
