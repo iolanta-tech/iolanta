@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "iolanta"
+version = "0.1.0"
+description = "Semantic Web browser"
+authors = ["Anatoly Scherbakov <altaisoft@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+
+[tool.poetry.group.dev.dependencies]
+jeeves-yeti-pyproject = "^0.2.9"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
