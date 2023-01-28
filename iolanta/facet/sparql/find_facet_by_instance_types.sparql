@@ -1,0 +1,16 @@
+SELECT DISTINCT ?facet ?type ?sub_type WHERE {
+  $node a ?type .
+
+  ?type iolanta:instanceFacet ?facet .
+  ?facet iolanta:supports $env .
+
+  FILTER NOT EXISTS {
+    $node a ?sub_type .
+
+    ?sub_type
+      rdfs:subClassOf ?type ;
+      iolanta:instanceFacet ?sub_facet .
+
+    FILTER(?sub_type != ?type) .
+  }
+}

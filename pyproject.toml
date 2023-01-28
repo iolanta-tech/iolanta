@@ -8,9 +8,22 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = ">=3.9,<4.0"
+rdflib = "^6.2.0"
+python-frontmatter = "^0.5.0"
+requests = "^2.25.1"
+deepmerge = "^0.1.1"
+documented = "^0.1.1"
+urlpath = "^1.1.7"
+typer = "^0.7.0"
+classes = "^0.4.0"
+PyLD = "^2.0.3"
+dominate = "^2.6.0"
+more-itertools = "^9.0.0"
+owlrl = "^6.0.2"
+funcy = "^1.17"
 
-[tool.poetry.group.dev.dependencies]
-jeeves-yeti-pyproject = "^0.2.9"
+[tool.poetry.scripts]
+iolanta = "iolanta.cli:app"
 
 [build-system]
 requires = ["poetry-core"]

@@ -1,0 +1,4 @@
+SELECT ?facet WHERE {
+  rdfs:Literal iolanta:instanceFacet ?facet .
+  ?facet iolanta:supports $env .
+}

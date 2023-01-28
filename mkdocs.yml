@@ -19,7 +19,7 @@ markdown_extensions:
 plugins:
   - search
   - awesome-pages
-  - mkdocs-iolanta-tables
+  # - mkdocs-iolanta-tables
   - macros:
       on_error_fail: true
       modules:
