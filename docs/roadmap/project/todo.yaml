@@ -2,4 +2,3 @@ roadmap:roadmap:
   - title: Refactor iolanta-roadmap → separate project
     is-blocked-by:
       - title: Look for suitable ontologies for roadmaps
-

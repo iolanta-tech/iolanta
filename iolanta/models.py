@@ -13,7 +13,6 @@ class ComputedQName(NamedTuple):
     term: str
 
 
-
 class QueryResultsFormat(str, Enum):
     """Format to print query results in CLI."""
 

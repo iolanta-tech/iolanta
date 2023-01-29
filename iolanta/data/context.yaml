@@ -40,3 +40,12 @@
   "$value": "@value"
   "$version": "@version"
   "$vocab": "@vocab"
+
+  iolanta:instanceFacet:
+    "@type": "@id"
+
+  iolanta:supports:
+    "@type": "@id"
+
+  iolanta:hasDefaultFacet:
+    "@type": "@id"

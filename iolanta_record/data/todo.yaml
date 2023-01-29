@@ -1,0 +1,15 @@
+roadmap:roadmap:
+  - title: Refactor iolanta-cli into a separate package
+    is-blocked-by:
+    - title: sameAs is displayed in the record
+      bug: yes
+      blocks: iolanta-whitepaper
+
+    - title: Rename iolanta_record → iolanta_cli
+    - title: How is it best to render the record?
+      branches:
+        - title: Generate table with custom code as we do now
+        - title: Reuse iolanta-tables
+          branches:
+            - title: Create a Table description somehow?
+            - title: Substitute BodyRows facet with something custom somehow?

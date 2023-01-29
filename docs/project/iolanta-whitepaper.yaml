@@ -1,0 +1,71 @@
+roadmap:roadmap:
+  - $id: iolanta-whitepaper
+    due: 2022-05-01
+    title: "Iolanta: Linked Data browser"
+    description: Paper for ISWC2023 or SEMANTICS2023
+    is-blocked-by:
+      - title: Draw data from a wild dataset
+        blocks: wild-tables
+      - title: Publish iolanta docs at iolanta.tech
+        is-blocked-by: revive-mkdocs-iolanta-pages
+
+  - title: "`Facet` class is bound to `html_tag`"
+    $type: Bug
+    description: Make this class generic instead
+    blocks:
+      - cozy-tables-cli
+      - iolanta-roadmap
+
+  - title: Render Markdown error messages in CLI as Markdown
+  - title: "Move `Default` facet into iolanta"
+    blocks: refactor-iolanta
+  - title: Implement multiple CLI commands
+    is-blocked-by:
+      - $id: iolanta-serve
+      - $id: iolanta-print
+      - $id: iolanta-browse
+
+  - title: Implement iolanta-roadmap plugin for Iolanta CLI
+    description: Print Graphviz markup right to stdout
+    $id: iolanta-roadmap
+  - title: Render linked data from IPFS
+    description: LOD has datasets published on IPFS, try rendering them
+  - title: Render HTML in iolanta CLI and pipe it to a browser
+    blocks: iolanta-serve
+  - title: iolanta-graph with graphviz
+    description: Render raw RDF with Graphviz without complexities with 3D graphs for debug purposes
+  - title: Create open source traction for iolanta ecosystem
+  - title: Revive & plan the platonic project
+    is-blocked-by:
+      - title: platonic-rpc as a preparation for Python at WASMCloud
+        description: Or perhaps a separate multi-language product. Anyway goal is to make component oriented development easy and abstract out the RPC part of it. Because WASM Cloud is a complicated thing and won't be adopted at once, let's at least try out the component approach.
+        is-blocked-by:
+          - title: Live code generation → site_packages
+          - title: gRPC
+          - title: JSON-RPC
+          - title: Wit
+          - title: Example systems based on this
+          - title: Versions for other languages
+      - title: Platonic for Rust?
+        is-blocked-by: wasm-cloud
+
+  - title: Create Github issues from iolanta-roadmap tasks
+    blocks:
+  - title: "Move facet classes: mkdocs-iolanta-tables → iolanta-tables"
+    blocks:
+      - title: Refactor iolanta into a separate package
+        $id: refactor-iolanta
+      - title: Refactor iolanta-tables into a separate package
+      - title: Refactor mkdocs-iolanta-tables into a separate package
+
+  - title: Render wild tables in CLI
+    $id: wild-tables
+    description: Provide a modern, sleek CLI experience which would be sufficient to demonstrate against dbpedia, LOD and other sources.
+    blocks: iolanta-whitepaper
+    is-blocked-by:
+      - title: Support output locale
+        description: Because otherwise dbpedia output will be impossible to read
+      - title: Implement '--as ?'
+        description: Show available environments for an URL
+  - title: Iolanta ontology → iolanta.tech
+    description: Draw user friendly documentation

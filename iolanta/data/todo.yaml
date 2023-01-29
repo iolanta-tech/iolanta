@@ -1,6 +1,0 @@
-roadmap:roadmap:
-  - title: "roadmap:Task is not recognized in CLI"
-    $type: Bug
-    blocks: iolanta-whitepaper
-  - title: "`iolanta render` does not update the graph, you have to rerun MkDocs to do that"
-    $type: Bug

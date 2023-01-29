@@ -1,3 +1,4 @@
+import inspect
 from dataclasses import dataclass
 from functools import cached_property
 from pathlib import Path
@@ -20,7 +21,10 @@ class Facet(Generic[FacetOutput]):
     iri: NotLiteralNode
     iolanta: Iolanta
     environment: Optional[URIRef] = None
-    stored_queries_path: Path = Path(__file__).parent / 'sparql'
+
+    @property
+    def stored_queries_path(self) -> Path:
+        return Path(inspect.getfile(self.__class__)).parent / 'sparql'
 
     @property
     def ldflex(self) -> LDFlex:

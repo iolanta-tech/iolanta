@@ -90,9 +90,11 @@ def render_command(
     if ':' not in url:
         url = f'local:{url}'
 
+    node = iolanta.expand_qname(url)
+
     Console().print(
         render(
-            node=URIRef(url),
+            node=node,
             iolanta=iolanta,
             environments=[
                 iolanta.expand_qname(environment),

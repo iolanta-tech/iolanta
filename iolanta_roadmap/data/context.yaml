@@ -3,6 +3,9 @@
 
   roadmap:roadmap:
     "@context":
+      title: roadmap:title
+      description: roadmap:description
+
       blocks:
         "@id": roadmap:blocks
         "@type": "@id"
@@ -18,3 +21,5 @@
       branches:
         "@id": roadmap:branches
         "@type": "@id"
+
+      bug: roadmap:bug

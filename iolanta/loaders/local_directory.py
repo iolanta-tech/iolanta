@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Iterable, List, Optional, TextIO, Type
 
 from iolanta.context import merge
+from iolanta.conversions import path_to_iri
 from iolanta.ensure_is_context import NotAContext, ensure_is_context
 from iolanta.loaders.base import Loader, SourceType
 from iolanta.loaders.local_file import LocalFile
@@ -70,6 +71,9 @@ class LocalDirectory(Loader[Path]):
         context: Optional[LDContext] = None,
     ) -> Iterable[Quad]:
         """Extract a sequence of quads from a local file."""
+        if iri is None:
+            iri = path_to_iri(source.absolute())
+
         if not source.is_dir():
             yield from LocalFile().as_quad_stream(
                 source=source,
@@ -85,6 +89,9 @@ class LocalDirectory(Loader[Path]):
         )
 
         for child in source.iterdir():
+            if not iri.endswith('/'):
+                iri = URIRef(f'{iri}/')
+
             child_iri = URIRef(f'{iri}{child.name}')
 
             if child.is_dir():

@@ -4,6 +4,7 @@ roadmap:roadmap:
       title: Upgrade mkdocs-iolanta-tables dependency for jeeves-yeti-pyproject
       is-blocked-by:
         title: Make mkdocs-iolanta-pages depend on iolanta
+        $id: revive-mkdocs-iolanta-pages
         is-blocked-by:
           title: "`iolanta` → PyPI"
   - title: Move all iolanta-* plugins into iolanta repo

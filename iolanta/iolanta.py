@@ -60,6 +60,18 @@ class Iolanta:
         """LDFlex is a wrapper to make SPARQL querying RDF graphs bearable."""
         return LDFlex(self.graph)
 
+    @cached_property
+    def namespaces_to_bind(self) -> Dict[str, Namespace]:
+        return {
+            key: Namespace(value)
+            for key, value in self.default_context['@context'].items()
+            if (
+                isinstance(value, str)
+                and not value.startswith('@')
+                and not key.startswith('@')
+            )
+        }
+
     def add(  # type: ignore
         self,
         source: Any,
@@ -78,6 +90,10 @@ class Iolanta:
 
         self.graph.addN(quads)
 
+        self.bind_namespaces(**self.namespaces_to_bind)
+
+        self.infer()
+
         return self
 
     def infer(self) -> 'Iolanta':
@@ -89,6 +105,8 @@ class Iolanta:
 
     def bind_namespaces(self, **mappings: Namespace) -> 'Iolanta':
         """Bind namespaces."""
+        self.graph.bind(prefix='local', namespace=LOCAL)
+
         for prefix, namespace in mappings.items():
             self.graph.bind(prefix=prefix, namespace=namespace)
 
