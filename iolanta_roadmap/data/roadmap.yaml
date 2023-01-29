@@ -1,0 +1,5 @@
+- $id: roadmap:blocks
+  rdfs:domain:
+    $id: roadmap:Task
+  rdfs:range:
+    $id: roadmap:Task

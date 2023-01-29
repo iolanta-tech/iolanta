@@ -1,0 +1,20 @@
+"@context":
+  roadmap: https://iolanta.tech/roadmap/
+
+  roadmap:roadmap:
+    "@context":
+      blocks:
+        "@id": roadmap:blocks
+        "@type": "@id"
+
+      is-blocked-by:
+        "@id": roadmap:is-blocked-by
+        "@type": "@id"
+
+      subtasks:
+        "@id": roadmap:subtasks
+        "@type": "@id"
+
+      branches:
+        "@id": roadmap:branches
+        "@type": "@id"

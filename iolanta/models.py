@@ -1,10 +1,29 @@
+from enum import Enum
 from typing import Any, Dict, List, NamedTuple, Union
 
 from rdflib import Literal, URIRef
 from rdflib.term import BNode, Node
 
+
+class ComputedQName(NamedTuple):
+    """QName computed from an URIRef."""
+
+    namespace_name: str
+    namespace_url: str
+    term: str
+
+
+
+class QueryResultsFormat(str, Enum):
+    """Format to print query results in CLI."""
+
+    PRETTY = 'pretty'
+    CSV = 'csv'
+    JSON = 'json'
+
+
 # JSON-LD context
-LDContext = Dict[str, Any]  # type: ignore
+LDContext = Union[Dict[str, Any], List[Dict[str, Any]]]   # type: ignore
 LDDocument = Union[Dict[str, Any], List[Dict[str, Any]]]  # type: ignore
 
 NotLiteralNode = Union[URIRef, BNode]

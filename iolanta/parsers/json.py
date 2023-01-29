@@ -1,3 +1,4 @@
+from iolanta.namespaces import IOLANTA
 import dataclasses
 import itertools
 import json
@@ -5,18 +6,16 @@ from dataclasses import dataclass
 from typing import Any, Iterable, Optional, TextIO
 
 from documented import DocumentedError
-from pyld import jsonld
-from pyld.jsonld import JsonLdError, _resolved_context_cache
-from rdflib import RDF, XSD, URIRef
-from rdflib.term import BNode, Literal, Node
-from urlpath import URL
-
 from iolanta.loaders.base import Loader
 from iolanta.models import LDContext, LDDocument, Quad
 from iolanta.namespaces import LOCAL
 from iolanta.parsers.base import Parser
 from iolanta.parsers.errors import SpaceInProperty
-from mkdocs_iolanta.types import MKDOCS
+from pyld import jsonld
+from pyld.jsonld import JsonLdError, _resolved_context_cache
+from rdflib import RDF, XSD, URIRef
+from rdflib.term import BNode, Literal, Node
+from urlpath import URL
 
 
 def assign_key_if_not_present(  # type: ignore
@@ -180,7 +179,7 @@ class JSON(Parser):
 
         document = assign_key_if_not_present(
             document=document,
-            key='mkdocs:subjectOf',
+            key='iolanta:subjectOf',
             default_value={
                 '$id': str(iri),
             },
@@ -210,10 +209,7 @@ class JSON(Parser):
         document = jsonld.flatten(document)
 
         static_quads = [
-            # FIXME:
-            #   title: Iolanta JSON parser refers to mkdocs namespace
-            #   description: Do this in `mkdocs_iolanta` instead.
-            Quad(iri, RDF.type, MKDOCS.File, iri),    # type: ignore
+            Quad(iri, RDF.type, IOLANTA.File, iri),    # type: ignore
         ]
 
         try:

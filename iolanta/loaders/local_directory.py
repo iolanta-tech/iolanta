@@ -4,16 +4,14 @@ from functools import reduce
 from pathlib import Path
 from typing import Iterable, List, Optional, TextIO, Type
 
-from rdflib import URIRef
-
 from iolanta.context import merge
-from iolanta.conversions import path_to_url, url_to_path
 from iolanta.ensure_is_context import NotAContext, ensure_is_context
 from iolanta.loaders.base import Loader, SourceType
 from iolanta.loaders.local_file import LocalFile
 from iolanta.models import LDContext, LDDocument, Quad
+from iolanta.namespaces import IOLANTA
 from iolanta.parsers.base import Parser
-from mkdocs_iolanta.types import MKDOCS
+from rdflib import URIRef
 
 
 def merge_contexts(*contexts: LDContext) -> LDContext:
@@ -110,7 +108,7 @@ class LocalDirectory(Loader[Path]):
             if iri is not None:
                 yield Quad(
                     subject=child_iri,
-                    predicate=MKDOCS.isChildOf,
+                    predicate=IOLANTA.isChildOf,
                     object=iri,
                     graph=URIRef(
                         'https://iolanta.tech/loaders/local-directory',

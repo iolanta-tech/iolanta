@@ -1,3 +1,4 @@
+from pathlib import Path
 import logging
 from typing import Optional
 
@@ -12,11 +13,10 @@ from iolanta.graph_providers.find import (
     construct_graph_from_installed_providers,
 )
 from iolanta.iolanta import Iolanta
+from iolanta.models import QueryResultsFormat
 from iolanta.renderer import render
 from iolanta.shortcuts import construct_root_loader
-from mkdocs_iolanta.cli.formatters.choose import cli_print
-from mkdocs_iolanta.storage import load_graph
-from mkdocs_iolanta.types import QueryResultsFormat
+from iolanta.cli.formatters.choose import cli_print
 
 app = Typer(no_args_is_help=True)
 
@@ -29,6 +29,7 @@ def callback(
     context: Context,
     graph: Optional[str] = None,
     log_level: str = 'info',
+    source: Optional[str] = Option(None, '--from'),
 ):
     logger.setLevel(
         {
@@ -57,6 +58,8 @@ def callback(
     else:
         url = URL(graph)
         if url.scheme == 'file+shelve':
+            raise NotImplementedError('Graph plugins not yet implemented.')
+
             path = url_to_path(url)
             logger.info(f'Loading pickled graph from `{path}`')
             context.obj = Iolanta(
@@ -67,6 +70,9 @@ def callback(
 
         else:
             raise ValueError(f'Unknown path for a graph: {url}')
+
+    if source is not None:
+        context.obj.add(Path(source))
 
 
 @app.command(name='render')

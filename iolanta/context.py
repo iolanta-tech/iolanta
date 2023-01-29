@@ -1,11 +1,10 @@
 from copy import deepcopy
 
 from deepmerge import always_merger
+from iolanta.models import LDContext
 
-from mkdocs_iolanta.types import Context
 
-
-def merge(first: Context, second: Context) -> Context:
+def merge(first: LDContext, second: LDContext) -> LDContext:
     """
     Merge two contexts into one.
 

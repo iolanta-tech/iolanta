@@ -6,6 +6,12 @@ authors = ["Anatoly Scherbakov <altaisoft@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 
+packages = [
+  { include = "ldflex" },
+  { include = "iolanta" },
+  { include = "iolanta_roadmap" },
+]
+
 [tool.poetry.dependencies]
 python = ">=3.9,<4.0"
 rdflib = "^6.2.0"
@@ -24,6 +30,11 @@ funcy = "^1.17"
 
 [tool.poetry.scripts]
 iolanta = "iolanta.cli:app"
+
+
+[tool.poetry.plugins."iolanta.plugins"]
+roadmap = "iolanta_roadmap:Roadmap"
+
 
 [build-system]
 requires = ["poetry-core"]
