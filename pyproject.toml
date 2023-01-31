@@ -9,7 +9,6 @@ readme = "README.md"
 packages = [
   { include = "ldflex" },
   { include = "iolanta" },
-  { include = "iolanta_roadmap" },
   { include = "iolanta_record" },
 ]
 
@@ -28,14 +27,14 @@ dominate = "^2.6.0"
 more-itertools = "^9.0.0"
 owlrl = "^6.0.2"
 funcy = "^1.17"
-graphviz = "^0.20.1"
+lambdas = "^0.1.0"
+rich = "^13.3.1"
 
 [tool.poetry.scripts]
 iolanta = "iolanta.cli:app"
 
 
 [tool.poetry.plugins."iolanta.plugins"]
-roadmap = "iolanta_roadmap:Roadmap"
 record = "iolanta_record:IolantaRecord"
 
 

@@ -1,8 +1,0 @@
-SELECT ?task ?title ?description ?is_bug WHERE {
-    ?task
-        roadmap:blocks* $goal ;
-        roadmap:title ?title .
-
-    OPTIONAL { ?task roadmap:bug ?is_bug }
-    OPTIONAL { ?task roadmap:description ?description }
-}
