@@ -27,9 +27,13 @@ logger = logging.getLogger(__name__)
 @app.callback()
 def callback(
     context: Context,
-    graph: Optional[str] = None,
     log_level: str = 'info',
-    source: Optional[str] = Option(None, '--from'),
+    source: Path = Option(
+        Path.cwd,
+        '--from',
+        help='File or directory to read data from',
+        exists=True,
+    ),
 ):
     logger.setLevel(
         {
@@ -38,41 +42,12 @@ def callback(
         }[log_level],
     )
 
-    if graph is None:
-        graph = construct_graph_from_installed_providers()   # type: ignore
+    iolanta = context.obj = Iolanta(
+        logger=logger,
+        loader=construct_root_loader(),
+    )
 
-        if graph is not None:
-            logger.info('Using graph from provider.')   # type: ignore
-            context.obj = Iolanta(
-                loader=construct_root_loader(),
-                logger=logger,
-                graph=graph,
-            )
-        else:
-            logger.info('Using an in-memory transient graph.')
-            context.obj = Iolanta(
-                logger=logger,
-                loader=construct_root_loader(),
-            )
-
-    else:
-        url = URL(graph)
-        if url.scheme == 'file+shelve':
-            raise NotImplementedError('Graph plugins not yet implemented.')
-
-            path = url_to_path(url)
-            logger.info(f'Loading pickled graph from `{path}`')
-            context.obj = Iolanta(
-                loader=construct_root_loader(),
-                graph=load_graph(path),
-                logger=logger,
-            )
-
-        else:
-            raise ValueError(f'Unknown path for a graph: {url}')
-
-    if source is not None:
-        context.obj.add(Path(source))
+    iolanta.add(Path(source))
 
 
 @app.command(name='render')
