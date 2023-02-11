@@ -1,3 +1,6 @@
+"@context":
+  roadmap: https://iolanta.tech/roadmap/
+
 roadmap:roadmap:
   - title: Refactor iolanta-cli into a separate package
     is-blocked-by:
