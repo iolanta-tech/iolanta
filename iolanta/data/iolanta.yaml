@@ -1,0 +1,52 @@
+- $id: iolanta:Facet
+  $type: rdfs:Class
+  label: Application capable to represent certain nodes of a semantic graph in a form suitable for certain user to interact with.
+
+- $id: iolanta:Environment
+  $type: rdfs:Class
+  label: Environment a given application lives at.
+
+- $id: iolanta:supports
+  $type: Property
+  rdfs:domain:
+    $id: iolanta:Facet
+  rdfs:range:
+    $id: iolanta:Interface
+  label: Indication that certain application supports certain range of environments.
+
+- $id: iolanta:isSupportedBy
+  owl:inverseOf:
+    $id: iolanta:supports
+
+- $id: iolanta:Viewpoint
+  $type: rdfs:Class
+  label: A node in a semantic graph that is known to be supported by certain application(s).
+
+- $id: iolanta:facet
+  $type: Property
+  rdfs:domain:
+    $id: iolanta:Viewpoint
+  rdfs:range:
+    $id: iolanta:Facet
+  label: Indication that a certain Viewpoint can be described by a certain App.
+
+- $id: iolanta:html
+  $type: iolanta:Environment
+  owl:sameAs:
+    $id: https://html.spec.whatwg.org/
+  iolanta:hasDefaultFacet: python://iolanta.facets.Default
+
+- $id: iolanta:cli
+  $type: iolanta:Environment
+
+- $id: iolanta:isDefaultFacetOf
+  rdfs:domain:
+    $id: iolanta:Facet
+  rdfs:range:
+    $id: iolanta:Environment
+  label: Default facet used to render nodes in this environment if the node does not have a facet explicitly attached.
+  owl:inverseOf:
+    $id: iolanta:hasDefaultFacet
+
+- $id: iolanta:instanceFacet
+  rdfs:range: iolanta:Facet

@@ -1,0 +1,26 @@
+SELECT * WHERE {
+    OPTIONAL {
+        {
+            $iri rdfs:label ?label .
+        } UNION {
+            BIND($iri AS ?label) .
+            FILTER(isLiteral($iri)) .
+        }
+    }
+
+    OPTIONAL {
+        $iri iolanta:symbol ?symbol .
+    }
+
+    OPTIONAL {
+        {
+            $iri iolanta:url ?url .
+        } UNION {
+            $iri iolanta:subjectOf / iolanta:url ?url .
+        }
+    }
+
+    OPTIONAL {
+        $iri rdfs:comment ?comment .
+    }
+} ORDER BY DESC(?label) DESC(?symbol) DESC(?url) DESC(?comment)

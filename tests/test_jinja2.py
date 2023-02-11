@@ -6,15 +6,14 @@ from iolanta_jinja2.process_template import process_template
 
 @pytest.fixture()
 def iolanta() -> Iolanta:
-    iolanta = Iolanta()
-    iolanta.add({
+    return Iolanta().add({
         '@id': 'john-doe',
-        'name': 'John Doe',
+        'rdfs:label': 'John Doe',
     })
 
 
 def test_simple(iolanta: Iolanta):
     assert process_template(
-        template='Hi {{ render("name") }}!',
+        template='Hi {{ render("john-doe") }}!',
         iolanta=iolanta,
     ) == 'Hi John Doe!'

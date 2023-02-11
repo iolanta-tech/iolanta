@@ -5,6 +5,7 @@ from rdflib import URIRef
 from urlpath import URL
 
 from iolanta.loaders.data_type_choice import DataTypeChoiceLoader
+from iolanta.loaders.dict_loader import DictLoader
 from iolanta.loaders.http import HTTP
 from iolanta.loaders.local_directory import Loader, LocalDirectory
 from iolanta.loaders.local_file import LocalFile
@@ -26,6 +27,7 @@ def construct_root_loader() -> DataTypeChoiceLoader:
     # FIXME: Generalize this using endpoints
     return DataTypeChoiceLoader(
         loader_by_data_type={
+            dict: DictLoader(),
             Path: LocalDirectory(),
             URL: SchemeChoiceLoader(
                 loader_by_scheme={

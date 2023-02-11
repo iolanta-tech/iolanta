@@ -38,6 +38,7 @@ iolanta = "iolanta.cli:app"
 [tool.poetry.plugins."iolanta.plugins"]
 record = "iolanta_record:IolantaRecord"
 jinja2 = "iolanta_jinja2:IolantaJinja2"
+base = "iolanta:IolantaBase"
 
 
 [build-system]

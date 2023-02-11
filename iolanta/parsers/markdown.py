@@ -35,7 +35,7 @@ class Markdown(YAML):
         context: LDContext,
         root_loader: Loader[SourceType],
     ) -> Iterable[Quad]:
-        """Assign mkdocs:url and generate quad stream."""
+        """Assign iolanta:url and generate quad stream."""
         try:
             json_data = self.as_jsonld_document(raw_data)
         except (ScannerError, ParserError) as err:

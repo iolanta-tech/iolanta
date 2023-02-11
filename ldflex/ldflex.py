@@ -95,7 +95,7 @@ class LDFlex:
 
                 ```python
                 ldflex.query(
-                    'SELECT ?title WHERE { ?page mkdocs:title ?title }',
+                    'SELECT ?title WHERE { ?page rdfs:label ?title }',
                     ?page=page_iri,
                 )
                 ```

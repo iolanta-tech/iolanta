@@ -1,6 +1,7 @@
 import dataclasses
 import itertools
 import json
+import uuid
 from dataclasses import dataclass
 from typing import Optional, Iterable, Any
 
@@ -34,14 +35,17 @@ class DictParser(Parser[LDDocument]):
 
         document = raw_data
 
-        if iri is not None:
-            document = assign_key_if_not_present(
-                document=document,
-                key='iolanta:subjectOf',
-                default_value={
-                    '$id': str(iri),
-                },
-            )
+        if iri is None:
+            uid = uuid.uuid4().hex
+            iri = BNode(f'_:dict:{uid}')
+
+        document = assign_key_if_not_present(
+            document=document,
+            key='iolanta:subjectOf',
+            default_value={
+                '$id': str(iri),
+            },
+        )
 
         try:
             document = jsonld.expand(
