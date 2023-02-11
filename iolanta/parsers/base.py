@@ -1,6 +1,6 @@
 from abc import ABC
 from dataclasses import dataclass
-from typing import Iterable, Optional, Generic, TypeVar
+from typing import Generic, Iterable, Optional, TypeVar
 
 from rdflib import URIRef
 

@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import Protocol, Any, Union
+from typing import Any, Protocol, Union
 
 from iolanta.facet import Facet
 

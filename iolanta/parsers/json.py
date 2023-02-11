@@ -1,12 +1,13 @@
 import json
 from typing import Iterable, Optional, TextIO
 
+from rdflib import URIRef
+from urlpath import URL
+
 from iolanta.loaders.base import Loader
 from iolanta.models import LDContext, LDDocument, Quad
 from iolanta.parsers.base import Parser
 from iolanta.parsers.dict_parser import DictParser
-from rdflib import URIRef
-from urlpath import URL
 
 
 class JSON(Parser[TextIO]):

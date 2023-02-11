@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from typing import List
 
 from documented import DocumentedError
-from rdflib import URIRef, Literal
+from rdflib import Literal, URIRef
 from rdflib.term import Node
 
 from iolanta.facet.base import FacetSearchAttempt

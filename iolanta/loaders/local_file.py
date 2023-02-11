@@ -2,6 +2,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable, Optional, TextIO, Type
 
+from rdflib import Literal, URIRef
+
 from iolanta.conversions import url_to_iri
 from iolanta.loaders.base import Loader
 from iolanta.loaders.errors import IsAContext, ParserNotFound
@@ -11,7 +13,6 @@ from iolanta.parsers.base import Parser
 from iolanta.parsers.json import JSON
 from iolanta.parsers.markdown import Markdown
 from iolanta.parsers.yaml import YAML
-from rdflib import Literal, URIRef
 
 
 def choose_parser_by_extension(path: Path) -> Type[Parser]:

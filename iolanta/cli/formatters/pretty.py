@@ -10,7 +10,7 @@ from rich.table import Table
 
 from iolanta.cli.pretty_print import render_literal_value
 from iolanta.models import ComputedQName
-from ldflex.ldflex import SelectResult, QueryResult
+from ldflex.ldflex import QueryResult, SelectResult
 
 
 @typeclass

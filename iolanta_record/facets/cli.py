@@ -5,7 +5,7 @@ from rich.table import Table
 
 from iolanta.cli.formatters.node_to_qname import node_to_qname
 from iolanta.cli.formatters.pretty import pretty_print_value
-from iolanta.facet.rich import RichFacet, Renderable
+from iolanta.facet.rich import Renderable, RichFacet
 
 
 class CLI(RichFacet):
@@ -67,7 +67,7 @@ class CLI(RichFacet):
                         #   is-blocked-by: record-render-strategy
                         property_values,
                     ),
-                )
+                ),
             )
 
         return table

@@ -2,7 +2,7 @@ import inspect
 from dataclasses import dataclass
 from functools import cached_property
 from pathlib import Path
-from typing import List, Optional, TypeVar, Generic
+from typing import Generic, List, Optional, TypeVar
 
 from rdflib.term import BNode, URIRef
 
@@ -52,7 +52,7 @@ class Facet(Generic[FacetOutput]):
 
     def render(self, iri: NotLiteralNode, environments: List[NotLiteralNode]):
         """Shortcut to render something via iolanta."""
-        from iolanta import renderer   # Circular import ☹
+        from iolanta import renderer  # Circular import ☹
         return renderer.render(
             node=iri,
             iolanta=self.iolanta,

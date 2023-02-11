@@ -3,18 +3,18 @@ import itertools
 import json
 import uuid
 from dataclasses import dataclass
-from typing import Optional, Iterable, Any
+from typing import Any, Iterable, Optional
 
 from documented import DocumentedError
 from pyld import jsonld
 from pyld.jsonld import JsonLdError, _resolved_context_cache
-from rdflib import URIRef, XSD, Literal, BNode, RDF
+from rdflib import RDF, XSD, BNode, Literal, URIRef
 from rdflib.term import Node
 from urlpath import URL
 
 from iolanta.loaders import Loader
-from iolanta.models import LDDocument, NotLiteralNode, LDContext, Quad
-from iolanta.namespaces import LOCAL, IOLANTA
+from iolanta.models import LDContext, LDDocument, NotLiteralNode, Quad
+from iolanta.namespaces import IOLANTA, LOCAL
 from iolanta.parsers.base import Parser, RawDataType
 from iolanta.parsers.errors import SpaceInProperty
 

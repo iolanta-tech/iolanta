@@ -4,6 +4,8 @@ from functools import reduce
 from pathlib import Path
 from typing import Iterable, List, Optional, TextIO, Type
 
+from rdflib import URIRef
+
 from iolanta.context import merge
 from iolanta.conversions import path_to_iri
 from iolanta.ensure_is_context import NotAContext, ensure_is_context
@@ -12,7 +14,6 @@ from iolanta.loaders.local_file import LocalFile
 from iolanta.models import LDContext, LDDocument, Quad
 from iolanta.namespaces import IOLANTA
 from iolanta.parsers.base import Parser
-from rdflib import URIRef
 
 
 def merge_contexts(*contexts: LDContext) -> LDContext:

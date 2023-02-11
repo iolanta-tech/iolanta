@@ -13,7 +13,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.9,<4.0"
+python = ">=3.10,<4.0"
 rdflib = "^6.2.0"
 python-frontmatter = "^0.5.0"
 requests = "^2.25.1"
@@ -37,6 +37,10 @@ iolanta = "iolanta.cli:app"
 record = "iolanta_record:IolantaRecord"
 base = "iolanta:IolantaBase"
 
+
+
+[tool.poetry.group.dev.dependencies]
+jeeves-yeti-pyproject = "^0.2.11"
 
 [build-system]
 requires = ["poetry-core"]

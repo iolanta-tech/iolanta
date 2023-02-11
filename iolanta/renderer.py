@@ -16,7 +16,7 @@ from iolanta.facet.by_environment import FindFacetByEnvironment
 from iolanta.facet.by_instance import FindFacetByInstance
 from iolanta.facet.by_literal_datatype import FindFacetByLiteralDatatype
 from iolanta.facet.by_type import FindFacetByInstanceTypes
-from iolanta.facet.errors import FacetNotCallable, FacetNotFound, FacetError
+from iolanta.facet.errors import FacetError, FacetNotCallable, FacetNotFound
 from iolanta.facet.facet import Facet
 from iolanta.facet.for_literal import FindFacetForLiteral
 from iolanta.iolanta import Iolanta
