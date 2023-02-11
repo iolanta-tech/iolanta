@@ -19,6 +19,7 @@ from iolanta.models import LDContext
 from iolanta.namespaces import LOCAL
 from iolanta.parsers.yaml import YAML
 from iolanta.plugin import Plugin
+from iolanta.shortcuts import construct_root_loader
 from ldflex import LDFlex
 
 
@@ -26,7 +27,7 @@ from ldflex import LDFlex
 class Iolanta:
     """Iolanta is a Semantic web browser."""
 
-    loader: Loader[SourceType]
+    loader: Loader[SourceType] = field(default_factory=construct_root_loader)
     graph: ConjunctiveGraph = field(
         default_factory=functools.partial(
             ConjunctiveGraph,

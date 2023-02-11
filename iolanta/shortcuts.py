@@ -23,6 +23,7 @@ def as_document(path: Path) -> LDDocument:
 
 
 def construct_root_loader() -> DataTypeChoiceLoader:
+    # FIXME: Generalize this using endpoints
     return DataTypeChoiceLoader(
         loader_by_data_type={
             Path: LocalDirectory(),

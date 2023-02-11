@@ -10,6 +10,7 @@ packages = [
   { include = "ldflex" },
   { include = "iolanta" },
   { include = "iolanta_record" },
+  { include = "iolanta_jinja2" },
 ]
 
 [tool.poetry.dependencies]
@@ -36,6 +37,7 @@ iolanta = "iolanta.cli:app"
 
 [tool.poetry.plugins."iolanta.plugins"]
 record = "iolanta_record:IolantaRecord"
+jinja2 = "iolanta_jinja2:IolantaJinja2"
 
 
 [build-system]

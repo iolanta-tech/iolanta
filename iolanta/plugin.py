@@ -4,12 +4,19 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
 
+from typer import Typer
+
 
 @dataclass
 class Plugin(ABC):
     """Base Iolanta plugin."""
 
     iolanta: 'iolanta.Iolanta' = field(repr=False)
+
+    @property
+    def typer_app(self) -> Optional[Typer]:
+        """Typer app for this plugin's CLI."""
+        return None
 
     @property
     def files_directory(self) -> Path:

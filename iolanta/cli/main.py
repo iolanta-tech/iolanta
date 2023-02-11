@@ -1,27 +1,43 @@
-from pathlib import Path
 import logging
+from pathlib import Path
 from typing import Optional
 
-from rdflib import URIRef
 from rich.console import Console
 from rich.table import Table
-from typer import Argument, Context, Option, Typer, echo
-from urlpath import URL
+from typer import Argument, Context, Option, Typer
 
-from iolanta.conversions import url_to_path
-from iolanta.graph_providers.find import (
-    construct_graph_from_installed_providers,
-)
+from iolanta.cli.formatters.choose import cli_print
 from iolanta.iolanta import Iolanta
 from iolanta.models import QueryResultsFormat
 from iolanta.renderer import render
 from iolanta.shortcuts import construct_root_loader
-from iolanta.cli.formatters.choose import cli_print
-
-app = Typer(no_args_is_help=True)
-
 
 logger = logging.getLogger(__name__)
+
+
+def construct_app() -> Typer:
+    iolanta = Iolanta(
+        logger=logger,
+        loader=construct_root_loader(),
+    )
+
+    cli = Typer(
+        no_args_is_help=True,
+        context_settings={
+            'obj': iolanta,
+        },
+    )
+
+    plugins = iolanta.plugins
+
+    for plugin in plugins:
+        if (subcommand := plugin.typer_app) is not None:
+            cli.add_typer(subcommand)
+
+    return cli
+
+
+app = construct_app()
 
 
 @app.callback()
@@ -35,16 +51,13 @@ def callback(
         exists=True,
     ),
 ):
-    logger.setLevel(
+    iolanta: Iolanta = context.obj
+
+    iolanta.logger.setLevel(
         {
             'info': logging.INFO,
             'debug': logging.DEBUG,
         }[log_level],
-    )
-
-    iolanta = context.obj = Iolanta(
-        logger=logger,
-        loader=construct_root_loader(),
     )
 
     iolanta.add(Path(source))
