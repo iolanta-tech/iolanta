@@ -1,15 +1,17 @@
 from abc import ABC
 from dataclasses import dataclass
-from typing import Iterable, Optional, TextIO
+from typing import Iterable, Optional, Generic, TypeVar
 
 from rdflib import URIRef
 
 from iolanta.loaders.base import Loader
 from iolanta.models import LDContext, LDDocument, Quad
 
+RawDataType = TypeVar('RawDataType')
+
 
 @dataclass(frozen=True)
-class Parser(ABC):
+class Parser(ABC, Generic[RawDataType]):
     """
     Parser reads data from a file-like object and interprets them.
 
@@ -20,7 +22,7 @@ class Parser(ABC):
 
     def as_jsonld_document(
         self,
-        raw_data: TextIO,
+        raw_data: RawDataType,
     ) -> LDDocument:
         """Generate a JSON-LD document."""
         raise NotImplementedError(
@@ -29,7 +31,7 @@ class Parser(ABC):
 
     def as_quad_stream(
         self,
-        raw_data: TextIO,
+        raw_data: RawDataType,
         iri: Optional[URIRef],
         context: LDContext,
         root_loader: Loader,
