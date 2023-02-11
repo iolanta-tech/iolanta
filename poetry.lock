@@ -267,21 +267,6 @@ files = [
 six = "*"
 
 [[package]]
-name = "lambdas"
-version = "0.1.0"
-description = "Typed lambdas that are short and readable"
-category = "main"
-optional = false
-python-versions = ">=3.6,<4.0"
-files = [
-    {file = "lambdas-0.1.0-py3-none-any.whl", hash = "sha256:b197d7cf464b9733944cf9b9cf73d05d934b19eaf0c32fc04a9e7dd25b5ce321"},
-    {file = "lambdas-0.1.0.tar.gz", hash = "sha256:a595cfbcea23bf7295a821563044785d0dc843b39d21ccaee5c3a79afe79e140"},
-]
-
-[package.dependencies]
-typing-extensions = ">=3.7,<4.0"
-
-[[package]]
 name = "lxml"
 version = "4.9.2"
 description = "Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API."
@@ -724,4 +709,4 @@ test = ["WebOb", "jmespath"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<4.0"
-content-hash = "be9721157bfb286ff4b071397caebed38013dfbfd6a4fc6833bda3ad77009674"
+content-hash = "60460286835462210857b2e34eb65ee620e77b75d07db43d1ad3a2985eef2242"
