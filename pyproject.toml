@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iolanta"
-version = "1.0.0"
+version = "1.0.1"
 description = "Semantic Web browser"
 authors = ["Anatoly Scherbakov <altaisoft@gmail.com>"]
 license = "MIT"
@@ -9,7 +9,6 @@ readme = "README.md"
 packages = [
   { include = "ldflex" },
   { include = "iolanta" },
-  { include = "iolanta_record" },
 ]
 
 [tool.poetry.dependencies]
