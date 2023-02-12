@@ -23,12 +23,7 @@ class Default(Facet):
     def show(self):
         """Render the column."""
         row: DefaultRow = funcy.first(
-            self.query(
-                (
-                    Path(__file__).parent / 'sparql/default.sparql'
-                ).read_text(),
-                iri=self.iri,
-            ),
+            self.stored_query('default.sparql', iri=self.iri),
         )
 
         if row.get('url'):

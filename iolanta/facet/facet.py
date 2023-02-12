@@ -2,9 +2,9 @@ import inspect
 from dataclasses import dataclass
 from functools import cached_property
 from pathlib import Path
-from typing import Generic, List, Optional, TypeVar
+from typing import Any, Generic, List, Optional, TypeVar, Union
 
-from rdflib.term import BNode, URIRef
+from rdflib.term import BNode, Node, URIRef
 
 from iolanta.iolanta import Iolanta
 from iolanta.models import NotLiteralNode
@@ -50,12 +50,14 @@ class Facet(Generic[FacetOutput]):
             **kwargs,
         )
 
-    def render(self, iri: NotLiteralNode, environments: List[NotLiteralNode]):
+    def render(
+        self,
+        node: Union[str, Node],
+        environments: Optional[Union[str, List[NotLiteralNode]]] = None,
+    ) -> Any:
         """Shortcut to render something via iolanta."""
-        from iolanta import renderer  # Circular import ☹
-        return renderer.render(
-            node=iri,
-            iolanta=self.iolanta,
+        return self.iolanta.render(
+            node=node,
             environments=environments,
         )
 

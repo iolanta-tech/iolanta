@@ -3,20 +3,19 @@ import logging
 from dataclasses import dataclass, field
 from functools import cached_property
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Type
+from typing import Any, Dict, Iterable, List, Optional, Type, Union
 
 import owlrl
 from owlrl import OWLRL_Extension
 from rdflib import ConjunctiveGraph, Namespace, URIRef
-from urlpath import URL
+from rdflib.term import Node
 
 from iolanta import entry_points
-from iolanta.conversions import path_to_url, url_to_path
 from iolanta.loaders import Loader
 from iolanta.loaders.base import SourceType
 from iolanta.loaders.local_directory import merge_contexts
-from iolanta.models import LDContext
-from iolanta.namespaces import LOCAL
+from iolanta.models import LDContext, NotLiteralNode
+from iolanta.namespaces import IOLANTA, LOCAL
 from iolanta.parsers.yaml import YAML
 from iolanta.plugin import Plugin
 from iolanta.shortcuts import construct_root_loader
@@ -34,7 +33,6 @@ class Iolanta:
             identifier=LOCAL.term('_inference'),
         ),
     )
-    namespaces: Dict[str, Namespace] = field(default_factory=dict)
     force_plugins: List[Type[Plugin]] = field(default_factory=list)
 
     logger: logging.Logger = field(
@@ -153,3 +151,58 @@ class Iolanta:
             return self.graph.namespace_manager.expand_curie(qname)
         except ValueError:
             return URIRef(qname)
+
+    def render(
+        self,
+        node: Union[str, Node],
+        environments: Optional[Union[str, List[NotLiteralNode]]] = None,
+    ) -> Any:
+        """Find an Iolanta facet for a node and render it."""
+        # FIXME: Convert to a global import
+        from iolanta.facet.errors import FacetError, FacetNotFound
+        from iolanta.renderer import Render, render_facet, resolve_facet
+
+        if isinstance(environments, str):
+            environments = [environments]
+
+        if not environments:
+            environments = [IOLANTA.html]
+
+        self.logger.debug('Environments: %s', environments)
+
+        facet_search_attempt = Render(
+            ldflex=self.ldflex,
+        ).search_for_facet(
+            node=node,
+            environments=environments,
+        )
+
+        facet_class = resolve_facet(
+            iri=facet_search_attempt.facet,
+        )
+
+        facet = facet_class(
+            iri=node,
+            iolanta=self,
+            environment=facet_search_attempt.environment,
+        )
+
+        try:
+            return render_facet(
+                node=node,
+                facet=facet,
+                environments=environments,
+                debug_mode=False,  # iolanta.is_debug_mode(node),
+            )
+
+        except (FacetError, FacetNotFound):  # noqa: WPS329
+            # Prevent nested `FacetError` exceptions.
+            raise
+
+        except Exception as err:
+            raise FacetError(
+                node=node,
+                facet_iri=facet_search_attempt.facet,
+                facet_search_attempt=facet_search_attempt,
+                error=err,
+            ) from err

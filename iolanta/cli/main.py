@@ -9,7 +9,6 @@ from typer import Argument, Context, Option, Typer
 from iolanta.cli.formatters.choose import cli_print
 from iolanta.iolanta import Iolanta
 from iolanta.models import QueryResultsFormat
-from iolanta.renderer import render
 from iolanta.shortcuts import construct_root_loader
 
 logger = logging.getLogger(__name__)
@@ -81,9 +80,8 @@ def render_command(
     node = iolanta.expand_qname(url)
 
     Console().print(
-        render(
+        iolanta.render(
             node=node,
-            iolanta=iolanta,
             environments=[
                 iolanta.expand_qname(environment),
             ],

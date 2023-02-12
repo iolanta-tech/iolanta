@@ -16,17 +16,14 @@ from iolanta.facet.by_environment import FindFacetByEnvironment
 from iolanta.facet.by_instance import FindFacetByInstance
 from iolanta.facet.by_literal_datatype import FindFacetByLiteralDatatype
 from iolanta.facet.by_type import FindFacetByInstanceTypes
-from iolanta.facet.errors import FacetError, FacetNotCallable, FacetNotFound
-from iolanta.facet.facet import Facet
+from iolanta.facet.errors import FacetNotCallable, FacetNotFound
 from iolanta.facet.for_literal import FindFacetForLiteral
-from iolanta.iolanta import Iolanta
-from iolanta.models import NotLiteralNode
 from ldflex import LDFlex
 
 HTML = URIRef('https://html.spec.whatwg.org/')
 
 
-def resolve_facet(iri: URIRef) -> Type[Facet]:
+def resolve_facet(iri: URIRef) -> Type['iolanta.Facet']:
     """Resolve a path to a Python object to that object."""
     url = str(iri)
 
@@ -45,7 +42,7 @@ def resolve_facet(iri: URIRef) -> Type[Facet]:
     # have to resort to plain string manipulation.
     import_path = url.replace('python://', '').strip('/')
 
-    facet = cast(Type[Facet], pydoc.locate(import_path))
+    facet = cast(Type['iolanta.Facet'], pydoc.locate(import_path))
 
     if not callable(facet):
         raise FacetNotCallable(
@@ -53,15 +50,12 @@ def resolve_facet(iri: URIRef) -> Type[Facet]:
             facet=facet,
         )
 
-    if not issubclass(facet, Facet):
-        raise ValueError(f'{facet} is not a Facet.')
-
     return facet
 
 
-def _render_facet(
+def render_facet(
     node: Node,
-    facet: Facet,
+    facet: 'iolanta.Facet',
     environments: Optional[List[URIRef]] = None,
     debug_mode: bool = False,
 ):
@@ -97,58 +91,6 @@ def debug_node(node: Union[str, Node], environments: Optional[List[URIRef]]):
         ),
         border=1,
     )
-
-
-def render(
-    node: Union[str, Node],
-    iolanta: Iolanta,
-    environments: Optional[Union[str, List[NotLiteralNode]]] = None,
-) -> str:
-    """Find an Iolanta facet for a node and render it."""
-    if isinstance(environments, str):
-        environments = [environments]
-
-    if not environments:
-        environments = [HTML]
-
-    iolanta.logger.debug('Environments: %s', environments)
-
-    facet_search_attempt = Render(
-        ldflex=iolanta.ldflex,
-    ).search_for_facet(
-        node=node,
-        environments=environments,
-    )
-
-    facet_class = resolve_facet(
-        iri=facet_search_attempt.facet,
-    )
-
-    facet = facet_class(
-        iri=node,
-        iolanta=iolanta,
-        environment=facet_search_attempt.environment,
-    )
-
-    try:
-        return _render_facet(
-            node=node,
-            facet=facet,
-            environments=environments,
-            debug_mode=False,    # iolanta.is_debug_mode(node),
-        )
-
-    except (FacetError, FacetNotFound):   # noqa: WPS329
-        # Prevent nested `FacetError` exceptions.
-        raise
-
-    except Exception as err:
-        raise FacetError(
-            node=node,
-            facet_iri=facet_search_attempt.facet,
-            facet_search_attempt=facet_search_attempt,
-            error=err,
-        ) from err
 
 
 @dataclass
