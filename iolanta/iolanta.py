@@ -10,6 +10,7 @@ import funcy
 import owlrl
 from contexttimer import Timer
 from owlrl import OWLRL_Extension, RDFS_Semantics, RDFSClosure
+from owlrl.Closure import Core
 from rdflib import ConjunctiveGraph, Namespace, URIRef
 from rdflib.term import Node
 
@@ -116,20 +117,11 @@ class Iolanta:
 
         return self
 
-    def infer(self) -> 'Iolanta':
+    def infer(self, closure_class: Type[Core] = OWLRL_Extension) -> 'Iolanta':
+        """Apply inference."""
         self.logger.error('Inference: OWL RL started...')
-
-        with Timer() as timer:
-            # owlrl.DeductiveClosure(OWLRL_Extension).expand(self.graph)
-            # owlrl.DeductiveClosure(RDFS_Semantics).expand(self.graph)
-
-            pass
-            # owlrl.DeductiveClosure(RDFS_OWLRL_Semantics).expand(self.graph)
-
-        self.logger.error(
-            'Inference: OWL RL complete, elapsed: %s.',
-            datetime.timedelta(seconds=timer.elapsed),
-        )
+        owlrl.DeductiveClosure(closure_class).expand(self.graph)
+        self.logger.error('Inference: OWL RL complete.')
 
         self.sources_added_not_yet_inferred = []
 

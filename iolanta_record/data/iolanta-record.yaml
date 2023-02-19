@@ -1,3 +1,0 @@
-- $id: iolanta:cli
-  iolanta:hasDefaultFacet:
-    $id: python://iolanta_record.CLI

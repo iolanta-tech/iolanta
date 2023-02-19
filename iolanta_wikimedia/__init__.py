@@ -1,1 +1,0 @@
-from iolanta_wikimedia.plugin import IolantaWikimedia
