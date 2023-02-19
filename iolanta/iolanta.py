@@ -29,8 +29,7 @@ from ldflex import LDFlex
 class Iolanta:
     """Iolanta is a Semantic web browser."""
 
-    project_directory: Path
-
+    retrieval_directory: Optional[Path] = None
     graph: ConjunctiveGraph = field(
         default_factory=functools.partial(
             ConjunctiveGraph,

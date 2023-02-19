@@ -11,14 +11,15 @@ from rich.table import Table
 from typer import Argument, Context, Option, Typer
 
 from iolanta.cli.formatters.choose import cli_print
+from iolanta.cli.models import LogLevel
 from iolanta.iolanta import Iolanta
 from iolanta.models import QueryResultsFormat
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('iolanta')
 
 
 def construct_app() -> Typer:
-    iolanta = Iolanta(logger=logger, project_directory=Path.cwd())
+    iolanta = Iolanta(logger=logger)
 
     cli = Typer(
         no_args_is_help=True,
@@ -28,7 +29,6 @@ def construct_app() -> Typer:
     )
 
     plugins = iolanta.plugins
-
     for plugin in plugins:
         if (subcommand := plugin.typer_app) is not None:
             cli.add_typer(subcommand)
@@ -42,28 +42,38 @@ app = construct_app()
 @app.callback()
 def callback(
     context: Context,
-    log_level: str = 'error',
+    log_level: LogLevel = LogLevel.ERROR,
     source: Path = Option(
         Path.cwd,
         '--from',
         help='File or directory to read data from',
         exists=True,
     ),
+    retrieval_directory: Optional[Path] = Option(
+        None,
+        help='Directory to write retrieved data files to.',
+    )
 ):
+    """Iolanta Linked Data browser."""
     iolanta: Iolanta = context.obj
 
     logging.basicConfig(
         level={
-            'info': logging.INFO,
-            'debug': logging.DEBUG,
-            'warning': logging.WARNING,
-            'error': logging.ERROR,
+            LogLevel.DEBUG: logging.DEBUG,
+            LogLevel.INFO: logging.INFO,
+            LogLevel.WARNING: logging.WARNING,
+            LogLevel.ERROR: logging.ERROR,
         }[log_level],
         format='%(message)s',
         datefmt="[%X]",
         handlers=[RichHandler()],
         force=True,
     )
+
+    if retrieval_directory is None:
+        retrieval_directory = source / 'retrieved'
+
+    iolanta.retrieval_directory = retrieval_directory
 
     iolanta.add(Path(source))
 
