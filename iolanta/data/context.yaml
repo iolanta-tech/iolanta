@@ -46,6 +46,9 @@
   iolanta:instanceFacet:
     "@type": "@id"
 
+  iolanta:datatypeFacet:
+    "@type": "@id"
+
   iolanta:supports:
     "@type": "@id"
 
