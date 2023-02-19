@@ -1,11 +1,14 @@
 import itertools
 
 import funcy
+from rdflib import BNode, Literal, URIRef
 from rich.table import Table
 
 from iolanta.cli.formatters.node_to_qname import node_to_qname
 from iolanta.cli.formatters.pretty import pretty_print_value
+from iolanta.errors import InsufficientDataForRender
 from iolanta.facet.rich import Renderable, RichFacet
+from iolanta.namespaces import IOLANTA
 
 
 class CLI(RichFacet):
@@ -39,7 +42,11 @@ class CLI(RichFacet):
         }
 
         table = Table.grid(padding=1, pad_edge=True)
-        table.title = str(self.iri)
+        table.title = self.iolanta.render(
+            self.iri,
+            environments=[IOLANTA['cli-link']],
+        )
+
         table.add_column(
             "Properties",
             no_wrap=True,
@@ -49,25 +56,34 @@ class CLI(RichFacet):
         table.add_column("Values")
 
         for property_iri, property_values in dossier.items():
-            table.add_row(
-                # FIXME:
-                #   title: Render property instead of pretty-printing raw IRI
-                #   is-blocked-by: record-render-strategy
-                pretty_print_value(
-                    node_to_qname(
+            try:
+                table.add_row(
+                    self.iolanta.render(
                         property_iri,
-                        self.iolanta.graph,
+                        environments=[IOLANTA['cli-link']],
                     ),
-                ),
-                '\n'.join(
-                    map(
-                        str,
-                        # FIXME:
-                        #   title: Render property values instead of prettyprint
-                        #   is-blocked-by: record-render-strategy
-                        property_values,
+                    ' - '.join(
+                        str(
+                            self.iolanta.render(
+                                property_value,
+                                environments=[IOLANTA['cli-link']],
+                            ),
+                        )
+                        for property_value in property_values
+                        if (
+                            isinstance(property_value, URIRef)
+                            or isinstance(property_value, BNode)
+                            or (
+                                isinstance(property_value, Literal)
+                                and property_value.language in {None, 'en'}
+                            )
+                        )
                     ),
-                ),
-            )
+                )
+            except InsufficientDataForRender as err:
+                if err.is_hopeless:
+                    continue
+
+                raise
 
         return table

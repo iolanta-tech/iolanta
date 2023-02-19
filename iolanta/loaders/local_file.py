@@ -1,3 +1,4 @@
+import logging
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable, Optional, TextIO, Type
@@ -13,6 +14,8 @@ from iolanta.parsers.base import Parser
 from iolanta.parsers.json import JSON
 from iolanta.parsers.markdown import Markdown
 from iolanta.parsers.yaml import YAML
+
+logger = logging.getLogger(__name__)
 
 
 def choose_parser_by_extension(path: Path) -> Type[Parser]:
@@ -65,6 +68,7 @@ class LocalFile(Loader[Path]):
         if iri is None:
             iri = url_to_iri(source)
 
+        logger.info('Loading data into graph: %s', source)
         with source.open() as text_io:
             yield from parser_class().as_quad_stream(
                 raw_data=text_io,

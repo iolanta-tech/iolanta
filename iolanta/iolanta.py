@@ -1,16 +1,20 @@
+import datetime
 import functools
 import logging
 from dataclasses import dataclass, field
 from functools import cached_property
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Type, Union
+from typing import Any, Dict, Iterable, List, Optional, Set, Type, Union
 
+import funcy
 import owlrl
-from owlrl import OWLRL_Extension
+from contexttimer import Timer
+from owlrl import OWLRL_Extension, RDFS_Semantics, RDFSClosure
 from rdflib import ConjunctiveGraph, Namespace, URIRef
 from rdflib.term import Node
 
 from iolanta import entry_points
+from iolanta.errors import InsufficientDataForRender
 from iolanta.loaders import Loader
 from iolanta.loaders.base import SourceType
 from iolanta.loaders.local_directory import merge_contexts
@@ -26,7 +30,8 @@ from ldflex import LDFlex
 class Iolanta:
     """Iolanta is a Semantic web browser."""
 
-    loader: Loader[SourceType] = field(default_factory=construct_root_loader)
+    project_directory: Path
+
     graph: ConjunctiveGraph = field(
         default_factory=functools.partial(
             ConjunctiveGraph,
@@ -41,6 +46,21 @@ class Iolanta:
             name='iolanta',
         ),
     )
+
+    sources_added_not_yet_inferred: list[SourceType] = field(
+        default_factory=list,
+        init=False,
+        repr=False,
+    )
+
+    could_not_retrieve_nodes: Set[Node] = field(
+        default_factory=set,
+        init=False,
+    )
+
+    @cached_property
+    def loader(self) -> Loader[SourceType]:
+        return construct_root_loader(logger=self.logger)
 
     @property
     def plugin_classes(self) -> List[Type[Plugin]]:
@@ -78,6 +98,9 @@ class Iolanta:
         graph_iri: Optional[URIRef] = None,
     ) -> 'Iolanta':
         """Parse & load information from given URL into the graph."""
+        self.logger.warning('Adding to graph: %s', source)
+        self.sources_added_not_yet_inferred.append(source)
+
         quads = list(
             self.loader.as_quad_stream(
                 source=source,
@@ -91,14 +114,24 @@ class Iolanta:
 
         self.bind_namespaces(**self.namespaces_to_bind)
 
-        self.infer()
-
         return self
 
     def infer(self) -> 'Iolanta':
-        self.logger.info('Inference: OWL RL started...')
-        owlrl.DeductiveClosure(OWLRL_Extension).expand(self.graph)
-        self.logger.info('Inference: OWL RL complete.')
+        self.logger.error('Inference: OWL RL started...')
+
+        with Timer() as timer:
+            # owlrl.DeductiveClosure(OWLRL_Extension).expand(self.graph)
+            # owlrl.DeductiveClosure(RDFS_Semantics).expand(self.graph)
+
+            pass
+            # owlrl.DeductiveClosure(RDFS_OWLRL_Semantics).expand(self.graph)
+
+        self.logger.error(
+            'Inference: OWL RL complete, elapsed: %s.',
+            datetime.timedelta(seconds=timer.elapsed),
+        )
+
+        self.sources_added_not_yet_inferred = []
 
         return self
 
@@ -113,6 +146,7 @@ class Iolanta:
 
     @property
     def query(self):
+        self.maybe_infer()
         return self.ldflex.query
 
     @cached_property
@@ -160,7 +194,7 @@ class Iolanta:
         """Find an Iolanta facet for a node and render it."""
         # FIXME: Convert to a global import
         from iolanta.facet.errors import FacetError, FacetNotFound
-        from iolanta.renderer import Render, render_facet, resolve_facet
+        from iolanta.renderer import Render, resolve_facet
 
         if isinstance(environments, str):
             environments = [environments]
@@ -169,6 +203,8 @@ class Iolanta:
             environments = [IOLANTA.html]
 
         self.logger.debug('Environments: %s', environments)
+
+        self.maybe_infer()
 
         facet_search_attempt = Render(
             ldflex=self.ldflex,
@@ -188,15 +224,9 @@ class Iolanta:
         )
 
         try:
-            return render_facet(
-                node=node,
-                facet=facet,
-                environments=environments,
-                debug_mode=False,  # iolanta.is_debug_mode(node),
-            )
+            return facet.show()
 
-        except (FacetError, FacetNotFound):  # noqa: WPS329
-            # Prevent nested `FacetError` exceptions.
+        except InsufficientDataForRender:
             raise
 
         except Exception as err:
@@ -206,3 +236,51 @@ class Iolanta:
                 facet_search_attempt=facet_search_attempt,
                 error=err,
             ) from err
+
+    def render_with_retrieval(
+        self,
+        node: Union[str, Node],
+        environments: Optional[Union[str, List[NotLiteralNode]]] = None,
+    ):
+        for attempt_id in reversed(range(100)):
+            try:
+                return self.render(
+                    node=node,
+                    environments=environments,
+                )
+
+            except InsufficientDataForRender as err:
+                if attempt_id == 0:
+                    raise ValueError('Too much data to download :(((') from err
+
+                self.retrieve(
+                    node=err.node,
+                )
+
+
+    def retrieve(self, node: Node) -> 'Iolanta':
+        """Retrieve remote data to project directory."""
+        downloaded_files = list(
+            funcy.flatten(
+                plugin.retrieve(node)
+                for plugin
+                in self.plugins
+            ),
+        )
+
+        if not downloaded_files:
+            self.could_not_retrieve_nodes.add(node)
+
+        for path in downloaded_files:
+            self.add(path)
+
+        return self
+
+    def maybe_infer(self):
+        """
+        Apply inference lazily.
+
+        Only run inference if there are new files added after last inference.
+        """
+        if self.sources_added_not_yet_inferred:
+            self.infer()

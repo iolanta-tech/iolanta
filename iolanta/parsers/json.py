@@ -33,5 +33,3 @@ class JSON(Parser[TextIO]):
             context=context,
             root_loader=root_loader,
         )
-
-

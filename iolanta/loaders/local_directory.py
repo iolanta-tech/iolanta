@@ -46,7 +46,7 @@ class LocalDirectory(Loader[Path]):
     def directory_level_context(self, path: Path) -> Optional[LDContext]:
         for file_name in self.context_filenames:
             if (context_path := path / file_name).is_file():
-                document = LocalFile().as_jsonld_document(
+                document = LocalFile(logger=self.logger).as_jsonld_document(
                     source=context_path,
                 )
 
@@ -76,7 +76,7 @@ class LocalDirectory(Loader[Path]):
             iri = path_to_iri(source.absolute())
 
         if not source.is_dir():
-            yield from LocalFile().as_quad_stream(
+            yield from LocalFile(logger=self.logger).as_quad_stream(
                 source=source,
                 root_loader=root_loader,
                 iri=iri,
@@ -98,7 +98,7 @@ class LocalDirectory(Loader[Path]):
             if child.is_dir():
                 child_iri += '/'
 
-                yield from LocalDirectory().as_quad_stream(
+                yield from LocalDirectory(logger=self.logger).as_quad_stream(
                     source=child,
                     iri=child_iri,
                     root_loader=root_loader,
@@ -106,7 +106,7 @@ class LocalDirectory(Loader[Path]):
                 )
 
             elif child.stem != 'context':
-                yield from LocalFile().as_quad_stream(
+                yield from LocalFile(logger=self.logger).as_quad_stream(
                     source=child,
                     iri=child_iri,
                     root_loader=root_loader,

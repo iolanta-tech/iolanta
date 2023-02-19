@@ -1,5 +1,6 @@
 from abc import ABC
 from dataclasses import dataclass
+from logging import Logger
 from typing import (
     Any,
     Dict,
@@ -51,6 +52,8 @@ class Loader(ABC, Generic[SourceType]):
     Usually, depending on the data format, Loader leverages Parsers for that
     purpose.
     """
+
+    logger: Logger
 
     @classmethod
     def loader_class_iri(cls) -> URIRef:

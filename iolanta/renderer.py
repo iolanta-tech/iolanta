@@ -11,6 +11,7 @@ from typing import Iterable, List, Optional, Type, Union, cast
 from dominate.tags import b, font, table, td, tr
 from rdflib.term import Literal, Node, URIRef
 
+from iolanta.errors import InsufficientDataForRender
 from iolanta.facet.base import FacetSearchAttempt
 from iolanta.facet.by_environment import FindFacetByEnvironment
 from iolanta.facet.by_instance import FindFacetByInstance
@@ -51,21 +52,6 @@ def resolve_facet(iri: URIRef) -> Type['iolanta.Facet']:
         )
 
     return facet
-
-
-def render_facet(
-    node: Node,
-    facet: 'iolanta.Facet',
-    environments: Optional[List[URIRef]] = None,
-    debug_mode: bool = False,
-):
-    if debug_mode:
-        return debug_node(
-            node=node,
-            environments=environments,
-        )
-
-    return facet.show()
 
 
 def debug_node(node: Union[str, Node], environments: Optional[List[URIRef]]):

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iolanta"
-version = "1.0.2"
+version = "1.0.3"
 description = "Semantic Web browser"
 authors = ["Anatoly Scherbakov <altaisoft@gmail.com>"]
 license = "MIT"
@@ -27,6 +27,7 @@ more-itertools = "^9.0.0"
 owlrl = "^6.0.2"
 funcy = "^1.17"
 rich = "^13.3.1"
+contexttimer = "^0.3.3"
 
 [tool.poetry.scripts]
 iolanta = "iolanta.cli:app"
@@ -34,6 +35,8 @@ iolanta = "iolanta.cli:app"
 
 [tool.poetry.plugins."iolanta.plugins"]
 base = "iolanta:IolantaBase"
+wikimedia = "iolanta_wikimedia:IolantaWikimedia"
+record = "iolanta_record:IolantaRecord"
 
 
 [tool.poetry.group.dev.dependencies]

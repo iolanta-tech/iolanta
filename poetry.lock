@@ -245,6 +245,17 @@ files = [
 ]
 
 [[package]]
+name = "contexttimer"
+version = "0.3.3"
+description = "A timer context manager measuring the clock wall time of the code block it contains."
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "contexttimer-0.3.3.tar.gz", hash = "sha256:35a1efd389af3f1ca509f33ff23e17d98b66c8fde5ba2a4eb8a8b7fa456598a5"},
+]
+
+[[package]]
 name = "coverage"
 version = "7.1.0"
 description = "Code coverage measurement for Python"
@@ -776,18 +787,18 @@ files = [
 
 [[package]]
 name = "iolanta-jinja2"
-version = "0.1.1"
+version = "0.1.2"
 description = "Render Jinja2 templates from Iolanta graph"
 category = "dev"
 optional = false
 python-versions = ">=3.10,<4.0"
 files = [
-    {file = "iolanta_jinja2-0.1.1-py3-none-any.whl", hash = "sha256:6d45c79af255fe9074a04d3e7177c634fbb1c00bcbc33051433316302870054d"},
-    {file = "iolanta_jinja2-0.1.1.tar.gz", hash = "sha256:c0c5509b696bfd23b01b5b91fa0b5279e21cb3ccbe29821c768795589323e82a"},
+    {file = "iolanta_jinja2-0.1.2-py3-none-any.whl", hash = "sha256:1ad0c19cdc7cd7ac72442a09b5c4aa77c24f69609e50f66370338cc20e68585a"},
+    {file = "iolanta_jinja2-0.1.2.tar.gz", hash = "sha256:3bb9864aef1afb6f6873ea677161ee1c8105a4fdef6213086023c93ed1758ccb"},
 ]
 
 [package.dependencies]
-iolanta = ">=0.1.1,<0.2.0"
+iolanta = ">=1.0.2,<2.0.0"
 Jinja2 = ">=3.1.2,<4.0.0"
 
 [[package]]
@@ -1829,14 +1840,14 @@ setuptools = "*"
 
 [[package]]
 name = "setuptools"
-version = "67.0.0"
+version = "67.2.0"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "setuptools-67.0.0-py3-none-any.whl", hash = "sha256:9d790961ba6219e9ff7d9557622d2fe136816a264dd01d5997cfc057d804853d"},
-    {file = "setuptools-67.0.0.tar.gz", hash = "sha256:883131c5b6efa70b9101c7ef30b2b7b780a4283d5fc1616383cdf22c83cbefe6"},
+    {file = "setuptools-67.2.0-py3-none-any.whl", hash = "sha256:16ccf598aab3b506593c17378473978908a2734d7336755a8769b480906bec1c"},
+    {file = "setuptools-67.2.0.tar.gz", hash = "sha256:b440ee5f7e607bb8c9de15259dba2583dd41a38879a7abc1d43a71c59524da48"},
 ]
 
 [package.extras]
@@ -2103,4 +2114,4 @@ typing_extensions = ">=4.0,<5.0"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<4.0"
-content-hash = "9651ef123e74135ca7ddead3cc53ba67bd29362dbceabd60f3340373f32bf52e"
+content-hash = "d93dba2875bbad829a7e77a3cab7b1e8b875319d7a97bb38041fe34dae3c8930"

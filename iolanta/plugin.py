@@ -1,9 +1,11 @@
 import inspect
 from abc import ABC
 from dataclasses import dataclass, field
+from logging import Logger
 from pathlib import Path
-from typing import Optional
+from typing import List, Optional
 
+from rdflib.term import Node
 from typer import Typer
 
 
@@ -12,6 +14,10 @@ class Plugin(ABC):
     """Base Iolanta plugin."""
 
     iolanta: 'iolanta.Iolanta' = field(repr=False)
+
+    @property
+    def logger(self) -> Logger:
+        return self.iolanta.logger
 
     @property
     def typer_app(self) -> Optional[Typer]:
@@ -30,3 +36,7 @@ class Plugin(ABC):
     @property
     def data_files(self):
         return self.files_directory
+
+    def retrieve(self, node: Node) -> List[Path]:
+        """Save datasets which might describe the given node into project."""
+        return []

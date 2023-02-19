@@ -1,0 +1,11 @@
+SELECT * WHERE {
+    $node rdfs:label ?label .
+
+    OPTIONAL {
+        $node schema:url ?url .
+    }
+
+    OPTIONAL {
+        $node rdfs:comment ?comment .
+    }
+}

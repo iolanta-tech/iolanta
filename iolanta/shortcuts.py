@@ -1,3 +1,4 @@
+from logging import Logger
 from pathlib import Path
 from typing import Dict, Iterable, Type
 
@@ -23,17 +24,19 @@ def as_document(path: Path) -> LDDocument:
     return LocalFile().as_jsonld_document(path)
 
 
-def construct_root_loader() -> DataTypeChoiceLoader:
+def construct_root_loader(logger: Logger) -> DataTypeChoiceLoader:
     # FIXME: Generalize this using endpoints
     return DataTypeChoiceLoader(
+        logger=logger,
         loader_by_data_type={
-            dict: DictLoader(),
-            Path: LocalDirectory(),
+            dict: DictLoader(logger=logger),
+            Path: LocalDirectory(logger=logger),
             URL: SchemeChoiceLoader(
+                logger=logger,
                 loader_by_scheme={
-                    'file': LocalDirectory(),
-                    'http': HTTP(),
-                    'https': HTTP(),
+                    'file': LocalDirectory(logger=logger),
+                    'http': HTTP(logger=logger),
+                    'https': HTTP(logger=logger),
                 },
             ),
         },

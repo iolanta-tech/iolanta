@@ -2,6 +2,7 @@ import logging
 from pathlib import Path
 from typing import Optional
 
+import typer
 from rich.console import Console
 from rich.table import Table
 from typer import Argument, Context, Option, Typer
@@ -15,10 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 def construct_app() -> Typer:
-    iolanta = Iolanta(
-        logger=logger,
-        loader=construct_root_loader(),
-    )
+    iolanta = Iolanta(logger=logger, project_directory=Path.cwd())
 
     cli = Typer(
         no_args_is_help=True,
@@ -79,14 +77,22 @@ def render_command(
 
     node = iolanta.expand_qname(url)
 
-    Console().print(
-        iolanta.render(
+    try:
+        renderable = iolanta.render_with_retrieval(
             node=node,
             environments=[
                 iolanta.expand_qname(environment),
             ],
-        ),
-    )
+        )
+    except Exception as err:
+        if iolanta.logger.level == logging.DEBUG:
+            raise
+
+        Console().print(str(err))
+        raise typer.Exit(1)
+
+    else:
+        Console().print(renderable)
 
 
 @app.command()
