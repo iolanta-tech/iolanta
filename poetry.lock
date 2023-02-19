@@ -245,17 +245,6 @@ files = [
 ]
 
 [[package]]
-name = "contexttimer"
-version = "0.3.3"
-description = "A timer context manager measuring the clock wall time of the code block it contains."
-category = "main"
-optional = false
-python-versions = "*"
-files = [
-    {file = "contexttimer-0.3.3.tar.gz", hash = "sha256:35a1efd389af3f1ca509f33ff23e17d98b66c8fde5ba2a4eb8a8b7fa456598a5"},
-]
-
-[[package]]
 name = "coverage"
 version = "7.1.0"
 description = "Code coverage measurement for Python"
@@ -2114,4 +2103,4 @@ typing_extensions = ">=4.0,<5.0"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<4.0"
-content-hash = "d93dba2875bbad829a7e77a3cab7b1e8b875319d7a97bb38041fe34dae3c8930"
+content-hash = "9651ef123e74135ca7ddead3cc53ba67bd29362dbceabd60f3340373f32bf52e"

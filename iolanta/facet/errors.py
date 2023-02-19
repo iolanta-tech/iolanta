@@ -105,15 +105,16 @@ class FacetNotCallable(DocumentedError):
 @dataclass
 class FacetNotFound(DocumentedError):
     """
-    Facet not found.
+    # Facet not found.
 
-    !!! error "No way to render the node you asked for"
-        - **Node:** `{self.node}` *({self.node_type})*
-        - **Environments tried:** `{self.environments}`
+    No way to render the node you asked for.
 
-        We tried desperately but could not find a facet to display this node 😟
+    - **Node:** `{self.node}` *({self.node_type})*
+    - **Environments tried:** `{self.environments}`
 
-        {self.render_facet_search_attempts}
+    We tried the following methods:
+
+    {self.render_facet_search_attempts}
     """
 
     node: Node
@@ -134,12 +135,11 @@ class FacetNotFound(DocumentedError):
     @property
     def render_facet_search_attempts(self):
         """Render facet search attempts."""
-        return textwrap.indent(
+        return textwrap.dedent(
             ''.join(
-                f'\n\n## {attempt}'
+                f'\n\n- {attempt}'
                 for attempt in self.facet_search_attempts
             ),
-            '    ',
         )
 
 

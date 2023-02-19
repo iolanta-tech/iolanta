@@ -11,7 +11,6 @@
   "@base": "local:"
 
   # Here goes convenience context.
-  "$always": "@always"
   "$base": "@base"
   "$container": "@container"
   "$direction": "@direction"
@@ -26,11 +25,8 @@
   "$language": "@language"
   "$list": "@list"
   "$nest": "@nest"
-  "$never": "@never"
   "$none": "@none"
-  "$null": "@null"
   "$omitDefault": "@omitDefault"
-  "$once": "@once"
   "$propagate": "@propagate"
   "$protected": "@protected"
   "$requireAll": "@requireAll"
@@ -40,6 +36,12 @@
   "$value": "@value"
   "$version": "@version"
   "$vocab": "@vocab"
+
+  # Uncommenting any of the below will lead to a complaint about "@" from PyLD.
+  # "$null": "@null"
+  # "$never": "@never"
+  # "$once": "@once"
+  # "$always": "@always"
 
   iolanta:instanceFacet:
     "@type": "@id"

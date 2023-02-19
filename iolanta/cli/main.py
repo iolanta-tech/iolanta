@@ -3,14 +3,16 @@ from pathlib import Path
 from typing import Optional
 
 import typer
+from documented import DocumentedError
 from rich.console import Console
+from rich.logging import RichHandler
+from rich.markdown import Markdown
 from rich.table import Table
 from typer import Argument, Context, Option, Typer
 
 from iolanta.cli.formatters.choose import cli_print
 from iolanta.iolanta import Iolanta
 from iolanta.models import QueryResultsFormat
-from iolanta.shortcuts import construct_root_loader
 
 logger = logging.getLogger(__name__)
 
@@ -40,7 +42,7 @@ app = construct_app()
 @app.callback()
 def callback(
     context: Context,
-    log_level: str = 'info',
+    log_level: str = 'error',
     source: Path = Option(
         Path.cwd,
         '--from',
@@ -50,11 +52,17 @@ def callback(
 ):
     iolanta: Iolanta = context.obj
 
-    iolanta.logger.setLevel(
-        {
+    logging.basicConfig(
+        level={
             'info': logging.INFO,
             'debug': logging.DEBUG,
+            'warning': logging.WARNING,
+            'error': logging.ERROR,
         }[log_level],
+        format='%(message)s',
+        datefmt="[%X]",
+        handlers=[RichHandler()],
+        force=True,
     )
 
     iolanta.add(Path(source))
@@ -84,6 +92,19 @@ def render_command(
                 iolanta.expand_qname(environment),
             ],
         )
+
+    except DocumentedError as documented_error:
+        if iolanta.logger.level == logging.DEBUG:
+            raise
+
+        Console().print(
+            Markdown(
+                str(documented_error),
+                justify='left',
+            ),
+        )
+        raise typer.Exit(1)
+
     except Exception as err:
         if iolanta.logger.level == logging.DEBUG:
             raise

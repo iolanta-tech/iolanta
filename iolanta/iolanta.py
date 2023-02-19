@@ -1,4 +1,3 @@
-import datetime
 import functools
 import logging
 from dataclasses import dataclass, field
@@ -8,8 +7,7 @@ from typing import Any, Dict, Iterable, List, Optional, Set, Type, Union
 
 import funcy
 import owlrl
-from contexttimer import Timer
-from owlrl import OWLRL_Extension, RDFS_Semantics, RDFSClosure
+from owlrl import OWLRL_Extension
 from owlrl.Closure import Core
 from rdflib import ConjunctiveGraph, Namespace, URIRef
 from rdflib.term import Node
@@ -99,7 +97,7 @@ class Iolanta:
         graph_iri: Optional[URIRef] = None,
     ) -> 'Iolanta':
         """Parse & load information from given URL into the graph."""
-        self.logger.warning('Adding to graph: %s', source)
+        self.logger.info('Adding to graph: %s', source)
         self.sources_added_not_yet_inferred.append(source)
 
         quads = list(
@@ -119,9 +117,12 @@ class Iolanta:
 
     def infer(self, closure_class: Type[Core] = OWLRL_Extension) -> 'Iolanta':
         """Apply inference."""
-        self.logger.error('Inference: OWL RL started...')
+        self.logger.info(
+            'Inference: %s started...',
+            closure_class.__name__,
+        )
         owlrl.DeductiveClosure(closure_class).expand(self.graph)
-        self.logger.error('Inference: OWL RL complete.')
+        self.logger.info('Inference: complete.')
 
         self.sources_added_not_yet_inferred = []
 
@@ -185,7 +186,7 @@ class Iolanta:
     ) -> Any:
         """Find an Iolanta facet for a node and render it."""
         # FIXME: Convert to a global import
-        from iolanta.facet.errors import FacetError, FacetNotFound
+        from iolanta.facet.errors import FacetError
         from iolanta.renderer import Render, resolve_facet
 
         if isinstance(environments, str):
@@ -194,7 +195,7 @@ class Iolanta:
         if not environments:
             environments = [IOLANTA.html]
 
-        self.logger.debug('Environments: %s', environments)
+        self.logger.info('Environments: %s', environments)
 
         self.maybe_infer()
 

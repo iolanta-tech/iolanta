@@ -11,7 +11,7 @@ class FindFacetByInstance(FacetSearchAttempt):
     """
     Find facet by direct link.
 
-    Look for such `?facet` that `{self.node}` `iolanta:facet` `?facet`, whereas
+      Look for such `?facet` that `{self.node}` `iolanta:facet` `?facet`, whereas
     `?facet` `iolanta:supports` `{self.environment}`.
     """
 

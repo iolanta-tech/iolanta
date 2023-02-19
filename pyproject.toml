@@ -27,7 +27,6 @@ more-itertools = "^9.0.0"
 owlrl = "^6.0.2"
 funcy = "^1.17"
 rich = "^13.3.1"
-contexttimer = "^0.3.3"
 
 [tool.poetry.scripts]
 iolanta = "iolanta.cli:app"

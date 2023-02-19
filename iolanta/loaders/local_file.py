@@ -68,7 +68,7 @@ class LocalFile(Loader[Path]):
         if iri is None:
             iri = url_to_iri(source)
 
-        logger.info('Loading data into graph: %s', source)
+        self.logger.info('Loading data into graph: %s', source)
         with source.open() as text_io:
             yield from parser_class().as_quad_stream(
                 raw_data=text_io,
