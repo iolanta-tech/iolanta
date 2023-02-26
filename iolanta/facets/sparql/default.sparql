@@ -14,9 +14,9 @@ SELECT * WHERE {
 
     OPTIONAL {
         {
-            $iri iolanta:url ?url .
+            $iri schema:url ?url .
         } UNION {
-            $iri iolanta:subjectOf / iolanta:url ?url .
+            $iri iolanta:subjectOf / schema:url ?url .
         }
     }
 
