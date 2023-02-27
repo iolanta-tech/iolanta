@@ -43,7 +43,7 @@
   # "$once": "@once"
   # "$always": "@always"
 
-  iolanta:instanceFacet:
+  iolanta:hasInstanceFacet:
     "@type": "@id"
 
   iolanta:datatypeFacet:

@@ -18,17 +18,10 @@
   owl:inverseOf:
     $id: iolanta:supports
 
-- $id: iolanta:Viewpoint
-  $type: rdfs:Class
-  label: A node in a semantic graph that is known to be supported by certain application(s).
-
 - $id: iolanta:facet
-  $type: Property
-  rdfs:domain:
-    $id: iolanta:Viewpoint
   rdfs:range:
     $id: iolanta:Facet
-  label: Indication that a certain Viewpoint can be described by a certain App.
+  label: Indication that a certain node can be visualized by a certain facet.
 
 - $id: iolanta:html
   $type: iolanta:Environment
@@ -53,5 +46,5 @@
   owl:inverseOf:
     $id: iolanta:hasDefaultFacet
 
-- $id: iolanta:instanceFacet
+- $id: iolanta:hasInstanceFacet
   rdfs:range: iolanta:Facet
