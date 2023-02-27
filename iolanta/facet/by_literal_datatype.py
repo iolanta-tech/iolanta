@@ -11,7 +11,7 @@ class FindFacetByLiteralDatatype(FacetSearchAttempt):
     """
     Find facet for a literal value by data type.
 
-    Look for such `?facet` that `{self.node.datatype}` `iolanta:datatypeFacet`
+    Look for such `?facet` that `{self.node.datatype}` `iolanta:hasDatatypeFacet`
     `?facet`, whereas `?facet` `iolanta:supports` `{self.environment}`.
     """
 
@@ -27,7 +27,7 @@ class FindFacetByLiteralDatatype(FacetSearchAttempt):
         rows = self.ldflex.query(
             '''
             SELECT ?facet WHERE {
-                $datatype iolanta:datatypeFacet ?facet .
+                $datatype iolanta:hasDatatypeFacet ?facet .
                 ?facet iolanta:supports $env .
             }
             ''',

@@ -14,6 +14,7 @@ from rdflib.term import Node
 
 from iolanta import entry_points
 from iolanta.errors import InsufficientDataForRender
+from iolanta.facet.locator import FacetFinder
 from iolanta.loaders import Loader
 from iolanta.loaders.base import SourceType
 from iolanta.loaders.local_directory import merge_contexts
@@ -37,6 +38,7 @@ class Iolanta:
         ),
     )
     force_plugins: List[Type[Plugin]] = field(default_factory=list)
+    force_facets: Optional[Dict[URIRef, Type['iolanta.Facet']]] = None
 
     logger: logging.Logger = field(
         default_factory=functools.partial(
@@ -184,6 +186,43 @@ class Iolanta:
         environments: Optional[Union[str, List[NotLiteralNode]]] = None,
     ) -> Any:
         """Find an Iolanta facet for a node and render it."""
+        from iolanta.facet.errors import FacetError
+        from iolanta.renderer import resolve_facet
+
+        found = FacetFinder(
+            iolanta=self,
+            node=node,
+            environments=environments,
+        ).facet_and_environment
+
+        facet_class = resolve_facet(found['facet'])
+
+        facet = facet_class(
+            iri=node,
+            iolanta=self,
+            environment=found['environment'],
+        )
+
+        try:
+            return facet.show()
+
+        except InsufficientDataForRender:
+            raise
+
+        except Exception as err:
+            raise FacetError(
+                node=node,
+                facet_iri=found['facet'],
+                facet_search_attempt=None,
+                error=err,
+            ) from err
+
+    def _legacy_render(
+        self,
+        node: Union[str, Node],
+        environments: Optional[Union[str, List[NotLiteralNode]]] = None,
+    ) -> Any:
+        """Find an Iolanta facet for a node and render it."""
         # FIXME: Convert to a global import
         from iolanta.facet.errors import FacetError
         from iolanta.renderer import Render, resolve_facet
@@ -204,30 +243,7 @@ class Iolanta:
             node=node,
             environments=environments,
         )
-
-        facet_class = resolve_facet(
-            iri=facet_search_attempt.facet,
-        )
-
-        facet = facet_class(
-            iri=node,
-            iolanta=self,
-            environment=facet_search_attempt.environment,
-        )
-
-        try:
-            return facet.show()
-
-        except InsufficientDataForRender:
-            raise
-
-        except Exception as err:
-            raise FacetError(
-                node=node,
-                facet_iri=facet_search_attempt.facet,
-                facet_search_attempt=facet_search_attempt,
-                error=err,
-            ) from err
+        ...
 
     def render_with_retrieval(
         self,

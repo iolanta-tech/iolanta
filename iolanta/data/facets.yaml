@@ -1,5 +1,5 @@
 - $id: xsd:boolean
-  iolanta:datatypeFacet:
+  iolanta:hasDatatypeFacet:
     $id: python://iolanta.facets.BoolLiteral
     iolanta:supports:
       - iolanta:html

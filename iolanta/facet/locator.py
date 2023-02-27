@@ -1,0 +1,152 @@
+from dataclasses import dataclass
+from functools import cached_property
+from typing import List, Optional, TypedDict
+
+import funcy
+from rdflib.term import Literal, Node
+
+from iolanta.facet.errors import FacetNotFound
+from iolanta.models import NotLiteralNode
+
+
+class FoundRow(TypedDict):
+    facet: NotLiteralNode
+    environment: NotLiteralNode
+
+
+@dataclass
+class FacetFinder:
+    """Engine to find facets for a given node."""
+
+    iolanta: 'iolanta.Iolanta'
+    node: Node
+    environments: List[NotLiteralNode]
+
+    @cached_property
+    def row_sorter_by_environment(self):
+        def _sorter(row) -> int:
+            return self.environments.index(row['environment'])
+
+        return _sorter
+
+    def by_datatype(self) -> Optional[FoundRow]:
+        if not isinstance(self.node, Literal):
+            return None
+
+        rows = self.iolanta.query(
+            '''
+            SELECT ?environment ?facet WHERE {
+                $data_type iolanta:hasDatatypeFacet ?facet .
+                ?facet iolanta:supports ?environment .
+                
+                FILTER(?environment IN $environments) .
+            }
+            ''',
+            data_type=self.node.datatype,
+            environments=self.environments,
+        )
+
+        if not rows:
+            return None
+
+        return funcy.first(
+            sorted(
+                rows,
+                key=self.row_sorter_by_environment,
+            ),
+        )
+
+    def by_facet(self) -> Optional[FoundRow]:
+        if isinstance(self.node, Literal):
+            return None
+
+        rows = self.iolanta.query(
+            '''
+            SELECT ?environment ?facet WHERE {
+                $node iolanta:facet ?facet .
+                ?facet iolanta:supports ?environment .
+                
+                FILTER(?environment IN $environments) .
+            }
+            ''',
+            node=self.node,
+            environments=self.environments,
+        )
+
+        if not rows:
+            return None
+
+        return funcy.first(
+            sorted(
+                rows,
+                key=self.row_sorter_by_environment,
+            ),
+        )
+
+    def by_instance_facet(self) -> Optional[FoundRow]:
+        rows = self.iolanta.query(
+            '''
+            SELECT ?environment ?facet WHERE {
+                $node a ?class .
+                ?class iolanta:hasInstanceFacet ?facet .
+                ?facet iolanta:supports ?environment .
+                
+                FILTER(?environment IN $environments) .
+            }
+            ''',
+            node=self.node,
+            environments=self.environments,
+        )
+
+        if not rows:
+            return None
+
+        return funcy.first(
+            sorted(
+                rows,
+                key=self.row_sorter_by_environment,
+            ),
+        )
+
+    def by_environment_default_facet(self) -> Optional[FoundRow]:
+        rows = self.iolanta.query(
+            '''
+            SELECT ?environment ?facet WHERE {
+                ?environment iolanta:hasDefaultFacet ?facet .
+                
+                FILTER(?environment in $environments) .
+            }
+            ''',
+            environments=self.environments,
+        )
+
+        if not rows:
+            return None
+
+        return funcy.first(
+            sorted(
+                rows,
+                key=self.row_sorter_by_environment,
+            ),
+        )
+
+    @property
+    def facet_and_environment(self) -> FoundRow:
+        if found := self.by_datatype():
+            return found
+
+        if found := self.by_facet():
+            return found
+
+        if found := self.by_instance_facet():
+            return found
+
+        if found := self.by_environment_default_facet():
+            return found
+
+        raise FacetNotFound(
+            node=self.node,
+            environments=self.environments,
+            facet_search_attempts=[],
+            node_types=[],
+        )
