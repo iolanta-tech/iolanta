@@ -2,7 +2,7 @@ from abc import ABC
 
 from dominate.tags import html_tag
 
-from iolanta.facet import Facet
+from iolanta.facet.facet import Facet
 
 
 class HTMLFacet(ABC, Facet[html_tag]):

@@ -6,8 +6,6 @@ from documented import DocumentedError
 from rdflib import Literal, URIRef
 from rdflib.term import Node
 
-from iolanta.facet.base import FacetSearchAttempt
-
 
 @dataclass
 class PageNotFound(DocumentedError):
@@ -111,15 +109,10 @@ class FacetNotFound(DocumentedError):
 
     - **Node:** `{self.node}` *({self.node_type})*
     - **Environments tried:** `{self.environments}`
-
-    We tried the following methods:
-
-    {self.render_facet_search_attempts}
     """
 
     node: Node
     environments: List[URIRef]
-    facet_search_attempts: List[FacetSearchAttempt]
     node_types: List[URIRef] = field(default_factory=list)
 
     @property
@@ -131,16 +124,6 @@ class FacetNotFound(DocumentedError):
             node_type = f'{node_type}, datatype={datatype}'
 
         return node_type
-
-    @property
-    def render_facet_search_attempts(self):
-        """Render facet search attempts."""
-        return textwrap.dedent(
-            ''.join(
-                f'\n\n- {attempt}'
-                for attempt in self.facet_search_attempts
-            ),
-        )
 
 
 @dataclass
@@ -155,24 +138,11 @@ class FacetError(DocumentedError):
         ### Exception
 
         {self.indented_error}
-
-        Why was this facet at all chosen for this node?
-
-        ### {self.render_facet_search_attempt}
     """
 
     node: Node
     facet_iri: URIRef
-    facet_search_attempt: FacetSearchAttempt
     error: Exception
-
-    @property
-    def render_facet_search_attempt(self):
-        """Render facet search attempt."""
-        return textwrap.indent(
-            f'\n## {self.facet_search_attempt}',
-            '    ',
-        )
 
     @property
     def indented_error(self):

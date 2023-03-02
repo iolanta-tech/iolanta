@@ -5,7 +5,7 @@ import funcy
 from dominate.tags import a, span  # noqa: WPS347
 from rdflib import Literal
 
-from iolanta.facet import Facet
+from iolanta.facet.facet import Facet
 
 
 class DefaultRow(TypedDict):

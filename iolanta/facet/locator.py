@@ -1,12 +1,14 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from functools import cached_property
-from typing import List, Optional, TypedDict
+from typing import Dict, List, Optional, Type, TypedDict
 
 import funcy
-from rdflib.term import Literal, Node
+from rdflib import ConjunctiveGraph
+from rdflib.term import Literal, Node, URIRef
 
 from iolanta.facet.errors import FacetNotFound
 from iolanta.models import NotLiteralNode
+from iolanta.namespaces import IOLANTA
 
 
 class FoundRow(TypedDict):
@@ -38,13 +40,12 @@ class FacetFinder:
             SELECT ?environment ?facet WHERE {
                 $data_type iolanta:hasDatatypeFacet ?facet .
                 ?facet iolanta:supports ?environment .
-                
-                FILTER(?environment IN $environments) .
             }
             ''',
             data_type=self.node.datatype,
-            environments=self.environments,
         )
+
+        rows = [row for row in rows if row['environment'] in self.environments]
 
         if not rows:
             return None
@@ -65,13 +66,12 @@ class FacetFinder:
             SELECT ?environment ?facet WHERE {
                 $node iolanta:facet ?facet .
                 ?facet iolanta:supports ?environment .
-                
-                FILTER(?environment IN $environments) .
             }
             ''',
             node=self.node,
-            environments=self.environments,
         )
+
+        rows = [row for row in rows if row['environment'] in self.environments]
 
         if not rows:
             return None
@@ -90,13 +90,12 @@ class FacetFinder:
                 $node a ?class .
                 ?class iolanta:hasInstanceFacet ?facet .
                 ?facet iolanta:supports ?environment .
-                
-                FILTER(?environment IN $environments) .
             }
             ''',
             node=self.node,
-            environments=self.environments,
         )
+
+        rows = [row for row in rows if row['environment'] in self.environments]
 
         if not rows:
             return None
@@ -109,19 +108,24 @@ class FacetFinder:
         )
 
     def by_environment_default_facet(self) -> Optional[FoundRow]:
-        rows = self.iolanta.query(
-            '''
-            SELECT ?environment ?facet WHERE {
-                ?environment iolanta:hasDefaultFacet ?facet .
-                
-                FILTER(?environment in $environments) .
-            }
-            ''',
-            environments=self.environments,
-        )
+        graph: ConjunctiveGraph = self.iolanta.graph
 
-        if not rows:
+        triples = graph.triples((None, IOLANTA.hasDefaultFacet, None))
+        triples = [
+            triple
+            for triple in triples
+            if funcy.first(triple) in self.environments
+        ]
+
+        if not triples:
             return None
+
+        rows = [
+            {
+                'facet': facet,
+                'environment': environment,
+            } for environment, _, facet in triples
+        ]
 
         return funcy.first(
             sorted(
@@ -147,6 +151,5 @@ class FacetFinder:
         raise FacetNotFound(
             node=self.node,
             environments=self.environments,
-            facet_search_attempts=[],
             node_types=[],
         )

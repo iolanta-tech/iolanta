@@ -4,7 +4,7 @@ from documented import DocumentedError
 from rdflib import Literal
 from rdflib.term import Node
 
-from iolanta.facet import Facet
+from iolanta.facet.facet import Facet
 
 
 @dataclass

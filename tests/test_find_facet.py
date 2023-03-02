@@ -1,24 +1,68 @@
-from rdflib import URIRef
+import pytest
+from rdflib import XSD, Literal, URIRef
 
-from iolanta.facet import Facet
+from iolanta.facet.errors import FacetNotFound
 from iolanta.iolanta import Iolanta
-from iolanta.namespaces import IOLANTA, LOCAL
+from iolanta.namespaces import LOCAL
 
 
-class FooFacet(Facet[str]):
+def test_none(iolanta: Iolanta, env: URIRef):
+    with pytest.raises(FacetNotFound):
+        assert iolanta.render(
+            LOCAL.boom,
+            environments=[env],
+        )
 
-    def show(self) -> str:
-        return 'foo'
 
-
-def test_none():
-    assert Iolanta(
-        force_facets={
-            URIRef('python://foo'): FooFacet,
-        },
-    ).add({
+def test_direct(iolanta: Iolanta, facet_iri: str, env: URIRef):
+    assert iolanta.add({
         '$id': 'boom',
+        'iolanta:facet': {
+            '$id': facet_iri,
+            'iolanta:supports': env,
+        },
     }).render(
         LOCAL.boom,
-        environments=[IOLANTA.html],
-    ) == 'Boom'
+        environments=[env],
+    ) == 'foo'
+
+
+def test_instance_facet(iolanta: Iolanta, facet_iri: str, env: URIRef):
+    assert iolanta.add({
+        '$id': 'boom',
+        'rdf:type': {
+            'iolanta:hasInstanceFacet': {
+                '$id': facet_iri,
+                'iolanta:supports': env,
+            },
+        },
+    }).render(
+        LOCAL.boom,
+        environments=[env],
+    ) == 'foo'
+
+
+def test_default_facet(iolanta: Iolanta, facet_iri: str, env: URIRef):
+    assert iolanta.add({
+        '$id': env,
+        'iolanta:hasDefaultFacet': {
+            '$id': facet_iri,
+            'iolanta:supports': env,
+        },
+    }).render(
+        LOCAL.boom,
+        environments=[env],
+    ) == 'foo'
+
+
+def test_datatype_facet(iolanta: Iolanta, facet_iri: str, env: URIRef):
+    assert iolanta.add({
+        '$id': XSD.string,
+        'iolanta:hasDatatypeFacet': {
+            '$id': facet_iri,
+            'iolanta:supports': env,
+        },
+    }).render(
+        Literal('foo', datatype=XSD.string),
+        environments=[env],
+    ) == 'foo'

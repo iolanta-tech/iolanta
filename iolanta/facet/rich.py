@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import Any, Protocol, Union
 
-from iolanta.facet import Facet
+from iolanta.facet.facet import Facet
 
 
 class Rich(Protocol):
