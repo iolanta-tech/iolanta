@@ -24,9 +24,9 @@ from rdflib.term import Node
 
 from iolanta import entry_points
 from iolanta.errors import InsufficientDataForRender
-from iolanta.facet.errors import FacetError
-from iolanta.facet.facet import Facet
-from iolanta.facet.locator import FacetFinder
+from iolanta.facets.errors import FacetError
+from iolanta.facets.facet import Facet
+from iolanta.facets.locator import FacetFinder
 from iolanta.loaders import Loader
 from iolanta.loaders.base import SourceType
 from iolanta.loaders.local_directory import merge_contexts

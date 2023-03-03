@@ -35,7 +35,7 @@
 - $id: iolanta:cli-link
   $type: iolanta:Environment
   rdfs:label: For the CLI, display a link to the node or (at least) its human readable label.
-  iolanta:hasDefaultFacet: python://iolanta.facet.cli.Link
+  iolanta:hasDefaultFacet: python://iolanta.facets.cli.Link
 
 - $id: iolanta:isDefaultFacetOf
   rdfs:domain:

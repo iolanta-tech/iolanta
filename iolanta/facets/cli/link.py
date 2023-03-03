@@ -4,7 +4,7 @@ import funcy
 from rdflib import Literal
 
 from iolanta.errors import InsufficientDataForRender
-from iolanta.facet.rich import Renderable, RichFacet
+from iolanta.facets.rich import Renderable, RichFacet
 
 
 class Link(RichFacet):

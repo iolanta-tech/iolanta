@@ -1,7 +1,7 @@
 from rdflib import Literal
 
-from iolanta.facet.facet import Facet
 from iolanta.facets.bool_literal import NotALiteral
+from iolanta.facets.facet import Facet
 
 
 class CodeLiteral(Facet):

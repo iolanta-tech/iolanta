@@ -3,7 +3,7 @@ from typing import Type
 
 from rdflib import URIRef
 
-from iolanta.facet.facet import Facet
+from iolanta.facets.facet import Facet
 
 
 class Resolver:

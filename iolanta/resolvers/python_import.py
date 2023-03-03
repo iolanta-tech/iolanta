@@ -3,8 +3,8 @@ from typing import Type, cast
 
 from rdflib import URIRef
 
-from iolanta.facet.errors import FacetNotCallable
-from iolanta.facet.facet import Facet
+from iolanta.facets.errors import FacetNotCallable
+from iolanta.facets.facet import Facet
 from iolanta.resolvers.base import Resolver
 
 

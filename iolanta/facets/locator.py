@@ -6,7 +6,7 @@ import funcy
 from rdflib import ConjunctiveGraph
 from rdflib.term import Literal, Node, URIRef
 
-from iolanta.facet.errors import FacetNotFound
+from iolanta.facets.errors import FacetNotFound
 from iolanta.models import NotLiteralNode
 from iolanta.namespaces import IOLANTA
 

@@ -1,7 +1,7 @@
 import pytest
 from rdflib import XSD, Literal, URIRef
 
-from iolanta.facet.errors import FacetNotFound
+from iolanta.facets.errors import FacetNotFound
 from iolanta.iolanta import Iolanta
 from iolanta.namespaces import LOCAL
 
