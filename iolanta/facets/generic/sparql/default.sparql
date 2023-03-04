@@ -1,4 +1,4 @@
-SELECT * WHERE {
+SELECT ?label ?symbol ?url ?comment WHERE {
     OPTIONAL {
         {
             $iri rdfs:label ?label .

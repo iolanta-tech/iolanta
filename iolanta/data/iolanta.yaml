@@ -23,20 +23,6 @@
     $id: iolanta:Facet
   label: Indication that a certain node can be visualized by a certain facet.
 
-- $id: iolanta:html
-  $type: iolanta:Environment
-  owl:sameAs:
-    $id: https://html.spec.whatwg.org/
-  iolanta:hasDefaultFacet: python://iolanta.facets.Default
-
-- $id: iolanta:cli
-  $type: iolanta:Environment
-
-- $id: iolanta:cli-link
-  $type: iolanta:Environment
-  rdfs:label: For the CLI, display a link to the node or (at least) its human readable label.
-  iolanta:hasDefaultFacet: python://iolanta.facets.cli.Link
-
 - $id: iolanta:isDefaultFacetOf
   rdfs:domain:
     $id: iolanta:Facet

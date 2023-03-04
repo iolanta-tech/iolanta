@@ -198,10 +198,16 @@ class Iolanta:
 
     def render(
         self,
-        node: Union[str, Node],
-        environments: Optional[Union[str, List[NotLiteralNode]]] = None,
+        node: Node,
+        environments: List[NotLiteralNode],
     ) -> Any:
         """Find an Iolanta facet for a node and render it."""
+        if not environments:
+            raise ValueError(
+                f'Please provide at least one environment '
+                f'to render {node} against.',
+            )
+
         found = FacetFinder(
             iolanta=self,
             node=node,

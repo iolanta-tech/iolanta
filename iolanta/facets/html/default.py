@@ -1,75 +1,26 @@
-from pathlib import Path
-from typing import Optional, TypedDict
+from dominate.tags import a, span
 
-import funcy
-from dominate.tags import a, span  # noqa: WPS347
-from rdflib import Literal
-
-from iolanta.facets.facet import Facet
+from iolanta.facets.generic.default import DefaultMixin
+from iolanta.facets.html.base import HTMLFacet
 
 
-class DefaultRow(TypedDict):
-    """A few properties of the object we use as row heading."""
-
-    label: Optional[Literal]
-    symbol: Optional[Literal]
-    url: Optional[Literal]
-    comment: Optional[Literal]
-
-
-class Default(Facet):
+class Default(DefaultMixin, HTMLFacet):
     """Default renderer."""
 
-    def show(self):
-        """Render the column."""
-        row: DefaultRow = funcy.first(
-            self.stored_query('default.sparql', iri=self.iri),
-        )
-
-        if row.get('url'):
-            return self._render_link(row)
-
-        return self._render_label(row)
-
-    def _render_link(self, row: DefaultRow):
-        comment = row.get('comment')
+    def render_link(self):
         return a(
-            self._render_label({   # type: ignore
-                row_key: row_value
-                for row_key, row_value in row.items()
-                if row_key != 'comment'
-            }),
-            href=row['url'],
-            title=comment,
+            self.render_label(),
+            href=self.description.url,
+            title=self.description.comment,
         )
 
-    def _render_label(self, row: DefaultRow):
-        label = row.get('label')
+    def render_label(self):
+        label = super().render_label()
 
-        if label is None:
-            label = self._render_fallback()
-
-        if symbol := row.get('symbol'):
-            label = f'{symbol} {label}'
-
-        if comment := row.get('comment'):
+        if comment := self.description.comment:
             return span(
                 label,
                 title=comment,
             )
 
         return label
-
-    def _render_fallback(self) -> str:
-        string_iri = str(self.iri)
-
-        if string_iri.startswith('local:'):
-            string_iri = string_iri.removeprefix(
-                'local:',
-            ).replace(
-                '_', ' ',
-            ).replace(
-                '-', ' ',
-            ).capitalize()
-
-        return string_iri

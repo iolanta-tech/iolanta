@@ -1,9 +1,22 @@
-from rdflib import XSD, Literal
+import pytest
+from rdflib import XSD, Literal, URIRef
 
 from iolanta.iolanta import Iolanta
 
 
-def test_bool():
+@pytest.mark.parametrize(
+    ['literal', 'icon'],
+    [
+        ['true', '✔️'],
+        ['false', '❌'],
+    ],
+)
+def test_bool(
+    environment: URIRef,
+    literal: str,
+    icon: str,
+):
     assert Iolanta().render(
-        Literal('true', datatype=XSD.boolean),
-    ) == '✔️'
+        Literal(literal, datatype=XSD.boolean),
+        environments=[environment],
+    ) == icon

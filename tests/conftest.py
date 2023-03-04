@@ -11,14 +11,19 @@ class FooFacet(Facet[str]):
         return 'foo'
 
 
-
 @pytest.fixture()
 def facet_iri() -> str:
     return URIRef('python://FooFacet')
 
+
 @pytest.fixture()
 def env() -> URIRef:
     return IOLANTA.test
+
+
+@pytest.fixture(params=[IOLANTA.html, IOLANTA.cli])
+def environment(request):
+    return request.param
 
 
 @pytest.fixture()

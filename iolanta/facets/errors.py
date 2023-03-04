@@ -151,3 +151,20 @@ class FacetError(DocumentedError):
             str(self.error),
             prefix='    ',
         )
+
+
+@dataclass
+class NotALiteral(DocumentedError):
+    """
+    Node `{self.node}` is not a literal.
+
+    It is in fact a `{self.node_type}`. `BoolLiteral` facet only supports RDF
+    literal objects.
+    """
+
+    node: Node
+
+    @property
+    def node_type(self):
+        """Node type name."""
+        return self.node.__class__.__name__

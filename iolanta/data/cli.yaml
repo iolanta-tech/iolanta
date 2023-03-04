@@ -1,0 +1,5 @@
+- $id: iolanta:cli
+  $type: iolanta:Environment
+  iolanta:hasDefaultFacet:
+    $id: python://iolanta.facets.cli.Default
+    rdfs:label: For the CLI, display a link to the node or (at least) its human readable label.

@@ -4,8 +4,8 @@ from iolanta.facets.errors import NotALiteral
 from iolanta.facets.facet import Facet
 
 
-class CodeLiteral(Facet):
-    """Render code strings."""
+class BoolLiteral(Facet):
+    """Render bool values."""
 
     def show(self):
         """Render as icon."""
@@ -14,4 +14,4 @@ class CodeLiteral(Facet):
                 node=self.iri,
             )
 
-        return f'<code>{self.iri.value}</code>'
+        return '✔️' if self.iri.value else '❌'
