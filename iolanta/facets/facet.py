@@ -6,7 +6,6 @@ from typing import Any, Generic, List, Optional, TypeVar, Union
 
 from rdflib.term import BNode, Node, URIRef
 
-from iolanta.iolanta import Iolanta
 from iolanta.models import NotLiteralNode
 from ldflex import LDFlex
 from ldflex.ldflex import QueryResult, SPARQLQueryArgument
@@ -19,7 +18,7 @@ class Facet(Generic[FacetOutput]):
     """Base facet class."""
 
     iri: NotLiteralNode
-    iolanta: Iolanta
+    iolanta: 'iolanta.Iolanta'
     environment: Optional[URIRef] = None
 
     @property

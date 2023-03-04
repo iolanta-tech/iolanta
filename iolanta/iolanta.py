@@ -3,7 +3,17 @@ import logging
 from dataclasses import dataclass, field
 from functools import cached_property
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Set, Type, Union
+from typing import (
+    Any,
+    Dict,
+    Iterable,
+    List,
+    Mapping,
+    Optional,
+    Set,
+    Type,
+    Union,
+)
 
 import funcy
 import owlrl
@@ -14,6 +24,9 @@ from rdflib.term import Node
 
 from iolanta import entry_points
 from iolanta.errors import InsufficientDataForRender
+from iolanta.facets.errors import FacetError
+from iolanta.facets.facet import Facet
+from iolanta.facets.locator import FacetFinder
 from iolanta.loaders import Loader
 from iolanta.loaders.base import SourceType
 from iolanta.loaders.local_directory import merge_contexts
@@ -21,6 +34,7 @@ from iolanta.models import LDContext, NotLiteralNode
 from iolanta.namespaces import IOLANTA, LOCAL
 from iolanta.parsers.yaml import YAML
 from iolanta.plugin import Plugin
+from iolanta.resolvers.python_import import PythonImportResolver
 from iolanta.shortcuts import construct_root_loader
 from ldflex import LDFlex
 
@@ -37,6 +51,10 @@ class Iolanta:
         ),
     )
     force_plugins: List[Type[Plugin]] = field(default_factory=list)
+
+    facet_resolver: Mapping[URIRef, Type[Facet]] = field(
+        default_factory=PythonImportResolver,
+    )
 
     logger: logging.Logger = field(
         default_factory=functools.partial(
@@ -180,39 +198,28 @@ class Iolanta:
 
     def render(
         self,
-        node: Union[str, Node],
-        environments: Optional[Union[str, List[NotLiteralNode]]] = None,
+        node: Node,
+        environments: List[NotLiteralNode],
     ) -> Any:
         """Find an Iolanta facet for a node and render it."""
-        # FIXME: Convert to a global import
-        from iolanta.facet.errors import FacetError
-        from iolanta.renderer import Render, resolve_facet
-
-        if isinstance(environments, str):
-            environments = [environments]
-
         if not environments:
-            environments = [IOLANTA.html]
+            raise ValueError(
+                f'Please provide at least one environment '
+                f'to render {node} against.',
+            )
 
-        self.logger.info('Environments: %s', environments)
-
-        self.maybe_infer()
-
-        facet_search_attempt = Render(
-            ldflex=self.ldflex,
-        ).search_for_facet(
+        found = FacetFinder(
+            iolanta=self,
             node=node,
             environments=environments,
-        )
+        ).facet_and_environment
 
-        facet_class = resolve_facet(
-            iri=facet_search_attempt.facet,
-        )
+        facet_class = self.facet_resolver[found['facet']]
 
         facet = facet_class(
             iri=node,
             iolanta=self,
-            environment=facet_search_attempt.environment,
+            environment=found['environment'],
         )
 
         try:
@@ -224,8 +231,7 @@ class Iolanta:
         except Exception as err:
             raise FacetError(
                 node=node,
-                facet_iri=facet_search_attempt.facet,
-                facet_search_attempt=facet_search_attempt,
+                facet_iri=found['facet'],
                 error=err,
             ) from err
 
@@ -248,7 +254,6 @@ class Iolanta:
                 self.retrieve(
                     node=err.node,
                 )
-
 
     def retrieve(self, node: Node) -> 'Iolanta':
         """Retrieve remote data to project directory."""

@@ -3,7 +3,7 @@ from typing import cast
 
 from rdflib import Literal
 
-from iolanta.facet import Facet
+from iolanta.facets.facet import Facet
 
 
 class DateLiteral(Facet):

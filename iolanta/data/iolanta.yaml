@@ -18,31 +18,10 @@
   owl:inverseOf:
     $id: iolanta:supports
 
-- $id: iolanta:Viewpoint
-  $type: rdfs:Class
-  label: A node in a semantic graph that is known to be supported by certain application(s).
-
 - $id: iolanta:facet
-  $type: Property
-  rdfs:domain:
-    $id: iolanta:Viewpoint
   rdfs:range:
     $id: iolanta:Facet
-  label: Indication that a certain Viewpoint can be described by a certain App.
-
-- $id: iolanta:html
-  $type: iolanta:Environment
-  owl:sameAs:
-    $id: https://html.spec.whatwg.org/
-  iolanta:hasDefaultFacet: python://iolanta.facets.Default
-
-- $id: iolanta:cli
-  $type: iolanta:Environment
-
-- $id: iolanta:cli-link
-  $type: iolanta:Environment
-  rdfs:label: For the CLI, display a link to the node or (at least) its human readable label.
-  iolanta:hasDefaultFacet: python://iolanta.facet.cli.Link
+  label: Indication that a certain node can be visualized by a certain facet.
 
 - $id: iolanta:isDefaultFacetOf
   rdfs:domain:
@@ -53,5 +32,5 @@
   owl:inverseOf:
     $id: iolanta:hasDefaultFacet
 
-- $id: iolanta:instanceFacet
+- $id: iolanta:hasInstanceFacet
   rdfs:range: iolanta:Facet

@@ -1,11 +1,7 @@
-from dataclasses import dataclass
-
-from documented import DocumentedError
 from rdflib import Literal
-from rdflib.term import Node
 
-from iolanta.facet import Facet
-from iolanta.facets.bool_literal import NotALiteral
+from iolanta.facets.errors import NotALiteral
+from iolanta.facets.facet import Facet
 
 
 class CodeLiteral(Facet):
