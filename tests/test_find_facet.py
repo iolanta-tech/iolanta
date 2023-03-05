@@ -1,21 +1,24 @@
+from dataclasses import asdict
+
 import pytest
+from boltons.iterutils import remap
 from rdflib import XSD, Literal, URIRef
 
 from iolanta.facets.errors import FacetNotFound
 from iolanta.iolanta import Iolanta
-from iolanta.namespaces import LOCAL
+from iolanta.namespaces import IOLANTA, LOCAL
 
 
 def test_none(iolanta: Iolanta, env: URIRef):
     with pytest.raises(FacetNotFound):
-        assert iolanta.render(
+        iolanta.render(
             LOCAL.boom,
             environments=[env],
         )
 
 
 def test_direct(iolanta: Iolanta, facet_iri: str, env: URIRef):
-    assert iolanta.add({
+    response, stack = iolanta.add({
         '$id': 'boom',
         'iolanta:facet': {
             '$id': facet_iri,
@@ -24,7 +27,30 @@ def test_direct(iolanta: Iolanta, facet_iri: str, env: URIRef):
     }).render(
         LOCAL.boom,
         environments=[env],
-    ) == 'foo'
+    )
+
+    assert response == 'foo'
+
+    comparable_stack = remap(
+        asdict(stack),
+        lambda p, key, v: key not in {'iolanta', 'stack_children'},
+    )
+
+    assert comparable_stack == {
+        'node': LOCAL.boom,
+        'facet': {
+            'iri': LOCAL.boom,
+            'environment': IOLANTA.test,
+        },
+        'children': [{
+            'node': Literal('foo'),
+            'facet': {
+                'iri': Literal('foo'),
+                'environment': IOLANTA.html,
+            },
+            'children': [],
+        }],
+    }
 
 
 def test_instance_facet(iolanta: Iolanta, facet_iri: str, env: URIRef):
@@ -39,7 +65,7 @@ def test_instance_facet(iolanta: Iolanta, facet_iri: str, env: URIRef):
     }).render(
         LOCAL.boom,
         environments=[env],
-    ) == 'foo'
+    )[0] == 'foo'
 
 
 def test_default_facet(iolanta: Iolanta, facet_iri: str, env: URIRef):
@@ -52,7 +78,7 @@ def test_default_facet(iolanta: Iolanta, facet_iri: str, env: URIRef):
     }).render(
         LOCAL.boom,
         environments=[env],
-    ) == 'foo'
+    )[0] == 'foo'
 
 
 def test_datatype_facet(iolanta: Iolanta, facet_iri: str, env: URIRef):
@@ -65,7 +91,7 @@ def test_datatype_facet(iolanta: Iolanta, facet_iri: str, env: URIRef):
     }).render(
         Literal('foo', datatype=XSD.string),
         environments=[env],
-    ) == 'foo'
+    )[0] == 'foo'
 
 
 def test_null_datatype_facet(iolanta: Iolanta, facet_iri: str, env: URIRef):

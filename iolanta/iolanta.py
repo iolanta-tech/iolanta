@@ -11,6 +11,7 @@ from typing import (
     Mapping,
     Optional,
     Set,
+    Tuple,
     Type,
     Union,
 )
@@ -36,6 +37,7 @@ from iolanta.parsers.yaml import YAML
 from iolanta.plugin import Plugin
 from iolanta.resolvers.python_import import PythonImportResolver
 from iolanta.shortcuts import construct_root_loader
+from iolanta.stack import Stack
 from ldflex import LDFlex
 
 
@@ -196,11 +198,31 @@ class Iolanta:
         except ValueError:
             return URIRef(qname)
 
+    def render_with_retrieval(
+        self,
+        node: Union[str, Node],
+        environments: Optional[Union[str, List[NotLiteralNode]]] = None,
+    ):
+        for attempt_id in reversed(range(100)):
+            try:
+                return self.render(
+                    node=node,
+                    environments=environments,
+                )
+
+            except InsufficientDataForRender as err:
+                if attempt_id == 0:
+                    raise ValueError('Too much data to download :(((') from err
+
+                self.retrieve(
+                    node=err.node,
+                )
+
     def render(
         self,
         node: Node,
         environments: List[NotLiteralNode],
-    ) -> Any:
+    ) -> Tuple[Any, Stack]:
         """Find an Iolanta facet for a node and render it."""
         if not environments:
             raise ValueError(
@@ -223,7 +245,7 @@ class Iolanta:
         )
 
         try:
-            return facet.show()
+            return facet.show(), facet.stack
 
         except InsufficientDataForRender:
             raise
@@ -234,26 +256,6 @@ class Iolanta:
                 facet_iri=found['facet'],
                 error=err,
             ) from err
-
-    def render_with_retrieval(
-        self,
-        node: Union[str, Node],
-        environments: Optional[Union[str, List[NotLiteralNode]]] = None,
-    ):
-        for attempt_id in reversed(range(100)):
-            try:
-                return self.render(
-                    node=node,
-                    environments=environments,
-                )
-
-            except InsufficientDataForRender as err:
-                if attempt_id == 0:
-                    raise ValueError('Too much data to download :(((') from err
-
-                self.retrieve(
-                    node=err.node,
-                )
 
     def retrieve(self, node: Node) -> 'Iolanta':
         """Retrieve remote data to project directory."""

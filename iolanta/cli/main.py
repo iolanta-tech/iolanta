@@ -52,7 +52,7 @@ def callback(
     retrieval_directory: Optional[Path] = Option(
         None,
         help='Directory to write retrieved data files to.',
-    )
+    ),
 ):
     """Iolanta Linked Data browser."""
     iolanta: Iolanta = context.obj
@@ -86,6 +86,7 @@ def render_command(
         'https://iolanta.tech/cli',
         '--as',
     ),
+    print_stack: bool = Option(False, '--stack'),
 ):
     """Render a given URL."""
     iolanta: Iolanta = context.obj
@@ -96,7 +97,7 @@ def render_command(
     node = iolanta.expand_qname(url)
 
     try:
-        renderable = iolanta.render_with_retrieval(
+        renderable, stack = iolanta.render_with_retrieval(
             node=node,
             environments=[
                 iolanta.expand_qname(environment),
@@ -123,6 +124,11 @@ def render_command(
         raise typer.Exit(1)
 
     else:
+        console = Console()
+
+        if print_stack:
+            console.print(stack)
+
         Console().print(renderable)
 
 

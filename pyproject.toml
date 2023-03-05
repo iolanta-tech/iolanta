@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iolanta"
-version = "1.0.10"
+version = "1.0.11"
 description = "Semantic Web browser"
 authors = ["Anatoly Scherbakov <altaisoft@gmail.com>"]
 license = "MIT"
@@ -38,6 +38,7 @@ base = "iolanta:IolantaBase"
 
 [tool.poetry.group.dev.dependencies]
 jeeves-yeti-pyproject = "^0.2.11"
+boltons = "^23.0.0"
 
 [build-system]
 requires = ["poetry-core"]

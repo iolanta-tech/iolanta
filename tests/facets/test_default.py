@@ -66,14 +66,14 @@ def test_fallback(node: URIRef, environment: URIRef):
     assert Iolanta().render(
         node=node,
         environments=[environment],
-    ) == 'Test'
+    )[0] == 'Test'
 
 
 def test_label(with_label, node: URIRef, environment: URIRef, label: str):
     assert Iolanta().add(with_label).render(
         node=node,
         environments=[environment],
-    ) == label
+    )[0] == label
 
 
 def test_html_comment(
@@ -86,7 +86,7 @@ def test_html_comment(
     assert Iolanta().add(with_label_and_comment).render(
         node=node,
         environments=[html],
-    ).render() == span(label, title=comment).render()
+    )[0].render() == span(label, title=comment).render()
 
 
 def test_html_url(
@@ -99,7 +99,7 @@ def test_html_url(
     assert Iolanta().add(with_url).render(
         node=node,
         environments=[html],
-    ).render() == a(
+    )[0].render() == a(
         label,
         href=url,
     ).render()
@@ -115,4 +115,4 @@ def test_cli_url(
     assert Iolanta().add(with_url).render(
         node=node,
         environments=[cli],
-    ) == Text(label, style=Style(link=url))
+    )[0] == Text(label, style=Style(link=url))

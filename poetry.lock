@@ -81,6 +81,18 @@ toml = ["toml"]
 yaml = ["PyYAML"]
 
 [[package]]
+name = "boltons"
+version = "23.0.0"
+description = "When they're not builtins, they're boltons."
+category = "dev"
+optional = false
+python-versions = "*"
+files = [
+    {file = "boltons-23.0.0-py2.py3-none-any.whl", hash = "sha256:f716a1b57698a5b19062f3146cb5ce3549904028a2f267c2c0cf584eea3ad75b"},
+    {file = "boltons-23.0.0.tar.gz", hash = "sha256:8c50a71829525835ca3c849c7ed2511610c972b4dddfcd41a4a5447222beb4b0"},
+]
+
+[[package]]
 name = "cachetools"
 version = "5.3.0"
 description = "Extensible memoizing collections and decorators"
@@ -2103,4 +2115,4 @@ typing_extensions = ">=4.0,<5.0"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<4.0"
-content-hash = "9651ef123e74135ca7ddead3cc53ba67bd29362dbceabd60f3340373f32bf52e"
+content-hash = "f8189094f5429e420a69e4b5cb73eaec822ddb5464e830c69413e2cc8ed1e565"

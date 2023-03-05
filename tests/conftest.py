@@ -1,14 +1,18 @@
 import pytest
-from rdflib import URIRef
+from rdflib import Literal, URIRef
 
 from iolanta.facets.facet import Facet
+from iolanta.facets.html import Default
 from iolanta.iolanta import Iolanta
 from iolanta.namespaces import IOLANTA
 
 
 class FooFacet(Facet[str]):
     def show(self) -> str:
-        return 'foo'
+        return self.render(
+            Literal('foo'),
+            environments=[IOLANTA.html],
+        )
 
 
 @pytest.fixture()
@@ -31,5 +35,6 @@ def iolanta(facet_iri: URIRef) -> Iolanta:
     return Iolanta(
         facet_resolver={
             facet_iri: FooFacet,
+            URIRef('python://iolanta.facets.html.Default'): Default,
         },
     )

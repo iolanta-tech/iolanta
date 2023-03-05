@@ -1,5 +1,5 @@
 import inspect
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from functools import cached_property
 from pathlib import Path
 from typing import Any, Generic, List, Optional, TypeVar, Union
@@ -7,6 +7,7 @@ from typing import Any, Generic, List, Optional, TypeVar, Union
 from rdflib.term import BNode, Node, URIRef
 
 from iolanta.models import NotLiteralNode
+from iolanta.stack import Stack
 from ldflex import LDFlex
 from ldflex.ldflex import QueryResult, SPARQLQueryArgument
 
@@ -18,8 +19,9 @@ class Facet(Generic[FacetOutput]):
     """Base facet class."""
 
     iri: NotLiteralNode
-    iolanta: 'iolanta.Iolanta'
+    iolanta: 'iolanta.Iolanta' = field(repr=False)
     environment: Optional[URIRef] = None
+    stack_children: List[Stack] = field(default_factory=list)
 
     @property
     def stored_queries_path(self) -> Path:
@@ -55,10 +57,14 @@ class Facet(Generic[FacetOutput]):
         environments: Optional[Union[str, List[NotLiteralNode]]] = None,
     ) -> Any:
         """Shortcut to render something via iolanta."""
-        return self.iolanta.render(
+        rendered, stack = self.iolanta.render(
             node=node,
             environments=environments,
         )
+
+        self.stack_children.append(stack)
+
+        return rendered
 
     def stored_query(self, file_name: str, **kwargs: SPARQLQueryArgument):
         """Execute a stored SPARQL query."""
@@ -76,6 +82,14 @@ class Facet(Generic[FacetOutput]):
     def language(self):
         # return self.iolanta.language
         return 'en'
+
+    @property
+    def stack(self):
+        return Stack(
+            node=self.iri,
+            facet=self,
+            children=self.stack_children,
+        )
 
     def __str__(self):
         """Render."""
