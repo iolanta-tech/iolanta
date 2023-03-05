@@ -6,6 +6,8 @@ from documented import DocumentedError
 from rdflib import Literal, URIRef
 from rdflib.term import Node
 
+from iolanta.models import NotLiteralNode
+
 
 @dataclass
 class PageNotFound(DocumentedError):
@@ -112,8 +114,8 @@ class FacetNotFound(DocumentedError):
     """
 
     node: Node
-    environments: List[URIRef]
-    node_types: List[URIRef] = field(default_factory=list)
+    environments: List[NotLiteralNode]
+    node_types: List[NotLiteralNode] = field(default_factory=list)
 
     @property
     def node_type(self) -> str:

@@ -66,3 +66,11 @@ def test_datatype_facet(iolanta: Iolanta, facet_iri: str, env: URIRef):
         Literal('foo', datatype=XSD.string),
         environments=[env],
     ) == 'foo'
+
+
+def test_null_datatype_facet(iolanta: Iolanta, facet_iri: str, env: URIRef):
+    with pytest.raises(FacetNotFound):
+        iolanta.render(
+            Literal('foo'),
+            environments=[env],
+        )

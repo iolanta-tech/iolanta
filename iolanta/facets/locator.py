@@ -20,7 +20,7 @@ class FoundRow(TypedDict):
 class FacetFinder:
     """Engine to find facets for a given node."""
 
-    iolanta: 'iolanta.Iolanta'
+    iolanta: 'iolanta.Iolanta'    # type: ignore
     node: Node
     environments: List[NotLiteralNode]
 
@@ -35,14 +35,17 @@ class FacetFinder:
         if not isinstance(self.node, Literal):
             return None
 
-        rows = self.iolanta.query(
-            '''
+        if (data_type := self.node.datatype) is None:
+            return None
+
+        rows = self.iolanta.query(   # noqa: WPS462
+            """
             SELECT ?environment ?facet WHERE {
                 $data_type iolanta:hasDatatypeFacet ?facet .
                 ?facet iolanta:supports ?environment .
             }
-            ''',
-            data_type=self.node.datatype,
+            """,
+            data_type=data_type,
         )
 
         rows = [row for row in rows if row['environment'] in self.environments]
@@ -108,9 +111,12 @@ class FacetFinder:
         )
 
     def by_environment_default_facet(self) -> Optional[FoundRow]:
+        """Find facet based on environment only."""
         graph: ConjunctiveGraph = self.iolanta.graph
 
-        triples = graph.triples((None, IOLANTA.hasDefaultFacet, None))
+        triples = graph.triples(     # type: ignore
+            (None, IOLANTA.hasDefaultFacet, None),
+        )
         triples = [
             triple
             for triple in triples
