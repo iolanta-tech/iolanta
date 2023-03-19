@@ -192,17 +192,36 @@ class Iolanta:
     def __post_init__(self):
         self.add_files_from_plugins()
 
-    def expand_qname(self, qname: str) -> URIRef:
-        try:
-            return self.graph.namespace_manager.expand_curie(qname)
-        except ValueError:
-            return URIRef(qname)
+    def string_to_node(self, name: str | Node) -> Node:
+        """
+        Parse a string into a node identifier.
+
+        String might be:
+          * a full IRI,
+          * a qname,
+          * a qname with implied `local:` part,
+          * or a blank node identifier.
+        """
+        if isinstance(name, Node):
+            return name
+
+        if ':' in name:
+            # This is either a full IRI, a qname, or a blank node identifier.
+            try:
+                # Trying to interpret this as QName.
+                return self.graph.namespace_manager.expand_curie(name)
+            except ValueError:
+                # If it is not a QName then it is an IRI, let's return it.
+                return URIRef(name)
+
+        # This string does not include an ":", so we imply `local:`.
+        return URIRef(f'local:{name}')
 
     def render_with_retrieval(
         self,
         node: Union[str, Node],
-        environments: Optional[Union[str, List[NotLiteralNode]]] = None,
-    ):
+        environments: List[NotLiteralNode] = None,
+    ) -> Tuple[Any, Stack]:
         for attempt_id in reversed(range(100)):
             try:
                 return self.render(

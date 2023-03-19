@@ -91,16 +91,13 @@ def render_command(
     """Render a given URL."""
     iolanta: Iolanta = context.obj
 
-    if ':' not in url:
-        url = f'local:{url}'
-
-    node = iolanta.expand_qname(url)
+    node = iolanta.string_to_node(url)
 
     try:
         renderable, stack = iolanta.render_with_retrieval(
             node=node,
             environments=[
-                iolanta.expand_qname(environment),
+                iolanta.string_to_node(environment),
             ],
         )
 
