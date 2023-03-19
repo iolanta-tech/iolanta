@@ -94,7 +94,7 @@ def render_command(
     node = iolanta.string_to_node(url)
 
     try:
-        renderable, stack = iolanta.render_with_retrieval(
+        renderable, stack = iolanta.render(
             node=node,
             environments=[
                 iolanta.string_to_node(environment),
