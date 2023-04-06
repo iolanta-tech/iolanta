@@ -1,4 +1,5 @@
 from dominate.tags import a, span
+from dominate.util import raw
 
 from iolanta.facets.generic.default import DefaultMixin
 from iolanta.facets.html.base import HTMLFacet
@@ -19,7 +20,7 @@ class Default(DefaultMixin, HTMLFacet):
 
         if comment := self.description.comment:
             return span(
-                label,
+                raw(label),
                 title=comment,
             )
 

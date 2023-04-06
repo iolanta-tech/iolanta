@@ -45,6 +45,15 @@ def with_label_and_icon(with_label):
 
 
 @pytest.fixture()
+def with_label_and_html_icon(with_label):
+    return {
+        **with_label,
+        'iolanta:symbol': '<span>⇔</span>',
+        'rdfs:comment': 'foo',
+    }
+
+
+@pytest.fixture()
 def with_label_and_comment(with_label, comment: str):
     return {
         **with_label,
@@ -89,6 +98,22 @@ def test_label_and_icon(with_label_and_icon, node: URIRef, environment: URIRef, 
         node=node,
         environments=[environment],
     )[0] == '⇔ Bazinga'
+
+
+def test_label_and_html_icon(
+    with_label_and_html_icon,
+    node: URIRef,
+    environment: URIRef,
+    label: str,
+    cli: URIRef,
+):
+    if environment == cli:
+        pytest.skip('Not applicable to CLI.')
+
+    assert str(Iolanta().add(with_label_and_html_icon).render(
+        node=node,
+        environments=[environment],
+    )[0]) == '<span title="foo"><span>⇔</span> Bazinga</span>'
 
 
 def test_html_comment(
