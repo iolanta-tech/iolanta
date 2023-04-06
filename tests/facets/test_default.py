@@ -37,6 +37,14 @@ def with_label(label: str):
 
 
 @pytest.fixture()
+def with_label_and_icon(with_label):
+    return {
+        **with_label,
+        'iolanta:symbol': '⇔',
+    }
+
+
+@pytest.fixture()
 def with_label_and_comment(with_label, comment: str):
     return {
         **with_label,
@@ -74,6 +82,13 @@ def test_label(with_label, node: URIRef, environment: URIRef, label: str):
         node=node,
         environments=[environment],
     )[0] == label
+
+
+def test_label_and_icon(with_label_and_icon, node: URIRef, environment: URIRef, label: str):
+    assert Iolanta().add(with_label_and_icon).render(
+        node=node,
+        environments=[environment],
+    )[0] == '⇔ Bazinga'
 
 
 def test_html_comment(

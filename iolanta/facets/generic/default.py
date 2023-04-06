@@ -46,11 +46,15 @@ class DefaultMixin(Facet[FacetOutput]):
         if not (label := self.description.label):
             label = self.render_fallback()
 
-        if symbol := self.description.symbol:
-            label = f'{symbol} {label}'
-
         if isinstance(label, Literal):
             label = label.value
+
+        if symbol := self.description.symbol:
+            rendered_symbol = self.render(
+                symbol,
+                environments=[self.environment],
+            )
+            label = f'{rendered_symbol} {label}'
 
         return label
 
