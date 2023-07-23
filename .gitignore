@@ -215,3 +215,4 @@ fabric.properties
 site/
 
 .idea/
+.python-version
