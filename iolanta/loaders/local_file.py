@@ -27,8 +27,12 @@ def choose_parser_by_extension(path: Path) -> Type[Parser]:
     """
     try:
         return {
-            '.yaml': YAML,
             '.json': JSON,
+            '.jsonld': JSON,
+
+            '.yaml': YAML,
+            '.yamlld': YAML,
+
             '.md': Markdown,
         }[path.suffix]
     except KeyError:
