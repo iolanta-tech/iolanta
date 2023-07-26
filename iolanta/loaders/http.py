@@ -1,4 +1,5 @@
 import json
+import re
 from dataclasses import dataclass, field
 from functools import reduce
 from io import StringIO
@@ -7,6 +8,7 @@ from typing import Iterable, List, Optional, TextIO, Type, Union
 
 from documented import DocumentedError
 from rdflib import URIRef
+from rdflib.parser import URLInputSource
 from requests import Response
 from urlpath import URL
 
@@ -39,6 +41,25 @@ class HTTP(Loader[URL]):
 
             raise ValueError(f'Content type: {content_type}')
 
+    def extract_alternate_url(
+        self,
+        source: URL,
+        response: Response,
+    ) -> URL | None:
+        link = response.headers.get('Link')
+
+        if link is None:
+            return None
+
+        match = re.match(
+            r'<([^>]+)>; rel="alternate"; type="application/ld\+json"',
+            link,
+        )
+        if match is None:
+            return None
+
+        return source / match.group(1)
+
     def as_jsonld_document(
         self,
         source: URL,
@@ -49,6 +70,15 @@ class HTTP(Loader[URL]):
 
         response = source.get()
         response.raise_for_status()
+        alternate_url = self.extract_alternate_url(
+            source=source,
+            response=response,
+        )
+        if alternate_url is not None:
+            return self.as_jsonld_document(
+                source=alternate_url,
+                iri=iri,
+            )
 
         # `response.text` doesn't work.
         # Reasoning: https://stackoverflow.com/a/72621231/1245471
