@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iolanta"
-version = "1.0.17"
+version = "1.0.18"
 description = "Semantic Web browser"
 authors = ["Anatoly Scherbakov <altaisoft@gmail.com>"]
 license = "MIT"
@@ -19,7 +19,7 @@ requests = "^2.25.1"
 deepmerge = "^0.1.1"
 documented = "^0.1.1"
 urlpath = "^1.1.7"
-typer = "^0.7.0"
+typer = "^0.9.0"
 classes = "^0.4.0"
 PyLD = "^2.0.3"
 dominate = "^2.6.0"
@@ -37,7 +37,6 @@ base = "iolanta:IolantaBase"
 
 
 [tool.poetry.group.dev.dependencies]
-jeeves-yeti-pyproject = "^0.2.11"
 boltons = "^23.0.0"
 
 [build-system]
