@@ -1,5 +1,20 @@
+- $id: python://iolanta.facets.cli.Default
+  rdfs:label: For the CLI, display a link to the node or (at least) its human readable label.
+
 - $id: iolanta:cli
   $type: iolanta:Environment
   iolanta:hasDefaultFacet:
+    $id: python://iolanta.facets.cli.Record
+    rdfs:label: Show properties of a node
+
+- $id: https://iolanta.tech/cli/record/title
+  iolanta:hasDefaultFacet:
     $id: python://iolanta.facets.cli.Default
-    rdfs:label: For the CLI, display a link to the node or (at least) its human readable label.
+
+- $id: https://iolanta.tech/cli/record/property
+  iolanta:hasDefaultFacet:
+    $id: python://iolanta.facets.cli.Default
+
+- $id: https://iolanta.tech/cli/record/value
+  iolanta:hasDefaultFacet:
+    $id: python://iolanta.facets.cli.Default
