@@ -39,6 +39,7 @@ class LocalDirectory(Loader[Path]):
             'context.json',
         ],
     )
+    include_hidden_directories: bool = False
 
     def find_context(self, source: SourceType) -> LDContext:
         raise ValueError('?!!!???')
@@ -96,6 +97,16 @@ class LocalDirectory(Loader[Path]):
             child_iri = URIRef(f'{iri}{child.name}')
 
             if child.is_dir():
+                if (
+                    not self.include_hidden_directories
+                    and child.name.startswith('.')
+                ):
+                    self.logger.info(
+                        'Skipping a hidden directory: %s',
+                        child,
+                    )
+                    continue
+
                 child_iri += '/'
 
                 yield from LocalDirectory(logger=self.logger).as_quad_stream(
