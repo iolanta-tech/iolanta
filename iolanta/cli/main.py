@@ -78,12 +78,12 @@ def callback(
     iolanta.add(Path(source))
 
 
-@app.command(name='render')
+@app.command(name='browse')
 def render_command(
     context: Context,
     url: str,
     environment: str = Option(
-        'https://iolanta.tech/cli',
+        'https://iolanta.tech/cli/interactive',
         '--as',
     ),
     print_stack: bool = Option(False, '--stack'),

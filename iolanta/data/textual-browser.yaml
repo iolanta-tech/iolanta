@@ -1,0 +1,3 @@
+$id: https://iolanta.tech/cli/interactive
+iolanta:hasDefaultFacet:
+  $id: python://iolanta.facets.textual_browser.TextualBrowserFacet

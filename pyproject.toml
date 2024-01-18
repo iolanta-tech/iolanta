@@ -27,6 +27,8 @@ more-itertools = "^9.0.0"
 owlrl = "^6.0.2"
 funcy = "^2.0"
 rich = "^13.3.1"
+textual = "^0.47.1"
+iolanta-tables = {version = "^0.1.7", optional = true}
 
 [tool.poetry.scripts]
 iolanta = "iolanta.cli:app"
@@ -39,6 +41,9 @@ base = "iolanta:IolantaBase"
 [tool.poetry.group.dev.dependencies]
 boltons = "^23.0.0"
 jeeves-yeti-pyproject = "^0.2.21"
+
+[tool.poetry.extras]
+all = ["iolanta-tables"]
 
 [build-system]
 requires = ["poetry-core"]
