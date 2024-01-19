@@ -1,0 +1,3 @@
+SELECT ?instance WHERE {
+    ?instance a $iri .
+} LIMIT 10

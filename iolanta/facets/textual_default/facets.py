@@ -51,8 +51,23 @@ class TextualDefaultFacet(Facet[Widget]):
 
         children = [Label(Markdown(text))]
 
-        grouped_properties = funcy.group_values(property_pairs)
+        instances = list(funcy.pluck(
+            'instance',
+            self.stored_query('instances.sparql', iri=self.iri),
+        ))
+        if instances:
+            children.append(Label('\n[bold]A few instances of this class[/]\n'))
+            children.append(Label(
+                ' · '.join(
+                    self.render(
+                        instance,
+                        environments=[URIRef('https://iolanta.tech/cli/link')]
+                    )
+                    for instance in instances
+                ),
+            ))
 
+        grouped_properties = funcy.group_values(property_pairs)
         if grouped_properties:
             properties_table = DataTable(show_header=True, show_cursor=False)
             properties_table.add_columns('Property', 'Value')

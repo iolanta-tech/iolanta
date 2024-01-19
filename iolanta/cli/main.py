@@ -93,15 +93,6 @@ def render_command(
 
     node = iolanta.string_to_node(url)
 
-    iolanta.render(
-        node=node,
-        environments=[
-            iolanta.string_to_node(environment),
-        ],
-    )
-    print('WTF?')
-    return
-
     try:
         renderable, stack = iolanta.render(
             node=node,
