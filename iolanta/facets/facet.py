@@ -6,7 +6,7 @@ from typing import Any, Generic, List, Optional, TypeVar, Union
 
 from rdflib.term import BNode, Node, URIRef
 
-from iolanta.models import NotLiteralNode
+from iolanta.models import NotLiteralNode, Triple, TripleTemplate
 from iolanta.stack import Stack
 from ldflex import LDFlex
 from ldflex.ldflex import QueryResult, SPARQLQueryArgument
@@ -90,6 +90,13 @@ class Facet(Generic[FacetOutput]):
             facet=self,
             children=self.stack_children,
         )
+
+    def find_triple(
+        self,
+        triple: TripleTemplate,
+    ) -> Triple | None:
+        """Lightweight procedure to find a triple by template."""
+        return self.iolanta.find_triple(triple=triple)
 
     def __str__(self):
         """Render."""

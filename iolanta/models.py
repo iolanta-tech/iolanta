@@ -66,6 +66,12 @@ class Triple(NamedTuple):
         )
 
 
+class TripleTemplate(NamedTuple):
+    subject: NotLiteralNode | None
+    predicate: NotLiteralNode | None
+    object: Node | None
+
+
 class Quad(NamedTuple):
     """Triple assigned to a named graph."""
 

@@ -31,7 +31,7 @@ from iolanta.facets.locator import FacetFinder
 from iolanta.loaders import Loader
 from iolanta.loaders.base import SourceType
 from iolanta.loaders.local_directory import merge_contexts
-from iolanta.models import LDContext, NotLiteralNode
+from iolanta.models import LDContext, NotLiteralNode, Triple, TripleTemplate
 from iolanta.namespaces import IOLANTA, LOCAL
 from iolanta.parsers.yaml import YAML
 from iolanta.plugin import Plugin
@@ -276,7 +276,7 @@ class Iolanta:
                 error=err,
             ) from err
 
-    def retrieve(self, node: Node) -> 'Iolanta':
+    def retrieve(self, triple_template: TripleTemplate) -> Triple:
         """Retrieve remote data to project directory."""
         downloaded_files = list(
             funcy.flatten(
@@ -302,3 +302,17 @@ class Iolanta:
         """
         if self.sources_added_not_yet_inferred:
             self.infer()
+
+    def find_triple(
+        self,
+        triple: TripleTemplate,
+    ) -> Triple | None:
+        """Lightweight procedure to find a triple by template."""
+        triples = self.graph.triples(
+            (triple.subject, triple.predicate, triple.object),
+        )
+
+        try:
+            return Triple(*triples[0])
+        except IndexError:
+            return self.retrieve(triple)
