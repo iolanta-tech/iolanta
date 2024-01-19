@@ -1,6 +1,6 @@
 from iolanta.cli.formatters.node_to_qname import node_to_qname
 from iolanta.facets.facet import Facet, FacetOutput
-from iolanta.models import ComputedQName
+from iolanta.models import ComputedQName, NotLiteralNode
 
 
 class TextualLinkFacet(Facet[str]):
@@ -10,7 +10,11 @@ class TextualLinkFacet(Facet[str]):
         try:
             label = rows[0]['label']
         except IndexError:
-            qname: ComputedQName = node_to_qname(self.iri, graph=self.iolanta.graph)
-            label = f'{qname.namespace_name}:{qname.term}'
+            qname: ComputedQName | NotLiteralNode = node_to_qname(self.iri, graph=self.iolanta.graph)
+
+            if isinstance(qname, ComputedQName):
+                label = f'{qname.namespace_name}:{qname.term}'
+            else:
+                label = str(qname)
 
         return f'[@click="goto(\'{self.iri}\')"]{label}[/]'

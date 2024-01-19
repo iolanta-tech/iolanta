@@ -1,15 +1,34 @@
+import logging
 from pathlib import Path
 
 import funcy
 from rdflib import URIRef
 from rich.markdown import Markdown
+from textual.app import ComposeResult
 from textual.containers import Vertical
 from textual.widget import Widget
-from textual.widgets import Label, Static
+from textual.widgets import Label, Static, DataTable
 
 from iolanta.cli.formatters.node_to_qname import node_to_qname
 from iolanta.facets.facet import Facet
+from iolanta.models import ComputedQName, NotLiteralNode
 from iolanta.namespaces import IOLANTA
+
+
+class Header(Label):
+    """Page header."""
+
+    def on_mount(self):
+
+
+        self.update()
+
+
+class DefaultView(Vertical):
+    """Default view describing a node."""
+
+    def compose(self) -> ComposeResult:
+        yield Header()
 
 
 class TextualDefaultFacet(Facet[Widget]):
@@ -24,13 +43,11 @@ class TextualDefaultFacet(Facet[Widget]):
             label = first_row['label']
             comment = first_row.get('comment')
         else:
-            qname = node_to_qname(self.iri, self.iolanta.graph)
-            label = f'{qname.namespace_name}:{qname.term}'
-
-        types = funcy.pluck(
-            'type',
-            self.stored_query('types.sparql', iri=self.iri),
-        )
+            qname: ComputedQName | NotLiteralNode = node_to_qname(self.iri, self.iolanta.graph)
+            if isinstance(qname, ComputedQName):
+                label = f'{qname.namespace_name}:{qname.term}'
+            else:
+                label = str(qname)
 
         text_path = Path(__file__).parent / 'templates/default.md'
         text = text_path.read_text().format(
@@ -38,15 +55,38 @@ class TextualDefaultFacet(Facet[Widget]):
             comment=comment or '',
         )
 
-        formatted_types = ' · '.join(
-            self.render(
-                rdf_type,
-                [URIRef('https://iolanta.tech/cli/link')],
+        property_rows = self.stored_query(
+            'properties.sparql',
+            iri=self.iri,
+        )
+
+        property_pairs = [
+            (row['property'], row['object'])
+            for row in property_rows
+        ]
+
+        grouped_properties = funcy.group_values(property_pairs)
+
+        properties_table = DataTable(show_header=True, show_cursor=False)
+        properties_table.add_columns('Property', 'Value')
+        properties_table.add_rows([
+            (
+                self.render(
+                    property_iri,
+                    environments=[URIRef('https://iolanta.tech/cli/link')]
+                ),
+                ' · '.join(
+                    self.render(
+                        property_value,
+                        environments=[URIRef('https://iolanta.tech/cli/link')]
+                    )
+                    for property_value in property_values
+                ),
             )
-            for rdf_type in types
-        ) or '[em](unknown)[/]'
+            for property_iri, property_values in grouped_properties.items()
+        ])
 
         return Vertical(
             Label(Markdown(text)),
-            Static(f'\n  [bold]∈ Types:[/] {formatted_types}')
+            properties_table,
         )
