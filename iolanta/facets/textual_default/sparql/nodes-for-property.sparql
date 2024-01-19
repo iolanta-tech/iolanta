@@ -1,0 +1,3 @@
+SELECT ?subject ?object WHERE {
+    ?subject $iri ?object
+} LIMIT 10

@@ -51,10 +51,10 @@ class TextualDefaultFacet(Facet[Widget]):
 
         children = [Label(Markdown(text))]
 
-        instances = list(funcy.pluck(
+        instances = funcy.lpluck(
             'instance',
             self.stored_query('instances.sparql', iri=self.iri),
-        ))
+        )
         if instances:
             children.append(Label('\n[bold]A few instances of this class[/]\n'))
             children.append(Label(
@@ -66,6 +66,39 @@ class TextualDefaultFacet(Facet[Widget]):
                     for instance in instances
                 ),
             ))
+
+        nodes_for_property = [
+            (row['subject'], row['object'])
+            for row in self.stored_query(
+                'nodes-for-property.sparql',
+                iri=self.iri,
+            )
+        ]
+        if nodes_for_property:
+            rendered_property = self.render(
+                self.iri,
+                environments=[URIRef('https://iolanta.tech/cli/link')],
+            )
+
+            children.append(Label(
+                '\n[bold]A few nodes connected with this property[/]\n'
+            ))
+            nodes_table = DataTable(show_header=False, show_cursor=False)
+            nodes_table.add_columns('Subject', 'Property', 'Object')
+            nodes_table.add_rows([(
+                    self.render(
+                        subject_node,
+                        environments=[URIRef('https://iolanta.tech/cli/link')],
+                    ),
+                    rendered_property,
+                    self.render(
+                        object_node,
+                        environments=[URIRef('https://iolanta.tech/cli/link')]
+                    ))
+                for subject_node, object_node in nodes_for_property
+            ])
+
+            children.append(nodes_table)
 
         grouped_properties = funcy.group_values(property_pairs)
         if grouped_properties:
