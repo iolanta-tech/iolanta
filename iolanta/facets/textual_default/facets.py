@@ -15,22 +15,6 @@ from iolanta.models import ComputedQName, NotLiteralNode
 from iolanta.namespaces import IOLANTA
 
 
-class Header(Label):
-    """Page header."""
-
-    def on_mount(self):
-
-
-        self.update()
-
-
-class DefaultView(Vertical):
-    """Default view describing a node."""
-
-    def compose(self) -> ComposeResult:
-        yield Header()
-
-
 class TextualDefaultFacet(Facet[Widget]):
     """Default rendering engine."""
 
@@ -65,28 +49,31 @@ class TextualDefaultFacet(Facet[Widget]):
             for row in property_rows
         ]
 
+        children = [Label(Markdown(text))]
+
         grouped_properties = funcy.group_values(property_pairs)
 
-        properties_table = DataTable(show_header=True, show_cursor=False)
-        properties_table.add_columns('Property', 'Value')
-        properties_table.add_rows([
-            (
-                self.render(
-                    property_iri,
-                    environments=[URIRef('https://iolanta.tech/cli/link')]
-                ),
-                ' · '.join(
+        if grouped_properties:
+            properties_table = DataTable(show_header=True, show_cursor=False)
+            properties_table.add_columns('Property', 'Value')
+            properties_table.add_rows([
+                (
                     self.render(
-                        property_value,
+                        property_iri,
                         environments=[URIRef('https://iolanta.tech/cli/link')]
-                    )
-                    for property_value in property_values
-                ),
-            )
-            for property_iri, property_values in grouped_properties.items()
-        ])
+                    ),
+                    ' · '.join(
+                        self.render(
+                            property_value,
+                            environments=[URIRef('https://iolanta.tech/cli/link')]
+                        )
+                        for property_value in property_values
+                    ),
+                )
+                for property_iri, property_values in grouped_properties.items()
+            ])
 
-        return Vertical(
-            Label(Markdown(text)),
-            properties_table,
-        )
+            children.append(Label('\n[bold]Properties[/]\n'))
+            children.append(properties_table)
+
+        return Vertical(*children)
