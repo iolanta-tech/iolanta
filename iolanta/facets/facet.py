@@ -96,7 +96,7 @@ class Facet(Generic[FacetOutput]):
         triple: TripleTemplate,
     ) -> Triple | None:
         """Lightweight procedure to find a triple by template."""
-        return self.iolanta.find_triple(triple=triple)
+        return self.iolanta.find_triple(triple_template=triple)
 
     def __str__(self):
         """Render."""

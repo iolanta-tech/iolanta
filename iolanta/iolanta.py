@@ -233,7 +233,7 @@ class Iolanta:
                 if attempt_id == 0:
                     raise ValueError('Too much data to download :(((') from err
 
-                self.retrieve(
+                self.retrieve_triple(
                     node=err.node,
                 )
 
@@ -276,8 +276,10 @@ class Iolanta:
                 error=err,
             ) from err
 
-    def retrieve(self, triple_template: TripleTemplate) -> Triple:
+    def retrieve_triple(self, triple_template: TripleTemplate) -> Triple:
         """Retrieve remote data to project directory."""
+
+
         downloaded_files = list(
             funcy.flatten(
                 plugin.retrieve(node)
@@ -305,14 +307,16 @@ class Iolanta:
 
     def find_triple(
         self,
-        triple: TripleTemplate,
+        triple_template: TripleTemplate,
     ) -> Triple | None:
         """Lightweight procedure to find a triple by template."""
         triples = self.graph.triples(
-            (triple.subject, triple.predicate, triple.object),
+            (triple_template.subject, triple_template.predicate, triple_template.object),
         )
 
+        triple_template = funcy.first(triples)
+
         try:
-            return Triple(*triples[0])
+            return Triple()
         except IndexError:
-            return self.retrieve(triple)
+            return self.retrieve_triple(triple_template)
