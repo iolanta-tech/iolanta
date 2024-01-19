@@ -42,3 +42,18 @@ class IolantaBrowser(App):
     def action_toggle_dark(self) -> None:
         """An action to toggle dark mode."""
         self.dark = not self.dark
+
+    def action_goto(self, destination: str):
+        body = self.query_one(Body)
+        body.remove_children()
+
+        self.iri = URIRef(destination)
+
+        iolanta: Iolanta = self.iolanta
+        iri: NotLiteralNode = self.iri
+        body.mount(
+            iolanta.render(
+                iri,
+                [URIRef('https://iolanta.tech/cli/textual')],
+            )[0]
+        )

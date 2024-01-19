@@ -1,0 +1,7 @@
+SELECT ?label ?comment WHERE {
+    $iri rdfs:label ?label .
+
+    OPTIONAL {
+        $iri rdfs:comment ?comment .
+    }
+}

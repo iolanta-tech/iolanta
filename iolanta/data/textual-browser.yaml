@@ -1,3 +1,11 @@
-$id: https://iolanta.tech/cli/interactive
-iolanta:hasDefaultFacet:
-  $id: python://iolanta.facets.textual_browser.TextualBrowserFacet
+- $id: https://iolanta.tech/cli/interactive
+  iolanta:hasDefaultFacet:
+    $id: python://iolanta.facets.textual_browser.TextualBrowserFacet
+
+- $id: https://iolanta.tech/cli/textual
+  iolanta:hasDefaultFacet:
+    $id: python://iolanta.facets.textual_default.TextualDefaultFacet
+
+- $id: https://iolanta.tech/cli/link
+  iolanta:hasDefaultFacet:
+    $id: python://iolanta.facets.textual_link.TextualLinkFacet
