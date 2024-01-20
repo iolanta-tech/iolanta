@@ -1,0 +1,62 @@
+- $id: linked-data-files
+  rdfs:comment: Linked Data files published on the Web and NOT accessible via a readily available SPARQL endpoint
+  implies:
+    rdfs:label: A file has to be downloaded as a whole into a local SPARQL storage
+    therefore:
+      rdfs:label: Federation can be executed over to local SPARQL graph easily, no federation mechanics needed
+
+- $id: heterogeneous-federation
+  file: 2102.03269.pdf
+  rdfs:comment: Federation across sources with different protocols
+  for-instance:
+    - sparql-endpoint
+    - $id: tpf
+      rdfs:label: Triple Pattern Fragment server
+  does-not-cover: linked-data-files
+
+- $id: fedx
+  file: FedX_Optimization_Techniques_for_Federated_Query_P.pdf
+  does-not-cover: linked-data-files
+
+- file: IJHCISpecialIssue2021_AuthorVersion.pdf
+  contains:
+    - rdfs:label: A review of visualization methods and applications
+    - rdfs:label: focuses on interactivity
+
+- file: information-09-00310-v2.pdf
+  describes:
+    - $id: sparql-microservice
+      rdfs:comment: A SPARQL micro-service is a lightweight SPARQL endpoint that provides access to a small, resource-centric, virtual graph
+      connects-to:
+        - rdfs:label: REST API Endpoint
+  is-not-relevant:
+    because:
+      rdfs:label: This is more for enterprise architectures than our use case
+
+- file: SSWS2015_paper5.pdf
+  citations:
+    value: 0
+    because: https://www.researchgate.net/publication/283865334_Parallel_data_loading_during_querying_deep_web_and_linked_open_data_with_SPARQL
+  uses:
+    - rdfs:label: Jena
+  follows-up:
+    $id: sem-lav
+    rdfs:label: SemLAV
+    based-on:
+      rdfs:label: RDF Views
+  adds:
+    - rdfs:label: Parallel execution for queries to different sources
+
+- file: SemLAV_Local-As-View_Mediation_for_SPARQL_Queries.pdf
+  describes: sem-lav
+  citations:
+    value: 12
+    because: https://www.researchgate.net/publication/278620778_SemLAV_Local-As-View_Mediation_for_SPARQL_Queries
+  demo:
+    $id: https://www.youtube.com/watch?v=z7w31f-ybuQ&ab_channel=SemLav
+    views: 2
+  url:
+    $id: https://sites.google.com/site/semanticlav/
+    online: false
+  problems:
+    - rdfs:label: The process of querying the Web for SemLAV takes about ten minutes. It never stops, it would seem. I do not think this is suitable for a browser. Moreover, it would seem that SemLAV retrieves all instances of things like `?x geo:lat ?y`, which is definitely NOT what I am going to try extracting. Only when I get some IRI for ?x I am going to do something like that. The algorithm might be interesting but I am not positive about that.

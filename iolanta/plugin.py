@@ -8,6 +8,8 @@ from typing import List, Optional
 from rdflib.term import Node
 from typer import Typer
 
+from iolanta.models import TripleTemplate
+
 
 @dataclass
 class Plugin(ABC):
@@ -37,6 +39,5 @@ class Plugin(ABC):
     def data_files(self):
         return self.files_directory
 
-    def retrieve(self, node: Node) -> List[Path]:
+    def retrieve_triple(self, triple_template: TripleTemplate):
         """Save datasets which might describe the given node into project."""
-        return []

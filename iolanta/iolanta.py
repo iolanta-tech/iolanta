@@ -278,15 +278,11 @@ class Iolanta:
 
     def retrieve_triple(self, triple_template: TripleTemplate) -> Triple:
         """Retrieve remote data to project directory."""
+        for plugin in self.plugins:
+            # FIXME Parallelization?
+            plugin.retrieve_triple(triple_template)
 
 
-        downloaded_files = list(
-            funcy.flatten(
-                plugin.retrieve(node)
-                for plugin
-                in self.plugins
-            ),
-        )
 
         if not downloaded_files:
             self.could_not_retrieve_nodes.add(node)
@@ -314,9 +310,8 @@ class Iolanta:
             (triple_template.subject, triple_template.predicate, triple_template.object),
         )
 
-        triple_template = funcy.first(triples)
+        raw_triple = funcy.first(triples)
+        if raw_triple:
+            return Triple(*raw_triple)
 
-        try:
-            return Triple()
-        except IndexError:
-            return self.retrieve_triple(triple_template)
+        return self.retrieve_triple(triple_template)

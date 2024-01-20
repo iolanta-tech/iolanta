@@ -1,5 +1,6 @@
 ---
 title: Find data source by a triple template
+$id: find-data-source-by-triple-template
 ---
 
 ## Context
