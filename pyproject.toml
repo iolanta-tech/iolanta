@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iolanta"
-version = "1.0.20"
+version = "1.0.21"
 description = "Semantic Web browser"
 authors = ["Anatoly Scherbakov <altaisoft@gmail.com>"]
 license = "MIT"
@@ -37,6 +37,8 @@ iolanta = "iolanta.cli:app"
 [tool.poetry.plugins."iolanta.plugins"]
 base = "iolanta:IolantaBase"
 
+[tool.poetry.plugins."rdf.plugins.queryprocessor"]
+cyberspace = "iolanta.cyberspace.processor:GlobalSPARQLProcessor"
 
 [tool.poetry.group.dev.dependencies]
 boltons = "^23.0.0"

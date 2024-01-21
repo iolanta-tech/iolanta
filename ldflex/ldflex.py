@@ -8,6 +8,8 @@ from rdflib import Graph
 from rdflib.plugins.sparql.processor import SPARQLResult
 from rdflib.term import Identifier, Node, Variable
 
+from iolanta.cyberspace.processor import GlobalSPARQLProcessor
+
 SelectRow = Mapping[str, Node]
 
 
@@ -110,6 +112,7 @@ class LDFlex:
         try:
             sparql_result: SPARQLResult = self.graph.query(
                 query_text,
+                processor='cyberspace',
                 initBindings=kwargs,
             )
         except ParseException as err:
