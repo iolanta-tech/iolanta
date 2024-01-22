@@ -41,22 +41,9 @@ app = construct_app()
 
 @app.callback()
 def callback(
-    context: Context,
     log_level: LogLevel = LogLevel.ERROR,
-    source: Path = Option(
-        Path.cwd,
-        '--from',
-        help='File or directory to read data from',
-        exists=True,
-    ),
-    retrieval_directory: Optional[Path] = Option(
-        None,
-        help='Directory to write retrieved data files to.',
-    ),
 ):
     """Iolanta Linked Data browser."""
-    iolanta: Iolanta = context.obj
-
     logging.basicConfig(
         level={
             LogLevel.DEBUG: logging.DEBUG,
@@ -69,13 +56,6 @@ def callback(
         handlers=[RichHandler()],
         force=True,
     )
-
-    if retrieval_directory is None:
-        retrieval_directory = source / 'retrieved'
-
-    iolanta.retrieval_directory = retrieval_directory
-
-    iolanta.add(Path(source))
 
 
 @app.command(name='browse')

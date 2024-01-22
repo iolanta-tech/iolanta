@@ -1,4 +1,6 @@
 import logging
+import sys
+import traceback
 from pathlib import Path
 
 import funcy
@@ -38,7 +40,6 @@ class TextualDefaultFacet(Facet[Widget]):
             label=label,
             comment=comment or '',
         )
-
         property_rows = self.stored_query(
             'properties.sparql',
             iri=self.iri,

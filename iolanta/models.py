@@ -2,7 +2,7 @@ from enum import Enum
 from typing import Any, Dict, List, NamedTuple, Union
 
 from rdflib import Literal, URIRef
-from rdflib.term import BNode, Node
+from rdflib.term import BNode, Node, Variable
 
 
 class ComputedQName(NamedTuple):
@@ -52,9 +52,9 @@ def render_node(node: Node) -> str:
 class Triple(NamedTuple):
     """RDF triple."""
 
-    subject: URIRef
-    predicate: URIRef
-    object: Union[URIRef, Literal]  # noqa: WPS125
+    subject: NotLiteralNode
+    predicate: NotLiteralNode
+    object: URIRef | Literal  # noqa: WPS125
 
     def as_quad(self, graph: URIRef) -> 'Quad':
         """Add graph to this triple and hence get a quad."""
@@ -64,6 +64,15 @@ class Triple(NamedTuple):
             object=self.object,
             graph=graph,
         )
+
+
+class TripleWithVariables(NamedTuple):
+    """RDF triple."""
+
+    subject: NotLiteralNode | Variable
+    predicate: NotLiteralNode | Variable
+    object: Node | Variable
+
 
 
 class TripleTemplate(NamedTuple):

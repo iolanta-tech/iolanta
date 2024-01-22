@@ -1,12 +1,28 @@
+import traceback
 from dataclasses import dataclass
+from typing import ItemsView, Iterable, Mapping, Any
 
-from rdflib import Graph, URIRef, Variable, RDF, ConjunctiveGraph
+from boltons.iterutils import remap, default_enter
+from rdflib import URIRef, Variable, RDF, ConjunctiveGraph, Graph
 from rdflib.plugins.sparql.algebra import translateQuery
 from rdflib.plugins.sparql.evaluate import evalQuery
 from rdflib.plugins.sparql.parser import parseQuery
+from rdflib.plugins.sparql.parserutils import CompValue
 from rdflib.plugins.sparql.sparql import Query
 from rdflib.query import Processor
 from rdflib.term import Node
+
+from iolanta.models import Triple, TripleWithVariables
+
+
+def construct_flat_triples(algebra: Mapping[str, Any]) -> Iterable[Triple]:
+    if isinstance(algebra, Mapping):
+        for key, value in algebra.items():
+            if key == 'triples':
+                yield from [Triple(*raw_triple) for raw_triple in value]
+
+            else:
+                yield from construct_flat_triples(value)
 
 
 @dataclass
@@ -30,11 +46,7 @@ class GlobalSPARQLProcessor(Processor):
             parsetree = parseQuery(strOrQuery)
             query = translateQuery(parsetree, base, initNs)
 
-            try:
-                triples = query.algebra['p']['p']['triples']
-            except KeyError:
-                raise ValueError(query.algebra)
-
+            triples = construct_flat_triples(query.algebra)
             for triple in triples:
                 self.load_data_for_triple(triple, bindings=initBindings)
         else:
@@ -43,27 +55,25 @@ class GlobalSPARQLProcessor(Processor):
 
     def load_data_for_triple(
         self,
-        triple: list[Variable | URIRef],
+        triple: TripleWithVariables,
         bindings: dict[str, Node],
     ):
         """Load data for a given triple."""
-        triple = [
+        triple = TripleWithVariables(*[
             self.resolve_term(term, bindings=bindings)
             for term in triple
-        ]
+        ])
 
         subject, *_etc = triple
 
         if isinstance(subject, URIRef):
-            if subject in RDF:
+            if subject == URIRef(RDF) or subject in RDF:
                 try:
-                    self.graph.get_graph(RDF)
+                    self.graph.get_graph(URIRef(RDF))
                 except IndexError:
                     print('DOWNLOADING RDF')
-                    self.graph.parse(
-                        source=URIRef(RDF),
-                        publicID=URIRef(RDF),
-                    )
+                    self.graph.get_context(URIRef(RDF)).parse(URIRef(RDF))
+                    print('DOWNLOADED!')
 
     def resolve_term(self, term: Node, bindings: dict[str, Node]):
         """Resolve triple elements against initial variable bindings."""
