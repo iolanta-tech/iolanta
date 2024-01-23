@@ -1,12 +1,18 @@
 SELECT ?property ?object WHERE {
     $iri ?property ?object .
 
-       # Exclude non-informative tautologies.
-       FILTER (!(
+    # Exclude non-informative tautologies.
+    FILTER (!(
         ?object = $iri
         && ?property IN (
             owl:sameAs,
-            owl:equivalentClass
+            owl:equivalentClass,
+            rdfs:subClassOf
         )
     ))
+
+    FILTER (!( ?property IN (
+        rdfs:label,
+        rdfs:comment
+    )))
 }

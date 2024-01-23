@@ -1,0 +1,4 @@
+Label {
+    padding: 1;
+    background-color: #CCCCCC;
+}
