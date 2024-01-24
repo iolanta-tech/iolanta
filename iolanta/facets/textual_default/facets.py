@@ -11,7 +11,7 @@ from rdflib import URIRef, DC, SDO, RDFS
 from rdflib.term import Node, Literal, BNode
 from rich.markdown import Markdown
 from textual.app import ComposeResult
-from textual.containers import Vertical
+from textual.containers import Vertical, VerticalScroll
 from textual.widget import Widget
 from textual.widgets import Label, Static, DataTable
 
@@ -21,10 +21,33 @@ from iolanta.models import ComputedQName, NotLiteralNode
 from iolanta.namespaces import IOLANTA
 
 
-class Title(Label):
-    """Page title."""
-
-    CSS_PATH = 'tcss/title.fucktcss'  # FIXME does not seem to work
+class Content(VerticalScroll):
+    DEFAULT_CSS = """
+    Content {
+        layout: vertical;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+    
+    #title {
+        padding: 1;
+        background: darkslateblue;
+    }
+    
+    #description {
+        padding: 1;
+    }
+        
+    #properties {
+        padding: 1;
+    }
+    
+    /* FIXME: This one does not work */
+    DataTable .datatable--header {
+        background: purple;
+        color: red;
+    }
+    """
 
 
 class TextualDefaultFacet(Facet[Widget]):
@@ -79,7 +102,7 @@ class TextualDefaultFacet(Facet[Widget]):
             namespace_part = (
                 f"[@click=goto('{qname.namespace_url}')]{qname.namespace_name}[/]"
             )
-            term_part = iri if iri == self.iri else (
+            term_part = qname.term if iri == self.iri else (
                 f"[@click=goto('{iri}')]{qname.term}[/]"
             )
 
@@ -113,38 +136,48 @@ class TextualDefaultFacet(Facet[Widget]):
         except IndexError:
             return None
 
+    @cached_property
+    def properties(self) -> Widget | None:
+        if not self.grouped_properties:
+            return None
+
+        properties_table = DataTable(show_header=True, show_cursor=False)
+        properties_table.add_columns('Property', 'Value')
+        properties_table.add_rows([
+            (
+                self.render(
+                    property_iri,
+                    environments=[URIRef('https://iolanta.tech/cli/link')]
+                ),
+                ' · '.join(
+                    self.render(
+                        property_value,
+                        environments=[URIRef('https://iolanta.tech/cli/link')]
+                    )
+                    for property_value in property_values
+                ),
+            )
+            for property_iri, property_values in self.grouped_properties.items()
+        ])
+
+        return properties_table
+
     def compose(self) -> Iterable[Widget]:
         """Compose widgets."""
-        yield Title(f'[bold white]{self.title}[/bold white]')
-
-        if self.description:
-            yield Label(self.description)
-
-    def show(self) -> Widget:
-        return Vertical(*self.compose())
-
-        rows = self.stored_query('label.sparql', iri=self.iri)
-        first_row = funcy.first(rows)
-
-        comment = None
-        if first_row:
-            label = first_row['label']
-            comment = first_row.get('comment')
-        else:
-            qname: ComputedQName | NotLiteralNode = node_to_qname(self.iri, self.iolanta.graph)
-            if isinstance(qname, ComputedQName):
-                label = f'{qname.namespace_name}:{qname.term}'
-            else:
-                label = str(qname)
-
-        text_path = Path(__file__).parent / 'templates/default.md'
-        text = text_path.read_text().format(
-            label=label,
-            comment=comment or '',
+        yield Static(
+            f'[bold white]{self.title}[/bold white]',
+            id='title',
         )
 
+        if self.description:
+            yield Label(self.description, id='description')
 
-        children = [Label(Markdown(text))]
+        if self.properties:
+            yield Label('[i]Properties[/i]', id='properties')
+            yield self.properties
+
+    def show(self) -> Widget:
+        return Content(*self.compose())
 
         instances = funcy.lpluck(
             'instance',
@@ -196,26 +229,8 @@ class TextualDefaultFacet(Facet[Widget]):
             children.append(nodes_table)
 
         if self.grouped_properties:
-            properties_table = DataTable(show_header=True, show_cursor=False)
-            properties_table.add_columns('Property', 'Value')
-            properties_table.add_rows([
-                (
-                    self.render(
-                        property_iri,
-                        environments=[URIRef('https://iolanta.tech/cli/link')]
-                    ),
-                    ' · '.join(
-                        self.render(
-                            property_value,
-                            environments=[URIRef('https://iolanta.tech/cli/link')]
-                        )
-                        for property_value in property_values
-                    ),
-                )
-                for property_iri, property_values in grouped_properties.items()
-            ])
+
 
             children.append(Label('\n[bold]Properties[/]\n'))
-            children.append(properties_table)
 
         return Vertical(*children)
