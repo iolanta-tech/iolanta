@@ -176,6 +176,11 @@ class TextualDefaultFacet(Facet[Widget]):
             yield Label('[i]Properties[/i]', id='properties')
             yield self.properties
 
+        yield from self.render_all(
+            self.iri,
+            environment=URIRef('https://iolanta.tech/cli/default'),
+        )
+
     def show(self) -> Widget:
         return Content(*self.compose())
 

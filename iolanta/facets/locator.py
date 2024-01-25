@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from functools import cached_property
-from typing import Dict, List, Optional, Type, TypedDict
+from typing import Dict, List, Optional, Type, TypedDict, Iterable
 
 import funcy
 from rdflib import ConjunctiveGraph
@@ -31,7 +31,7 @@ class FacetFinder:
 
         return _sorter
 
-    def by_datatype(self) -> Optional[FoundRow]:
+    def by_datatype(self) -> Iterable[FoundRow]:
         if not isinstance(self.node, Literal):
             return None
 
@@ -50,19 +50,14 @@ class FacetFinder:
 
         rows = [row for row in rows if row['environment'] in self.environments]
 
-        if not rows:
-            return None
-
-        return funcy.first(
-            sorted(
-                rows,
-                key=self.row_sorter_by_environment,
-            ),
+        return sorted(
+            rows,
+            key=self.row_sorter_by_environment,
         )
 
-    def by_facet(self) -> Optional[FoundRow]:
+    def by_facet(self) -> List[FoundRow]:
         if isinstance(self.node, Literal):
-            return None
+            return []
 
         rows = self.iolanta.query(
             '''
@@ -74,19 +69,15 @@ class FacetFinder:
             node=self.node,
         )
 
+        # FIXME This is probably suboptimal, why don't we use `IN environments`?
         rows = [row for row in rows if row['environment'] in self.environments]
 
-        if not rows:
-            return None
-
-        return funcy.first(
-            sorted(
-                rows,
-                key=self.row_sorter_by_environment,
-            ),
+        return sorted(
+            rows,
+            key=self.row_sorter_by_environment,
         )
 
-    def by_instance_facet(self) -> Optional[FoundRow]:
+    def by_instance_facet(self) -> Iterable[FoundRow]:
         rows = self.iolanta.query(
             '''
             SELECT ?environment ?facet WHERE {
@@ -100,17 +91,12 @@ class FacetFinder:
 
         rows = [row for row in rows if row['environment'] in self.environments]
 
-        if not rows:
-            return None
-
-        return funcy.first(
-            sorted(
-                rows,
-                key=self.row_sorter_by_environment,
-            ),
+        return sorted(
+            rows,
+            key=self.row_sorter_by_environment,
         )
 
-    def by_environment_default_facet(self) -> Optional[FoundRow]:
+    def by_environment_default_facet(self) -> Iterable[FoundRow]:
         """Find facet based on environment only."""
         graph: ConjunctiveGraph = self.iolanta.graph
 
@@ -123,9 +109,6 @@ class FacetFinder:
             if funcy.first(triple) in self.environments
         ]
 
-        if not triples:
-            return None
-
         rows = [
             {
                 'facet': facet,
@@ -133,26 +116,21 @@ class FacetFinder:
             } for environment, _, facet in triples
         ]
 
-        return funcy.first(
-            sorted(
-                rows,
-                key=self.row_sorter_by_environment,
-            ),
+        return sorted(
+            rows,
+            key=self.row_sorter_by_environment,
         )
+
+    def choices(self) -> Iterable[FoundRow]:
+        yield from self.by_datatype()
+        yield from self.by_facet()
+        yield from self.by_instance_facet()
+        yield from self.by_environment_default_facet()
 
     @property
     def facet_and_environment(self) -> FoundRow:
-        if found := self.by_datatype():
-            return found
-
-        if found := self.by_facet():
-            return found
-
-        if found := self.by_instance_facet():
-            return found
-
-        if found := self.by_environment_default_facet():
-            return found
+        if choice := funcy.first(self.choices()):
+            return choice
 
         raise FacetNotFound(
             node=self.node,

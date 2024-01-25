@@ -276,6 +276,42 @@ class Iolanta:
                 error=err,
             ) from err
 
+    def render_all(
+        self,
+        node: Node,
+        environment: NotLiteralNode,
+    ) -> Iterable[Any]:
+        """Find all possible Iolanta facets for a node and render them."""
+        choices = FacetFinder(
+            iolanta=self,
+            node=node,
+            environments=[environment],
+        ).choices()
+
+        pairs = [
+            (self.facet_resolver[row['facet']], row['environment'])
+            for row in choices
+        ]
+
+        facet_instances = [
+            facet_class(
+                iri=node,
+                iolanta=self,
+                environment=environment,
+            )
+            for facet_class, environment in pairs
+        ]
+
+        for facet in facet_instances:
+            try:
+                yield facet.show()
+            except Exception as err:
+                raise FacetError(
+                    node=node,
+                    facet_iri=found['facet'],
+                    error=err,
+                ) from err
+
     def retrieve_triple(self, triple_template: TripleTemplate) -> Triple:
         """Retrieve remote data to project directory."""
         for plugin in self.plugins:

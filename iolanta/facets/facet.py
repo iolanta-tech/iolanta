@@ -2,7 +2,7 @@ import inspect
 from dataclasses import dataclass, field
 from functools import cached_property
 from pathlib import Path
-from typing import Any, Generic, List, Optional, TypeVar, Union
+from typing import Any, Generic, List, Optional, TypeVar, Union, Iterable
 
 from rdflib.term import BNode, Node, URIRef
 
@@ -65,6 +65,13 @@ class Facet(Generic[FacetOutput]):
         self.stack_children.append(stack)
 
         return rendered
+
+    def render_all(
+        self,
+        node: Node,
+        environment: NotLiteralNode,
+    ) -> Iterable[Any]:
+        return self.iolanta.render_all(node=node, environment=environment)
 
     def stored_query(self, file_name: str, **kwargs: SPARQLQueryArgument):
         """Execute a stored SPARQL query."""
