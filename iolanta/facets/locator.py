@@ -33,10 +33,10 @@ class FacetFinder:
 
     def by_datatype(self) -> Iterable[FoundRow]:
         if not isinstance(self.node, Literal):
-            return None
+            return []
 
         if (data_type := self.node.datatype) is None:
-            return None
+            return []
 
         rows = self.iolanta.query(   # noqa: WPS462
             """

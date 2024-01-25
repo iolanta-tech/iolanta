@@ -41,16 +41,22 @@ app = construct_app()
 
 @app.callback()
 def callback(
+    ctx: Context,
     log_level: LogLevel = LogLevel.ERROR,
 ):
     """Iolanta Linked Data browser."""
+    level = {
+        LogLevel.DEBUG: logging.DEBUG,
+        LogLevel.INFO: logging.INFO,
+        LogLevel.WARNING: logging.WARNING,
+        LogLevel.ERROR: logging.ERROR,
+    }[log_level]
+
+    iolanta: Iolanta = ctx.obj
+    iolanta.logger.level = level
+
     logging.basicConfig(
-        level={
-            LogLevel.DEBUG: logging.DEBUG,
-            LogLevel.INFO: logging.INFO,
-            LogLevel.WARNING: logging.WARNING,
-            LogLevel.ERROR: logging.ERROR,
-        }[log_level],
+        level=level,
         format='%(message)s',
         datefmt="[%X]",
         handlers=[RichHandler()],
