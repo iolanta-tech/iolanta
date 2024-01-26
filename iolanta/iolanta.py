@@ -217,26 +217,6 @@ class Iolanta:
         # This string does not include an ":", so we imply `local:`.
         return URIRef(f'local:{name}')
 
-    def render_with_retrieval(
-        self,
-        node: Union[str, Node],
-        environments: List[NotLiteralNode] = None,
-    ) -> Tuple[Any, Stack]:
-        for attempt_id in reversed(range(100)):
-            try:
-                return self.render(
-                    node=node,
-                    environments=environments,
-                )
-
-            except InsufficientDataForRender as err:
-                if attempt_id == 0:
-                    raise ValueError('Too much data to download :(((') from err
-
-                self.retrieve_triple(
-                    node=err.node,
-                )
-
     def render(
         self,
         node: Node,
@@ -317,8 +297,6 @@ class Iolanta:
         for plugin in self.plugins:
             # FIXME Parallelization?
             plugin.retrieve_triple(triple_template)
-
-
 
         if not downloaded_files:
             self.could_not_retrieve_nodes.add(node)

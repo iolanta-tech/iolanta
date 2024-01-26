@@ -184,21 +184,7 @@ class TextualDefaultFacet(Facet[Widget]):
     def show(self) -> Widget:
         return Content(*self.compose())
 
-        instances = funcy.lpluck(
-            'instance',
-            self.stored_query('instances.sparql', iri=self.iri),
-        )
-        if instances:
-            # Label('\n[bold]A few instances of this class[/]\n')
-            children.append(Label(
-                ' · '.join(
-                    self.render(
-                        instance,
-                        environments=[URIRef('https://iolanta.tech/cli/link')]
-                    )
-                    for instance in instances
-                ),
-            ))
+
 
         nodes_for_property = [
             (row['subject'], row['object'])
