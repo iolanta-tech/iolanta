@@ -23,7 +23,7 @@ class Class(Facet[Widget]):
             self.stored_query('instances.sparql', iri=self.iri),
         )
 
-        return InstancesGrid([
+        return InstancesGrid(*[
             Label(str(instance))
             for instance in instances
         ])

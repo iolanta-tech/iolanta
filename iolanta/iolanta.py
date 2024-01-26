@@ -288,7 +288,7 @@ class Iolanta:
             except Exception as err:
                 raise FacetError(
                     node=node,
-                    facet_iri=found['facet'],
+                    facet_iri=None,
                     error=err,
                 ) from err
 
