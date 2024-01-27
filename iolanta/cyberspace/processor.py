@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from typing import ItemsView, Iterable, Mapping, Any
 
 from boltons.iterutils import remap, default_enter
-from rdflib import URIRef, Variable, RDF, ConjunctiveGraph, Graph
+from rdflib import URIRef, Variable, RDF, ConjunctiveGraph, Graph, RDFS
 from rdflib.plugins.sparql.algebra import translateQuery
 from rdflib.plugins.sparql.evaluate import evalQuery
 from rdflib.plugins.sparql.parser import parseQuery
@@ -74,6 +74,14 @@ class GlobalSPARQLProcessor(Processor):
                     print('DOWNLOADING RDF')
                     self.graph.get_context(URIRef(RDF)).parse(URIRef(RDF))
                     print('DOWNLOADED!')
+
+            elif subject == URIRef(RDFS) or subject in RDFS:
+                try:
+                    self.graph.get_graph(URIRef(RDFS))
+                except IndexError:
+                    print('DOWNLOADING RDFS')
+                    self.graph.get_context(URIRef(RDFS)).parse(URIRef(RDFS))
+                    print('DOWNLOADED RDFS!')
 
     def resolve_term(self, term: Node, bindings: dict[str, Node]):
         """Resolve triple elements against initial variable bindings."""
