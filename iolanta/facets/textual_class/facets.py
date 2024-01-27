@@ -2,7 +2,7 @@ import funcy
 from rdflib import URIRef
 from textual.containers import Vertical
 from textual.widget import Widget
-from textual.widgets import Label
+from textual.widgets import Label, Button, Static, ListView, ListItem
 
 from iolanta.facets.facet import Facet
 
@@ -23,19 +23,14 @@ class Class(Facet[Widget]):
             self.stored_query('instances.sparql', iri=self.iri),
         )
 
-        return InstancesGrid(*[
-            Label(str(instance))
-            for instance in instances
-        ])
-
-        if instances:
-            # Label('\n[bold]A few instances of this class[/]\n')
-            children.append(Label(
-                ' · '.join(
+        return ListView(*[
+            ListItem(
+                Label(
                     self.render(
                         instance,
                         environments=[URIRef('https://iolanta.tech/cli/link')]
-                    )
-                    for instance in instances
-                ),
-            ))
+                    ),
+                )
+            )
+            for instance in instances
+        ])

@@ -172,14 +172,20 @@ class TextualDefaultFacet(Facet[Widget]):
         if self.description:
             yield Label(self.description, id='description')
 
-        if self.properties:
+        sub_facets = list(
+            self.render_all(
+                self.iri,
+                environment=URIRef('https://iolanta.tech/cli/default'),
+            ),
+        )
+
+        if sub_facets:
+            yield from sub_facets
+
+        elif self.properties:
             yield Label('[i]Properties[/i]', id='properties')
             yield self.properties
 
-        yield from self.render_all(
-            self.iri,
-            environment=URIRef('https://iolanta.tech/cli/default'),
-        )
 
     def show(self) -> Widget:
         return Content(*self.compose())
