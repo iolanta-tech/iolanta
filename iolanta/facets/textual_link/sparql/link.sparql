@@ -1,3 +1,0 @@
-SELECT ?label WHERE {
-    $iri rdfs:label ?label .
-}

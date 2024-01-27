@@ -1,0 +1,13 @@
+SELECT * WHERE {
+    OPTIONAL {
+        $iri rdfs:label ?rdfs_label .
+    }
+
+    OPTIONAL {
+        $iri dc:title ?dc_title .
+    }
+
+    OPTIONAL {
+        $iri schema:title ?schema_title .
+    }
+}

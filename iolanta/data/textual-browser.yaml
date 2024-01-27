@@ -10,6 +10,10 @@
   iolanta:hasDefaultFacet:
     $id: python://iolanta.facets.textual_link.TextualLinkFacet
 
+- $id: https://iolanta.tech/env/title
+  iolanta:hasDefaultFacet:
+    $id: python://iolanta.facets.title.TitleFacet
+
 - $id: rdfs:Class
   iolanta:hasInstanceFacet:
     $id: python://iolanta.facets.textual_class.Class
