@@ -3,7 +3,10 @@ from dataclasses import dataclass
 from typing import ItemsView, Iterable, Mapping, Any
 
 from boltons.iterutils import remap, default_enter
-from rdflib import URIRef, Variable, RDF, ConjunctiveGraph, Graph, RDFS
+from rdflib import (
+    URIRef, Variable, RDF, ConjunctiveGraph, Graph, RDFS, FOAF,
+    Namespace, OWL, DC,
+)
 from rdflib.plugins.sparql.algebra import translateQuery
 from rdflib.plugins.sparql.evaluate import evalQuery
 from rdflib.plugins.sparql.parser import parseQuery
@@ -28,6 +31,15 @@ def construct_flat_triples(algebra: Mapping[str, Any]) -> Iterable[Triple]:
 @dataclass
 class GlobalSPARQLProcessor(Processor):
     graph: ConjunctiveGraph
+
+    def _download_namespace(self, namespace: Namespace):
+        iri = URIRef(namespace)
+        try:
+            self.graph.get_graph(iri)
+        except IndexError:
+            print(f'DOWNLOADING {namespace}')
+            self.graph.get_context(iri).parse(iri)
+            print(f'DOWNLOADED {namespace}!')
 
     def query(
         self,
@@ -67,21 +79,11 @@ class GlobalSPARQLProcessor(Processor):
         subject, *_etc = triple
 
         if isinstance(subject, URIRef):
-            if subject == URIRef(RDF) or subject in RDF:
-                try:
-                    self.graph.get_graph(URIRef(RDF))
-                except IndexError:
-                    print('DOWNLOADING RDF')
-                    self.graph.get_context(URIRef(RDF)).parse(URIRef(RDF))
-                    print('DOWNLOADED!')
+            namespaces = [RDF, RDFS, OWL, FOAF, DC]
 
-            elif subject == URIRef(RDFS) or subject in RDFS:
-                try:
-                    self.graph.get_graph(URIRef(RDFS))
-                except IndexError:
-                    print('DOWNLOADING RDFS')
-                    self.graph.get_context(URIRef(RDFS)).parse(URIRef(RDFS))
-                    print('DOWNLOADED RDFS!')
+            for namespace in namespaces:
+                if subject == URIRef(namespace) or subject in namespace:
+                    self._download_namespace(namespace)
 
     def resolve_term(self, term: Node, bindings: dict[str, Node]):
         """Resolve triple elements against initial variable bindings."""
