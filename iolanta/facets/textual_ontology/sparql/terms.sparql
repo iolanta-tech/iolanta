@@ -1,0 +1,3 @@
+SELECT ?term WHERE {
+    ?term rdfs:isDefinedBy $iri .
+}
