@@ -1,26 +1,14 @@
 import funcy
-from rdflib import URIRef, Graph
-from textual.containers import Vertical
+from rdflib import URIRef
 from textual.widget import Widget
-from textual.widgets import Label, Static, Button
+from textual.widgets import DataTable, Label, Static
 
-from iolanta.facets.facet import Facet, FacetOutput
+from iolanta.facets.facet import Facet
 
 
-class OntologyTerms(Widget):
-    DEFAULT_CSS = """
-    OntologyTerms {
-        layout: grid;
-        grid-size: 3;
-        grid-rows: 3;
-    }
-    
-    .box {
-        width: 100%;
-        # border: none;
-        # background: none;
-    }
-    """
+class OntologyTerms(DataTable):
+    def on_data_table_cell_selected(self, event: DataTable.CellHighlighted):
+        raise ValueError(event.value)
 
 
 class OntologyFacet(Facet[Widget]):
@@ -30,16 +18,19 @@ class OntologyFacet(Facet[Widget]):
             self.stored_query('terms.sparql', iri=self.iri),
         )
 
-        # g: Graph = self.iolanta.graph
-        # raise ValueError([k for k, v in g.namespaces()])
-
-        return OntologyTerms(*[
-            Button(
-                self.render(
-                    term,
-                    environments=[URIRef('https://iolanta.tech/env/title')],
-                ),
-                classes='box',
+        renderables = [
+            self.render(
+                term,
+                environments=[URIRef('https://iolanta.tech/env/title')],
             )
             for term in terms
-        ])
+        ]
+
+        rows = funcy.chunks(3, renderables)
+
+        table = OntologyTerms(show_header=False)
+        table.add_columns('1', '2', '3')
+
+        table.add_rows(rows)
+
+        return table
