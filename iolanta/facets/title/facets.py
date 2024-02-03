@@ -7,6 +7,7 @@ PRIORITIES = [
     'dc_title',
     'schema_title',
     'rdfs_label',
+    'foaf_name',
 ]
 
 

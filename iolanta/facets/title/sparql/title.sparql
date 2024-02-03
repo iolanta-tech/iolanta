@@ -10,4 +10,8 @@ SELECT * WHERE {
     OPTIONAL {
         $iri <http://schema.org/title> ?schema_title .
     }
+
+    OPTIONAL {
+        $iri <http://xmlns.com/foaf/0.1/name> ?foaf_name .
+    }
 }
