@@ -12,7 +12,6 @@ SELECT ?property ?object WHERE {
     ))
 
     FILTER (!( ?property IN (
-        rdfs:label,
-        rdfs:comment
+        rdfs:label
     )))
 }

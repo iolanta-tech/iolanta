@@ -54,3 +54,6 @@
 
   iolanta:hasDefaultFacet:
     "@type": "@id"
+
+  rdf:type:
+    "@type": "@id"
