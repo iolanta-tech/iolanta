@@ -1,3 +1,5 @@
+from rdflib import URIRef
+
 from iolanta.facets.facet import Facet
 
 
@@ -25,4 +27,7 @@ class TitleFacet(Facet[str]):
             if label := row.get(alternative):
                 return str(label)
 
-        return str(self.iri)   # FIXME Call facet for a QName
+        return self.render(
+            self.iri,
+            environments=[URIRef('https://iolanta.tech/qname')],
+        )
