@@ -4,10 +4,14 @@ SELECT * WHERE {
     }
 
     OPTIONAL {
-        $iri dc:title ?dc_title .
+        $iri <http://purl.org/dc/elements/1.1/title> ?dc_title .
     }
 
     OPTIONAL {
-        $iri schema:title ?schema_title .
+        $iri <http://schema.org/title> ?schema_title .
+    }
+
+    OPTIONAL {
+        $iri <http://xmlns.com/foaf/0.1/name> ?foaf_name .
     }
 }

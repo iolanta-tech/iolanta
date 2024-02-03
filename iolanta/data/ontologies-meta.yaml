@@ -1,0 +1,111 @@
+$id: iolanta:Group
+rdfs:label: Class to unite objects indicating their grouping. Used by Ontology facet.
+$reverse:
+  rdf:type:
+    - rdfs:label: Properties
+      $reverse:
+        rdf:type:
+          - rdf:Property
+          - rdf:type
+
+    - rdfs:label: Triples
+      $reverse:
+        rdf:type:
+          - rdf:subject
+          - rdf:predicate
+          - rdf:object
+          - rdf:Statement
+    - rdfs:label: Containers
+      $reverse:
+        rdf:type:
+          - rdf:first
+          - rdf:rest
+          - rdf:List
+          - rdf:nil
+          - rdf:Bag
+          - rdf:Seq
+          - rdf:Alt
+    - rdfs:label: Language
+      $reverse:
+        rdf:type:
+          - rdf:langString
+          - rdf:language
+
+    - rdfs:Datatype
+    - rdfs:label: Compund Literal
+      $reverse:
+        rdf:type:
+          - rdf:CompoundLiteral
+          - rdf:direction
+
+    - rdfs:label: Properties
+      $reverse:
+        rdf:type:
+          - rdfs:domain
+          - rdfs:range
+          - rdfs:subPropertyOf
+    - rdfs:label: Classes
+      $reverse:
+        rdf:type:
+          - rdfs:Class
+          - rdfs:Resource
+          - rdfs:Datatype
+          - rdfs:subClassOf
+
+    - rdfs:label: Human Readable
+      $reverse:
+        rdf:type:
+          - rdfs:label
+          - rdfs:comment
+
+    - rdfs:label: Provenance
+      $reverse:
+        rdf:type:
+          - rdfs:isDefinedBy
+          - rdfs:seeAlso
+
+    - rdfs:label: Containers
+      $reverse:
+        rdf:type:
+          - rdfs:Container
+          - rdfs:ContainerMembershipProperty
+          - rdfs:member
+
+    - rdfs:label: Value
+      $reverse:
+        rdf:type:
+          - rdf:value
+
+    - rdfs:label: Persons as Agents
+      $reverse:
+        rdf:type:
+          - foaf:Person
+          - foaf:gender
+          - foaf:surname
+          - foaf:givenName
+          - foaf:lastName
+          - foaf:myersBriggs
+          - foaf:publications
+          - foaf:knows
+          - foaf:title
+
+    - rdfs:label: Agents
+      $reverse:
+        rdf:type:
+          - foaf:Agent
+          - foaf:Group
+          - foaf:tipjar
+          - foaf:phone
+          - foaf:weblog
+
+    - rdfs:label: Organizations as Agents
+      $reverse:
+        rdf:type:
+          - foaf:Organization
+
+    - rdfs:label: Information about stuff
+      $reverse:
+        rdf:type:
+          - foaf:Document
+          - foaf:Image
+          - foaf:thumbnail

@@ -1,0 +1,9 @@
+SELECT ?term ?group WHERE {
+    ?term rdfs:isDefinedBy $iri .
+
+    OPTIONAL {
+        ?term rdf:type ?group .
+        ?group a iolanta:Group .
+    }
+}
+ORDER BY (!BOUND(?group)) ?group ?term

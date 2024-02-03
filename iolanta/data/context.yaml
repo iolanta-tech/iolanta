@@ -6,6 +6,7 @@
   schema: https://schema.org/
   xsd: http://www.w3.org/2001/XMLSchema#
   skos: http://www.w3.org/2004/02/skos/core#
+  foaf: http://xmlns.com/foaf/0.1/
 
   "@vocab": "local:"
   "@base": "local:"
@@ -53,4 +54,7 @@
     "@type": "@id"
 
   iolanta:hasDefaultFacet:
+    "@type": "@id"
+
+  rdf:type:
     "@type": "@id"
