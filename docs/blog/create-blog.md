@@ -19,4 +19,5 @@ Post all of that into [Blog](/blog/) with appropriate tags.
 ## Consequences
 
 * There will be no question where, among multiple sections of the site, to post new documents;
-* Blog will also be a playground for structured communication.
+* Blog will also be a playground for structured communication;
+* Other projects I am involved with will not be scattering my efforts regarding that.
