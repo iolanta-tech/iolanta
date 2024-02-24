@@ -1,0 +1,47 @@
+site_name: iolanta
+site_url: https://iolanta.tech
+repo_url: https://github.com/iolanta-tech/iolanta
+edit_uri: edit/master/docs/
+repo_name: iolanta-tech/iolanta
+copyright: Copyright © 2024 iolanta.tech
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - attr_list
+  - def_list
+  - md_in_html
+  - pymdownx.superfences
+  - pymdownx.details
+  - footnotes
+  - pymdownx.tabbed:
+      alternate_style: true
+
+plugins:
+  - search
+  - awesome-pages
+  - iolanta
+  - blogging:
+      dirs:
+        - blog
+  - mkdocstrings:
+      handlers:
+        python:
+          import:
+            - https://docs.python-requests.org/en/master/objects.inv
+  - macros:
+      on_error_fail: true
+
+theme:
+  name: material
+  palette:
+    scheme: slate
+    primary: deep purple
+  custom_dir: overrides
+  features:
+    - navigation.sections
+    - navigation.indexes
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - content.code.annotate
+    - content.action.edit

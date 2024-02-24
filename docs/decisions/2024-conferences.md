@@ -2,15 +2,16 @@
 $id: choose-conference-in-2024
 title: Submit a paper for ... conference in 2024
 alternatives:
-  - rdfs:label: ISWC 2025
-    $id: https://swsa.semanticweb.org/content/international-semantic-web-conference-iswc
-    rejected-because: Happens only in 2025
+  - rdfs:label: ISWC 2024
+    $id: https://web.cvent.com/event/3715c6fc-e2d7-47eb-8c01-5fe4ac589a52/summary?locale=en-US&tm=QLST-3OD03RslebCRIVzGyOABTZJAKLJIULY8p37Rms&fbclid=IwAR3VVOLbQlEdNmnZxm2mvM1JhL4wnxe9cD8LashJIMwz4hc1RcDFzNZV6ns
+    
 
   - $id: https://www.knowledgegraph.tech
     rdfs:label: Knowledge Graph Conference 2024
     where: Cornell Tech NYC
     dates: [2024-05-06, 2024-05-10]
-    rejected-because: Location
+    cost: $500
+    rejected-because: CFP is over
 
   - rdfs:label: SEMANTICS 2024
     $id: https://2024-eu.semantics.cc
@@ -22,7 +23,7 @@ alternatives:
         camera-ready-paper: 2024-07-09
       conference: [2024-09-17, 2024-09-19]
     where: Amsterdam
-    cost: ???
+    cost: "ONSITE rate; but I only want review and acceptance"
 
   - $id: https://2024.eswc-conferences.org
     rdfs:label: ESWC 2024
@@ -46,5 +47,6 @@ alternatives:
       industry-track:
         $id: https://2024.eswc-conferences.org/call-for-papers-industry-track/
         submissions: 2024-03-07
+        suitable: Not really, I do not have business value or anything
 ---
 

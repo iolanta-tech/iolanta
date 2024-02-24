@@ -43,6 +43,9 @@ cyberspace = "iolanta.cyberspace.processor:GlobalSPARQLProcessor"
 [tool.poetry.group.dev.dependencies]
 boltons = "^23.0.0"
 jeeves-yeti-pyproject = "^0.2.21"
+mkdocs-awesome-pages-plugin = "^2.9.2"
+mkdocs-blogging-plugin = "^2.2.11"
+mkdocstrings-python = "^1.8.0"
 
 [tool.poetry.extras]
 all = ["iolanta-tables"]
