@@ -24,6 +24,8 @@ plugins:
   - blogging:
       dirs:
         - blog
+      features:
+        tags: {}
   - mkdocstrings:
       handlers:
         python:
