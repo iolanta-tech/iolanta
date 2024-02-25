@@ -18,4 +18,4 @@ hide:
 iolanta browse rdfs:
 ```
 
-![](images/screenshot.png)
+![](reference/ontology/rdfs-ontology.png)
