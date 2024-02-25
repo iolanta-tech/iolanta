@@ -3,7 +3,7 @@ SELECT ?term ?group WHERE {
 
     OPTIONAL {
         ?term rdf:type ?group .
-        ?group a iolanta:Group .
+        $iri vann:termGroup ?group .
     }
 }
 ORDER BY (!BOUND(?group)) ?group ?term
