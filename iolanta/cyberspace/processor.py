@@ -5,7 +5,7 @@ from typing import ItemsView, Iterable, Mapping, Any
 from boltons.iterutils import remap, default_enter
 from rdflib import (
     URIRef, Variable, RDF, ConjunctiveGraph, Graph, RDFS, FOAF,
-    Namespace, OWL, DC,
+    Namespace, OWL, DC, VANN,
 )
 from rdflib.plugins.sparql.algebra import translateQuery
 from rdflib.plugins.sparql.evaluate import evalQuery
@@ -33,7 +33,11 @@ class GlobalSPARQLProcessor(Processor):
     graph: ConjunctiveGraph
 
     def _download_namespace(self, namespace: Namespace):
-        iri = URIRef(namespace)
+        if namespace == VANN:
+            iri = URIRef('https://vocab.org/vann/vann-vocab-20100607.rdf')
+        else:
+            iri = URIRef(namespace)
+
         try:
             self.graph.get_graph(iri)
         except IndexError:
@@ -79,7 +83,7 @@ class GlobalSPARQLProcessor(Processor):
         subject, *_etc = triple
 
         if isinstance(subject, URIRef):
-            namespaces = [RDF, RDFS, OWL, FOAF, DC]
+            namespaces = [RDF, RDFS, OWL, FOAF, DC, VANN]
 
             for namespace in namespaces:
                 if subject == URIRef(namespace) or subject in namespace:

@@ -1,7 +1,6 @@
-$id: iolanta:Group
-rdfs:label: Class to unite objects indicating their grouping. Used by Ontology facet.
-$reverse:
-  rdf:type:
+
+- $id: "rdf:"
+  vann:termGroup:
     - rdfs:label: Properties
       $reverse:
         rdf:type:
@@ -32,12 +31,18 @@ $reverse:
           - rdf:language
 
     - rdfs:Datatype
-    - rdfs:label: Compund Literal
+    - rdfs:label: Compound Literal
       $reverse:
         rdf:type:
           - rdf:CompoundLiteral
           - rdf:direction
+    - rdfs:label: Value
+      $reverse:
+        rdf:type:
+          - rdf:value
 
+- $id: "rdfs:"
+  vann:termGroup:
     - rdfs:label: Properties
       $reverse:
         rdf:type:
@@ -51,19 +56,16 @@ $reverse:
           - rdfs:Resource
           - rdfs:Datatype
           - rdfs:subClassOf
-
     - rdfs:label: Human Readable
       $reverse:
         rdf:type:
           - rdfs:label
           - rdfs:comment
-
     - rdfs:label: Provenance
       $reverse:
         rdf:type:
           - rdfs:isDefinedBy
           - rdfs:seeAlso
-
     - rdfs:label: Containers
       $reverse:
         rdf:type:
@@ -71,11 +73,8 @@ $reverse:
           - rdfs:ContainerMembershipProperty
           - rdfs:member
 
-    - rdfs:label: Value
-      $reverse:
-        rdf:type:
-          - rdf:value
-
+- $id: "foaf:"
+  vann:termGroup:
     - rdfs:label: Persons as Agents
       $reverse:
         rdf:type:
