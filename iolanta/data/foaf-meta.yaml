@@ -15,11 +15,22 @@ vann:termGroup:
         - foaf:Image
         - foaf:PersonalProfileDocument
 
-  - rdfs:label: Personal info & Online presence
+  - rdfs:label: Personal
     $reverse:
       rdf:type:
         - foaf:name
         - foaf:title
+        - foaf:familyName
+        - foaf:firstName
+        - foaf:gender
+        - foaf:birthday
+        - foaf:age
+        - foaf:status
+        - foaf:myersBriggs
+
+  - rdfs:label: Online presence
+    $reverse:
+      rdf:type:
         - foaf:mbox
         - foaf:phone
         - foaf:OnlineAccount
@@ -29,19 +40,12 @@ vann:termGroup:
         - foaf:account
         - foaf:accountServiceHomepage
         - foaf:accountName
-        - foaf:age
         - foaf:aimChatID
-        - foaf:birthday
-        - foaf:familyName
-        - foaf:firstName
-        - foaf:gender
         - foaf:jabberID
-        - foaf:myersBriggs
-        - foaf:openid
         - foaf:skypeID
-        - foaf:status
         - foaf:msnChatID
         - foaf:yahooChatID
+        - foaf:openid
         - foaf:homepage
         - foaf:weblog
         - foaf:workplaceHomepage
