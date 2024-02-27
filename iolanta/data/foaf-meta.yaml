@@ -31,6 +31,21 @@ vann:termGroup:
         - foaf:accountName
         - foaf:age
         - foaf:aimChatID
+        - foaf:birthday
+        - foaf:familyName
+        - foaf:firstName
+        - foaf:gender
+        - foaf:jabberID
+        - foaf:myersBriggs
+        - foaf:openid
+        - foaf:skypeID
+        - foaf:status
+        - foaf:msnChatID
+        - foaf:yahooChatID
+        - foaf:homepage
+        - foaf:weblog
+        - foaf:workplaceHomepage
+        - foaf:schoolHomepage
 
   - rdfs:label: Social
     $reverse:
@@ -39,6 +54,9 @@ vann:termGroup:
         - foaf:friendOf
         - foaf:member
         - foaf:membershipClass
+        - foaf:depiction
+        - foaf:depicts
+        - foaf:thumbnail
 
   - rdfs:label: Activities & Projects
     $reverse:
@@ -46,6 +64,11 @@ vann:termGroup:
         - foaf:Project
         - foaf:fundedBy
         - foaf:interest
+        - foaf:currentProject
+        - foaf:pastProject
+        - foaf:logo
+        - foaf:maker
+        - foaf:made
 
   - rdfs:label: Geography
     $reverse:
