@@ -1,0 +1,103 @@
+$id: "foaf:"
+vann:termGroup:
+  - rdfs:label: Core Classes
+    $reverse:
+      rdf:type:
+        - foaf:Person
+        - foaf:Organization
+        - foaf:Group
+        - foaf:Agent
+
+  - rdfs:label: Docs & Images
+    $reverse:
+      rdf:type:
+        - foaf:Document
+        - foaf:Image
+        - foaf:img
+        - foaf:depiction
+        - foaf:page
+        - foaf:topic
+        - foaf:PersonalProfileDocument
+        - foaf:primaryTopic
+        - foaf:isPrimaryTopicOf
+        - foaf:sha1
+
+  - rdfs:label: Personal
+    $reverse:
+      rdf:type:
+        - foaf:name
+        - foaf:lastName
+        - foaf:title
+        - foaf:surname
+        - foaf:familyName
+        - foaf:givenName
+        - foaf:family_name
+        - foaf:firstName
+        - foaf:gender
+        - foaf:birthday
+        - foaf:age
+        - foaf:status
+        - foaf:myersBriggs
+        - foaf:dnaChecksum
+        - foaf:nick
+        - foaf:topic_interest
+        - foaf:publications
+        - foaf:workInfoHomepage
+
+  - rdfs:label: Online Presence
+    $reverse:
+      rdf:type:
+        - foaf:mbox
+        - foaf:phone
+        - foaf:OnlineAccount
+        - foaf:OnlineEcommerceAccount
+        - foaf:OnlineGamingAccount
+        - foaf:OnlineChatAccount
+        - foaf:account
+        - foaf:accountServiceHomepage
+        - foaf:accountName
+        - foaf:aimChatID
+        - foaf:jabberID
+        - foaf:skypeID
+        - foaf:msnChatID
+        - foaf:yahooChatID
+        - foaf:openid
+        - foaf:homepage
+        - foaf:weblog
+        - foaf:geekcode
+        - foaf:workplaceHomepage
+        - foaf:schoolHomepage
+        - foaf:icqChatID
+        - foaf:mbox_sha1sum
+
+  - rdfs:label: Social
+    $reverse:
+      rdf:type:
+        - foaf:knows
+        - foaf:friendOf
+        - foaf:member
+        - foaf:membershipClass
+        - foaf:depiction
+        - foaf:depicts
+        - foaf:thumbnail
+        - foaf:based_near
+
+  - rdfs:label: Activities & Projects
+    $reverse:
+      rdf:type:
+        - foaf:Project
+        - foaf:fundedBy
+        - foaf:interest
+        - foaf:currentProject
+        - foaf:pastProject
+        - foaf:logo
+        - foaf:maker
+        - foaf:made
+        - foaf:plan
+        - foaf:tipjar
+
+  - rdfs:label: Meta
+    $reverse:
+      rdf:type:
+        - foaf:LabelProperty
+        - foaf:focus

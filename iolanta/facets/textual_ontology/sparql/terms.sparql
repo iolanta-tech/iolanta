@@ -1,9 +1,15 @@
-SELECT ?term ?group WHERE {
+PREFIX vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#>
+
+SELECT ?term ?group ?status WHERE {
     ?term rdfs:isDefinedBy $iri .
 
     OPTIONAL {
         ?term rdf:type ?group .
         $iri vann:termGroup ?group .
+    }
+
+    OPTIONAL {
+        ?term vs:term_status ?status .
     }
 }
 ORDER BY (!BOUND(?group)) ?group ?term
