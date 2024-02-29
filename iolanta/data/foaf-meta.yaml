@@ -13,22 +13,38 @@ vann:termGroup:
       rdf:type:
         - foaf:Document
         - foaf:Image
+        - foaf:img
+        - foaf:depiction
+        - foaf:page
+        - foaf:topic
         - foaf:PersonalProfileDocument
+        - foaf:primaryTopic
+        - foaf:isPrimaryTopicOf
+        - foaf:sha1
 
   - rdfs:label: Personal
     $reverse:
       rdf:type:
         - foaf:name
+        - foaf:lastName
         - foaf:title
+        - foaf:surname
         - foaf:familyName
+        - foaf:givenName
+        - foaf:family_name
         - foaf:firstName
         - foaf:gender
         - foaf:birthday
         - foaf:age
         - foaf:status
         - foaf:myersBriggs
+        - foaf:dnaChecksum
+        - foaf:nick
+        - foaf:topic_interest
+        - foaf:publications
+        - foaf:workInfoHomepage
 
-  - rdfs:label: Online presence
+  - rdfs:label: Online Presence
     $reverse:
       rdf:type:
         - foaf:mbox
@@ -48,8 +64,11 @@ vann:termGroup:
         - foaf:openid
         - foaf:homepage
         - foaf:weblog
+        - foaf:geekcode
         - foaf:workplaceHomepage
         - foaf:schoolHomepage
+        - foaf:icqChatID
+        - foaf:mbox_sha1sum
 
   - rdfs:label: Social
     $reverse:
@@ -61,6 +80,7 @@ vann:termGroup:
         - foaf:depiction
         - foaf:depicts
         - foaf:thumbnail
+        - foaf:based_near
 
   - rdfs:label: Activities & Projects
     $reverse:
@@ -73,13 +93,11 @@ vann:termGroup:
         - foaf:logo
         - foaf:maker
         - foaf:made
+        - foaf:plan
+        - foaf:tipjar
 
-  - rdfs:label: Geography
+  - rdfs:label: Meta
     $reverse:
       rdf:type:
-        - foaf:based_near
-
-  - rdfs:label: Security & Auth
-    $reverse:
-      rdf:type:
-        - foaf:sha1
+        - foaf:LabelProperty
+        - foaf:focus
