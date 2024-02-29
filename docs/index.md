@@ -15,7 +15,7 @@ hide:
 </h1>
 
 ```shell
-iolanta browse rdfs:
+iolanta browse foaf:
 ```
 
-![](reference/ontology/rdfs-ontology.png)
+![](reference/ontology/foaf-ontology.png)

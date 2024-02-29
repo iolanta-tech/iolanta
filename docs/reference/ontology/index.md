@@ -23,12 +23,13 @@ hide:
 Render a vocabulary described as `owl:Ontology`.
 
 * Listing each of its terms connected to the ontology using `rdfs:isDefinedBy` property,
+* Except those terms for which `vs:status` is `archaic` though,
 * And group the terms visually by classes connected to the ontology using `vann:termGroup` property.
 
 ## Usage
 
 ```shell
-iolanta browse rdfs:
+iolanta browse foaf:
 ```
 
-![](rdfs-ontology.png)
+![](foaf-ontology.png)
