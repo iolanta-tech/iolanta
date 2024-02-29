@@ -79,4 +79,4 @@ class OntologyFacet(Facet[Widget]):
             yield column
 
     def show(self) -> Widget:
-        return TermsContent(Columns(self._stream_columns()))
+        return TermsContent(Columns(self._stream_columns(), padding=(1, 2)))
