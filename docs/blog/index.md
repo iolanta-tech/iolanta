@@ -6,4 +6,6 @@ hide:
     - toc
 ---
 
+# :material-message-text: Blog
+
 {{ blog_content }}

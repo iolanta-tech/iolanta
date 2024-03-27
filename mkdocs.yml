@@ -16,6 +16,10 @@ markdown_extensions:
   - footnotes
   - pymdownx.tabbed:
       alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
 
 plugins:
   - search
@@ -26,6 +30,7 @@ plugins:
         - blog
       features:
         tags: {}
+      time_format: '%d %b %Y'  # The format used to display the time
   - mkdocstrings:
       handlers:
         python:
