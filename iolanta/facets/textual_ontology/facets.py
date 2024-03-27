@@ -1,3 +1,5 @@
+from rich.columns import Columns
+
 from dataclasses import dataclass
 from enum import StrEnum
 from functools import cached_property
@@ -25,24 +27,12 @@ class TermAndStatus:
     status: TermStatus
 
 
-class Terms(Widget):
-    DEFAULT_CSS = """
-    Terms {
-        layout: grid;
-        grid-size: 3;
+class TermsContent(Static):
+    DEFAULT_CSS = '''
+    TermsContent {
+        padding: 1;
     }
-    """
-
-    def on_list_view_selected(self, event: ListView.Selected):
-        self.app.action_goto(event.item.id)
-
-
-class Group(Widget):
-    DEFAULT_CSS = """
-    Group {
-        margin: 1;
-    }
-    """
+    '''
 
 
 class OntologyFacet(Facet[Widget]):
@@ -67,34 +57,26 @@ class OntologyFacet(Facet[Widget]):
 
         return funcy.group_values(grouped)
 
-    def _stream_group_widgets(self) -> Iterable[Widget]:
+    def _stream_columns(self) -> Iterable[str]:
         for group, rows in self.grouped_terms.items():
             group_title = self.render(
                 group,
                 environments=[URIRef('https://iolanta.tech/env/title')],
             ) if group is not None else '<Ungrouped>'
 
-            list_items = [
-                ListItem(
-                    Static(
-                        self.render(
-                            row.term,
-                            environments=[
-                                URIRef('https://iolanta.tech/env/title'),
-                            ],
-                        ),
-                    ),
-                    id=row.term,
+            content = '\n'.join([
+                self.render(
+                    row.term,
+                    environments=[
+                        URIRef('https://iolanta.tech/cli/link'),
+                    ],
                 )
                 for row in rows
-            ]
+            ])
 
-            list_view = ListView(*list_items)
+            column = f'[b]{group_title}[/b]\n\n' + content
 
-            yield Group(
-                Label(f'[bold]{group_title}[/bold]\n'),
-                list_view,
-            )
+            yield column
 
     def show(self) -> Widget:
-        return Terms(*self._stream_group_widgets())
+        return TermsContent(Columns(self._stream_columns(), padding=(1, 2)))
