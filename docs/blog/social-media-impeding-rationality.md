@@ -1,8 +1,8 @@
 ---
-title: Social media vs rationality
+title: Social media are impeding rationality
 description: Social media are poor tools for rational discussion and decision making, probably because these are not goals towards which social networks are incentivized.
 tags: [imho]
-date: 2024-03-25
+date: 2024-03-26
 hide:
   - toc
 ---

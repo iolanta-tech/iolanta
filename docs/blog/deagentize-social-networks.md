@@ -1,7 +1,7 @@
 ---
 title: De-agentize social networks
 description: There is an inherent conflict of interests between me, as a social network user, and the network itself as an agent.
-date: 2024-03-25
+date: 2024-03-27
 tags: [decision]
 hide:
   - toc
@@ -44,3 +44,6 @@ To resolve the conflict of interests, I would like to disembody the social netwo
     The user could choose to rely upon a cloud service provider, or rent a server, or use their own computer only, -- but ultimately the choice belongs to the user.
 </div>
 
+## Decision
+
+When considering social communication systems which might be considered alternatives to Iolanta, only look at open source and local-first systems.
