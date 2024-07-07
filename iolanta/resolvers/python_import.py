@@ -22,8 +22,8 @@ class PythonImportResolver(Resolver):
                 ),
             )
 
-        # It is impossible to use `urlpath` for this operation because it (or,
-        # rather, one of upper classes from `urllib` that `urlpath` depends
+        # It is impossible to use `yarl` for this operation because it (or,
+        # rather, one of upper classes from `urllib` that `yarl` depends
         # upon)
         # will lowercase the URL when parsing it - which means, irreversibly. We
         # have to resort to plain string manipulation.

@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from documented import DocumentedError
-from urlpath import URL
+from yarl import URL
 
 
 @dataclass

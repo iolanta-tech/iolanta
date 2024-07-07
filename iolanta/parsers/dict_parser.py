@@ -10,7 +10,7 @@ from pyld import jsonld
 from pyld.jsonld import JsonLdError, _resolved_context_cache
 from rdflib import RDF, XSD, BNode, Literal, URIRef
 from rdflib.term import Node
-from urlpath import URL
+from yarl import URL
 
 from iolanta.loaders import Loader
 from iolanta.models import LDContext, LDDocument, NotLiteralNode, Quad

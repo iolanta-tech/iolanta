@@ -3,7 +3,7 @@ from typing import Iterator, TypedDict
 from urllib.parse import unquote
 
 from rdflib import URIRef
-from urlpath import URL
+from yarl import URL
 
 from iolanta.models import Quad, Triple
 
