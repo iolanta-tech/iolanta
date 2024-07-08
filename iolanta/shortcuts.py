@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Dict, Iterable, Type
 
 from rdflib import URIRef
-from urlpath import URL
+from yarl import URL
 
 from iolanta.loaders.data_type_choice import DataTypeChoiceLoader
 from iolanta.loaders.dict_loader import DictLoader

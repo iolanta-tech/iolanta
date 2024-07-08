@@ -10,7 +10,7 @@ from documented import DocumentedError
 from rdflib import URIRef
 from rdflib.parser import URLInputSource
 from requests import Response
-from urlpath import URL
+from yarl import URL
 
 from iolanta.context import merge
 from iolanta.conversions import url_to_iri, url_to_path

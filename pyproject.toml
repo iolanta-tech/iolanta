@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iolanta"
-version = "1.0.22"
+version = "1.0.24"
 description = "Semantic Web browser"
 authors = ["Anatoly Scherbakov <altaisoft@gmail.com>"]
 license = "MIT"
@@ -18,7 +18,6 @@ python-frontmatter = "^0.5.0"
 requests = "^2.25.1"
 deepmerge = "^0.1.1"
 documented = "^0.1.1"
-urlpath = "^1.1.7"
 typer = "^0.9.0"
 classes = "^0.4.0"
 PyLD = "^2.0.3"
@@ -29,6 +28,8 @@ funcy = "^2.0"
 rich = "^13.3.1"
 textual = "^0.47.1"
 iolanta-tables = {version = "^0.1.7", optional = true}
+yarl = ">=1.9.4"
+boltons = "^24.0.0"
 
 [tool.poetry.scripts]
 iolanta = "iolanta.cli:app"
@@ -41,7 +42,6 @@ base = "iolanta:IolantaBase"
 cyberspace = "iolanta.cyberspace.processor:GlobalSPARQLProcessor"
 
 [tool.poetry.group.dev.dependencies]
-boltons = "^23.0.0"
 jeeves-yeti-pyproject = "^0.2.21"
 mkdocs-awesome-pages-plugin = "^2.9.2"
 mkdocs-blogging-plugin = "^2.2.11"

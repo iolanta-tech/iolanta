@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Dict, Iterable, Optional
 
 from rdflib import URIRef
-from urlpath import URL
+from yarl import URL
 
 from iolanta.conversions import url_to_iri
 from iolanta.ensure_is_context import ensure_is_context
