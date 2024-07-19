@@ -1,7 +1,11 @@
+import dataclasses
+
+import rdflib_pyld_compat
 import traceback
 from dataclasses import dataclass
 from typing import Any, ItemsView, Iterable, Mapping
 
+import yaml_ld
 from boltons.iterutils import default_enter, remap
 from rdflib import (
     DC,
@@ -25,6 +29,7 @@ from rdflib.query import Processor
 from rdflib.term import Node
 
 from iolanta.models import Triple, TripleWithVariables
+from iolanta.parsers.dict_parser import parse_quads, UnresolvedIRI
 
 
 def construct_flat_triples(algebra: Mapping[str, Any]) -> Iterable[Triple]:
@@ -94,6 +99,24 @@ class GlobalSPARQLProcessor(Processor):
         subject, *_etc = triple
 
         if isinstance(subject, URIRef):
+            ld_rdf = yaml_ld.to_rdf(subject)
+
+            try:
+                self.graph.addN(
+                    parse_quads(
+                        quads_document=ld_rdf,
+                        graph=subject,  # type: ignore
+                        blank_node_prefix=str(subject),
+                    ),
+                )
+                return
+            except UnresolvedIRI as err:
+                raise dataclasses.replace(
+                    err,
+                    context=None,
+                    iri=subject,
+                )
+
             namespaces = [RDF, RDFS, OWL, FOAF, DC, VANN]
 
             for namespace in namespaces:
