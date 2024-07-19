@@ -1024,6 +1024,21 @@ files = [
 ]
 
 [[package]]
+name = "iolanta-jinja2"
+version = "0.1.4"
+description = "Render Jinja2 templates from Iolanta graph"
+optional = false
+python-versions = ">=3.10,<4.0"
+files = [
+    {file = "iolanta_jinja2-0.1.4-py3-none-any.whl", hash = "sha256:9670c6810f8778a3bb7f05763d349302be052b63d575e4a931587f5fe413c3e7"},
+    {file = "iolanta_jinja2-0.1.4.tar.gz", hash = "sha256:a8db8289ee96e1a48aafe4ef8b75ee3ab8bd8ac193ae604a5d267d4473f29f27"},
+]
+
+[package.dependencies]
+iolanta = ">=1.0.12,<2.0.0"
+Jinja2 = ">=3.1.2,<4.0.0"
+
+[[package]]
 name = "iolanta-tables"
 version = "0.1.7"
 description = "Linked Data as tables"
@@ -1586,14 +1601,31 @@ platformdirs = ">=2.2.0"
 pyyaml = ">=5.1"
 
 [[package]]
+name = "mkdocs-iolanta"
+version = "0.1.7"
+description = "MkDocs plugin to integrate with Iolanta semantic web framework."
+optional = false
+python-versions = ">=3.10,<4.0"
+files = [
+    {file = "mkdocs_iolanta-0.1.7-py3-none-any.whl", hash = "sha256:034febce1d7898182fed475ddc8e06f7b07bb24e1ada109a523deebaee23d1f3"},
+    {file = "mkdocs_iolanta-0.1.7.tar.gz", hash = "sha256:e94a44ae070d3a0102412a2d0c361d47f1109baa0cae4eea10f6712ebacef82f"},
+]
+
+[package.dependencies]
+iolanta = ">=1.0.14,<2.0.0"
+iolanta-jinja2 = ">=0.1.2,<0.2.0"
+mkdocs = ">=1.4.2,<2.0.0"
+mkdocs-macros-plugin = ">=0.7.0,<0.8.0"
+
+[[package]]
 name = "mkdocs-macros-plugin"
-version = "1.0.5"
+version = "0.7.0"
 description = "Unleash the power of MkDocs with macros and variables"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.5"
 files = [
-    {file = "mkdocs-macros-plugin-1.0.5.tar.gz", hash = "sha256:fe348d75f01c911f362b6d998c57b3d85b505876dde69db924f2c512c395c328"},
-    {file = "mkdocs_macros_plugin-1.0.5-py3-none-any.whl", hash = "sha256:f60e26f711f5a830ddf1e7980865bf5c0f1180db56109803cdd280073c1a050a"},
+    {file = "mkdocs-macros-plugin-0.7.0.tar.gz", hash = "sha256:9e64e1cabcf6925359de29fe54f62d5847fb455c2528c440b87f8f1240650608"},
+    {file = "mkdocs_macros_plugin-0.7.0-py3-none-any.whl", hash = "sha256:96bdabeb98b96139544f0048ea2f5cb80c7befde6b21e94c6d4596c22774cbcf"},
 ]
 
 [package.dependencies]
@@ -3153,4 +3185,4 @@ all = ["iolanta-tables"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<4.0"
-content-hash = "259430aacb8c457fb1801dbce5500195a08b24755d3d170aa1bb2355ad822c8b"
+content-hash = "805ec3bc4558bb16a9905d0abc98936c44b17c274ec678ebafa1f91ab904a623"
