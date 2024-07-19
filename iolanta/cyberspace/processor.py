@@ -1,11 +1,20 @@
 import traceback
 from dataclasses import dataclass
-from typing import ItemsView, Iterable, Mapping, Any
+from typing import Any, ItemsView, Iterable, Mapping
 
-from boltons.iterutils import remap, default_enter
+from boltons.iterutils import default_enter, remap
 from rdflib import (
-    URIRef, Variable, RDF, ConjunctiveGraph, Graph, RDFS, FOAF,
-    Namespace, OWL, DC, VANN,
+    DC,
+    FOAF,
+    OWL,
+    RDF,
+    RDFS,
+    VANN,
+    ConjunctiveGraph,
+    Graph,
+    Namespace,
+    URIRef,
+    Variable,
 )
 from rdflib.plugins.sparql.algebra import translateQuery
 from rdflib.plugins.sparql.evaluate import evalQuery
@@ -75,10 +84,12 @@ class GlobalSPARQLProcessor(Processor):
         bindings: dict[str, Node],
     ):
         """Load data for a given triple."""
-        triple = TripleWithVariables(*[
-            self.resolve_term(term, bindings=bindings)
-            for term in triple
-        ])
+        triple = TripleWithVariables(
+            *[
+                self.resolve_term(term, bindings=bindings)
+                for term in triple
+            ],
+        )
 
         subject, *_etc = triple
 

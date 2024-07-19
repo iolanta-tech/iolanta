@@ -1,14 +1,13 @@
-from rich.columns import Columns
-
 from dataclasses import dataclass
 from enum import StrEnum
 from functools import cached_property
 from typing import Iterable
 
 import funcy
-from rdflib import URIRef, Literal
+from rdflib import Literal, URIRef
+from rich.columns import Columns
 from textual.widget import Widget
-from textual.widgets import Label, Static, ListView, ListItem
+from textual.widgets import Label, ListItem, ListView, Static
 
 from iolanta.facets.facet import Facet
 from iolanta.models import NotLiteralNode
@@ -48,11 +47,13 @@ class OntologyFacet(Facet[Widget]):
                 ),
             )
             for row in rows
-            if (status := TermStatus(
-                (status_literal := row.get('status'))
-                and status_literal.value
-                or 'stable'
-            )) != TermStatus.ARCHAIC
+            if (
+                status := TermStatus(
+                    (status_literal := row.get('status'))
+                    and status_literal.value
+                    or 'stable',
+                )
+            ) != TermStatus.ARCHAIC
         ]
 
         return funcy.group_values(grouped)

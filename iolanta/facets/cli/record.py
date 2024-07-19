@@ -1,18 +1,20 @@
-from dataclasses import field, dataclass
+from dataclasses import dataclass, field
 
-from rdflib import URIRef, OWL
+from rdflib import OWL, URIRef
 from rich.table import Table
 
-from iolanta.facets.cli import RichFacet, Renderable
+from iolanta.facets.cli import Renderable, RichFacet
 from iolanta.facets.facet import FacetOutput
 from iolanta.namespaces import IOLANTA
 
 
 @dataclass
 class Record(RichFacet):
-    skipped_properties: set[URIRef] = field(default_factory=lambda: {
-        OWL.sameAs,
-    })
+    skipped_properties: set[URIRef] = field(
+        default_factory=lambda: {
+            OWL.sameAs,
+        },
+    )
 
     def show(self) -> Renderable:
         rows = self.stored_query('record.sparql', node=self.iri)

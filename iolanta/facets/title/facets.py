@@ -2,7 +2,6 @@ from rdflib import URIRef
 
 from iolanta.facets.facet import Facet
 
-
 PRIORITIES = [
     'dc_title',
     'schema_title',

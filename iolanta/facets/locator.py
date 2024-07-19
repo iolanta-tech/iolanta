@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from functools import cached_property
-from typing import Dict, List, Optional, Type, TypedDict, Iterable
+from typing import Dict, Iterable, List, Optional, Type, TypedDict
 
 import funcy
 from rdflib import ConjunctiveGraph

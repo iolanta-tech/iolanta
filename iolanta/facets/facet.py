@@ -2,7 +2,7 @@ import inspect
 from dataclasses import dataclass, field
 from functools import cached_property
 from pathlib import Path
-from typing import Any, Generic, List, Optional, TypeVar, Union, Iterable
+from typing import Any, Generic, Iterable, List, Optional, TypeVar, Union
 
 from rdflib.term import BNode, Node, URIRef
 

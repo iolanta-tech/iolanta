@@ -7,13 +7,13 @@ from typing import Iterable
 
 import funcy
 import rdflib
-from rdflib import URIRef, DC, SDO, RDFS
-from rdflib.term import Node, Literal, BNode
+from rdflib import DC, RDFS, SDO, URIRef
+from rdflib.term import BNode, Literal, Node
 from rich.markdown import Markdown
 from textual.app import ComposeResult
 from textual.containers import Vertical, VerticalScroll
 from textual.widget import Widget
-from textual.widgets import Label, Static, DataTable
+from textual.widgets import DataTable, Label, Static
 
 from iolanta.cli.formatters.node_to_qname import node_to_qname
 from iolanta.facets.facet import Facet
@@ -147,12 +147,12 @@ class TextualDefaultFacet(Facet[Widget]):
             (
                 self.render(
                     property_iri,
-                    environments=[URIRef('https://iolanta.tech/cli/link')]
+                    environments=[URIRef('https://iolanta.tech/cli/link')],
                 ),
                 ' · '.join(
                     self.render(
                         property_value,
-                        environments=[URIRef('https://iolanta.tech/cli/link')]
+                        environments=[URIRef('https://iolanta.tech/cli/link')],
                     )
                     for property_value in property_values
                 ),
@@ -205,22 +205,26 @@ class TextualDefaultFacet(Facet[Widget]):
                 environments=[URIRef('https://iolanta.tech/cli/link')],
             )
 
-            children.append(Label(
-                '\n[bold]A few nodes connected with this property[/]\n'
-            ))
+            children.append(
+                Label(
+                    '\n[bold]A few nodes connected with this property[/]\n',
+                ),
+            )
             nodes_table = DataTable(show_header=False, show_cursor=False)
             nodes_table.add_columns('Subject', 'Property', 'Object')
-            nodes_table.add_rows([(
-                    self.render(
-                        subject_node,
-                        environments=[URIRef('https://iolanta.tech/cli/link')],
-                    ),
-                    rendered_property,
-                    self.render(
-                        object_node,
-                        environments=[URIRef('https://iolanta.tech/cli/link')]
-                    ))
-                for subject_node, object_node in nodes_for_property
+            nodes_table.add_rows([
+                (
+                        self.render(
+                            subject_node,
+                            environments=[URIRef('https://iolanta.tech/cli/link')],
+                        ),
+                        rendered_property,
+                        self.render(
+                            object_node,
+                            environments=[URIRef('https://iolanta.tech/cli/link')],
+                        ),
+                )
+                    for subject_node, object_node in nodes_for_property
             ])
 
             children.append(nodes_table)

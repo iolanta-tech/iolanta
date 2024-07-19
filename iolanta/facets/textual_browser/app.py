@@ -1,7 +1,7 @@
 from rdflib import URIRef
 from textual.app import App, ComposeResult
 from textual.containers import ScrollableContainer
-from textual.widgets import Header, Footer, Welcome, Button
+from textual.widgets import Button, Footer, Header, Welcome
 
 from iolanta.iolanta import Iolanta
 from iolanta.models import NotLiteralNode
@@ -17,7 +17,7 @@ class Body(ScrollableContainer):
             iolanta.render(
                 iri,
                 [URIRef('https://iolanta.tech/cli/textual')],
-            )[0]
+            )[0],
         )
 
 
@@ -55,5 +55,5 @@ class IolantaBrowser(App):
             iolanta.render(
                 iri,
                 [URIRef('https://iolanta.tech/cli/textual')],
-            )[0]
+            )[0],
         )
