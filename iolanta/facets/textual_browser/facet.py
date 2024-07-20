@@ -1,7 +1,15 @@
+import logging
+
 from textual.app import ReturnType
+from textual.logging import TextualHandler
 
 from iolanta.facets.facet import Facet, FacetOutput
 from iolanta.facets.textual_browser.app import IolantaBrowser
+
+logging.basicConfig(
+    level="NOTSET",
+    handlers=[TextualHandler()],
+)
 
 
 class TextualBrowserFacet(Facet[ReturnType | None]):
@@ -11,4 +19,7 @@ class TextualBrowserFacet(Facet[ReturnType | None]):
         app = IolantaBrowser()
         app.iolanta = self.iolanta
         app.iri = self.iri
-        app.run()
+        try:
+            app.run()
+        except Exception:
+            logging.exception("Unhandled exception.")
