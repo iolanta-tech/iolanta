@@ -20,7 +20,6 @@ deepmerge = "^0.1.1"
 documented = "^0.1.1"
 typer = ">=0.9.0"
 classes = "^0.4.0"
-PyLD = "^2.0.3"
 dominate = "^2.6.0"
 more-itertools = "^9.0.0"
 owlrl = "^6.0.2"
@@ -30,7 +29,7 @@ textual = "^0.47.1"
 iolanta-tables = {version = "^0.1.7", optional = true}
 yarl = ">=1.9.4"
 boltons = "^24.0.0"
-yaml-ld = "^1.0.0"
+yaml-ld = ">=1.0.2"
 
 [tool.poetry.scripts]
 iolanta = "iolanta.cli:app"
@@ -48,6 +47,7 @@ mkdocs-awesome-pages-plugin = "^2.9.2"
 mkdocs-blogging-plugin = "^2.2.11"
 mkdocstrings-python = "^1.8.0"
 mkdocs-iolanta = "^0.1.7"
+textual-dev = "^1.5.1"
 
 [tool.poetry.extras]
 all = ["iolanta-tables"]
