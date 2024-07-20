@@ -8,6 +8,7 @@ from rich.console import Console
 from rich.logging import RichHandler
 from rich.markdown import Markdown
 from rich.table import Table
+from textual.logging import TextualHandler
 from typer import Argument, Context, Option, Typer
 
 from iolanta.cli.formatters.choose import cli_print
@@ -88,7 +89,7 @@ def render_command(
         )
 
     except DocumentedError as documented_error:
-        if iolanta.logger.level == logging.DEBUG:
+        if iolanta.logger.level in {logging.DEBUG, logging.INFO}:
             raise
 
         Console().print(
@@ -100,7 +101,7 @@ def render_command(
         raise typer.Exit(1)
 
     except Exception as err:
-        if iolanta.logger.level == logging.DEBUG:
+        if iolanta.logger.level in {logging.DEBUG, logging.INFO}:
             raise
 
         Console().print(str(err))

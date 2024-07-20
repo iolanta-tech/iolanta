@@ -1,10 +1,9 @@
 import dataclasses
-
-import rdflib_pyld_compat
 import traceback
 from dataclasses import dataclass
 from typing import Any, ItemsView, Iterable, Mapping
 
+import rdflib_pyld_compat
 import yaml_ld
 from boltons.iterutils import default_enter, remap
 from rdflib import (
@@ -27,9 +26,11 @@ from rdflib.plugins.sparql.parserutils import CompValue
 from rdflib.plugins.sparql.sparql import Query
 from rdflib.query import Processor
 from rdflib.term import Node
+from yaml_ld.errors import NotFound
+from yaml_ld.to_rdf import ToRDFOptions
 
 from iolanta.models import Triple, TripleWithVariables
-from iolanta.parsers.dict_parser import parse_quads, UnresolvedIRI
+from iolanta.parsers.dict_parser import UnresolvedIRI, parse_quads
 
 
 def construct_flat_triples(algebra: Mapping[str, Any]) -> Iterable[Triple]:
@@ -45,19 +46,6 @@ def construct_flat_triples(algebra: Mapping[str, Any]) -> Iterable[Triple]:
 @dataclass
 class GlobalSPARQLProcessor(Processor):
     graph: ConjunctiveGraph
-
-    def _download_namespace(self, namespace: Namespace):
-        if namespace == VANN:
-            iri = URIRef('https://vocab.org/vann/vann-vocab-20100607.rdf')
-        else:
-            iri = URIRef(namespace)
-
-        try:
-            self.graph.get_graph(iri)
-        except IndexError:
-            print(f'DOWNLOADING {namespace}')
-            self.graph.get_context(iri).parse(iri)
-            print(f'DOWNLOADED {namespace}!')
 
     def query(
         self,
@@ -83,6 +71,35 @@ class GlobalSPARQLProcessor(Processor):
             query = strOrQuery
         return evalQuery(self.graph, query, initBindings, base)
 
+    def load(self, source: str):
+        if source == str(VANN):
+            source = 'https://vocab.org/vann/vann-vocab-20100607.rdf'
+
+        try:
+            ld_rdf = yaml_ld.to_rdf(source, options=ToRDFOptions())
+        except NotFound as not_found:
+            namespaces = [RDF, RDFS, OWL, FOAF, DC, VANN]
+
+            for namespace in namespaces:
+                if not_found.path.startswith(namespace):
+                    return self.load(namespace)
+
+        try:
+            self.graph.addN(
+                parse_quads(
+                    quads_document=ld_rdf,
+                    graph=subject,  # type: ignore
+                    blank_node_prefix=str(subject),
+                ),
+            )
+            return
+        except UnresolvedIRI as err:
+            raise dataclasses.replace(
+                err,
+                context=None,
+                iri=source,
+            )
+
     def load_data_for_triple(
         self,
         triple: TripleWithVariables,
@@ -99,29 +116,7 @@ class GlobalSPARQLProcessor(Processor):
         subject, *_etc = triple
 
         if isinstance(subject, URIRef):
-            ld_rdf = yaml_ld.to_rdf(subject)
-
-            try:
-                self.graph.addN(
-                    parse_quads(
-                        quads_document=ld_rdf,
-                        graph=subject,  # type: ignore
-                        blank_node_prefix=str(subject),
-                    ),
-                )
-                return
-            except UnresolvedIRI as err:
-                raise dataclasses.replace(
-                    err,
-                    context=None,
-                    iri=subject,
-                )
-
-            namespaces = [RDF, RDFS, OWL, FOAF, DC, VANN]
-
-            for namespace in namespaces:
-                if subject == URIRef(namespace) or subject in namespace:
-                    self._download_namespace(namespace)
+            ...
 
     def resolve_term(self, term: Node, bindings: dict[str, Node]):
         """Resolve triple elements against initial variable bindings."""
