@@ -262,11 +262,13 @@ class Iolanta:
         environment: NotLiteralNode,
     ) -> Iterable[Any]:
         """Find all possible Iolanta facets for a node and render them."""
-        choices = FacetFinder(
-            iolanta=self,
-            node=node,
-            environments=[environment],
-        ).choices()
+        choices = list(
+            FacetFinder(
+                iolanta=self,
+                node=node,
+                environments=[environment],
+            ).choices(),
+        )
 
         pairs = [
             (self.facet_resolver[row['facet']], row['environment'])

@@ -1,11 +1,10 @@
 import dataclasses
-import traceback
+import logging
 from dataclasses import dataclass
-from typing import Any, ItemsView, Iterable, Mapping
+from typing import Any, Iterable, Mapping
 
-import rdflib_pyld_compat
+import owlrl
 import yaml_ld
-from boltons.iterutils import default_enter, remap
 from rdflib import (
     DC,
     FOAF,
@@ -14,15 +13,12 @@ from rdflib import (
     RDFS,
     VANN,
     ConjunctiveGraph,
-    Graph,
-    Namespace,
     URIRef,
     Variable,
 )
 from rdflib.plugins.sparql.algebra import translateQuery
 from rdflib.plugins.sparql.evaluate import evalQuery
 from rdflib.plugins.sparql.parser import parseQuery
-from rdflib.plugins.sparql.parserutils import CompValue
 from rdflib.plugins.sparql.sparql import Query
 from rdflib.query import Processor
 from rdflib.term import Node
@@ -31,6 +27,16 @@ from yaml_ld.to_rdf import ToRDFOptions
 
 from iolanta.models import Triple, TripleWithVariables
 from iolanta.parsers.dict_parser import UnresolvedIRI, parse_quads
+
+logger = logging.getLogger(__name__)
+
+
+REDIRECTS = {
+    # FIXME This is presently hardcoded; we need to
+    #   - either find a way to resolve these URLs automatically,
+    #   - or create a repository of those redirects online.
+    'http://purl.org/vocab/vann/': 'https://vocab.org/vann/vann-vocab-20100607.rdf',
+}
 
 
 def construct_flat_triples(algebra: Mapping[str, Any]) -> Iterable[Triple]:
@@ -69,29 +75,47 @@ class GlobalSPARQLProcessor(Processor):
                 self.load_data_for_triple(triple, bindings=initBindings)
         else:
             query = strOrQuery
+
+        closure_class = owlrl.OWLRL_Extension
+        logger.info(
+            'Inference @ cyberspace: %s started...',
+            closure_class.__name__,
+        )
+        owlrl.DeductiveClosure(closure_class).expand(self.graph)
+        logger.info('Inference @ cyberspace: complete.')
+
         return evalQuery(self.graph, query, initBindings, base)
 
     def load(self, source: str):
-        if source == str(VANN):
-            source = 'https://vocab.org/vann/vann-vocab-20100607.rdf'
+        if source.startswith('file://') or source.startswith('python://'):
+            # FIXME temporary fix. `yaml-ld` doesn't read `context.*` files and
+            #   fails.
+            return
+
+        source = self._apply_redirect(source)
 
         try:
-            ld_rdf = yaml_ld.to_rdf(source, options=ToRDFOptions())
+            ld_rdf = yaml_ld.to_rdf(source)
         except NotFound as not_found:
+            logger.info('%s | 404 Not Found', not_found.path)
             namespaces = [RDF, RDFS, OWL, FOAF, DC, VANN]
 
             for namespace in namespaces:
-                if not_found.path.startswith(namespace):
-                    return self.load(namespace)
+                if not_found.path.startswith(str(namespace)):
+                    return self.load(str(namespace))
+
+            logger.info('%s | Cannot find a matching namespace', not_found.path)
+            return
 
         try:
             self.graph.addN(
                 parse_quads(
                     quads_document=ld_rdf,
-                    graph=subject,  # type: ignore
-                    blank_node_prefix=str(subject),
+                    graph=source,  # type: ignore
+                    blank_node_prefix=str(source),
                 ),
             )
+            logger.info('%s | loaded successfully.', source)
             return
         except UnresolvedIRI as err:
             raise dataclasses.replace(
@@ -113,10 +137,13 @@ class GlobalSPARQLProcessor(Processor):
             ],
         )
 
-        subject, *_etc = triple
+        subject, _predicate, obj = triple
 
         if isinstance(subject, URIRef):
-            ...
+            self.load(str(subject))
+
+        if isinstance(obj, URIRef):
+            self.load(str(obj))
 
     def resolve_term(self, term: Node, bindings: dict[str, Node]):
         """Resolve triple elements against initial variable bindings."""
@@ -127,3 +154,11 @@ class GlobalSPARQLProcessor(Processor):
             )
 
         return term
+
+    def _apply_redirect(self, source: str) -> str:
+        for pattern, destination in REDIRECTS.items():
+            if source.startswith(pattern):
+                logger.info('Rewriting: %s → %s', source, destination)
+                return destination
+
+        return source

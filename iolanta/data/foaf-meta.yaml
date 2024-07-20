@@ -1,4 +1,5 @@
 $id: "foaf:"
+$type: owl:Ontology
 vann:termGroup:
   - rdfs:label: Core Classes
     $reverse:
