@@ -7,6 +7,7 @@ import owlrl
 import yaml_ld
 from rdflib import (
     DC,
+    DCTERMS,
     FOAF,
     OWL,
     RDF,
@@ -14,7 +15,7 @@ from rdflib import (
     VANN,
     ConjunctiveGraph,
     URIRef,
-    Variable, DCTERMS,
+    Variable,
 )
 from rdflib.plugins.sparql.algebra import translateQuery
 from rdflib.plugins.sparql.evaluate import evalQuery
