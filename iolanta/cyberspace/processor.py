@@ -14,7 +14,7 @@ from rdflib import (
     VANN,
     ConjunctiveGraph,
     URIRef,
-    Variable,
+    Variable, DCTERMS,
 )
 from rdflib.plugins.sparql.algebra import translateQuery
 from rdflib.plugins.sparql.evaluate import evalQuery
@@ -23,7 +23,6 @@ from rdflib.plugins.sparql.sparql import Query
 from rdflib.query import Processor
 from rdflib.term import Node
 from yaml_ld.errors import NotFound
-from yaml_ld.to_rdf import ToRDFOptions
 
 from iolanta.models import Triple, TripleWithVariables
 from iolanta.parsers.dict_parser import UnresolvedIRI, parse_quads
@@ -36,6 +35,7 @@ REDIRECTS = {
     #   - either find a way to resolve these URLs automatically,
     #   - or create a repository of those redirects online.
     'http://purl.org/vocab/vann/': 'https://vocab.org/vann/vann-vocab-20100607.rdf',
+    str(DC): str(DCTERMS),
 }
 
 
@@ -49,9 +49,12 @@ def construct_flat_triples(algebra: Mapping[str, Any]) -> Iterable[Triple]:
                 yield from construct_flat_triples(value)
 
 
-@dataclass
+@dataclass(frozen=True)
 class GlobalSPARQLProcessor(Processor):
     graph: ConjunctiveGraph
+
+    def __post_init__(self):
+        self.graph.inference_is_up_to_date = False
 
     def query(
         self,
@@ -76,14 +79,7 @@ class GlobalSPARQLProcessor(Processor):
         else:
             query = strOrQuery
 
-        closure_class = owlrl.OWLRL_Extension
-        logger.info(
-            'Inference @ cyberspace: %s started...',
-            closure_class.__name__,
-        )
-        owlrl.DeductiveClosure(closure_class).expand(self.graph)
-        logger.info('Inference @ cyberspace: complete.')
-
+        self.maybe_apply_inference()
         return evalQuery(self.graph, query, initBindings, base)
 
     def load(self, source: str):
@@ -94,6 +90,10 @@ class GlobalSPARQLProcessor(Processor):
 
         source = self._apply_redirect(source)
 
+        if self.graph.get_context(source):
+            logger.info('%s | skipping: already loaded.', source)
+            return
+
         try:
             ld_rdf = yaml_ld.to_rdf(source)
         except NotFound as not_found:
@@ -102,27 +102,35 @@ class GlobalSPARQLProcessor(Processor):
 
             for namespace in namespaces:
                 if not_found.path.startswith(str(namespace)):
-                    return self.load(str(namespace))
+                    self.load(str(namespace))
+                    logger.info('Redirecting %s → namespace %s', not_found.path, namespace)
+                    return
 
             logger.info('%s | Cannot find a matching namespace', not_found.path)
             return
 
         try:
-            self.graph.addN(
+            quads = list(
                 parse_quads(
                     quads_document=ld_rdf,
                     graph=source,  # type: ignore
                     blank_node_prefix=str(source),
                 ),
             )
-            logger.info('%s | loaded successfully.', source)
-            return
         except UnresolvedIRI as err:
             raise dataclasses.replace(
                 err,
                 context=None,
                 iri=source,
             )
+
+        if not quads:
+            logger.warning('%s | No data found', source)
+            return
+
+        self.graph.addN(quads)
+        self.graph.inference_is_up_to_date = False
+        logger.info('%s | loaded successfully.', source)
 
     def load_data_for_triple(
         self,
@@ -162,3 +170,18 @@ class GlobalSPARQLProcessor(Processor):
                 return destination
 
         return source
+
+    def maybe_apply_inference(self):
+        if self.graph.inference_is_up_to_date:
+            logger.info('Skipping inference.')
+            return
+
+        closure_class = owlrl.OWLRL_Extension
+        logger.info(
+            'Inference @ cyberspace: %s started...',
+            closure_class.__name__,
+        )
+        owlrl.DeductiveClosure(closure_class).expand(self.graph)
+        logger.info('Inference @ cyberspace: complete.')
+
+        self.graph.inference_is_up_to_date = True
