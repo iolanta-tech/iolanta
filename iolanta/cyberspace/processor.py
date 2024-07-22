@@ -1,4 +1,5 @@
 import dataclasses
+import functools
 import logging
 from dataclasses import dataclass
 from typing import Any, Iterable, Mapping
@@ -7,6 +8,7 @@ import owlrl
 import yaml_ld
 from rdflib import (
     DC,
+    DCTERMS,
     FOAF,
     OWL,
     RDF,
@@ -23,7 +25,7 @@ from rdflib.plugins.sparql.sparql import Query
 from rdflib.query import Processor
 from rdflib.term import Node
 from yaml_ld.errors import NotFound
-from yaml_ld.to_rdf import ToRDFOptions
+from yarl import URL
 
 from iolanta.models import Triple, TripleWithVariables
 from iolanta.parsers.dict_parser import UnresolvedIRI, parse_quads
@@ -36,6 +38,7 @@ REDIRECTS = {
     #   - either find a way to resolve these URLs automatically,
     #   - or create a repository of those redirects online.
     'http://purl.org/vocab/vann/': 'https://vocab.org/vann/vann-vocab-20100607.rdf',
+    str(DC): str(DCTERMS),
 }
 
 
@@ -49,9 +52,12 @@ def construct_flat_triples(algebra: Mapping[str, Any]) -> Iterable[Triple]:
                 yield from construct_flat_triples(value)
 
 
-@dataclass
+@dataclass(frozen=True)
 class GlobalSPARQLProcessor(Processor):
     graph: ConjunctiveGraph
+
+    def __post_init__(self):
+        self.graph.last_not_inferred_source = None
 
     def query(
         self,
@@ -76,23 +82,22 @@ class GlobalSPARQLProcessor(Processor):
         else:
             query = strOrQuery
 
-        closure_class = owlrl.OWLRL_Extension
-        logger.info(
-            'Inference @ cyberspace: %s started...',
-            closure_class.__name__,
-        )
-        owlrl.DeductiveClosure(closure_class).expand(self.graph)
-        logger.info('Inference @ cyberspace: complete.')
-
+        self.maybe_apply_inference()
         return evalQuery(self.graph, query, initBindings, base)
 
+    @functools.lru_cache(maxsize=None)
     def load(self, source: str):
-        if source.startswith('file://') or source.startswith('python://'):
+        url = URL(source)
+
+        if url.scheme in {'file', 'python', 'local'}:
             # FIXME temporary fix. `yaml-ld` doesn't read `context.*` files and
             #   fails.
             return
 
         source = self._apply_redirect(source)
+
+        if self.graph.get_context(source):
+            return
 
         try:
             ld_rdf = yaml_ld.to_rdf(source)
@@ -102,27 +107,35 @@ class GlobalSPARQLProcessor(Processor):
 
             for namespace in namespaces:
                 if not_found.path.startswith(str(namespace)):
-                    return self.load(str(namespace))
+                    self.load(str(namespace))
+                    logger.info('Redirecting %s → namespace %s', not_found.path, namespace)
+                    return
 
             logger.info('%s | Cannot find a matching namespace', not_found.path)
             return
 
         try:
-            self.graph.addN(
+            quads = list(
                 parse_quads(
                     quads_document=ld_rdf,
                     graph=source,  # type: ignore
                     blank_node_prefix=str(source),
                 ),
             )
-            logger.info('%s | loaded successfully.', source)
-            return
         except UnresolvedIRI as err:
             raise dataclasses.replace(
                 err,
                 context=None,
                 iri=source,
             )
+
+        if not quads:
+            logger.warning('%s | No data found', source)
+            return
+
+        self.graph.addN(quads)
+        self.graph.last_not_inferred_source = source
+        logger.info('%s | loaded successfully.', source)
 
     def load_data_for_triple(
         self,
@@ -162,3 +175,18 @@ class GlobalSPARQLProcessor(Processor):
                 return destination
 
         return source
+
+    def maybe_apply_inference(self):
+        if self.graph.last_not_inferred_source is None:
+            return
+
+        closure_class = owlrl.OWLRL_Extension
+        logger.info(
+            'Inference @ cyberspace: %s (due to %s) started…',
+            closure_class.__name__,
+            self.graph.last_not_inferred_source,
+        )
+        owlrl.DeductiveClosure(closure_class).expand(self.graph)
+        logger.info('Inference @ cyberspace: complete.')
+
+        self.graph.last_not_inferred_source = None
