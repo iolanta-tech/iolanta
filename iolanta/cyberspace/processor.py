@@ -1,4 +1,5 @@
 import dataclasses
+import functools
 import logging
 from dataclasses import dataclass
 from typing import Any, Iterable, Mapping
@@ -84,6 +85,7 @@ class GlobalSPARQLProcessor(Processor):
         self.maybe_apply_inference()
         return evalQuery(self.graph, query, initBindings, base)
 
+    @functools.lru_cache(maxsize=None)
     def load(self, source: str):
         url = URL(source)
 
