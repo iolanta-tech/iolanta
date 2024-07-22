@@ -24,6 +24,7 @@ from rdflib.plugins.sparql.sparql import Query
 from rdflib.query import Processor
 from rdflib.term import Node
 from yaml_ld.errors import NotFound
+from yarl import URL
 
 from iolanta.models import Triple, TripleWithVariables
 from iolanta.parsers.dict_parser import UnresolvedIRI, parse_quads
@@ -55,7 +56,7 @@ class GlobalSPARQLProcessor(Processor):
     graph: ConjunctiveGraph
 
     def __post_init__(self):
-        self.graph.inference_is_up_to_date = False
+        self.graph.last_not_inferred_source = None
 
     def query(
         self,
@@ -84,7 +85,9 @@ class GlobalSPARQLProcessor(Processor):
         return evalQuery(self.graph, query, initBindings, base)
 
     def load(self, source: str):
-        if source.startswith('file://') or source.startswith('python://'):
+        url = URL(source)
+
+        if url.scheme in {'file', 'python', 'local'}:
             # FIXME temporary fix. `yaml-ld` doesn't read `context.*` files and
             #   fails.
             return
@@ -92,7 +95,6 @@ class GlobalSPARQLProcessor(Processor):
         source = self._apply_redirect(source)
 
         if self.graph.get_context(source):
-            logger.info('%s | skipping: already loaded.', source)
             return
 
         try:
@@ -130,7 +132,7 @@ class GlobalSPARQLProcessor(Processor):
             return
 
         self.graph.addN(quads)
-        self.graph.inference_is_up_to_date = False
+        self.graph.last_not_inferred_source = source
         logger.info('%s | loaded successfully.', source)
 
     def load_data_for_triple(
@@ -173,16 +175,16 @@ class GlobalSPARQLProcessor(Processor):
         return source
 
     def maybe_apply_inference(self):
-        if self.graph.inference_is_up_to_date:
-            logger.info('Skipping inference.')
+        if self.graph.last_not_inferred_source is None:
             return
 
         closure_class = owlrl.OWLRL_Extension
         logger.info(
-            'Inference @ cyberspace: %s started...',
+            'Inference @ cyberspace: %s (due to %s) started…',
             closure_class.__name__,
+            self.graph.last_not_inferred_source,
         )
         owlrl.DeductiveClosure(closure_class).expand(self.graph)
         logger.info('Inference @ cyberspace: complete.')
 
-        self.graph.inference_is_up_to_date = True
+        self.graph.last_not_inferred_source = None
