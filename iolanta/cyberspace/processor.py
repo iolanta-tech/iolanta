@@ -39,6 +39,10 @@ REDIRECTS = {
     #   - or create a repository of those redirects online.
     'http://purl.org/vocab/vann/': 'https://vocab.org/vann/vann-vocab-20100607.rdf',
     str(DC): str(DCTERMS),
+    str(RDF): str(RDF),
+    str(RDFS): str(RDFS),
+    str(OWL): str(OWL),
+    str(FOAF): str(FOAF),
 }
 
 
@@ -94,7 +98,9 @@ class GlobalSPARQLProcessor(Processor):
             #   fails.
             return
 
-        source = self._apply_redirect(source)
+        new_source = self._apply_redirect(source)
+        if new_source != source:
+            return self.load(new_source)
 
         if self.graph.get_context(source):
             return
