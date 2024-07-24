@@ -12,4 +12,4 @@ class TextualLinkFacet(Facet[str]):
             environments=[URIRef('https://iolanta.tech/env/title')]
         )
 
-        return f'[@click="goto(\'{self.iri}\')"]{label}[/]'
+        return f'[@click="app.goto(\'{self.iri}\')"]{label}[/]'
