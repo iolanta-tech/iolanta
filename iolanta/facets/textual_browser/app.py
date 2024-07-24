@@ -1,3 +1,5 @@
+import functools
+
 from rdflib import URIRef
 from textual.app import App, ComposeResult
 from textual.containers import ScrollableContainer
@@ -43,7 +45,7 @@ class IolantaBrowser(App):
         """An action to toggle dark mode."""
         self.dark = not self.dark
 
-    async def goto(self, destination: str):
+    def goto(self, destination: str):
         body = self.query_one(Body)
 
         self.iri = URIRef(destination)
@@ -54,8 +56,14 @@ class IolantaBrowser(App):
             iri,
             [URIRef('https://iolanta.tech/cli/textual')],
         )[0]
-        await body.remove_children()
-        await body.mount(rendered)
+        body.remove_children()
+        body.mount(rendered)
 
     def action_goto(self, destination: str):
-        self.run_worker(self.goto(destination))
+        self.run_worker(
+            functools.partial(
+                self.goto,
+                destination,
+            ),
+            thread=True,
+        )
