@@ -100,10 +100,10 @@ class TextualDefaultFacet(Facet[Widget]):
         )
         if isinstance(qname, ComputedQName):
             namespace_part = (
-                f"[@click=goto('{qname.namespace_url}')]{qname.namespace_name}[/]"
+                f"[@click=app.goto('{qname.namespace_url}')]{qname.namespace_name}[/]"
             )
             term_part = qname.term if iri == self.iri else (
-                f"[@click=goto('{iri}')]{qname.term}[/]"
+                f"[@click=app.goto('{iri}')]{qname.term}[/]"
             )
 
             return f'{namespace_part}:{term_part}'
@@ -111,7 +111,7 @@ class TextualDefaultFacet(Facet[Widget]):
         if iri == self.iri:
             return str(iri)
 
-        return f"[@click=goto('{iri}')]{iri}[/]"
+        return f"[@click=app.goto('{iri}')]{iri}[/]"
 
     @cached_property
     def description(self) -> str | None:
