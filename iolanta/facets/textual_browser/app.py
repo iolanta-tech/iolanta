@@ -3,7 +3,7 @@ import functools
 from rdflib import URIRef
 from textual.app import App, ComposeResult
 from textual.containers import ScrollableContainer
-from textual.widgets import Button, Footer, Header, Welcome
+from textual.widgets import Button, Footer, Header, Welcome, Label, Static
 from textual.worker import Worker, WorkerState
 
 from iolanta.iolanta import Iolanta
@@ -14,14 +14,7 @@ class Body(ScrollableContainer):
     """Browser body."""
 
     def on_mount(self):
-        iolanta: Iolanta = self.app.iolanta
-        iri: NotLiteralNode = self.app.iri
-        self.mount(
-            iolanta.render(
-                iri,
-                [URIRef('https://iolanta.tech/cli/textual')],
-            )[0],
-        )
+        self.app.action_goto(self.app.iri)
 
 
 class IolantaBrowser(App):
@@ -39,7 +32,7 @@ class IolantaBrowser(App):
 
     def compose(self) -> ComposeResult:
         yield Header()
-        yield Footer()
+        yield Footer(Static('status'))
         yield Body()
 
     def action_toggle_dark(self) -> None:
@@ -67,7 +60,6 @@ class IolantaBrowser(App):
 
             case WorkerState.ERROR:
                 raise ValueError(event)
-
 
     def action_goto(self, destination: str):
         self.run_worker(
