@@ -4,6 +4,7 @@ from rdflib import URIRef
 from textual.app import App, ComposeResult
 from textual.containers import ScrollableContainer
 from textual.widgets import Button, Footer, Header, Welcome
+from textual.worker import Worker, WorkerState
 
 from iolanta.iolanta import Iolanta
 from iolanta.models import NotLiteralNode
@@ -56,14 +57,23 @@ class IolantaBrowser(App):
             [URIRef('https://iolanta.tech/cli/textual')],
         )[0]
 
+    def on_worker_state_changed(self, event: Worker.StateChanged):
+        match event.state:
+            case WorkerState.SUCCESS:
+                renderable = event.worker.result
+                body = self.query_one(Body)
+                body.remove_children()
+                body.mount(renderable)
+
+            case WorkerState.ERROR:
+                raise ValueError(event)
+
+
     def action_goto(self, destination: str):
-        body = self.query_one(Body)
-        rendered = self.run_worker(
+        self.run_worker(
             functools.partial(
                 self.goto,
                 destination,
             ),
             thread=True,
         )
-        body.remove_children()
-        body.mount(rendered)
