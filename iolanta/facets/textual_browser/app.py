@@ -46,24 +46,24 @@ class IolantaBrowser(App):
         self.dark = not self.dark
 
     def goto(self, destination: str):
-        body = self.query_one(Body)
-
         self.iri = URIRef(destination)
 
         iolanta: Iolanta = self.iolanta
         iri: NotLiteralNode = self.iri
-        rendered = iolanta.render(
+        return self.call_from_thread(
+            iolanta.render,
             iri,
             [URIRef('https://iolanta.tech/cli/textual')],
         )[0]
-        body.remove_children()
-        body.mount(rendered)
 
     def action_goto(self, destination: str):
-        self.run_worker(
+        body = self.query_one(Body)
+        rendered = self.run_worker(
             functools.partial(
                 self.goto,
                 destination,
             ),
             thread=True,
         )
+        body.remove_children()
+        body.mount(rendered)
