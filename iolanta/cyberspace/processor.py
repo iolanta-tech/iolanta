@@ -24,8 +24,11 @@ from rdflib.plugins.sparql.parser import parseQuery
 from rdflib.plugins.sparql.sparql import Query
 from rdflib.query import Processor
 from rdflib.term import Node
-from yaml_ld.errors import NotFound
+from urllib3.exceptions import NameResolutionError
+from yaml_ld.document_loaders.content_types import ParserNotFound
+from yaml_ld.errors import NotFound, YAMLLDError
 from yarl import URL
+from requests.exceptions import ConnectionError
 
 from iolanta.models import Triple, TripleWithVariables
 from iolanta.parsers.dict_parser import UnresolvedIRI, parse_quads
@@ -118,6 +121,18 @@ class GlobalSPARQLProcessor(Processor):
                     return
 
             logger.info('%s | Cannot find a matching namespace', not_found.path)
+            return
+        except ConnectionError as name_resolution_error:
+            logger.info(
+                '%s | name resolution error: %s',
+                source, str(name_resolution_error),
+            )
+            return
+        except ParserNotFound as parser_not_found:
+            logger.info('%s | %s', source, str(parser_not_found))
+            return
+        except YAMLLDError as yaml_ld_error:
+            logger.info('%s | %s', source, str(yaml_ld_error))
             return
 
         try:
