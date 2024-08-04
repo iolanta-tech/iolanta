@@ -3,7 +3,10 @@ import functools
 from rdflib import URIRef
 from textual.app import App, ComposeResult
 from textual.containers import ScrollableContainer
-from textual.widgets import Button, Footer, Header, Welcome, Label, Static
+from textual.widgets import (
+    Button, Footer, Header, Welcome, Label, Static,
+    ContentSwitcher, Placeholder,
+)
 from textual.worker import Worker, WorkerState
 
 from iolanta.iolanta import Iolanta
@@ -15,6 +18,11 @@ class Body(ScrollableContainer):
 
     def on_mount(self):
         self.app.action_goto(self.app.iri)
+
+
+class Home(Placeholder):
+    def compose(self) -> ComposeResult:
+        yield Static('Welcome to Iolanta! This is a placeholder page.')
 
 
 class IolantaBrowser(App):
@@ -32,8 +40,10 @@ class IolantaBrowser(App):
 
     def compose(self) -> ComposeResult:
         yield Header()
-        yield Footer(Static('status'))
-        yield Body()
+        yield Footer()
+        with ContentSwitcher(initial='home'):
+            yield Home(id='home')
+            # yield Body()
 
     def action_toggle_dark(self) -> None:
         """An action to toggle dark mode."""
