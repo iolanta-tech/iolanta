@@ -2,9 +2,11 @@ import functools
 import uuid
 from typing import cast
 
+import funcy
 from rdflib import URIRef
 from textual.app import App, ComposeResult
 from textual.containers import ScrollableContainer
+from textual.reactive import reactive
 from textual.widgets import (
     Footer, Header, Static,
     ContentSwitcher, Placeholder,
@@ -32,8 +34,12 @@ class IolantaBrowser(App):
 
     iolanta: Iolanta
     iri: NotLiteralNode
+    history = reactive[list[tuple[str, str]]](list, init=False)
+    current_page_id = reactive[str | None](None, init=False)
 
     BINDINGS = [
+        ('alt+left', 'back', 'Back'),
+        ('alt+right', 'forward', 'Fwd'),
         ('g', 'goto', 'Go to URL'),
         ('s', 'search', 'Search'),
         ('t', 'toggle_dark', 'Toggle Dark Mode'),
@@ -45,7 +51,6 @@ class IolantaBrowser(App):
         yield Footer()
         with Body(initial='home'):
             yield Home(id='home')
-            # yield Body()
 
     def action_toggle_dark(self) -> None:
         """An action to toggle dark mode."""
@@ -76,6 +81,9 @@ class IolantaBrowser(App):
                 )
                 body.current = page_id
 
+                self.history.append([page_id, iri])
+                self.current_page_id = page_id
+
             case WorkerState.ERROR:
                 raise ValueError(event)
 
@@ -87,3 +95,15 @@ class IolantaBrowser(App):
             ),
             thread=True,
         )
+
+    def action_back(self):
+        for previous, current in funcy.pairwise(self.history):
+            if current[0] == self.current_page_id:
+                self.query_one(Body).current = self.current_page_id = previous[0]
+                return
+
+    def action_forward(self):
+        for current, following in funcy.pairwise(self.history):
+            if current[0] == self.current_page_id:
+                self.query_one(Body).current = self.current_page_id = following[0]
+                return
