@@ -1,10 +1,12 @@
 import functools
+import uuid
+from typing import cast
 
 from rdflib import URIRef
 from textual.app import App, ComposeResult
 from textual.containers import ScrollableContainer
 from textual.widgets import (
-    Button, Footer, Header, Welcome, Label, Static,
+    Footer, Header, Static,
     ContentSwitcher, Placeholder,
 )
 from textual.worker import Worker, WorkerState
@@ -13,7 +15,7 @@ from iolanta.iolanta import Iolanta
 from iolanta.models import NotLiteralNode
 
 
-class Body(ScrollableContainer):
+class Body(ContentSwitcher):
     """Browser body."""
 
     def on_mount(self):
@@ -41,7 +43,7 @@ class IolantaBrowser(App):
     def compose(self) -> ComposeResult:
         yield Header()
         yield Footer()
-        with ContentSwitcher(initial='home'):
+        with Body(initial='home'):
             yield Home(id='home')
             # yield Body()
 
@@ -49,12 +51,12 @@ class IolantaBrowser(App):
         """An action to toggle dark mode."""
         self.dark = not self.dark
 
-    def goto(self, destination: str):
+    def render_iri(self, destination: str):
         self.iri = URIRef(destination)
 
         iolanta: Iolanta = self.iolanta
         iri: NotLiteralNode = self.iri
-        return self.call_from_thread(
+        return destination, self.call_from_thread(
             iolanta.render,
             iri,
             [URIRef('https://iolanta.tech/cli/textual')],
@@ -63,10 +65,16 @@ class IolantaBrowser(App):
     def on_worker_state_changed(self, event: Worker.StateChanged):
         match event.state:
             case WorkerState.SUCCESS:
-                renderable = event.worker.result
-                body = self.query_one(Body)
-                body.remove_children()
-                body.mount(renderable)
+                iri, renderable = event.worker.result
+                body = cast(Body, self.query_one(Body))
+                page_id = f'page_{uuid.uuid4().hex}'
+                body.mount(
+                    ScrollableContainer(
+                        renderable,
+                        id=page_id,
+                    )
+                )
+                body.current = page_id
 
             case WorkerState.ERROR:
                 raise ValueError(event)
@@ -74,7 +82,7 @@ class IolantaBrowser(App):
     def action_goto(self, destination: str):
         self.run_worker(
             functools.partial(
-                self.goto,
+                self.render_iri,
                 destination,
             ),
             thread=True,
