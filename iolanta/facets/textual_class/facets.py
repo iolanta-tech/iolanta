@@ -52,12 +52,16 @@ class InstancesList(ListView):
         for instance, list_item in self.list_item_by_instance.items():
             list_item.query_one(Label).renderable = '⏳ Loading…'
 
-            label = Label(
-                self.app.iolanta.render(
+            try:
+                rendered = self.app.iolanta.render(
                     instance,
                     environments=[URIRef('https://iolanta.tech/cli/link')]
-                )[0],
-            )
+                )[0]
+            except Exception as rendering_error:
+                self.log(f'Failed to render {instance}: {rendering_error}')
+                rendered = f'💥 {instance}'
+
+            label = Label(rendered)
 
             self.app.call_from_thread(list_item.remove_children)
             self.app.call_from_thread(list_item.mount, label)
