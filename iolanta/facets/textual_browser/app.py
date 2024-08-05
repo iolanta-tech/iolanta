@@ -1,20 +1,25 @@
 import functools
 import uuid
+from dataclasses import dataclass
 from typing import cast
 
-import funcy
 from rdflib import URIRef
 from textual.app import App, ComposeResult
 from textual.containers import ScrollableContainer
-from textual.reactive import reactive
-from textual.widgets import (
-    Footer, Header, Static,
-    ContentSwitcher, Placeholder,
-)
+from textual.widgets import ContentSwitcher, Footer, Header, Placeholder, Static
 from textual.worker import Worker, WorkerState
 
+from iolanta.facets.textual_browser.history import NavigationHistory
 from iolanta.iolanta import Iolanta
 from iolanta.models import NotLiteralNode
+
+
+@dataclass
+class Location:
+    """Unique ID and IRI associated with it."""
+
+    page_id: str
+    url: str
 
 
 class Body(ContentSwitcher):
@@ -34,29 +39,36 @@ class IolantaBrowser(App):
 
     iolanta: Iolanta
     iri: NotLiteralNode
-    history = reactive[list[tuple[str, str]]](list, init=False)
-    current_page_id = reactive[str | None](None, init=False)
 
-    BINDINGS = [
+    @functools.cached_property
+    def history(self) -> NavigationHistory[Location]:
+        """Cached navigation history."""
+        return NavigationHistory[Location]()
+
+    BINDINGS = [  # noqa: WPS115
         ('alt+left', 'back', 'Back'),
         ('alt+right', 'forward', 'Fwd'),
-        ('g', 'goto', 'Go to URL'),
-        ('s', 'search', 'Search'),
         ('t', 'toggle_dark', 'Toggle Dark Mode'),
         ('q', 'quit', 'Quit'),
     ]
 
     def compose(self) -> ComposeResult:
-        yield Header()
+        """Compose widgets."""
+        yield Header(icon='👁️')
         yield Footer()
         with Body(initial='home'):
             yield Home(id='home')
 
+    def on_mount(self):
+        """Set title."""
+        self.title = 'Iolanta'
+
     def action_toggle_dark(self) -> None:
-        """An action to toggle dark mode."""
+        """Toggle dark mode."""
         self.dark = not self.dark
 
     def render_iri(self, destination: str):
+        """Render an IRI in a thread."""
         self.iri = URIRef(destination)
 
         iolanta: Iolanta = self.iolanta
@@ -68,6 +80,7 @@ class IolantaBrowser(App):
         )[0]
 
     def on_worker_state_changed(self, event: Worker.StateChanged):
+        """Render a page as soon as it is ready."""
         match event.state:
             case WorkerState.SUCCESS:
                 iri, renderable = event.worker.result
@@ -77,17 +90,17 @@ class IolantaBrowser(App):
                     ScrollableContainer(
                         renderable,
                         id=page_id,
-                    )
+                    ),
                 )
                 body.current = page_id
-
-                self.history.append([page_id, iri])
-                self.current_page_id = page_id
+                self.history.goto(Location(page_id, iri))
+                self.sub_title = iri
 
             case WorkerState.ERROR:
                 raise ValueError(event)
 
     def action_goto(self, destination: str):
+        """Go to an IRI."""
         self.run_worker(
             functools.partial(
                 self.render_iri,
@@ -97,13 +110,9 @@ class IolantaBrowser(App):
         )
 
     def action_back(self):
-        for previous, current in funcy.pairwise(self.history):
-            if current[0] == self.current_page_id:
-                self.query_one(Body).current = self.current_page_id = previous[0]
-                return
+        """Go backward."""
+        self.query_one(Body).current = self.history.back().page_id
 
     def action_forward(self):
-        for current, following in funcy.pairwise(self.history):
-            if current[0] == self.current_page_id:
-                self.query_one(Body).current = self.current_page_id = following[0]
-                return
+        """Go forward."""
+        self.query_one(Body).current = self.history.forward().page_id

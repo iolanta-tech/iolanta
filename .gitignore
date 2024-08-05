@@ -218,3 +218,4 @@ site/
 .python-version
 
 mkdocs-material-insiders
+.flakeheaven_cache

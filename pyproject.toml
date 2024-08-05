@@ -12,7 +12,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.10,<4.0"
+python = ">=3.10,<3.12"
 rdflib = "<8.0"
 python-frontmatter = "^0.5.0"
 requests = "^2.25.1"
@@ -42,12 +42,12 @@ base = "iolanta:IolantaBase"
 cyberspace = "iolanta.cyberspace.processor:GlobalSPARQLProcessor"
 
 [tool.poetry.group.dev.dependencies]
-jeeves-yeti-pyproject = "^0.2.21"
+jeeves-yeti-pyproject = ">=0.2.35"
 mkdocs-awesome-pages-plugin = "^2.9.2"
 mkdocs-blogging-plugin = "^2.2.11"
 mkdocstrings-python = "^1.8.0"
 mkdocs-iolanta = "^0.1.7"
-textual-dev = "^1.5.1"
+textual-dev = ">=1.5.1"
 
 [tool.poetry.extras]
 all = ["iolanta-tables"]
@@ -55,3 +55,10 @@ all = ["iolanta-tables"]
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+
+[tool.flakeheaven.exceptions."iolanta/facets/textual_browser/history.py"]
+wemake-python-styleguide = [
+    # Save stuff into a dataclass attribute
+    "-WPS601",
+]

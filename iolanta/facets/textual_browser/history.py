@@ -6,33 +6,34 @@ LocationType = TypeVar('LocationType')
 
 
 @dataclass
-class BrowserHistory(Generic[LocationType]):
-    history: deque = field(default_factory=deque)
-    current: str | None = None
-    forward_stack: deque = field(default_factory=deque)
+class NavigationHistory(Generic[LocationType]):
+    """Navigation history."""
 
-    def visit(self, url: str):
+    past: deque = field(default_factory=deque)
+    current: LocationType | None = None
+    future: deque = field(default_factory=deque)
+
+    def goto(self, location: LocationType) -> LocationType:
+        """Go to a location."""
         if self.current is not None:
-            self.history.append(self.current)
-        self.current = url
-        self.forward_stack.clear()
+            self.past.append(self.current)
+        self.current = location
+        self.future.clear()
 
-    def back(self):
-        if self.history:
-            self.forward_stack.appendleft(self.current)
-            self.current = self.history.pop()
-        else:
-            print("No history to go back to.")
+        return self.current
 
-    def forward(self):
-        if self.forward_stack:
-            self.history.append(self.current)
-            self.current = self.forward_stack.popleft()
-        else:
-            print("No forward history to go to.")
+    def back(self) -> LocationType | None:
+        """Go back in history."""
+        if self.past:
+            self.future.appendleft(self.current)
+            self.current = self.past.pop()
 
-    def goto(self, url: str):
-        if self.current is not None:
-            self.history.append(self.current)
-        self.current = url
-        self.forward_stack.clear()
+        return self.current
+
+    def forward(self) -> LocationType | None:
+        """Go forward in history."""
+        if self.future:
+            self.past.append(self.current)
+            self.current = self.future.popleft()
+
+        return self.current
