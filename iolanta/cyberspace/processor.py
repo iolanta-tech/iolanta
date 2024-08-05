@@ -25,7 +25,6 @@ from rdflib.plugins.sparql.sparql import Query
 from rdflib.query import Processor
 from rdflib.term import Node
 from requests.exceptions import ConnectionError
-from urllib3.exceptions import NameResolutionError
 from yaml_ld.document_loaders.content_types import ParserNotFound
 from yaml_ld.errors import NotFound, YAMLLDError
 from yarl import URL

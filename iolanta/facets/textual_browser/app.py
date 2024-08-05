@@ -3,14 +3,10 @@ import uuid
 from dataclasses import dataclass
 from typing import cast
 
-import funcy
 from rdflib import URIRef
-from rich.text import Text
 from textual.app import App, ComposeResult
 from textual.containers import ScrollableContainer
-from textual.reactive import reactive
 from textual.widgets import ContentSwitcher, Footer, Header, Placeholder, Static
-from textual.widgets._header import HeaderTitle
 from textual.worker import Worker, WorkerState
 
 from iolanta.facets.textual_browser.history import NavigationHistory
@@ -93,9 +89,7 @@ class IolantaBrowser(App):
                 )
                 body.current = page_id
                 self.history.goto(Location(page_id, iri))
-
-                title = cast(HeaderTitle, self.query_one(HeaderTitle))
-                title.sub_text = iri
+                self.sub_title = iri
 
             case WorkerState.ERROR:
                 raise ValueError(event)

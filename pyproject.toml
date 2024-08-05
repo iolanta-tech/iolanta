@@ -55,3 +55,10 @@ all = ["iolanta-tables"]
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+
+[tool.flakeheaven.exceptions."iolanta/facets/textual_browser/history.py"]
+wemake-python-styleguide = [
+    # Save stuff into a dataclass attribute
+    "-WPS601",
+]
