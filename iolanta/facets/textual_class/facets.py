@@ -1,24 +1,15 @@
 from functools import cached_property
-from typing import cast
 
 import funcy
 from rdflib import BNode, URIRef
-from rich.text import Text
-from textual import events
 from textual.app import ComposeResult
-from textual.containers import Horizontal, Vertical
-from textual.events import Event
+from textual.containers import Vertical
 from textual.reactive import reactive
-from textual.scrollbar import ScrollUp
 from textual.widget import Widget
 from textual.widgets import (
-    Button,
     Label,
     ListItem,
     ListView,
-    LoadingIndicator,
-    Placeholder,
-    Static,
 )
 
 from iolanta.facets.facet import Facet

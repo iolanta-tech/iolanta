@@ -13,7 +13,7 @@ from textual.widgets import ContentSwitcher, Footer, Header, Placeholder, Static
 from textual.widgets._header import HeaderTitle
 from textual.worker import Worker, WorkerState
 
-from iolanta.facets.textual_browser.history import BrowserHistory
+from iolanta.facets.textual_browser.history import NavigationHistory
 from iolanta.iolanta import Iolanta
 from iolanta.models import NotLiteralNode
 
@@ -43,8 +43,8 @@ class IolantaBrowser(App):
     iri: NotLiteralNode
 
     @functools.cached_property
-    def history(self) -> BrowserHistory[Location]:
-        return BrowserHistory[Location]()
+    def history(self) -> NavigationHistory[Location]:
+        return NavigationHistory[Location]()
 
     BINDINGS = [
         ('alt+left', 'back', 'Back'),

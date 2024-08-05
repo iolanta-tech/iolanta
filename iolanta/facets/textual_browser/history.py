@@ -6,14 +6,15 @@ LocationType = TypeVar('LocationType')
 
 
 @dataclass
-class BrowserHistory(Generic[LocationType]):
-    """Browsing history."""
+class NavigationHistory(Generic[LocationType]):
+    """Navigation history."""
 
     past: deque = field(default_factory=deque)
     current: LocationType | None = None
     future: deque = field(default_factory=deque)
 
     def goto(self, location: LocationType) -> LocationType:
+        """Go to a location."""
         if self.current is not None:
             self.past.append(self.current)
         self.current = location
@@ -22,6 +23,7 @@ class BrowserHistory(Generic[LocationType]):
         return self.current
 
     def back(self) -> LocationType | None:
+        """Go back in history."""
         if self.past:
             self.future.appendleft(self.current)
             self.current = self.past.pop()
@@ -29,6 +31,7 @@ class BrowserHistory(Generic[LocationType]):
         return self.current
 
     def forward(self) -> LocationType | None:
+        """Go forward in history."""
         if self.future:
             self.past.append(self.current)
             self.current = self.future.popleft()
