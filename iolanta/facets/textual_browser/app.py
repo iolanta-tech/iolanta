@@ -16,6 +16,8 @@ from iolanta.models import NotLiteralNode
 
 @dataclass
 class Location:
+    """Unique ID and IRI associated with it."""
+
     page_id: str
     url: str
 
@@ -40,31 +42,33 @@ class IolantaBrowser(App):
 
     @functools.cached_property
     def history(self) -> NavigationHistory[Location]:
+        """Cached navigation history."""
         return NavigationHistory[Location]()
 
-    BINDINGS = [
+    BINDINGS = [  # noqa: WPS115
         ('alt+left', 'back', 'Back'),
         ('alt+right', 'forward', 'Fwd'),
-        # ('g', 'goto', 'Go to URL'),
-        # ('s', 'search', 'Search'),
         ('t', 'toggle_dark', 'Toggle Dark Mode'),
         ('q', 'quit', 'Quit'),
     ]
 
     def compose(self) -> ComposeResult:
+        """Compose widgets."""
         yield Header(icon='👁️')
         yield Footer()
         with Body(initial='home'):
             yield Home(id='home')
 
     def on_mount(self):
+        """Set title."""
         self.title = 'Iolanta'
 
     def action_toggle_dark(self) -> None:
-        """An action to toggle dark mode."""
+        """Toggle dark mode."""
         self.dark = not self.dark
 
     def render_iri(self, destination: str):
+        """Render an IRI in a thread."""
         self.iri = URIRef(destination)
 
         iolanta: Iolanta = self.iolanta
@@ -76,6 +80,7 @@ class IolantaBrowser(App):
         )[0]
 
     def on_worker_state_changed(self, event: Worker.StateChanged):
+        """Render a page as soon as it is ready."""
         match event.state:
             case WorkerState.SUCCESS:
                 iri, renderable = event.worker.result
@@ -95,6 +100,7 @@ class IolantaBrowser(App):
                 raise ValueError(event)
 
     def action_goto(self, destination: str):
+        """Go to an IRI."""
         self.run_worker(
             functools.partial(
                 self.render_iri,
@@ -104,7 +110,9 @@ class IolantaBrowser(App):
         )
 
     def action_back(self):
+        """Go backward."""
         self.query_one(Body).current = self.history.back().page_id
 
     def action_forward(self):
+        """Go forward."""
         self.query_one(Body).current = self.history.forward().page_id

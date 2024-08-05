@@ -42,7 +42,7 @@ base = "iolanta:IolantaBase"
 cyberspace = "iolanta.cyberspace.processor:GlobalSPARQLProcessor"
 
 [tool.poetry.group.dev.dependencies]
-jeeves-yeti-pyproject = ">=0.2.34"
+jeeves-yeti-pyproject = ">=0.2.35"
 mkdocs-awesome-pages-plugin = "^2.9.2"
 mkdocs-blogging-plugin = "^2.2.11"
 mkdocstrings-python = "^1.8.0"
