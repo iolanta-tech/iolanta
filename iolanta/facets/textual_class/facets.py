@@ -2,18 +2,23 @@ from functools import cached_property
 from typing import cast
 
 import funcy
-from rdflib import URIRef, BNode
+from rdflib import BNode, URIRef
 from rich.text import Text
 from textual import events
 from textual.app import ComposeResult
-from textual.containers import Vertical, Horizontal
+from textual.containers import Horizontal, Vertical
 from textual.events import Event
 from textual.reactive import reactive
 from textual.scrollbar import ScrollUp
 from textual.widget import Widget
 from textual.widgets import (
-    Button, Label, ListItem, ListView, Static,
-    LoadingIndicator, Placeholder,
+    Button,
+    Label,
+    ListItem,
+    ListView,
+    LoadingIndicator,
+    Placeholder,
+    Static,
 )
 
 from iolanta.facets.facet import Facet
@@ -55,7 +60,7 @@ class InstancesList(ListView):
             try:
                 rendered = self.app.iolanta.render(
                     instance,
-                    environments=[URIRef('https://iolanta.tech/cli/link')]
+                    environments=[URIRef('https://iolanta.tech/cli/link')],
                 )[0]
             except Exception as rendering_error:
                 self.log(f'Failed to render {instance}: {rendering_error}')

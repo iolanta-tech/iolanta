@@ -9,10 +9,7 @@ from rich.text import Text
 from textual.app import App, ComposeResult
 from textual.containers import ScrollableContainer
 from textual.reactive import reactive
-from textual.widgets import (
-    Footer, Header, Static,
-    ContentSwitcher, Placeholder,
-)
+from textual.widgets import ContentSwitcher, Footer, Header, Placeholder, Static
 from textual.widgets._header import HeaderTitle
 from textual.worker import Worker, WorkerState
 
@@ -92,7 +89,7 @@ class IolantaBrowser(App):
                     ScrollableContainer(
                         renderable,
                         id=page_id,
-                    )
+                    ),
                 )
                 body.current = page_id
                 self.history.goto(Location(page_id, iri))
