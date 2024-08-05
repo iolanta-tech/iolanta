@@ -1,9 +1,11 @@
 import functools
 import uuid
+from dataclasses import dataclass
 from typing import cast
 
 import funcy
 from rdflib import URIRef
+from rich.text import Text
 from textual.app import App, ComposeResult
 from textual.containers import ScrollableContainer
 from textual.reactive import reactive
@@ -11,10 +13,18 @@ from textual.widgets import (
     Footer, Header, Static,
     ContentSwitcher, Placeholder,
 )
+from textual.widgets._header import HeaderTitle
 from textual.worker import Worker, WorkerState
 
+from iolanta.facets.textual_browser.history import BrowserHistory
 from iolanta.iolanta import Iolanta
 from iolanta.models import NotLiteralNode
+
+
+@dataclass
+class Location:
+    page_id: str
+    url: str
 
 
 class Body(ContentSwitcher):
@@ -34,23 +44,28 @@ class IolantaBrowser(App):
 
     iolanta: Iolanta
     iri: NotLiteralNode
-    history = reactive[list[tuple[str, str]]](list, init=False)
-    current_page_id = reactive[str | None](None, init=False)
+
+    @functools.cached_property
+    def history(self) -> BrowserHistory[Location]:
+        return BrowserHistory[Location]()
 
     BINDINGS = [
         ('alt+left', 'back', 'Back'),
         ('alt+right', 'forward', 'Fwd'),
-        ('g', 'goto', 'Go to URL'),
-        ('s', 'search', 'Search'),
+        # ('g', 'goto', 'Go to URL'),
+        # ('s', 'search', 'Search'),
         ('t', 'toggle_dark', 'Toggle Dark Mode'),
         ('q', 'quit', 'Quit'),
     ]
 
     def compose(self) -> ComposeResult:
-        yield Header()
+        yield Header(icon='👁️')
         yield Footer()
         with Body(initial='home'):
             yield Home(id='home')
+
+    def on_mount(self):
+        self.title = 'Iolanta'
 
     def action_toggle_dark(self) -> None:
         """An action to toggle dark mode."""
@@ -80,9 +95,10 @@ class IolantaBrowser(App):
                     )
                 )
                 body.current = page_id
+                self.history.goto(Location(page_id, iri))
 
-                self.history.append([page_id, iri])
-                self.current_page_id = page_id
+                title = cast(HeaderTitle, self.query_one(HeaderTitle))
+                title.sub_text = iri
 
             case WorkerState.ERROR:
                 raise ValueError(event)
@@ -97,13 +113,7 @@ class IolantaBrowser(App):
         )
 
     def action_back(self):
-        for previous, current in funcy.pairwise(self.history):
-            if current[0] == self.current_page_id:
-                self.query_one(Body).current = self.current_page_id = previous[0]
-                return
+        self.query_one(Body).current = self.history.back().page_id
 
     def action_forward(self):
-        for current, following in funcy.pairwise(self.history):
-            if current[0] == self.current_page_id:
-                self.query_one(Body).current = self.current_page_id = following[0]
-                return
+        self.query_one(Body).current = self.history.forward().page_id
