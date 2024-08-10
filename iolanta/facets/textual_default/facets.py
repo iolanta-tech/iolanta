@@ -1,16 +1,10 @@
-import logging
-import sys
-import traceback
-from functools import cached_property
-from pathlib import Path
+import functools
+import operator
 from typing import Iterable
 
 import funcy
-import rdflib
 from rdflib import DC, RDFS, SDO, URIRef
 from rdflib.term import BNode, Literal, Node
-from rich.markdown import Markdown
-from textual.app import ComposeResult
 from textual.containers import Vertical, VerticalScroll
 from textual.widget import Widget
 from textual.widgets import DataTable, Label, Static
@@ -18,10 +12,11 @@ from textual.widgets import DataTable, Label, Static
 from iolanta.cli.formatters.node_to_qname import node_to_qname
 from iolanta.facets.facet import Facet
 from iolanta.models import ComputedQName, NotLiteralNode
-from iolanta.namespaces import IOLANTA
 
 
 class Content(VerticalScroll):
+    """Description of the IRI."""
+
     DEFAULT_CSS = """
     Content {
         layout: vertical;
@@ -53,7 +48,7 @@ class Content(VerticalScroll):
 class TextualDefaultFacet(Facet[Widget]):
     """Default rendering engine."""
 
-    @cached_property
+    @functools.cached_property
     def grouped_properties(self) -> dict[NotLiteralNode, list[Node]]:
         """Properties of current node & their values."""
         property_rows = self.stored_query(
@@ -67,6 +62,35 @@ class TextualDefaultFacet(Facet[Widget]):
         ]
 
         return funcy.group_values(property_pairs)
+
+    @functools.cached_property
+    def rows(self):
+        """Generate rows for the properties table."""
+        for property_iri, property_values in self.grouped_properties.items():
+            property_name = self.render(
+                property_iri,
+                environments=[URIRef('https://iolanta.tech/cli/link')],
+            )
+
+            property_values = [
+                self.render(
+                    property_value,
+                    environments=[URIRef('https://iolanta.tech/cli/link')],
+                )
+                for property_value in property_values
+            ]
+
+            property_values_with_separators = funcy.interpose(
+                ' · ',
+                property_values,
+            )
+
+            formatted_values = functools.reduce(
+                operator.add,
+                property_values_with_separators,
+            )
+
+            yield property_name, formatted_values
 
     @property
     def title(self) -> str:
@@ -113,7 +137,7 @@ class TextualDefaultFacet(Facet[Widget]):
 
         return f"[@click=app.goto('{iri}')]{iri}[/]"
 
-    @cached_property
+    @functools.cached_property
     def description(self) -> str | None:
         """
         Candidates for description.
@@ -136,29 +160,14 @@ class TextualDefaultFacet(Facet[Widget]):
         except IndexError:
             return None
 
-    @cached_property
+    @functools.cached_property
     def properties(self) -> Widget | None:
         if not self.grouped_properties:
             return None
 
         properties_table = DataTable(show_header=True, show_cursor=False)
         properties_table.add_columns('Property', 'Value')
-        properties_table.add_rows([
-            (
-                self.render(
-                    property_iri,
-                    environments=[URIRef('https://iolanta.tech/cli/link')],
-                ),
-                ' · '.join(
-                    self.render(
-                        property_value,
-                        environments=[URIRef('https://iolanta.tech/cli/link')],
-                    )
-                    for property_value in property_values
-                ),
-            )
-            for property_iri, property_values in self.grouped_properties.items()
-        ])
+        properties_table.add_rows(self.rows)
 
         return properties_table
 
