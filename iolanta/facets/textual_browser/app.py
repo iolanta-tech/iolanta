@@ -3,7 +3,7 @@ import uuid
 from dataclasses import dataclass
 from typing import cast
 
-from rdflib import URIRef
+from rdflib import BNode, URIRef
 from textual.app import App, ComposeResult
 from textual.containers import ScrollableContainer
 from textual.widgets import ContentSwitcher, Footer, Header, Placeholder, Static
@@ -67,9 +67,9 @@ class IolantaBrowser(App):
         """Toggle dark mode."""
         self.dark = not self.dark
 
-    def render_iri(self, destination: str):
+    def render_iri(self, destination: NotLiteralNode):
         """Render an IRI in a thread."""
-        self.iri = URIRef(destination)
+        self.iri = destination
 
         iolanta: Iolanta = self.iolanta
         iri: NotLiteralNode = self.iri
@@ -99,12 +99,20 @@ class IolantaBrowser(App):
             case WorkerState.ERROR:
                 raise ValueError(event)
 
-    def action_goto(self, destination: str):
+    def action_goto(self, destination: str, iri_type_name: str | None = None):
         """Go to an IRI."""
+        iri_type = {
+            None: URIRef,
+            'BNode': BNode,
+            'URIRef': URIRef,
+        }[iri_type_name]
+
+        iri = iri_type(destination)
+
         self.run_worker(
             functools.partial(
                 self.render_iri,
-                destination,
+                iri,
             ),
             thread=True,
         )
