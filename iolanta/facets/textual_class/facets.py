@@ -6,11 +6,7 @@ from textual.app import ComposeResult
 from textual.containers import Vertical
 from textual.reactive import reactive
 from textual.widget import Widget
-from textual.widgets import (
-    Label,
-    ListItem,
-    ListView,
-)
+from textual.widgets import Label, ListItem, ListView
 
 from iolanta.facets.facet import Facet
 from iolanta.models import NotLiteralNode
