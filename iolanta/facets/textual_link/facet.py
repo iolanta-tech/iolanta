@@ -2,13 +2,14 @@ from rdflib import Literal, URIRef
 from rich.style import Style
 from rich.text import Text
 
-from iolanta.cli.formatters.node_to_qname import node_to_qname
-from iolanta.facets.facet import Facet, FacetOutput
-from iolanta.models import ComputedQName, NotLiteralNode
+from iolanta.facets.facet import Facet
 
 
-class TextualLinkFacet(Facet[str]):
+class TextualLinkFacet(Facet[str | Text]):
+    """Render a link within a Textual app."""
+
     def show(self) -> str | Text:
+        """Render the link, or literal text, whatever."""
         if isinstance(self.iri, Literal):
             return Text(self.iri, style=Style(color='grey37'))
 

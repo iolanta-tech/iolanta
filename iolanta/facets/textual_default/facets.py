@@ -45,7 +45,7 @@ class Content(VerticalScroll):
     """
 
 
-class TextualDefaultFacet(Facet[Widget]):
+class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
     """Default rendering engine."""
 
     @functools.cached_property
@@ -162,6 +162,7 @@ class TextualDefaultFacet(Facet[Widget]):
 
     @functools.cached_property
     def properties(self) -> Widget | None:
+        """Render properties table."""
         if not self.grouped_properties:
             return None
 
