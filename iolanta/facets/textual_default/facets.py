@@ -5,7 +5,7 @@ from typing import Iterable
 import funcy
 from rdflib import DC, RDFS, SDO, URIRef
 from rdflib.term import BNode, Literal, Node
-from textual.containers import Vertical, VerticalScroll
+from textual.containers import VerticalScroll
 from textual.widget import Widget
 from textual.widgets import DataTable, Label, Static
 
