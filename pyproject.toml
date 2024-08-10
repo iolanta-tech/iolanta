@@ -62,3 +62,10 @@ wemake-python-styleguide = [
     # Save stuff into a dataclass attribute
     "-WPS601",
 ]
+
+
+[tool.flakeheaven.exceptions."**/facets.py"]
+wemake-python-styleguide = [
+    # Found upper-case constant in a class: DEFAULT_CSS
+    "-WPS115",
+]
