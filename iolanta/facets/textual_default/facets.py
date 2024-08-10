@@ -14,7 +14,7 @@ from iolanta.facets.facet import Facet
 from iolanta.models import ComputedQName, NotLiteralNode
 
 
-class Content(VerticalScroll):
+class ContentArea(VerticalScroll):
     """Description of the IRI."""
 
     DEFAULT_CSS = """
@@ -198,7 +198,7 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
 
 
     def show(self) -> Widget:
-        return Content(*self.compose())
+        return ContentArea(*self.compose())
 
 
 
