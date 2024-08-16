@@ -18,7 +18,7 @@
   iolanta:hasInstanceFacet:
     $id: python://iolanta.facets.textual_class.Class
     iolanta:supports:
-      $id: https://iolanta.tech/cli/default
+      $id: https://iolanta.tech/cli/default/instances
 
 - $id: owl:Ontology
   iolanta:hasInstanceFacet:
