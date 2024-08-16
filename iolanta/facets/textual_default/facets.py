@@ -3,7 +3,8 @@ import operator
 from typing import Iterable
 
 import funcy
-from rdflib import DC, RDFS, SDO, URIRef
+from documented import DocumentedError
+from rdflib import DC, RDFS, SDO, URIRef, RDF
 from rdflib.term import BNode, Literal, Node
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll
@@ -14,6 +15,7 @@ from textual.widgets import (
 )
 
 from iolanta.cli.formatters.node_to_qname import node_to_qname
+from iolanta.facets.errors import FacetNotFound
 from iolanta.facets.facet import Facet
 from iolanta.models import ComputedQName, NotLiteralNode
 
@@ -202,18 +204,37 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
         if sub_facets:
             yield from sub_facets
 
-
-    def show(self) -> Widget:
-        """Render the content."""
-        area = ContentArea(*self.compose())
-
-        instances = self.render(
+    @property
+    def instances(self):
+        return self.render(
             self.iri,
             environments=[URIRef('https://iolanta.tech/cli/default/instances')],
         )
 
-        area.tabs = {
-            'Properties': self.properties,
-            'Instances': instances,
-        }
+    @property
+    def terms(self):
+        return self.render(
+            self.iri,
+            environments=[URIRef('https://iolanta.tech/cli/default/terms')],
+        )
+
+    @property
+    @funcy.post_processing(dict)
+    def tabs(self):
+        try:
+            yield 'Instances', self.instances
+        except FacetNotFound:
+            ...
+
+        try:
+            yield 'Terms', self.terms
+        except FacetNotFound:
+            ...
+
+        yield 'Properties', self.properties
+
+    def show(self) -> Widget:
+        """Render the content."""
+        area = ContentArea(*self.compose())
+        area.tabs = self.tabs
         return area
