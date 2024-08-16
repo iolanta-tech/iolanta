@@ -5,9 +5,13 @@ from typing import Iterable
 import funcy
 from rdflib import DC, RDFS, SDO, URIRef
 from rdflib.term import BNode, Literal, Node
+from textual.app import ComposeResult
 from textual.containers import VerticalScroll
 from textual.widget import Widget
-from textual.widgets import DataTable, Label, Static
+from textual.widgets import (
+    DataTable, Label, Static, TabbedContent, TabPane,
+    Markdown,
+)
 
 from iolanta.cli.formatters.node_to_qname import node_to_qname
 from iolanta.facets.facet import Facet
@@ -43,6 +47,12 @@ class ContentArea(VerticalScroll):
         color: red;
     }
     """
+
+    def compose(self) -> ComposeResult:
+        with TabbedContent():
+            for label, content in self.tabs.items():
+                with TabPane(label):
+                    yield content
 
 
 class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
@@ -192,10 +202,18 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
         if sub_facets:
             yield from sub_facets
 
-        elif self.properties:
-            yield Label('[i]Properties[/i]', id='properties')
-            yield self.properties
 
     def show(self) -> Widget:
         """Render the content."""
-        return ContentArea(*self.compose())
+        area = ContentArea(*self.compose())
+
+        instances = self.render(
+            self.iri,
+            environments=[URIRef('https://iolanta.tech/cli/default/instances')],
+        )
+
+        area.tabs = {
+            'Properties': self.properties,
+            'Instances': instances,
+        }
+        return area
