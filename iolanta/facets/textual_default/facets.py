@@ -3,15 +3,13 @@ import operator
 from typing import Iterable
 
 import funcy
-from documented import DocumentedError
-from rdflib import DC, RDFS, SDO, URIRef, RDF
+from rdflib import DC, RDFS, SDO, URIRef
 from rdflib.term import BNode, Literal, Node
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll
 from textual.widget import Widget
 from textual.widgets import (
     DataTable, Label, Static, TabbedContent, TabPane,
-    Markdown,
 )
 
 from iolanta.cli.formatters.node_to_qname import node_to_qname
@@ -206,6 +204,7 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
 
     @property
     def instances(self):
+        """Instances of this class."""
         return self.render(
             self.iri,
             environments=[URIRef('https://iolanta.tech/cli/default/instances')],
@@ -213,6 +212,7 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
 
     @property
     def terms(self):
+        """Terms of this ontology."""
         return self.render(
             self.iri,
             environments=[URIRef('https://iolanta.tech/cli/default/terms')],
@@ -221,15 +221,20 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
     @property
     @funcy.post_processing(dict)
     def tabs(self):
+        """
+        Tabs available for this IRI.
+
+        TODO: Make this dynamic with `.render_all()`.
+        """
         try:
             yield 'Instances', self.instances
         except FacetNotFound:
-            ...
+            ...   # noqa: WPS428
 
         try:
             yield 'Terms', self.terms
         except FacetNotFound:
-            ...
+            ...   # noqa: WPS428
 
         yield 'Properties', self.properties
 
