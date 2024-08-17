@@ -1,16 +1,16 @@
 import functools
 import operator
 from typing import Iterable
+from xml.dom import minidom  # noqa: S408
 
 import funcy
 from rdflib import DC, RDFS, SDO, URIRef
 from rdflib.term import BNode, Literal, Node
+from rich.syntax import Syntax
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll
 from textual.widget import Widget
-from textual.widgets import (
-    DataTable, Label, Static, TabbedContent, TabPane,
-)
+from textual.widgets import DataTable, Label, Static, TabbedContent, TabPane
 
 from iolanta.cli.formatters.node_to_qname import node_to_qname
 from iolanta.facets.errors import FacetNotFound
@@ -49,10 +49,16 @@ class ContentArea(VerticalScroll):
     """
 
     def compose(self) -> ComposeResult:
+        """Render tabs."""
         with TabbedContent():
-            for label, content in self.tabs.items():
+            for label, tab_content in self.tabs.items():
+                if tab_content is None:
+                    raise ValueError(
+                        f'Tab `{label}` is `None` and is not renderable.',
+                    )
+
                 with TabPane(label):
-                    yield content
+                    yield tab_content
 
 
 class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
@@ -148,7 +154,7 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
         return f"[@click=app.goto('{iri}')]{iri}[/]"
 
     @functools.cached_property
-    def description(self) -> str | None:
+    def description(self) -> str | Syntax | None:
         """
         Candidates for description.
 
@@ -166,15 +172,34 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
         ]
 
         try:
-            return choices[0].value
+            literal = choices[0]
         except IndexError:
             return None
+
+        literal_value = literal.value
+
+        match literal_value:
+            case str() as string:
+                return string
+
+            case minidom.Document() as xml_document:
+                return Syntax(
+                    xml_document.toxml(),
+                    'xml',
+                )
+
+            case something_else:
+                type_of_something_else = type(something_else)
+                raise ValueError(
+                    f'What is this? {something_else} '   # noqa: WPS326
+                    f'is a {type_of_something_else}!',   # noqa: WPS326
+                )
 
     @functools.cached_property
     def properties(self) -> Widget | None:
         """Render properties table."""
         if not self.grouped_properties:
-            return None
+            return Static('No properties found ☹')
 
         properties_table = DataTable(show_header=True, show_cursor=False)
         properties_table.add_columns('Property', 'Value')
