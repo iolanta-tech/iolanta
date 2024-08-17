@@ -21,7 +21,7 @@ class Facet(Generic[FacetOutput]):
     iri: NotLiteralNode
     iolanta: 'iolanta.Iolanta' = field(repr=False)
     environment: Optional[URIRef] = None
-    stack_children: List[Stack] = field(default_factory=list)
+    stack_children: List[Stack] = field(default_factory=list, repr=False)
 
     @property
     def stored_queries_path(self) -> Path:
