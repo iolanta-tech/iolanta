@@ -21,10 +21,11 @@ class Facet(Generic[FacetOutput]):
     iri: NotLiteralNode
     iolanta: 'iolanta.Iolanta' = field(repr=False)
     environment: Optional[URIRef] = None
-    stack_children: List[Stack] = field(default_factory=list)
+    stack_children: List[Stack] = field(default_factory=list, repr=False)
 
     @property
     def stored_queries_path(self) -> Path:
+        """Construct directory for stored queries for this facet."""
         return Path(inspect.getfile(self.__class__)).parent / 'sparql'
 
     @property
