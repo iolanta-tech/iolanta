@@ -30,7 +30,7 @@
           - rdf:langString
           - rdf:language
 
-    - rdfs:Datatype
+    - $id: rdfs:Datatype
     - rdfs:label: Compound Literal
       $reverse:
         rdf:type:

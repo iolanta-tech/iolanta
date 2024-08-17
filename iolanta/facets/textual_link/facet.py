@@ -11,7 +11,7 @@ class TextualLinkFacet(Facet[str | Text]):
     def show(self) -> str | Text:
         """Render the link, or literal text, whatever."""
         if isinstance(self.iri, Literal):
-            return Text(self.iri, style=Style(color='grey37'))
+            return f'[b grey37]{self.iri}[/b grey37]'
 
         label = self.render(
             self.iri,

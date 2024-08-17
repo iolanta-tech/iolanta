@@ -25,6 +25,7 @@ class Facet(Generic[FacetOutput]):
 
     @property
     def stored_queries_path(self) -> Path:
+        """Construct directory for stored queries for this facet."""
         return Path(inspect.getfile(self.__class__)).parent / 'sparql'
 
     @property
