@@ -55,6 +55,7 @@
           - rdfs:Class
           - rdfs:Resource
           - rdfs:Datatype
+          - rdfs:Literal
           - rdfs:subClassOf
     - rdfs:label: Human Readable
       $reverse:
