@@ -3,7 +3,6 @@ from functools import cached_property
 import funcy
 from rdflib import BNode, URIRef
 from textual.app import ComposeResult
-from textual.containers import Vertical
 from textual.reactive import reactive
 from textual.widget import Widget
 from textual.widgets import Label, ListItem, ListView
@@ -12,21 +11,14 @@ from iolanta.facets.facet import Facet
 from iolanta.models import NotLiteralNode
 
 
-class InstancesGrid(Vertical):
-    DEFAULT_CSS = """
-    InstancesGrid {
-        layout: grid;
-        grid-size: 3 2;
-    }
-    """
-
-
 class InstancesList(ListView):
-    instances = reactive[list[BNode | URIRef]](list, init=False)
     """Instances list."""
+
+    instances = reactive[list[BNode | URIRef]](list, init=False)  # noqa: WPS462
 
     @cached_property
     def list_item_by_instance(self) -> dict[NotLiteralNode, ListItem]:
+        """Generate a ListItem per class instance."""
         return {
             instance: ListItem(
                 Label(

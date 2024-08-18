@@ -4,10 +4,9 @@ from dataclasses import dataclass
 from typing import cast
 
 from rdflib import BNode, URIRef
-from textual import events
 from textual.app import App, ComposeResult
 from textual.containers import ScrollableContainer
-from textual.events import Key, MouseEvent
+from textual.events import MouseEvent
 from textual.widgets import ContentSwitcher, Footer, Header, Placeholder, Static
 from textual.worker import Worker, WorkerState
 
@@ -103,10 +102,12 @@ class IolantaBrowser(App):
                 raise ValueError(event)
 
     def on_mouse_down(self, event: MouseEvent):
-        self.alt_click = event.meta
+        """Make a note that an Alt + Click is in progress."""
+        self.alt_click = event.meta   # noqa: WPS601
 
     def on_mouse_up(self, event: MouseEvent):
-        self.alt_click = False
+        """Note that Alt + Click is no longer in progress."""
+        self.alt_click = False   # noqa: WPS601
 
     def action_goto(
         self,
