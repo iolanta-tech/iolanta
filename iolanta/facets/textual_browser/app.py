@@ -113,7 +113,11 @@ class IolantaBrowser(App):
         destination: str,
         iri_type_name: str | None = None,
     ):
-        """Go to an IRI."""
+        """
+        Go to an IRI.
+
+        TODO: Remove iri_type_name, recognize a blank node based on destination.
+        """
         iri_type = {
             None: URIRef,
             'BNode': BNode,
