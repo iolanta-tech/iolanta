@@ -4,8 +4,10 @@ from dataclasses import dataclass
 from typing import cast
 
 from rdflib import BNode, URIRef
+from textual import events
 from textual.app import App, ComposeResult
 from textual.containers import ScrollableContainer
+from textual.events import Key, MouseEvent
 from textual.widgets import ContentSwitcher, Footer, Header, Placeholder, Static
 from textual.worker import Worker, WorkerState
 
@@ -39,6 +41,7 @@ class IolantaBrowser(App):
 
     iolanta: Iolanta
     iri: NotLiteralNode
+    alt_click: bool = False
 
     @functools.cached_property
     def history(self) -> NavigationHistory[Location]:
@@ -99,7 +102,17 @@ class IolantaBrowser(App):
             case WorkerState.ERROR:
                 raise ValueError(event)
 
-    def action_goto(self, destination: str, iri_type_name: str | None = None):
+    def on_mouse_down(self, event: MouseEvent):
+        self.alt_click = event.meta
+
+    def on_mouse_up(self, event: MouseEvent):
+        self.alt_click = False
+
+    def action_goto(
+        self,
+        destination: str,
+        iri_type_name: str | None = None,
+    ):
         """Go to an IRI."""
         iri_type = {
             None: URIRef,
