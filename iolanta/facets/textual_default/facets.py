@@ -8,7 +8,7 @@ from rdflib import DC, RDFS, SDO, URIRef
 from rdflib.term import BNode, Literal, Node
 from rich.syntax import Syntax
 from textual.app import ComposeResult
-from textual.containers import VerticalScroll
+from textual.containers import VerticalScroll, Vertical, Horizontal
 from textual.widget import Widget
 from textual.widgets import DataTable, Label, Static, TabbedContent, TabPane
 
@@ -16,6 +16,15 @@ from iolanta.cli.formatters.node_to_qname import node_to_qname
 from iolanta.facets.errors import FacetNotFound
 from iolanta.facets.facet import Facet
 from iolanta.models import ComputedQName, NotLiteralNode
+
+
+class PropertyName(Static):
+    DEFAULT_CSS = '''
+    PropertyName {
+        width: 15%;
+        padding-right: 1;
+    }
+    '''
 
 
 class ContentArea(VerticalScroll):
@@ -83,30 +92,32 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
     def rows(self):
         """Generate rows for the properties table."""
         for property_iri, property_values in self.grouped_properties.items():
-            property_name = self.render(
-                property_iri,
-                environments=[URIRef('https://iolanta.tech/cli/link')],
+            property_name = PropertyName(
+                self.render(
+                    property_iri,
+                    environments=[URIRef('https://iolanta.tech/cli/link')],
+                )
             )
 
             property_values = [
-                self.render(
-                    property_value,
-                    environments=[URIRef('https://iolanta.tech/cli/link')],
+                Label(
+                    self.render(
+                        property_value,
+                        environments=[URIRef('https://iolanta.tech/cli/link')],
+                    ),
                 )
                 for property_value in property_values
             ]
 
             property_values_with_separators = funcy.interpose(
-                ' · ',
+                Label(' · '),
                 property_values,
             )
 
-            formatted_values = functools.reduce(
-                operator.add,
-                property_values_with_separators,
+            yield Horizontal(
+                property_name,
+                *property_values_with_separators,
             )
-
-            yield property_name, formatted_values
 
     @property
     def title(self) -> str:
@@ -201,9 +212,7 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
         if not self.grouped_properties:
             return Static('No properties found ☹')
 
-        properties_table = DataTable(show_header=True, show_cursor=False)
-        properties_table.add_columns('Property', 'Value')
-        properties_table.add_rows(self.rows)
+        properties_table = Vertical(*self.rows)
 
         return properties_table
 
