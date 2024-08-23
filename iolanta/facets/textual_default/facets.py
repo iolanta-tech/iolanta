@@ -4,6 +4,7 @@ from typing import Iterable
 from xml.dom import minidom  # noqa: S408
 
 import funcy
+import more_itertools
 from rdflib import DC, RDFS, SDO, URIRef
 from rdflib.term import BNode, Literal, Node
 from rich.syntax import Syntax
@@ -109,9 +110,14 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
                 for property_value in property_values
             ]
 
-            property_values_with_separators = funcy.interpose(
-                Label(' · '),
+            separators = list(funcy.repeatedly(
+                functools.partial(Label, ' · '),
+                len(property_values) - 1,
+            ))
+
+            property_values_with_separators = more_itertools.interleave_longest(
                 property_values,
+                separators,
             )
 
             yield Horizontal(
