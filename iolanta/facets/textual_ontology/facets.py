@@ -27,16 +27,21 @@ class TermAndStatus:
 
 
 class TermsContent(Static):
-    DEFAULT_CSS = '''
+    """Display grouped list of terms."""
+
+    DEFAULT_CSS = """
     TermsContent {
         padding: 1;
     }
-    '''
+    """
 
 
 class OntologyFacet(Facet[Widget]):
+    """Render an ontology."""
+
     @cached_property
     def grouped_terms(self) -> dict[NotLiteralNode | None, list[TermAndStatus]]:
+        """Group terms by VANN categories."""
         rows = self.stored_query('terms.sparql', iri=self.iri)
         grouped = [
             (
@@ -58,6 +63,10 @@ class OntologyFacet(Facet[Widget]):
 
         return funcy.group_values(grouped)
 
+    def show(self) -> Widget:
+        """Render widget."""
+        return TermsContent(Columns(self._stream_columns(), padding=(1, 2)))
+
     def _stream_columns(self) -> Iterable[str]:
         for group, rows in self.grouped_terms.items():
             group_title = self.render(
@@ -65,7 +74,7 @@ class OntologyFacet(Facet[Widget]):
                 environments=[URIRef('https://iolanta.tech/env/title')],
             ) if group is not None else '<Ungrouped>'
 
-            content = '\n'.join([
+            rendered_terms = '\n'.join([
                 self.render(
                     row.term,
                     environments=[
@@ -75,9 +84,4 @@ class OntologyFacet(Facet[Widget]):
                 for row in rows
             ])
 
-            column = f'[b]{group_title}[/b]\n\n' + content
-
-            yield column
-
-    def show(self) -> Widget:
-        return TermsContent(Columns(self._stream_columns(), padding=(1, 2)))
+            yield f'[b]{group_title}[/b]\n\n{rendered_terms}'

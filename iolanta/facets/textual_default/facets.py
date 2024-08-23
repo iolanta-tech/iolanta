@@ -1,5 +1,4 @@
 import functools
-import operator
 from typing import Iterable
 from xml.dom import minidom  # noqa: S408
 
@@ -9,9 +8,9 @@ from rdflib import DC, RDFS, SDO, URIRef
 from rdflib.term import BNode, Literal, Node
 from rich.syntax import Syntax
 from textual.app import ComposeResult
-from textual.containers import VerticalScroll, Vertical, Horizontal
+from textual.containers import Horizontal, Vertical, VerticalScroll
 from textual.widget import Widget
-from textual.widgets import DataTable, Label, Static, TabbedContent, TabPane
+from textual.widgets import Label, Static, TabbedContent, TabPane
 
 from iolanta.cli.formatters.node_to_qname import node_to_qname
 from iolanta.facets.errors import FacetNotFound
@@ -20,12 +19,14 @@ from iolanta.models import ComputedQName, NotLiteralNode
 
 
 class PropertyName(Static):
-    DEFAULT_CSS = '''
+    """Property name."""
+
+    DEFAULT_CSS = """
     PropertyName {
         width: 15%;
         padding-right: 1;
     }
-    '''
+    """
 
 
 class ContentArea(VerticalScroll):
@@ -97,7 +98,7 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
                 self.render(
                     property_iri,
                     environments=[URIRef('https://iolanta.tech/cli/link')],
-                )
+                ),
             )
 
             property_values = [
@@ -110,10 +111,12 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
                 for property_value in property_values
             ]
 
-            separators = list(funcy.repeatedly(
-                functools.partial(Label, ' · '),
-                len(property_values) - 1,
-            ))
+            separators = list(
+                funcy.repeatedly(
+                    functools.partial(Label, ' · '),
+                    len(property_values) - 1,
+                ),
+            )
 
             property_values_with_separators = more_itertools.interleave_longest(
                 property_values,
@@ -218,9 +221,7 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
         if not self.grouped_properties:
             return Static('No properties found ☹')
 
-        properties_table = Vertical(*self.rows)
-
-        return properties_table
+        return Vertical(*self.rows)
 
     def compose(self) -> Iterable[Widget]:
         """Compose widgets."""
