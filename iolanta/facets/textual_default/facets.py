@@ -7,7 +7,7 @@ import more_itertools
 from rdflib import DC, RDFS, SDO, URIRef
 from rdflib.term import BNode, Literal, Node
 from rich.syntax import Syntax
-from textual.app import ComposeResult
+from textual.app import ComposeResult, RenderResult
 from textual.containers import Horizontal, Vertical, VerticalScroll
 from textual.widget import Widget
 from textual.widgets import Label, Static, TabbedContent, TabPane
@@ -27,6 +27,10 @@ class PropertyName(Static):
         padding-right: 1;
     }
     """
+
+    def render(self) -> RenderResult:
+        environment = URIRef('https://iolanta.tech/env/title' if self.app.is_provenance_mode else 'https://iolanta.tech/cli/link')
+        return self.iolanta.render(self.iri, [environment])[0]
 
 
 class ContentArea(VerticalScroll):
@@ -94,12 +98,9 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
     def rows(self):
         """Generate rows for the properties table."""
         for property_iri, property_values in self.grouped_properties.items():
-            property_name = PropertyName(
-                self.render(
-                    property_iri,
-                    environments=[URIRef('https://iolanta.tech/cli/link')],
-                ),
-            )
+            property_name = PropertyName()
+            property_name.iri = property_iri
+            property_name.iolanta = self.iolanta
 
             property_values = [
                 Label(

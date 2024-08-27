@@ -7,6 +7,7 @@ from rdflib import BNode, URIRef
 from textual.app import App, ComposeResult
 from textual.containers import ScrollableContainer
 from textual.events import MouseEvent
+from textual.reactive import Reactive
 from textual.widgets import ContentSwitcher, Footer, Header, Placeholder, Static
 from textual.worker import Worker, WorkerState
 
@@ -42,6 +43,13 @@ class IolantaBrowser(App):
     iri: NotLiteralNode
     alt_click: bool = False
 
+    is_provenance_mode: Reactive[bool] = Reactive(
+        False,
+        compute=False,
+        recompose=True,
+    )
+    """State whether we are in Provenan©e mode."""
+
     @functools.cached_property
     def history(self) -> NavigationHistory[Location]:
         """Cached navigation history."""
@@ -50,6 +58,7 @@ class IolantaBrowser(App):
     BINDINGS = [  # noqa: WPS115
         ('alt+left', 'back', 'Back'),
         ('alt+right', 'forward', 'Fwd'),
+        ('p', 'toggle_provenance', 'Provenan©e'),
         ('t', 'toggle_dark', 'Toggle Dark Mode'),
         ('q', 'quit', 'Quit'),
     ]
@@ -68,6 +77,10 @@ class IolantaBrowser(App):
     def action_toggle_dark(self) -> None:
         """Toggle dark mode."""
         self.dark = not self.dark
+
+    def action_toggle_provenance(self) -> None:
+        """Toggle Provenan©e mode."""
+        self.is_provenance_mode = not self.is_provenance_mode
 
     def render_iri(self, destination: NotLiteralNode):
         """Render an IRI in a thread."""
