@@ -44,12 +44,6 @@ class IolantaBrowser(App):
     iri: NotLiteralNode
     alt_click: bool = False
 
-    class ToggleProvenanceMode(Message):
-        """Toggle Provenance Mode."""
-
-    is_provenance_mode: Reactive[bool] = Reactive(False, compute=False)
-    """State whether we are in Provenan©e mode."""
-
     @functools.cached_property
     def history(self) -> NavigationHistory[Location]:
         """Cached navigation history."""
@@ -58,7 +52,6 @@ class IolantaBrowser(App):
     BINDINGS = [  # noqa: WPS115
         ('alt+left', 'back', 'Back'),
         ('alt+right', 'forward', 'Fwd'),
-        ('p', 'toggle_provenance', 'Provenan©e'),
         ('t', 'toggle_dark', 'Toggle Dark Mode'),
         ('q', 'quit', 'Quit'),
     ]
@@ -77,10 +70,6 @@ class IolantaBrowser(App):
     def action_toggle_dark(self) -> None:
         """Toggle dark mode."""
         self.dark = not self.dark
-
-    def action_toggle_provenance(self) -> None:
-        """Toggle Provenan©e mode."""
-        self.is_provenance_mode = not self.is_provenance_mode
 
     def render_iri(self, destination: NotLiteralNode):
         """Render an IRI in a thread."""

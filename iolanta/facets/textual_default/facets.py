@@ -1,5 +1,5 @@
 import functools
-from typing import Iterable
+from typing import Iterable, ClassVar
 from xml.dom import minidom  # noqa: S408
 
 import funcy
@@ -9,8 +9,14 @@ from rdflib.term import BNode, Literal, Node
 from rich.syntax import Syntax
 from textual import on
 from textual.app import ComposeResult, RenderResult
-from textual.containers import Horizontal, Vertical, VerticalScroll
+from textual.binding import BindingType, Binding
+from textual.containers import (
+    Horizontal, Vertical, VerticalScroll,
+    ScrollableContainer,
+)
+from textual.events import Focus, Click
 from textual.reactive import Reactive
+from textual.scroll_view import ScrollView
 from textual.widget import Widget
 from textual.widgets import Label, Static, TabbedContent, TabPane
 
@@ -18,10 +24,11 @@ from iolanta.cli.formatters.node_to_qname import node_to_qname
 from iolanta.facets.errors import FacetNotFound
 from iolanta.facets.facet import Facet
 from iolanta.facets.textual_browser.app import IolantaBrowser
+from iolanta.iolanta import Iolanta
 from iolanta.models import ComputedQName, NotLiteralNode
 
 
-class PropertyName(Static):
+class PropertyName(Widget, can_focus=True, inherit_bindings=False):
     """Property name."""
 
     DEFAULT_CSS = """
@@ -29,17 +36,37 @@ class PropertyName(Static):
         width: 15%;
         padding-right: 1;
     }
+    
+    PropertyName:hover {
+        border-left: heavy $accent;
+    }
+    
+    PropertyName:focus {
+        border-left: heavy $warning;
+    }
     """
 
-    is_provenance_mode: Reactive[bool] = Reactive(False, compute=False)
-    """State whether we are in Provenan©e mode."""
+    BINDINGS: ClassVar[list[BindingType]] = [
+        Binding("enter", "goto", "Goto"),
+    ]
+
+    def __init__(
+        self,
+        iri: NotLiteralNode,
+    ):
+        self.iri = iri
+        super().__init__()
 
     def render(self) -> RenderResult:
-        environment = URIRef('https://iolanta.tech/env/title' if self.is_provenance_mode else 'https://iolanta.tech/cli/link')
-        return self.iolanta.render(self.iri, [environment])[0]
+        environment = URIRef('https://iolanta.tech/env/title')
+        return self.app.iolanta.render(self.iri, [environment])[0]
 
-    def watch_is_provenance_mode(self, old_value, new_value):
-        raise ValueError(old_value, new_value)
+    def action_goto(self):
+        self.app.action_goto(self.iri)
+
+    def on_click(self, event: Click):
+        if self.has_focus:
+            return self.action_goto()
 
 
 class ContentArea(VerticalScroll):
@@ -110,9 +137,9 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
     def rows(self):
         """Generate rows for the properties table."""
         for property_iri, property_values in self.grouped_properties.items():
-            property_name = PropertyName()
-            property_name.iri = property_iri
-            property_name.iolanta = self.iolanta
+            property_name = PropertyName(
+                iri=property_iri,
+            )
 
             property_values = [
                 Label(
