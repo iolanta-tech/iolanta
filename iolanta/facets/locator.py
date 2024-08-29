@@ -5,6 +5,7 @@ from typing import Dict, Iterable, List, Optional, Type, TypedDict
 import funcy
 from rdflib import ConjunctiveGraph
 from rdflib.term import Literal, Node, URIRef
+from yarl import URL
 
 from iolanta.facets.errors import FacetNotFound
 from iolanta.models import NotLiteralNode
@@ -46,6 +47,35 @@ class FacetFinder:
             }
             """,
             data_type=data_type,
+        )
+
+        rows = [row for row in rows if row['environment'] in self.environments]
+
+        return sorted(
+            rows,
+            key=self.row_sorter_by_environment,
+        )
+
+    def by_prefix(self) -> Iterable[FoundRow]:
+        """Determine facet by URL prefix.
+
+        TODO fix this to allow arbitrary prefixes.
+        """
+        scheme = URL(self.node).scheme
+        if scheme != 'urn':
+            return []
+
+        if not isinstance(self.node, URIRef):
+            return []
+
+        rows = self.iolanta.query(   # noqa: WPS462
+            """
+            SELECT ?environment ?facet WHERE {
+                $prefix iolanta:hasFacetByPrefix ?facet .
+                ?facet iolanta:supports ?environment .
+            }
+            """,
+            prefix=URIRef(f'{scheme}:'),
         )
 
         rows = [row for row in rows if row['environment'] in self.environments]
@@ -122,6 +152,7 @@ class FacetFinder:
         )
 
     def choices(self) -> Iterable[FoundRow]:
+        yield from self.by_prefix()
         yield from self.by_datatype()
         yield from self.by_facet()
         yield from self.by_instance_facet()

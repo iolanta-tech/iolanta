@@ -95,7 +95,7 @@ class GlobalSPARQLProcessor(Processor):
     def load(self, source: str):
         url = URL(source)
 
-        if url.scheme in {'file', 'python', 'local'}:
+        if url.scheme in {'file', 'python', 'local', 'urn'}:
             # FIXME temporary fix. `yaml-ld` doesn't read `context.*` files and
             #   fails.
             return
@@ -153,7 +153,15 @@ class GlobalSPARQLProcessor(Processor):
             logger.warning('%s | No data found', source)
             return
 
-        self.graph.addN(quads)
+        graph = URIRef(source)
+        quad_tuples = [
+            dataclasses.replace(
+                quad,
+                graph=graph,
+            ).as_tuple()
+            for quad in quads
+        ]
+        self.graph.addN(quad_tuples)
         self.graph.last_not_inferred_source = source
         logger.info('%s | loaded successfully.', source)
 
@@ -173,7 +181,10 @@ class GlobalSPARQLProcessor(Processor):
         subject, _predicate, obj = triple
 
         if isinstance(subject, URIRef):
-            self.load(str(subject))
+            try:
+                self.load(str(subject))
+            except Exception:
+                logger.exception('Failed to load information about %s', subject)
 
         if isinstance(obj, URIRef):
             self.load(str(obj))

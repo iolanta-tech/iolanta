@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Dict, List, NamedTuple, Union
 
@@ -81,7 +82,8 @@ class TripleTemplate(NamedTuple):
     object: Node | None
 
 
-class Quad(NamedTuple):
+@dataclass
+class Quad:
     """Triple assigned to a named graph."""
 
     subject: Node
@@ -104,3 +106,6 @@ class Quad(NamedTuple):
             f'({rendered_subject} {rendered_predicate} {rendered_object} @ '
             f'{rendered_graph})'
         )
+
+    def as_tuple(self):
+        return self.subject, self.predicate, self.object, self.graph

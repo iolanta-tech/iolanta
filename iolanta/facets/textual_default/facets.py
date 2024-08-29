@@ -19,13 +19,14 @@ from textual.reactive import Reactive
 from textual.scroll_view import ScrollView
 from textual.widget import Widget
 from textual.widgets import Label, Static, TabbedContent, TabPane
+from yarl import URL
 
 from iolanta.cli.formatters.node_to_qname import node_to_qname
 from iolanta.facets.errors import FacetNotFound
 from iolanta.facets.facet import Facet
 from iolanta.facets.textual_browser.app import IolantaBrowser
 from iolanta.iolanta import Iolanta
-from iolanta.models import ComputedQName, NotLiteralNode
+from iolanta.models import ComputedQName, NotLiteralNode, Triple
 
 
 class PropertyName(Widget, can_focus=True, inherit_bindings=False):
@@ -34,15 +35,16 @@ class PropertyName(Widget, can_focus=True, inherit_bindings=False):
     DEFAULT_CSS = """
     PropertyName {
         width: 15%;
-        padding-right: 1;
+        height: auto;
+        margin-right: 1;
     }
     
     PropertyName:hover {
-        border-left: heavy $accent;
+        background: $boost;
     }
     
     PropertyName:focus {
-        border-left: heavy $warning;
+        background: darkslateblue;
     }
     """
 
@@ -115,6 +117,100 @@ class ContentArea(VerticalScroll):
                     yield tab_content
 
 
+class TripleURIRef(URIRef):
+    @classmethod
+    def from_triple(
+        cls,
+        subject: NotLiteralNode,
+        predicate: NotLiteralNode,
+        object_: Node,
+    ) -> 'TripleURIRef':
+        iri = URL.build(
+            scheme='urn:rdf',
+            query={
+                'subject': subject,
+                'predicate': predicate,
+                'object': object_,
+            },
+        )
+        return TripleURIRef(str(iri))
+
+    def as_triple(self) -> Triple:
+        url = URL(self)
+        return Triple(
+            subject=URIRef(url.query['subject']),
+            predicate=URIRef(url.query['predicate']),
+            object=URIRef(url.query['object']),
+        )
+
+
+class PropertyValue(Widget, can_focus=True, inherit_bindings=False):
+    BINDINGS: ClassVar[list[BindingType]] = [
+        Binding("enter", "goto", "Goto"),
+        Binding("p", "provenance", "Provenan©e"),
+    ]
+
+    DEFAULT_CSS = """
+    PropertyValue {
+        width: auto;
+        height: auto;
+        margin-right: 1;
+    }
+    
+    PropertyValue:hover {
+        background: $boost;
+    }
+
+    PropertyValue:focus {
+        background: darkslateblue;
+    }
+    """
+
+    def __init__(
+        self,
+        property_value: Node,
+        subject: NotLiteralNode,
+        property_iri: NotLiteralNode,
+    ):
+        self.property_value = property_value
+        self.subject = subject
+        self.property_iri = property_iri
+        super().__init__()
+
+    def render(self) -> RenderResult:
+        return self.app.iolanta.render(
+            self.property_value,
+            environments=[URIRef('https://iolanta.tech/env/title')],
+        )[0]
+
+    def action_goto(self):
+        self.app.action_goto(self.property_value)
+
+    def action_provenance(self):
+        self.app.action_goto(TripleURIRef.from_triple(
+            subject=self.subject,
+            predicate=self.property_iri,
+            object_=self.property_value,
+        ))
+
+    def on_click(self, event: Click):
+        if self.has_focus:
+            return self.action_goto()
+
+
+class PropertyRow(Widget, can_focus=False, inherit_bindings=False):
+    """A container with horizontal layout and no scrollbars."""
+
+    DEFAULT_CSS = """
+    PropertyRow {
+        width: 1fr;
+        height: auto;
+        layout: horizontal;
+        overflow: hidden hidden;
+    }
+    """
+
+
 class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
     """Default rendering engine."""
 
@@ -142,30 +238,17 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
             )
 
             property_values = [
-                Label(
-                    self.render(
-                        property_value,
-                        environments=[URIRef('https://iolanta.tech/cli/link')],
-                    ),
+                PropertyValue(
+                    property_value=property_value,
+                    subject=self.iri,
+                    property_iri=property_iri,
                 )
                 for property_value in property_values
             ]
 
-            separators = list(
-                funcy.repeatedly(
-                    functools.partial(Label, ' · '),
-                    len(property_values) - 1,
-                ),
-            )
-
-            property_values_with_separators = more_itertools.interleave_longest(
-                property_values,
-                separators,
-            )
-
-            yield Horizontal(
+            yield PropertyRow(
                 property_name,
-                *property_values_with_separators,
+                *property_values,
             )
 
     @property
