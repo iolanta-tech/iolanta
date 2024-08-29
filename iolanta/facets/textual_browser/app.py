@@ -7,6 +7,7 @@ from rdflib import BNode, URIRef
 from textual.app import App, ComposeResult
 from textual.containers import ScrollableContainer
 from textual.events import MouseEvent
+from textual.message import Message
 from textual.reactive import Reactive
 from textual.widgets import ContentSwitcher, Footer, Header, Placeholder, Static
 from textual.worker import Worker, WorkerState
@@ -43,11 +44,10 @@ class IolantaBrowser(App):
     iri: NotLiteralNode
     alt_click: bool = False
 
-    is_provenance_mode: Reactive[bool] = Reactive(
-        False,
-        compute=False,
-        recompose=True,
-    )
+    class ToggleProvenanceMode(Message):
+        """Toggle Provenance Mode."""
+
+    is_provenance_mode: Reactive[bool] = Reactive(False, compute=False)
     """State whether we are in Provenan©e mode."""
 
     @functools.cached_property

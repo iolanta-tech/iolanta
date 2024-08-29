@@ -7,14 +7,17 @@ import more_itertools
 from rdflib import DC, RDFS, SDO, URIRef
 from rdflib.term import BNode, Literal, Node
 from rich.syntax import Syntax
+from textual import on
 from textual.app import ComposeResult, RenderResult
 from textual.containers import Horizontal, Vertical, VerticalScroll
+from textual.reactive import Reactive
 from textual.widget import Widget
 from textual.widgets import Label, Static, TabbedContent, TabPane
 
 from iolanta.cli.formatters.node_to_qname import node_to_qname
 from iolanta.facets.errors import FacetNotFound
 from iolanta.facets.facet import Facet
+from iolanta.facets.textual_browser.app import IolantaBrowser
 from iolanta.models import ComputedQName, NotLiteralNode
 
 
@@ -28,9 +31,15 @@ class PropertyName(Static):
     }
     """
 
+    is_provenance_mode: Reactive[bool] = Reactive(False, compute=False)
+    """State whether we are in Provenan©e mode."""
+
     def render(self) -> RenderResult:
-        environment = URIRef('https://iolanta.tech/env/title' if self.app.is_provenance_mode else 'https://iolanta.tech/cli/link')
+        environment = URIRef('https://iolanta.tech/env/title' if self.is_provenance_mode else 'https://iolanta.tech/cli/link')
         return self.iolanta.render(self.iri, [environment])[0]
+
+    def watch_is_provenance_mode(self, old_value, new_value):
+        raise ValueError(old_value, new_value)
 
 
 class ContentArea(VerticalScroll):
@@ -62,6 +71,9 @@ class ContentArea(VerticalScroll):
         color: red;
     }
     """
+
+    is_provenance_mode: Reactive[bool] = Reactive(False, compute=False)
+    """State whether we are in Provenan©e mode."""
 
     def compose(self) -> ComposeResult:
         """Render tabs."""
