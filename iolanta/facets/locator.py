@@ -86,6 +86,7 @@ class FacetFinder:
         )
 
     def by_facet(self) -> List[FoundRow]:
+        """Find a facet directly attached to the node."""
         if isinstance(self.node, Literal):
             return []
 
@@ -152,6 +153,7 @@ class FacetFinder:
         )
 
     def choices(self) -> Iterable[FoundRow]:
+        """Compose a stream of all possible facet choices."""
         yield from self.by_prefix()
         yield from self.by_datatype()
         yield from self.by_facet()
