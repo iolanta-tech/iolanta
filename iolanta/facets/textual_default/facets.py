@@ -3,18 +3,18 @@ from typing import ClassVar, Iterable
 from xml.dom import minidom  # noqa: S408
 
 import funcy
+import more_itertools
 from rdflib import DC, RDFS, SDO, URIRef
 from rdflib.term import BNode, Literal, Node
 from rich.syntax import Syntax
 from textual.app import ComposeResult, RenderResult
 from textual.binding import Binding, BindingType
-from textual.containers import (
-    Vertical,
-    VerticalScroll,
-)
+from textual.containers import Vertical, VerticalScroll
 from textual.events import Click
+from textual.reactive import reactive
 from textual.widget import Widget
 from textual.widgets import Label, Static, TabbedContent, TabPane
+from textual.worker import Worker, WorkerState
 from yarl import URL
 
 from iolanta.cli.formatters.node_to_qname import node_to_qname
@@ -31,6 +31,7 @@ class PropertyName(Widget, can_focus=True, inherit_bindings=False):
         width: 15%;
         height: auto;
         margin-right: 1;
+        color: gray;
     }
     
     PropertyName:hover {
@@ -45,6 +46,11 @@ class PropertyName(Widget, can_focus=True, inherit_bindings=False):
     BINDINGS: ClassVar[list[BindingType]] = [
         Binding('enter', 'goto', 'Goto'),
     ]
+    renderable: str | None = reactive[str | None](   # noqa: WPS465
+        None,
+        init=False,
+        layout=True,
+    )
 
     def __init__(
         self,
@@ -53,11 +59,30 @@ class PropertyName(Widget, can_focus=True, inherit_bindings=False):
         """Set the IRI."""
         self.iri = iri
         super().__init__()
+        self.renderable = self.app.iolanta.node_as_qname(iri)   # noqa: WPS601
+
+    def render_title(self):
+        """Render title in a separate thread."""
+        environment = URIRef('https://iolanta.tech/env/title')
+        return self.app.iolanta.render(self.iri, [environment])[0]
 
     def render(self) -> RenderResult:
         """Render node title."""
-        environment = URIRef('https://iolanta.tech/env/title')
-        return self.app.iolanta.render(self.iri, [environment])[0]
+        return self.renderable or '…'
+
+    def on_worker_state_changed(self, event: Worker.StateChanged):
+        """Show the title after it has been rendered."""
+        match event.state:
+            case WorkerState.SUCCESS:
+                self.renderable = event.worker.result   # noqa: WPS601
+                self.styles.color = 'white'
+
+            case WorkerState.ERROR:
+                raise ValueError(event)
+
+    def on_mount(self):
+        """Initiate rendering on mount."""
+        self.run_worker(self.render_title, thread=True)
 
     def action_goto(self):
         """Navigate."""
@@ -186,7 +211,7 @@ class PropertyValue(Widget, can_focus=True, inherit_bindings=False):
     PropertyValue {
         width: auto;
         height: auto;
-        margin-right: 1;
+        color: gray;
     }
     
     PropertyValue:hover {
@@ -197,6 +222,12 @@ class PropertyValue(Widget, can_focus=True, inherit_bindings=False):
         background: darkslateblue;
     }
     """
+
+    renderable: str | None = reactive[str | None](   # noqa: WPS465
+        None,
+        init=False,
+        layout=True,
+    )
 
     def __init__(
         self,
@@ -209,13 +240,34 @@ class PropertyValue(Widget, can_focus=True, inherit_bindings=False):
         self.subject = subject
         self.property_iri = property_iri
         super().__init__()
+        self.renderable = self.app.iolanta.node_as_qname(   # noqa: WPS601
+            property_value,
+        )
 
-    def render(self) -> RenderResult:
-        """Render title of the node."""
+    def render_title(self):
+        """Render title in a separate thread."""
         return self.app.iolanta.render(
             self.property_value,
             environments=[URIRef('https://iolanta.tech/env/title')],
         )[0]
+
+    def on_mount(self):
+        """Initiate rendering on mount."""
+        self.run_worker(self.render_title, thread=True)
+
+    def on_worker_state_changed(self, event: Worker.StateChanged):
+        """Show the title after it has been rendered."""
+        match event.state:
+            case WorkerState.SUCCESS:
+                self.renderable = event.worker.result   # noqa: WPS601
+                self.styles.color = 'white'
+
+            case WorkerState.ERROR:
+                raise ValueError(event)
+
+    def render(self) -> RenderResult:
+        """Render title of the node."""
+        return self.renderable
 
     def action_goto(self):
         """Navigate."""
@@ -288,6 +340,17 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
                 )
                 for property_value in property_values
             ]
+
+            property_values = more_itertools.interleave_longest(
+                property_values,
+                funcy.repeatedly(
+                    functools.partial(
+                        Label,
+                        ' • ',
+                    ),
+                    len(property_values) - 1,
+                ),
+            )
 
             yield PropertyRow(
                 property_name,
