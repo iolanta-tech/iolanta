@@ -13,7 +13,6 @@ from typing import (
     Set,
     Tuple,
     Type,
-    Union,
 )
 
 import funcy
@@ -24,6 +23,7 @@ from rdflib import ConjunctiveGraph, Namespace, URIRef
 from rdflib.term import Node
 
 from iolanta import entry_points
+from iolanta.cli.formatters.node_to_qname import node_to_qname
 from iolanta.errors import InsufficientDataForRender
 from iolanta.facets.errors import FacetError
 from iolanta.facets.facet import Facet
@@ -31,8 +31,14 @@ from iolanta.facets.locator import FacetFinder
 from iolanta.loaders import Loader
 from iolanta.loaders.base import SourceType
 from iolanta.loaders.local_directory import merge_contexts
-from iolanta.models import LDContext, NotLiteralNode, Triple, TripleTemplate
-from iolanta.namespaces import IOLANTA, LOCAL
+from iolanta.models import (
+    ComputedQName,
+    LDContext,
+    NotLiteralNode,
+    Triple,
+    TripleTemplate,
+)
+from iolanta.namespaces import LOCAL
 from iolanta.parsers.yaml import YAML
 from iolanta.plugin import Plugin
 from iolanta.resolvers.python_import import PythonImportResolver
@@ -332,3 +338,15 @@ class Iolanta:
             return Triple(*raw_triple)
 
         return self.retrieve_triple(triple_template)
+
+    def node_as_qname(self, node: Node):
+        """
+        Render node as a QName if possible.
+
+        Return the node as is, if it is not.
+        """
+        qname = node_to_qname(node, self.graph)
+        return f'{qname.namespace_name}:{qname.term}' if isinstance(
+            qname,
+            ComputedQName,
+        ) else node
