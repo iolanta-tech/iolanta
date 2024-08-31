@@ -7,8 +7,6 @@ from rdflib import BNode, URIRef
 from textual.app import App, ComposeResult
 from textual.containers import ScrollableContainer
 from textual.events import MouseEvent
-from textual.message import Message
-from textual.reactive import Reactive
 from textual.widgets import ContentSwitcher, Footer, Header, Placeholder, Static
 from textual.worker import Worker, WorkerState
 
