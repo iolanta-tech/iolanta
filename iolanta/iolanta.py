@@ -128,7 +128,8 @@ class Iolanta:
             ),
         )
 
-        self.graph.addN([quad.as_tuple() for quad in quads])
+        quad_tuples = [quad.as_tuple() for quad in quads]
+        self.graph.addN(quad_tuples)
 
         self.bind_namespaces(**self.namespaces_to_bind)
 
