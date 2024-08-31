@@ -104,8 +104,9 @@ class Quad:
         ) = map(render_node, self)
         return (
             f'({rendered_subject} {rendered_predicate} {rendered_object} @ '
-            f'{rendered_graph})'
+            f'{rendered_graph})'  # noqa: WPS326
         )
 
     def as_tuple(self):
+        """Represent quad as a tuple which `Graph.addN()` would understand."""
         return self.subject, self.predicate, self.object, self.graph
