@@ -4,10 +4,6 @@
 - $id: "http://purl.org/dc/terms/"
   $type: owl:Ontology
 
-- $id: http://www.w3.org/2000/01/rdf-schema
-  owl:sameAs:
-    $id: http://www.w3.org/2000/01/rdf-schema#
-
 - $id: "rdf:"
   vann:termGroup:
     - rdfs:label: Properties

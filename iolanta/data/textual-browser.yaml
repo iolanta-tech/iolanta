@@ -6,6 +6,12 @@
   iolanta:hasDefaultFacet:
     $id: python://iolanta.facets.textual_default.TextualDefaultFacet
 
+- $id: "urn:"
+  iolanta:hasFacetByPrefix:
+    $id: python://iolanta.facets.textual_provenance.TextualProvenanceFacet
+    iolanta:supports:
+      $id: https://iolanta.tech/cli/textual
+
 - $id: https://iolanta.tech/cli/link
   iolanta:hasDefaultFacet:
     $id: python://iolanta.facets.textual_link.TextualLinkFacet

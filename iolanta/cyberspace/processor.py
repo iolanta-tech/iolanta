@@ -1,7 +1,7 @@
 import dataclasses
 import functools
 import logging
-from dataclasses import dataclass
+from types import MappingProxyType
 from typing import Any, Iterable, Mapping
 
 import owlrl
@@ -34,8 +34,13 @@ from iolanta.parsers.dict_parser import UnresolvedIRI, parse_quads
 
 logger = logging.getLogger(__name__)
 
+NORMALIZE_TERMS_MAP = MappingProxyType({
+    URIRef(_url := 'http://www.w3.org/2002/07/owl'): URIRef(f'{_url}#'),
+    URIRef(_url := 'http://www.w3.org/2000/01/rdf-schema'): URIRef(f'{_url}#'),
+})
 
-REDIRECTS = {
+
+REDIRECTS = MappingProxyType({
     # FIXME This is presently hardcoded; we need to
     #   - either find a way to resolve these URLs automatically,
     #   - or create a repository of those redirects online.
@@ -45,31 +50,58 @@ REDIRECTS = {
     str(RDFS): str(RDFS),
     str(OWL): str(OWL),
     str(FOAF): str(FOAF),
-}
+})
 
 
 def construct_flat_triples(algebra: Mapping[str, Any]) -> Iterable[Triple]:
+    """Extract flat triples from parsed SPARQL query."""
     if isinstance(algebra, Mapping):
-        for key, value in algebra.items():
+        for key, value in algebra.items():  # noqa: WPS110
             if key == 'triples':
-                yield from [Triple(*raw_triple) for raw_triple in value]
+                yield from [   # noqa: WPS353
+                    Triple(*raw_triple)
+                    for raw_triple in value
+                ]
 
             else:
                 yield from construct_flat_triples(value)
 
 
-@dataclass(frozen=True)
+def normalize_term(term: Node) -> Node:
+    """
+    Normalize RDF terms.
+
+    This is an exctremely dirty hack to fix a bug in OWL reported here:
+
+    > https://stackoverflow.com/q/78934864/1245471
+
+    TODO This is:
+      * A dirty hack;
+      * Based on hard code.
+    """
+    return NORMALIZE_TERMS_MAP.get(term, term)
+
+
+@dataclasses.dataclass(frozen=True)
 class GlobalSPARQLProcessor(Processor):
+    """
+    Execute SPARQL queries against the whole Linked Data Web, or The Cyberspace.
+
+    When running the queries, we will try to find and to import pieces of LD
+    which can be relevant to the query we are executing.
+    """
+
     graph: ConjunctiveGraph
 
     def __post_init__(self):
+        """Note that we do not presently need OWL inference."""
         self.graph.last_not_inferred_source = None
 
-    def query(
+    def query(   # noqa: WPS211, WPS210
         self,
         strOrQuery,
-        initBindings={},
-        initNs={},
+        initBindings=None,
+        initNs=None,
         base=None,
         DEBUG=False,
     ):
@@ -78,36 +110,45 @@ class GlobalSPARQLProcessor(Processor):
         namespaces. The given base is used to resolve relative URIs in
         the query and will be overridden by any BASE given in the query.
         """
-        if not isinstance(strOrQuery, Query):
+        initBindings = initBindings or {}
+        initNs = initNs or {}
+
+        if isinstance(strOrQuery, Query):
+            query = strOrQuery
+
+        else:
             parsetree = parseQuery(strOrQuery)
             query = translateQuery(parsetree, base, initNs)
 
             triples = construct_flat_triples(query.algebra)
             for triple in triples:
                 self.load_data_for_triple(triple, bindings=initBindings)
-        else:
-            query = strOrQuery
 
         self.maybe_apply_inference()
         return evalQuery(self.graph, query, initBindings, base)
 
-    @functools.lru_cache(maxsize=None)
-    def load(self, source: str):
+    @functools.lru_cache(maxsize=None)    # noqa: B019
+    def load(self, source: str):   # noqa: C901, WPS210, WPS212, WPS213, WPS231
+        """
+        Try to load LD denoted by the given `source`.
+
+        TODO This function is too big, we have to refactor it.
+        """
         url = URL(source)
 
-        if url.scheme in {'file', 'python', 'local'}:
+        if url.scheme in {'file', 'python', 'local', 'urn'}:
             # FIXME temporary fix. `yaml-ld` doesn't read `context.*` files and
             #   fails.
-            return
+            return None
 
         new_source = self._apply_redirect(source)
         if new_source != source:
             return self.load(new_source)
 
         if self.graph.get_context(source):
-            return
+            return None
 
-        try:
+        try:  # noqa: WPS225
             ld_rdf = yaml_ld.to_rdf(source)
         except NotFound as not_found:
             logger.info('%s | 404 Not Found', not_found.path)
@@ -151,9 +192,20 @@ class GlobalSPARQLProcessor(Processor):
 
         if not quads:
             logger.warning('%s | No data found', source)
-            return
+            return None
 
-        self.graph.addN(quads)
+        graph = URIRef(source)
+        quad_tuples = [
+            (
+                normalize_term(term) for term in dataclasses.replace(
+                    quad,
+                    graph=graph,
+                ).as_tuple()
+            )
+            for quad in quads
+        ]
+
+        self.graph.addN(quad_tuples)
         self.graph.last_not_inferred_source = source
         logger.info('%s | loaded successfully.', source)
 
@@ -170,13 +222,16 @@ class GlobalSPARQLProcessor(Processor):
             ],
         )
 
-        subject, _predicate, obj = triple
+        subject, _predicate, rdf_object = triple
 
         if isinstance(subject, URIRef):
-            self.load(str(subject))
+            try:
+                self.load(str(subject))
+            except Exception:
+                logger.exception('Failed to load information about %s', subject)
 
-        if isinstance(obj, URIRef):
-            self.load(str(obj))
+        if isinstance(rdf_object, URIRef):
+            self.load(str(rdf_object))
 
     def resolve_term(self, term: Node, bindings: dict[str, Node]):
         """Resolve triple elements against initial variable bindings."""
@@ -188,15 +243,8 @@ class GlobalSPARQLProcessor(Processor):
 
         return term
 
-    def _apply_redirect(self, source: str) -> str:
-        for pattern, destination in REDIRECTS.items():
-            if source.startswith(pattern):
-                logger.info('Rewriting: %s → %s', source, destination)
-                return destination
-
-        return source
-
     def maybe_apply_inference(self):
+        """Apply global OWL RL inference if necessary."""
         if self.graph.last_not_inferred_source is None:
             return
 
@@ -210,3 +258,11 @@ class GlobalSPARQLProcessor(Processor):
         logger.info('Inference @ cyberspace: complete.')
 
         self.graph.last_not_inferred_source = None
+
+    def _apply_redirect(self, source: str) -> str:
+        for pattern, destination in REDIRECTS.items():
+            if source.startswith(pattern):
+                logger.info('Rewriting: %s → %s', source, destination)
+                return destination
+
+        return source

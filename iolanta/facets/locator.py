@@ -5,6 +5,7 @@ from typing import Dict, Iterable, List, Optional, Type, TypedDict
 import funcy
 from rdflib import ConjunctiveGraph
 from rdflib.term import Literal, Node, URIRef
+from yarl import URL
 
 from iolanta.facets.errors import FacetNotFound
 from iolanta.models import NotLiteralNode
@@ -55,7 +56,37 @@ class FacetFinder:
             key=self.row_sorter_by_environment,
         )
 
+    def by_prefix(self) -> Iterable[FoundRow]:
+        """Determine facet by URL prefix.
+
+        TODO fix this to allow arbitrary prefixes.
+        """
+        scheme = URL(self.node).scheme
+        if scheme != 'urn':
+            return []
+
+        if not isinstance(self.node, URIRef):
+            return []
+
+        rows = self.iolanta.query(   # noqa: WPS462
+            """
+            SELECT ?environment ?facet WHERE {
+                $prefix iolanta:hasFacetByPrefix ?facet .
+                ?facet iolanta:supports ?environment .
+            }
+            """,
+            prefix=URIRef(f'{scheme}:'),
+        )
+
+        rows = [row for row in rows if row['environment'] in self.environments]
+
+        return sorted(
+            rows,
+            key=self.row_sorter_by_environment,
+        )
+
     def by_facet(self) -> List[FoundRow]:
+        """Find a facet directly attached to the node."""
         if isinstance(self.node, Literal):
             return []
 
@@ -122,6 +153,8 @@ class FacetFinder:
         )
 
     def choices(self) -> Iterable[FoundRow]:
+        """Compose a stream of all possible facet choices."""
+        yield from self.by_prefix()
         yield from self.by_datatype()
         yield from self.by_facet()
         yield from self.by_instance_facet()

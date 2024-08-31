@@ -1,21 +1,89 @@
 import functools
-import operator
-from typing import Iterable
+from typing import ClassVar, Iterable
 from xml.dom import minidom  # noqa: S408
 
 import funcy
 from rdflib import DC, RDFS, SDO, URIRef
 from rdflib.term import BNode, Literal, Node
 from rich.syntax import Syntax
-from textual.app import ComposeResult
-from textual.containers import VerticalScroll
+from textual.app import ComposeResult, RenderResult
+from textual.binding import Binding, BindingType
+from textual.containers import (
+    Vertical,
+    VerticalScroll,
+)
+from textual.events import Click
 from textual.widget import Widget
-from textual.widgets import DataTable, Label, Static, TabbedContent, TabPane
+from textual.widgets import Label, Static, TabbedContent, TabPane
+from yarl import URL
 
 from iolanta.cli.formatters.node_to_qname import node_to_qname
 from iolanta.facets.errors import FacetNotFound
 from iolanta.facets.facet import Facet
-from iolanta.models import ComputedQName, NotLiteralNode
+from iolanta.models import ComputedQName, NotLiteralNode, Triple
+
+
+class PropertyName(Widget, can_focus=True, inherit_bindings=False):
+    """Property name."""
+
+    DEFAULT_CSS = """
+    PropertyName {
+        width: 15%;
+        height: auto;
+        margin-right: 1;
+    }
+    
+    PropertyName:hover {
+        background: $boost;
+    }
+    
+    PropertyName:focus {
+        background: darkslateblue;
+    }
+    """
+
+    BINDINGS: ClassVar[list[BindingType]] = [
+        Binding('enter', 'goto', 'Goto'),
+    ]
+
+    def __init__(
+        self,
+        iri: NotLiteralNode,
+    ):
+        """Set the IRI."""
+        self.iri = iri
+        super().__init__()
+
+    def render(self) -> RenderResult:
+        """Render node title."""
+        environment = URIRef('https://iolanta.tech/env/title')
+        return self.app.iolanta.render(self.iri, [environment])[0]
+
+    def action_goto(self):
+        """Navigate."""
+        self.app.action_goto(self.iri)
+
+    def on_click(self, event: Click):
+        """
+        Navigate to the property if we are focused.
+
+        TODO: Does not work; causes navigation even if not focused.
+        """
+        if self.has_focus:
+            return self.action_goto()
+
+
+class Title(Static):
+    """Iolanta page title."""
+
+    DEFAULT_CSS = """
+    Title {
+        padding: 1;
+        background: darkslateblue;
+        color: white;
+        text-style: bold;
+    }
+    """
 
 
 class ContentArea(VerticalScroll):
@@ -27,12 +95,7 @@ class ContentArea(VerticalScroll):
         overflow-x: hidden;
         overflow-y: auto;
     }
-    
-    #title {
-        padding: 1;
-        background: darkslateblue;
-    }
-    
+
     #description {
         padding: 1;
     }
@@ -61,6 +124,136 @@ class ContentArea(VerticalScroll):
                     yield tab_content
 
 
+class TripleURIRef(URIRef):
+    """URN serialization of an RDF triple."""
+
+    @classmethod
+    def from_triple(
+        cls,
+        subject: NotLiteralNode,
+        predicate: NotLiteralNode,
+        object_: Node,
+    ) -> 'TripleURIRef':
+        """
+        Construct from triple.
+
+        TODO Add special query arguments to conform to RDF standard:
+          * subject_bnode
+          * predicate_bnode
+          * object_bnode
+          * object_datatype
+          * object_language
+
+        TODO Standardize this?
+        """
+        iri = URL.build(
+            scheme='urn:rdf',
+            query={
+                'subject': subject,
+                'predicate': predicate,
+                'object': object_,
+            },
+        )
+        return TripleURIRef(str(iri))
+
+    def as_triple(self) -> Triple:
+        """
+        Deserialize into a triple.
+
+        TODO support special query arguments described above.
+        """
+        url = URL(self)
+        return Triple(
+            subject=URIRef(url.query['subject']),
+            predicate=URIRef(url.query['predicate']),
+            object=URIRef(url.query['object']),
+        )
+
+
+class PropertyValue(Widget, can_focus=True, inherit_bindings=False):
+    """
+    Value of a property.
+
+    Supports navigation and provenance.
+    """
+
+    BINDINGS: ClassVar[list[BindingType]] = [
+        Binding('enter', 'goto', 'Goto'),
+        Binding('p', 'provenance', 'Provenan©e'),
+    ]
+
+    DEFAULT_CSS = """
+    PropertyValue {
+        width: auto;
+        height: auto;
+        margin-right: 1;
+    }
+    
+    PropertyValue:hover {
+        background: $boost;
+    }
+
+    PropertyValue:focus {
+        background: darkslateblue;
+    }
+    """
+
+    def __init__(
+        self,
+        property_value: Node,
+        subject: NotLiteralNode,
+        property_iri: NotLiteralNode,
+    ):
+        """Initialize parameters for rendering, navigation, & provenance."""
+        self.property_value = property_value
+        self.subject = subject
+        self.property_iri = property_iri
+        super().__init__()
+
+    def render(self) -> RenderResult:
+        """Render title of the node."""
+        return self.app.iolanta.render(
+            self.property_value,
+            environments=[URIRef('https://iolanta.tech/env/title')],
+        )[0]
+
+    def action_goto(self):
+        """Navigate."""
+        self.app.action_goto(self.property_value)
+
+    def action_provenance(self):
+        """Navigate to provenance for the property value."""
+        self.app.action_goto(
+            TripleURIRef.from_triple(
+                subject=self.subject,
+                predicate=self.property_iri,
+                object_=self.property_value,
+            ),
+        )
+
+    def on_click(self, event: Click):
+        """
+        Navigate to the property if we are focused.
+
+        FIXME: Does not work; causes navigation even if not focused.
+        """
+        if self.has_focus:
+            return self.action_goto()
+
+
+class PropertyRow(Widget, can_focus=False, inherit_bindings=False):
+    """A container with horizontal layout and no scrollbars."""
+
+    DEFAULT_CSS = """
+    PropertyRow {
+        width: 1fr;
+        height: auto;
+        layout: horizontal;
+        overflow: hidden hidden;
+    }
+    """
+
+
 class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
     """Default rendering engine."""
 
@@ -83,30 +276,23 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
     def rows(self):
         """Generate rows for the properties table."""
         for property_iri, property_values in self.grouped_properties.items():
-            property_name = self.render(
-                property_iri,
-                environments=[URIRef('https://iolanta.tech/cli/link')],
+            property_name = PropertyName(
+                iri=property_iri,
             )
 
             property_values = [
-                self.render(
-                    property_value,
-                    environments=[URIRef('https://iolanta.tech/cli/link')],
+                PropertyValue(
+                    property_value=property_value,
+                    subject=self.iri,
+                    property_iri=property_iri,
                 )
                 for property_value in property_values
             ]
 
-            property_values_with_separators = funcy.interpose(
-                ' · ',
-                property_values,
+            yield PropertyRow(
+                property_name,
+                *property_values,
             )
-
-            formatted_values = functools.reduce(
-                operator.add,
-                property_values_with_separators,
-            )
-
-            yield property_name, formatted_values
 
     @property
     def title(self) -> str:
@@ -201,18 +387,11 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
         if not self.grouped_properties:
             return Static('No properties found ☹')
 
-        properties_table = DataTable(show_header=True, show_cursor=False)
-        properties_table.add_columns('Property', 'Value')
-        properties_table.add_rows(self.rows)
-
-        return properties_table
+        return Vertical(*self.rows)
 
     def compose(self) -> Iterable[Widget]:
         """Compose widgets."""
-        yield Static(
-            f'[bold white]{self.title}[/bold white]',
-            id='title',
-        )
+        yield Title(self.title)
 
         if self.description:
             yield Label(self.description, id='description')

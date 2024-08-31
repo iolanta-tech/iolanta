@@ -6,6 +6,7 @@ from typing import cast
 from rdflib import BNode, URIRef
 from textual.app import App, ComposeResult
 from textual.containers import ScrollableContainer
+from textual.events import MouseEvent
 from textual.widgets import ContentSwitcher, Footer, Header, Placeholder, Static
 from textual.worker import Worker, WorkerState
 
@@ -39,6 +40,7 @@ class IolantaBrowser(App):
 
     iolanta: Iolanta
     iri: NotLiteralNode
+    alt_click: bool = False
 
     @functools.cached_property
     def history(self) -> NavigationHistory[Location]:
@@ -99,8 +101,24 @@ class IolantaBrowser(App):
             case WorkerState.ERROR:
                 raise ValueError(event)
 
-    def action_goto(self, destination: str, iri_type_name: str | None = None):
-        """Go to an IRI."""
+    def on_mouse_down(self, event: MouseEvent):
+        """Make a note that an Alt + Click is in progress."""
+        self.alt_click = event.meta   # noqa: WPS601
+
+    def on_mouse_up(self, event: MouseEvent):
+        """Note that Alt + Click is no longer in progress."""
+        self.alt_click = False   # noqa: WPS601
+
+    def action_goto(
+        self,
+        destination: str,
+        iri_type_name: str | None = None,
+    ):
+        """
+        Go to an IRI.
+
+        TODO: Remove iri_type_name, recognize a blank node based on destination.
+        """
         iri_type = {
             None: URIRef,
             'BNode': BNode,

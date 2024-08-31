@@ -162,7 +162,7 @@ def raise_if_term_is_qname(term_value: str):
     if etc.startswith('/'):
         return
 
-    if prefix in {'local', 'templates'}:
+    if prefix in {'local', 'templates', 'urn'}:
         return
 
     raise UnresolvedIRI(
