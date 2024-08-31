@@ -1,22 +1,18 @@
 import functools
-from typing import Iterable, ClassVar
+from typing import ClassVar, Iterable
 from xml.dom import minidom  # noqa: S408
 
 import funcy
-import more_itertools
 from rdflib import DC, RDFS, SDO, URIRef
 from rdflib.term import BNode, Literal, Node
 from rich.syntax import Syntax
-from textual import on
 from textual.app import ComposeResult, RenderResult
-from textual.binding import BindingType, Binding
+from textual.binding import Binding, BindingType
 from textual.containers import (
-    Horizontal, Vertical, VerticalScroll,
-    ScrollableContainer,
+    Vertical,
+    VerticalScroll,
 )
-from textual.events import Focus, Click
-from textual.reactive import Reactive
-from textual.scroll_view import ScrollView
+from textual.events import Click
 from textual.widget import Widget
 from textual.widgets import Label, Static, TabbedContent, TabPane
 from yarl import URL
@@ -24,8 +20,6 @@ from yarl import URL
 from iolanta.cli.formatters.node_to_qname import node_to_qname
 from iolanta.facets.errors import FacetNotFound
 from iolanta.facets.facet import Facet
-from iolanta.facets.textual_browser.app import IolantaBrowser
-from iolanta.iolanta import Iolanta
 from iolanta.models import ComputedQName, NotLiteralNode, Triple
 
 
@@ -49,26 +43,47 @@ class PropertyName(Widget, can_focus=True, inherit_bindings=False):
     """
 
     BINDINGS: ClassVar[list[BindingType]] = [
-        Binding("enter", "goto", "Goto"),
+        Binding('enter', 'goto', 'Goto'),
     ]
 
     def __init__(
         self,
         iri: NotLiteralNode,
     ):
+        """Set the IRI."""
         self.iri = iri
         super().__init__()
 
     def render(self) -> RenderResult:
+        """Render node title."""
         environment = URIRef('https://iolanta.tech/env/title')
         return self.app.iolanta.render(self.iri, [environment])[0]
 
     def action_goto(self):
+        """Navigate."""
         self.app.action_goto(self.iri)
 
     def on_click(self, event: Click):
+        """
+        Navigate to the property if we are focused.
+
+        TODO: Does not work; causes navigation even if not focused.
+        """
         if self.has_focus:
             return self.action_goto()
+
+
+class Title(Static):
+    """Iolanta page title."""
+
+    DEFAULT_CSS = """
+    Title {
+        padding: 1;
+        background: darkslateblue;
+        color: white;
+        text-style: bold;
+    }
+    """
 
 
 class ContentArea(VerticalScroll):
@@ -80,12 +95,7 @@ class ContentArea(VerticalScroll):
         overflow-x: hidden;
         overflow-y: auto;
     }
-    
-    #title {
-        padding: 1;
-        background: darkslateblue;
-    }
-    
+
     #description {
         padding: 1;
     }
@@ -101,9 +111,6 @@ class ContentArea(VerticalScroll):
     }
     """
 
-    is_provenance_mode: Reactive[bool] = Reactive(False, compute=False)
-    """State whether we are in Provenan©e mode."""
-
     def compose(self) -> ComposeResult:
         """Render tabs."""
         with TabbedContent():
@@ -118,6 +125,8 @@ class ContentArea(VerticalScroll):
 
 
 class TripleURIRef(URIRef):
+    """URN serialization of an RDF triple."""
+
     @classmethod
     def from_triple(
         cls,
@@ -125,6 +134,18 @@ class TripleURIRef(URIRef):
         predicate: NotLiteralNode,
         object_: Node,
     ) -> 'TripleURIRef':
+        """
+        Construct from triple.
+
+        TODO Add special query arguments to conform to RDF standard:
+          * subject_bnode
+          * predicate_bnode
+          * object_bnode
+          * object_datatype
+          * object_language
+
+        TODO Standardize this?
+        """
         iri = URL.build(
             scheme='urn:rdf',
             query={
@@ -136,6 +157,11 @@ class TripleURIRef(URIRef):
         return TripleURIRef(str(iri))
 
     def as_triple(self) -> Triple:
+        """
+        Deserialize into a triple.
+
+        TODO support special query arguments described above.
+        """
         url = URL(self)
         return Triple(
             subject=URIRef(url.query['subject']),
@@ -145,9 +171,15 @@ class TripleURIRef(URIRef):
 
 
 class PropertyValue(Widget, can_focus=True, inherit_bindings=False):
+    """
+    Value of a property.
+
+    Supports navigation and provenance.
+    """
+
     BINDINGS: ClassVar[list[BindingType]] = [
-        Binding("enter", "goto", "Goto"),
-        Binding("p", "provenance", "Provenan©e"),
+        Binding('enter', 'goto', 'Goto'),
+        Binding('p', 'provenance', 'Provenan©e'),
     ]
 
     DEFAULT_CSS = """
@@ -172,28 +204,39 @@ class PropertyValue(Widget, can_focus=True, inherit_bindings=False):
         subject: NotLiteralNode,
         property_iri: NotLiteralNode,
     ):
+        """Initialize parameters for rendering, navigation, & provenance."""
         self.property_value = property_value
         self.subject = subject
         self.property_iri = property_iri
         super().__init__()
 
     def render(self) -> RenderResult:
+        """Render title of the node."""
         return self.app.iolanta.render(
             self.property_value,
             environments=[URIRef('https://iolanta.tech/env/title')],
         )[0]
 
     def action_goto(self):
+        """Navigate."""
         self.app.action_goto(self.property_value)
 
     def action_provenance(self):
-        self.app.action_goto(TripleURIRef.from_triple(
-            subject=self.subject,
-            predicate=self.property_iri,
-            object_=self.property_value,
-        ))
+        """Navigate to provenance for the property value."""
+        self.app.action_goto(
+            TripleURIRef.from_triple(
+                subject=self.subject,
+                predicate=self.property_iri,
+                object_=self.property_value,
+            ),
+        )
 
     def on_click(self, event: Click):
+        """
+        Navigate to the property if we are focused.
+
+        FIXME: Does not work; causes navigation even if not focused.
+        """
         if self.has_focus:
             return self.action_goto()
 
@@ -348,10 +391,7 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
 
     def compose(self) -> Iterable[Widget]:
         """Compose widgets."""
-        yield Static(
-            f'[bold white]{self.title}[/bold white]',
-            id='title',
-        )
+        yield Title(self.title)
 
         if self.description:
             yield Label(self.description, id='description')
