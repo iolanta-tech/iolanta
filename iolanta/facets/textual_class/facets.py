@@ -1,4 +1,3 @@
-import functools
 from functools import cached_property
 from typing import ClassVar
 
@@ -7,7 +6,6 @@ from rdflib import RDF, URIRef
 from textual.app import ComposeResult
 from textual.binding import Binding, BindingType
 from textual.containers import Vertical
-from textual.scrollbar import ScrollDown
 from textual.widget import Widget
 from textual.widgets import Label, ListItem, ListView
 
@@ -17,16 +15,25 @@ from iolanta.models import NotLiteralNode
 
 
 class InstanceItem(ListItem):
+    """An item in class instances list."""
+
     def __init__(self, node: NotLiteralNode, parent_class: NotLiteralNode):
+        """Specify the node, its class, and that we are not rendered yet."""
         self.node = node
         self.parent_class = parent_class
         self.is_resolved = False
         super().__init__()
 
     def compose(self) -> ComposeResult:
+        """
+        By default, we render plain URI of the class instance.
+
+        # FIXME Calculate QName maybe?
+        """
         yield Label(str(self.node))
 
     def render_content(self):
+        """Replace plain URI with a rendered human readable title."""
         renderable = self.app.iolanta.render(
             self.node,
             environments=[URIRef('https://iolanta.tech/env/title')],
@@ -58,6 +65,7 @@ class InstancesList(ListView):
         instances: list[NotLiteralNode],
         parent_class: NotLiteralNode,
     ):
+        """Specify the instances to render and their class."""
         self.instances = instances
         self.parent_class = parent_class
         super().__init__()
@@ -77,6 +85,7 @@ class InstancesList(ListView):
         yield from self.list_item_by_instance.values()
 
     def render_instances(self):
+        """Render a number of instances around the one that is highlighted."""
         max_render_radius = 10
         if self.index:
             self.highlighted_child.resolve()
@@ -85,7 +94,8 @@ class InstancesList(ListView):
             highlighted_index = 0
 
         for render_radius in range(1, max_render_radius + 1):
-            for direction in [-1, 1]:
+            directions = [-1, 1]
+            for direction in directions:
                 index = highlighted_index + direction * render_radius
 
                 if index < 0:
@@ -102,7 +112,7 @@ class InstancesList(ListView):
     def on_list_view_selected(self):
         self.run_worker(self.render_instances, thread=True, exclusive=True)
 
-    def on_list_item__child_clicked(self, event: ListItem._ChildClicked) -> None:
+    def on_list_item__child_clicked(self) -> None:
         """Navigate on click."""
         # FIXME if we call `action_goto()` here we'll navigate to the item that
         #   was selected _prior_ to this click.
@@ -123,6 +133,8 @@ class InstancesList(ListView):
 
 
 class Class(Facet[Widget]):
+    """Render instances of a class."""
+
     def show(self) -> Widget:
         instances = funcy.lpluck(
             'instance',
