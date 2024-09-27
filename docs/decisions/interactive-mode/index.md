@@ -14,7 +14,9 @@ There are a lot of parameters common to these modes, for instance:
 * `project_directory` to read files from,
 * `cache_directory` to write downloaded files to.
 
+{% verbatim %}
 {{ render("interactive-mode-alternatives") }}
+{% endverbatim %}
 
 ## Decision
 

@@ -1,6 +1,6 @@
 import logging
 from pathlib import Path
-from typing import Optional
+from typing import Annotated, Optional
 
 import typer
 from documented import DocumentedError
@@ -17,6 +17,7 @@ from iolanta.iolanta import Iolanta
 from iolanta.models import QueryResultsFormat
 
 logger = logging.getLogger('iolanta')
+console = Console()
 
 
 def construct_app() -> Typer:
@@ -40,12 +41,16 @@ def construct_app() -> Typer:
 app = construct_app()
 
 
-@app.callback()
-def callback(
-    ctx: Context,
+@app.command(name='browse')
+def render_command(
+    url: Annotated[str, Argument()],
+    environment: str = Option(
+        'https://iolanta.tech/cli/interactive',
+        '--as',
+    ),
     log_level: LogLevel = LogLevel.ERROR,
 ):
-    """Iolanta Linked Data browser."""
+    """Render a given URL."""
     level = {
         LogLevel.DEBUG: logging.DEBUG,
         LogLevel.INFO: logging.INFO,
@@ -53,7 +58,7 @@ def callback(
         LogLevel.ERROR: logging.ERROR,
     }[log_level]
 
-    iolanta: Iolanta = ctx.obj
+    iolanta: Iolanta = Iolanta()
     iolanta.logger.level = level
 
     logging.basicConfig(
@@ -63,20 +68,6 @@ def callback(
         handlers=[RichHandler()],
         force=True,
     )
-
-
-@app.command(name='browse')
-def render_command(
-    context: Context,
-    url: str,
-    environment: str = Option(
-        'https://iolanta.tech/cli/interactive',
-        '--as',
-    ),
-    print_stack: bool = Option(False, '--stack'),
-):
-    """Render a given URL."""
-    iolanta: Iolanta = context.obj
 
     node = iolanta.string_to_node(url)
 
@@ -92,7 +83,7 @@ def render_command(
         if iolanta.logger.level in {logging.DEBUG, logging.INFO}:
             raise
 
-        Console().print(
+        console.print(
             Markdown(
                 str(documented_error),
                 justify='left',
@@ -104,61 +95,8 @@ def render_command(
         if iolanta.logger.level in {logging.DEBUG, logging.INFO}:
             raise
 
-        Console().print(str(err))
+        console.print(str(err))
         raise typer.Exit(1)
 
     else:
-        console = Console()
-
-        if print_stack:
-            console.print(stack)
-
         Console().print(renderable)
-
-
-@app.command()
-def namespaces(
-    context: Context,
-):
-    """Registered namespaces."""
-    iolanta: Iolanta = context.obj
-
-    table = Table(
-        'Namespace',
-        'URL',
-        show_header=True,
-        header_style='bold magenta',
-    )
-
-    for namespace, url in iolanta.graph.namespaces():   # type: ignore
-        table.add_row(namespace, url)
-
-    Console().print(table)
-
-
-@app.command()
-def query(
-    context: Context,
-    fmt: QueryResultsFormat = Option(
-        default=QueryResultsFormat.PRETTY,
-        metavar='format',
-    ),
-    query_text: Optional[str] = Argument(
-        None,
-        metavar='query',
-        help='SPARQL query text. Will be read from stdin if empty.',
-    ),
-    use_qnames: bool = Option(
-        default=True,
-        help='Collapse URLs into QNames.',
-    ),
-):
-    """Query Iolanta graph with SPARQL."""
-    iolanta: Iolanta = context.obj
-
-    cli_print(
-        query_result=iolanta.query(query_text),
-        output_format=fmt,
-        display_iri_as_qname=use_qnames,
-        graph=iolanta.graph,
-    )
