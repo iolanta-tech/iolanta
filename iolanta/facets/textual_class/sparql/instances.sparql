@@ -1,3 +1,5 @@
 SELECT ?instance WHERE {
     ?instance a $iri .
+
+    FILTER(!isLiteral(?instance)) .
 } ORDER BY ?instance
