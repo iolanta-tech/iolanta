@@ -8,12 +8,23 @@ from textual.binding import Binding, BindingType
 from textual.containers import Vertical
 from textual.widget import Widget
 from textual.widgets import Label, ListItem, ListView
+from textual.worker import Worker, WorkerState
 
 from iolanta.facets.facet import Facet
 from iolanta.facets.textual_default.facets import TripleURIRef
 from iolanta.models import NotLiteralNode
 
 INSTANCE_RENDER_RADIUS = 50
+
+
+class InstanceLabel(Label):
+    """Instance URI or rendered title."""
+
+    DEFAULT_CSS = """
+    InstanceLabel {
+        color: gray;
+    }
+    """
 
 
 class InstanceItem(ListItem):
@@ -32,26 +43,38 @@ class InstanceItem(ListItem):
 
         # FIXME Calculate QName maybe?
         """
-        yield Label(str(self.node))
+        yield InstanceLabel(str(self.node))
 
     def render_content(self):
         """Replace plain URI with a rendered human readable title."""
-        renderable = self.app.iolanta.render(
+        return self.app.iolanta.render(
             self.node,
             environments=[URIRef('https://iolanta.tech/env/title')],
         )[0]
-        self.app.call_from_thread(
-            self.query_one(Label).update,
-            renderable,
-        )
-        self.is_resolved = True
 
     def resolve(self):
         """Resolve the node for this item and render it."""
         if self.is_resolved:
             return
 
-        self.run_worker(self.render_content, thread=True, exclusive=True)
+        self.run_worker(
+            self.render_content,
+            group='render-list-item',
+            thread=True,
+            exclusive=True,
+        )
+
+    def on_worker_state_changed(self, event: Worker.StateChanged):
+        """Show the title after it has been rendered."""
+        match event.state:
+            case WorkerState.SUCCESS:
+                label = self.query_one(InstanceLabel)
+                label.renderable = event.worker.result   # noqa: WPS601
+                label.styles.color = 'white'
+                self.is_resolved = True
+
+            case WorkerState.ERROR:
+                raise ValueError(event)
 
 
 def indices_around(center: int, radius: int):
@@ -107,16 +130,26 @@ class InstancesList(ListView):   # noqa: WPS214
     def render_instances(self):
         """Render a number of instances around the one that is highlighted."""
         for index in indices_around(self.index or 0, INSTANCE_RENDER_RADIUS):
-            if 0 < index <= len(self.instances):
+            if 0 <= index < len(self.instances):
                 self._nodes[index].resolve()
 
     def on_mount(self):
         """Render a part of the list on creation."""
-        self.run_worker(self.render_instances, thread=True, exclusive=True)
+        self.run_worker(
+            self.render_instances,
+            group='render-list-items',
+            thread=True,
+            exclusive=True,
+        )
 
     def on_list_view_selected(self):
         """Render a part of the list on selection."""
-        self.run_worker(self.render_instances, thread=True, exclusive=True)
+        self.run_worker(
+            self.render_instances,
+            group='render-list-items',
+            thread=True,
+            exclusive=True,
+        )
 
     def on_list_item__child_clicked(self) -> None:   # noqa: WPS116
         """Navigate on click."""
@@ -150,9 +183,9 @@ class Class(Facet[Widget]):
         count = len(instances)
 
         return Vertical(
-            Label(f'{count}+ instances'),
             InstancesList(
                 instances=instances,
                 parent_class=self.iri,
             ),
+            Label(f'{count}+ instances'),
         )
