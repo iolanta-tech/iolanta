@@ -52,6 +52,24 @@ class InstanceItem(ListItem):
         self.run_worker(self.render_content, thread=True, exclusive=True)
 
 
+def indices_around(center: int, radius: int):
+    """
+    Generate indices around a center index within a given radius.
+
+    Args:
+        center (int): The center index around which to generate indices.
+        radius (int): The maximum distance from the center.
+
+    Yields:
+        int: The next valid index around the center within the specified radius.
+    """
+    directions = [-1, 1]
+    yield center
+    for render_radius in range(1, radius + 1):
+        for direction in directions:
+            yield center + direction * render_radius
+
+
 class InstancesList(ListView):
     """Instances list."""
 
@@ -86,24 +104,8 @@ class InstancesList(ListView):
 
     def render_instances(self):
         """Render a number of instances around the one that is highlighted."""
-        max_render_radius = 10
-        if self.index:
-            self.highlighted_child.resolve()
-            highlighted_index = self.index
-        else:
-            highlighted_index = 0
-
-        for render_radius in range(1, max_render_radius + 1):
-            directions = [-1, 1]
-            for direction in directions:
-                index = highlighted_index + direction * render_radius
-
-                if index < 0:
-                    continue
-
-                if index >= len(self.instances):
-                    continue
-
+        for index in indices_around(self.index or 0, 10):
+            if 0 < index <= len(self.instances):
                 self._nodes[index].resolve()
 
     def on_mount(self):
