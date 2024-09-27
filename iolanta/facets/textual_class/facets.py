@@ -13,6 +13,8 @@ from iolanta.facets.facet import Facet
 from iolanta.facets.textual_default.facets import TripleURIRef
 from iolanta.models import NotLiteralNode
 
+INSTANCE_RENDER_RADIUS = 50
+
 
 class InstanceItem(ListItem):
     """An item in class instances list."""
@@ -66,11 +68,11 @@ def indices_around(center: int, radius: int):
     directions = [-1, 1]
     yield center
     for render_radius in range(1, radius + 1):
-        for direction in directions:
+        for direction in directions:   # noqa: WPS526
             yield center + direction * render_radius
 
 
-class InstancesList(ListView):
+class InstancesList(ListView):   # noqa: WPS214
     """Instances list."""
 
     BINDINGS: ClassVar[list[BindingType]] = [
@@ -104,17 +106,19 @@ class InstancesList(ListView):
 
     def render_instances(self):
         """Render a number of instances around the one that is highlighted."""
-        for index in indices_around(self.index or 0, 10):
+        for index in indices_around(self.index or 0, INSTANCE_RENDER_RADIUS):
             if 0 < index <= len(self.instances):
                 self._nodes[index].resolve()
 
     def on_mount(self):
+        """Render a part of the list on creation."""
         self.run_worker(self.render_instances, thread=True, exclusive=True)
 
     def on_list_view_selected(self):
+        """Render a part of the list on selection."""
         self.run_worker(self.render_instances, thread=True, exclusive=True)
 
-    def on_list_item__child_clicked(self) -> None:
+    def on_list_item__child_clicked(self) -> None:   # noqa: WPS116
         """Navigate on click."""
         # FIXME if we call `action_goto()` here we'll navigate to the item that
         #   was selected _prior_ to this click.
@@ -138,6 +142,7 @@ class Class(Facet[Widget]):
     """Render instances of a class."""
 
     def show(self) -> Widget:
+        """Render the instances list."""
         instances = funcy.lpluck(
             'instance',
             self.stored_query('instances.sparql', iri=self.iri),
