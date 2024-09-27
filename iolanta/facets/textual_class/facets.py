@@ -3,9 +3,9 @@ from functools import cached_property
 from typing import ClassVar
 
 import funcy
-from rdflib import URIRef, RDF
+from rdflib import RDF, URIRef
 from textual.app import ComposeResult
-from textual.binding import BindingType, Binding
+from textual.binding import Binding, BindingType
 from textual.containers import Vertical
 from textual.scrollbar import ScrollDown
 from textual.widget import Widget
