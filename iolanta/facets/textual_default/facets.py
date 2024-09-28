@@ -117,8 +117,8 @@ class ContentArea(VerticalScroll):
     DEFAULT_CSS = """
     Content {
         layout: vertical;
-        overflow-x: hidden;
-        overflow-y: auto;
+        height: auto;
+        max-height: 100%;
     }
 
     #description {
@@ -306,6 +306,13 @@ class PropertyRow(Widget, can_focus=False, inherit_bindings=False):
     """
 
 
+class PropertiesContainer(Vertical):
+    DEFAULT_CSS = """
+    PropertiesContainer {
+        height: auto;
+    }"""
+
+
 class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
     """Default rendering engine."""
 
@@ -450,7 +457,7 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
         if not self.grouped_properties:
             return Static('No properties found ☹')
 
-        return Vertical(*self.rows)
+        return PropertiesContainer(*self.rows)
 
     def compose(self) -> Iterable[Widget]:
         """Compose widgets."""
