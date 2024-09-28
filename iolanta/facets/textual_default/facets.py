@@ -7,6 +7,7 @@ import more_itertools
 from rdflib import DC, RDFS, SDO, URIRef
 from rdflib.term import BNode, Literal, Node
 from rich.syntax import Syntax
+from rich.text import Text
 from textual.app import ComposeResult, RenderResult
 from textual.binding import Binding, BindingType
 from textual.containers import Vertical, VerticalScroll
@@ -31,7 +32,6 @@ class PropertyName(Widget, can_focus=True, inherit_bindings=False):
         width: 15%;
         height: auto;
         margin-right: 1;
-        color: gray;
     }
     
     PropertyName:hover {
@@ -59,7 +59,11 @@ class PropertyName(Widget, can_focus=True, inherit_bindings=False):
         """Set the IRI."""
         self.iri = iri
         super().__init__()
-        self.renderable = self.app.iolanta.node_as_qname(iri)   # noqa: WPS601
+        qname = self.app.iolanta.node_as_qname(iri)
+        self.renderable = Text(  # noqa: WPS601
+            f'⏳ {qname}',
+            style='#696969',
+        )
 
     def render_title(self):
         """Render title in a separate thread."""
@@ -79,10 +83,6 @@ class PropertyName(Widget, can_focus=True, inherit_bindings=False):
 
             case WorkerState.ERROR:
                 raise ValueError(event)
-
-    def on_mount(self):
-        """Initiate rendering on mount."""
-        self.run_worker(self.render_title, thread=True)
 
     def action_goto(self):
         """Navigate."""
@@ -211,7 +211,6 @@ class PropertyValue(Widget, can_focus=True, inherit_bindings=False):
     PropertyValue {
         width: auto;
         height: auto;
-        color: gray;
     }
     
     PropertyValue:hover {
@@ -240,9 +239,18 @@ class PropertyValue(Widget, can_focus=True, inherit_bindings=False):
         self.subject = subject
         self.property_iri = property_iri
         super().__init__()
-        self.renderable = self.app.iolanta.node_as_qname(   # noqa: WPS601
+        qname = self.app.iolanta.node_as_qname(   # noqa: WPS601
             property_value,
         )
+        self.renderable = Text(   # noqa: WPS601
+            f'⏳ {qname}',
+            style='#696969',
+        )
+
+    @property
+    def iri(self):
+        """Return the property IRI for compatibility."""
+        return self.property_value
 
     def render_title(self):
         """Render title in a separate thread."""
@@ -250,10 +258,6 @@ class PropertyValue(Widget, can_focus=True, inherit_bindings=False):
             self.property_value,
             environments=[URIRef('https://iolanta.tech/env/title')],
         )[0]
-
-    def on_mount(self):
-        """Initiate rendering on mount."""
-        self.run_worker(self.render_title, thread=True)
 
     def on_worker_state_changed(self, event: Worker.StateChanged):
         """Show the title after it has been rendered."""
@@ -313,6 +317,21 @@ class PropertiesContainer(Vertical):
     PropertiesContainer {
         height: auto;
     }"""
+
+    def render_all_properties(self):
+        """Render all property names & values."""
+        widgets = self.query('PropertyName, PropertyValue')
+
+        widget: PropertyName | PropertyValue
+        for widget in widgets:
+            widget.renderable = self.app.iolanta.render(
+                widget.iri,
+                environments=[URIRef('https://iolanta.tech/env/title')],
+            )[0]
+
+    def on_mount(self):
+        """Initiate rendering in the background."""
+        self.run_worker(self.render_all_properties, thread=True)
 
 
 class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
