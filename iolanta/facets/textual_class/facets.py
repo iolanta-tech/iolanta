@@ -44,8 +44,9 @@ class InstanceItem(ListItem):
 
         # FIXME Calculate QName at least. Or CURIE? Or whatsit?
         """
+        qname = self.app.iolanta.node_as_qname(self.node)
         return self.renderable or Text(
-            f'⏳ {self.node}',
+            f'⏳ {qname}',
             style='#696969',
         )
 
