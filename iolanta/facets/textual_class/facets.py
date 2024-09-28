@@ -1,5 +1,4 @@
 import itertools
-from functools import cached_property
 from typing import ClassVar, Iterable
 
 import funcy
@@ -81,6 +80,9 @@ class InstancesList(ListView):   # noqa: WPS214
         Binding('p', 'provenance', 'Provenan©e'),
     ]
 
+    FIRST_CHUNK_SIZE = 15
+    DEFAULT_CHUNK_SIZE = 10
+
     def __init__(
         self,
         instances: Iterable[NotLiteralNode],
@@ -92,16 +94,30 @@ class InstancesList(ListView):   # noqa: WPS214
         super().__init__()
 
     def compose(self) -> ComposeResult:
-        yield from self.stream_instance_items_chunk()
+        """Load the first chunk of items."""
+        yield from self.stream_instance_items_chunk(count=self.FIRST_CHUNK_SIZE)
 
-    def stream_instance_items_chunk(self) -> Iterable[InstanceItem]:
-        for instance in itertools.islice(self.instances, 10):
+    def stream_instance_items_chunk(
+        self,
+        count: int | None = None,
+    ) -> Iterable[InstanceItem]:
+        """Return a chunk of unique class instances."""
+        chunk = itertools.islice(
+            self.instances,
+            count or self.DEFAULT_CHUNK_SIZE,
+        )
+        for instance in chunk:  # noqa: WPS526
             yield InstanceItem(
                 node=instance,
                 parent_class=self.parent_class,
             )
 
     def on_list_view_highlighted(self):
+        """
+        Find out whether the last item of the list is highlighted.
+
+        If yes then add more elements.
+        """
         if self.index >= len(self._nodes) - 1:
             self.extend(
                 self.stream_instance_items_chunk(),
