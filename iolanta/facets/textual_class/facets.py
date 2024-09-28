@@ -80,6 +80,16 @@ class InstancesList(ListView):   # noqa: WPS214
         Binding('p', 'provenance', 'Provenan©e'),
     ]
 
+    DEFAULT_CSS = """
+    InstancesList {
+        height: auto;
+        
+        layout: vertical;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+    """
+
     FIRST_CHUNK_SIZE = 15
     DEFAULT_CHUNK_SIZE = 10
 
@@ -118,6 +128,9 @@ class InstancesList(ListView):   # noqa: WPS214
 
         If yes then add more elements.
         """
+        if not self._nodes:
+            return
+
         if self.index >= len(self._nodes) - 1:
             self.extend(
                 self.stream_instance_items_chunk(),
@@ -141,6 +154,25 @@ class InstancesList(ListView):   # noqa: WPS214
                 object_=self.parent_class,
             ),
         )
+
+
+class Bottom(Label):
+    DEFAULT_CSS = """
+    Bottom {
+        padding-top: 1;
+        padding-bottom: 1;
+        dock: bottom;
+    }
+    """
+
+
+class InstancesBody(Vertical):
+    DEFAULT_CSS = """
+    InstancesBody {
+        height: auto;
+        max-height: 100%;
+    }
+    """
 
 
 class Class(Facet[Widget]):
@@ -175,10 +207,10 @@ class Class(Facet[Widget]):
 
     def show(self) -> Widget:
         """Render the instances list."""
-        return Vertical(
+        return InstancesBody(
             InstancesList(
                 instances=self.stream_instances(),
                 parent_class=self.iri,
             ),
-            Label('Select the last element to try loading more instances.'),
+            Bottom('Select the last element to try loading more instances.'),
         )
