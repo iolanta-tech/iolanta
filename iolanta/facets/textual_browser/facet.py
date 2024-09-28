@@ -16,9 +16,11 @@ class TextualBrowserFacet(Facet[ReturnType | None]):
     """Textual browser."""
 
     def show(self) -> ReturnType | None:
-        app = IolantaBrowser()
-        app.iolanta = self.iolanta
-        app.iri = self.iri
+        """Render the Iolanta browser Textual app."""
+        app = IolantaBrowser(
+            iolanta=self.iolanta,
+            iri=self.iri,
+        )
         try:
             app.run()
         except Exception:

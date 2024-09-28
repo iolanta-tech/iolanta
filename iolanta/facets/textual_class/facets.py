@@ -1,14 +1,17 @@
+import functools
 import itertools
 from typing import ClassVar, Iterable
 
 import funcy
 from rdflib import RDF, URIRef
+from rich.console import RenderResult
+from rich.text import Text
 from textual.app import ComposeResult
 from textual.binding import Binding, BindingType
 from textual.containers import Vertical
+from textual.reactive import Reactive
 from textual.widget import Widget
 from textual.widgets import Label, ListItem, ListView
-from textual.worker import Worker, WorkerState
 
 from iolanta.facets.facet import Facet
 from iolanta.facets.textual_default.facets import TripleURIRef
@@ -17,59 +20,43 @@ from iolanta.models import NotLiteralNode
 INSTANCE_RENDER_RADIUS = 50
 
 
-class InstanceLabel(Label):
-    """Instance URI or rendered title."""
-
-    DEFAULT_CSS = """
-    InstanceLabel {
-        color: gray;
-    }
-    """
-
-
 class InstanceItem(ListItem):
     """An item in class instances list."""
 
-    def __init__(self, node: NotLiteralNode, parent_class: NotLiteralNode):
+    renderable: Reactive[RenderResult | None](None, init=True, layout=True)
+
+    def __init__(
+        self,
+        node: NotLiteralNode,
+        parent_class: NotLiteralNode,
+    ):
         """Specify the node, its class, and that we are not rendered yet."""
         self.node = node
         self.parent_class = parent_class
+        self.renderable = None
         super().__init__()
 
-    def compose(self) -> ComposeResult:
+    def render(self) -> RenderResult:
         """
-        By default, we render plain URI of the class instance.
+        Render this class instance.
 
-        # FIXME Calculate QName maybe?
+        Render either the result or the raw node.
+
+        # FIXME Calculate QName at least. Or CURIE? Or whatsit?
         """
-        yield InstanceLabel(str(self.node))
-
-    def render_content(self):
-        """Replace plain URI with a rendered human readable title."""
-        return self.app.iolanta.render(
-            self.node,
-            environments=[URIRef('https://iolanta.tech/env/title')],
-        )[0]
-
-    def on_mount(self):
-        """Resolve the node for this item and render it."""
-        self.run_worker(
-            self.render_content,
-            group='render-list-item',
-            thread=True,
-            exclusive=True,
+        return self.renderable or Text(
+            f'⏳ {self.node}',
+            style='#696969',
         )
 
-    def on_worker_state_changed(self, event: Worker.StateChanged):
-        """Show the title after it has been rendered."""
-        match event.state:
-            case WorkerState.SUCCESS:
-                label = self.query_one(InstanceLabel)
-                label.renderable = event.worker.result   # noqa: WPS601
-                label.styles.color = 'white'
+    def update(self, renderable: RenderResult):
+        """
+        Assign the render result.
 
-            case WorkerState.ERROR:
-                raise ValueError(event)
+        A separate method is needed for this because we call it from a thread.
+        """
+        self.renderable = renderable
+        self.refresh()
 
 
 class InstancesList(ListView):   # noqa: WPS214
@@ -103,9 +90,34 @@ class InstancesList(ListView):   # noqa: WPS214
         self.parent_class = parent_class
         super().__init__()
 
+    def render_newly_added_instances(self, instance_items: list[InstanceItem]):
+        """
+        Render each of the given instance items.
+
+        Must be called in a worker.
+        """
+        for instance_item in instance_items:
+            self.app.call_from_thread(
+                instance_item.update,
+                self.app.iolanta.render(
+                    instance_item.node,
+                    environments=[URIRef('https://iolanta.tech/env/title')],
+                )[0],
+            )
+
     def compose(self) -> ComposeResult:
         """Load the first chunk of items."""
         yield from self.stream_instance_items_chunk(count=self.FIRST_CHUNK_SIZE)
+
+    def on_mount(self):
+        """Render the first chunk of instances."""
+        self.run_worker(
+            functools.partial(
+                self.render_newly_added_instances,
+                self._nodes,
+            ),
+            thread=True,
+        )
 
     def stream_instance_items_chunk(
         self,
@@ -132,9 +144,15 @@ class InstancesList(ListView):   # noqa: WPS214
             return
 
         if self.index >= len(self._nodes) - 1:
-            self.extend(
-                self.stream_instance_items_chunk(),
+            new_instance_items = list(self.stream_instance_items_chunk())
+            self.run_worker(
+                functools.partial(
+                    self.render_newly_added_instances,
+                    new_instance_items,
+                ),
+                thread=True,
             )
+            self.extend(new_instance_items)
 
     def on_list_item__child_clicked(self) -> None:   # noqa: WPS116
         """Navigate on click."""
