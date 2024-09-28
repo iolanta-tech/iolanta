@@ -1,9 +1,11 @@
 import functools
 import uuid
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from typing import cast
 
 from rdflib import BNode, URIRef
+from rdflib.term import Node
 from textual.app import App, ComposeResult
 from textual.containers import ScrollableContainer
 from textual.events import MouseEvent
@@ -35,12 +37,17 @@ class Home(Placeholder):
         yield Static('Welcome to Iolanta! This is a placeholder page.')
 
 
-class IolantaBrowser(App):
+class IolantaBrowser(App):   # noqa: WPS214, WPS230
     """Browse Linked Data."""
 
-    iolanta: Iolanta
-    iri: NotLiteralNode
     alt_click: bool = False
+
+    def __init__(self, iolanta: Iolanta, iri: Node):
+        """Set up parameters for the browser."""
+        self.iolanta = iolanta
+        self.iri = iri
+        self.renderers = ThreadPoolExecutor()
+        super().__init__()
 
     @functools.cached_property
     def history(self) -> NavigationHistory[Location]:
