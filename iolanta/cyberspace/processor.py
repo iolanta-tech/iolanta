@@ -1,6 +1,7 @@
 import dataclasses
 import functools
 import logging
+from threading import Lock
 from types import MappingProxyType
 from typing import Any, Iterable, Mapping
 
@@ -92,6 +93,7 @@ class GlobalSPARQLProcessor(Processor):
     """
 
     graph: ConjunctiveGraph
+    inference_lock: Lock = dataclasses.field(default_factory=Lock)
 
     def __post_init__(self):
         """Note that we do not presently need OWL inference."""
@@ -248,16 +250,17 @@ class GlobalSPARQLProcessor(Processor):
         if self.graph.last_not_inferred_source is None:
             return
 
-        closure_class = owlrl.OWLRL_Extension
-        logger.info(
-            'Inference @ cyberspace: %s (due to %s) started…',
-            closure_class.__name__,
-            self.graph.last_not_inferred_source,
-        )
-        owlrl.DeductiveClosure(closure_class).expand(self.graph)
-        logger.info('Inference @ cyberspace: complete.')
+        with self.inference_lock:
+            closure_class = owlrl.OWLRL_Extension
+            logger.info(
+                'Inference @ cyberspace: %s (due to %s) started…',
+                closure_class.__name__,
+                self.graph.last_not_inferred_source,
+            )
+            owlrl.DeductiveClosure(closure_class).expand(self.graph)
+            logger.info('Inference @ cyberspace: complete.')
 
-        self.graph.last_not_inferred_source = None
+            self.graph.last_not_inferred_source = None
 
     def _apply_redirect(self, source: str) -> str:
         for pattern, destination in REDIRECTS.items():
