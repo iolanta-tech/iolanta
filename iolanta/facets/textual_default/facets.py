@@ -307,6 +307,8 @@ class PropertyRow(Widget, can_focus=False, inherit_bindings=False):
 
 
 class PropertiesContainer(Vertical):
+    """Contain all properties and their values."""
+
     DEFAULT_CSS = """
     PropertiesContainer {
         height: auto;

@@ -157,6 +157,8 @@ class InstancesList(ListView):   # noqa: WPS214
 
 
 class Bottom(Label):
+    """Label below the instances list."""
+
     DEFAULT_CSS = """
     Bottom {
         padding-top: 1;
@@ -167,6 +169,8 @@ class Bottom(Label):
 
 
 class InstancesBody(Vertical):
+    """Container for instances list and accompanying bells and whistles."""
+
     DEFAULT_CSS = """
     InstancesBody {
         height: auto;
