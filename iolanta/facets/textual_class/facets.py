@@ -1,5 +1,5 @@
-from functools import cached_property
-from typing import ClassVar
+import itertools
+from typing import ClassVar, Iterable
 
 import funcy
 from rdflib import RDF, URIRef
@@ -34,7 +34,6 @@ class InstanceItem(ListItem):
         """Specify the node, its class, and that we are not rendered yet."""
         self.node = node
         self.parent_class = parent_class
-        self.is_resolved = False
         super().__init__()
 
     def compose(self) -> ComposeResult:
@@ -52,11 +51,8 @@ class InstanceItem(ListItem):
             environments=[URIRef('https://iolanta.tech/env/title')],
         )[0]
 
-    def resolve(self):
+    def on_mount(self):
         """Resolve the node for this item and render it."""
-        if self.is_resolved:
-            return
-
         self.run_worker(
             self.render_content,
             group='render-list-item',
@@ -71,28 +67,9 @@ class InstanceItem(ListItem):
                 label = self.query_one(InstanceLabel)
                 label.renderable = event.worker.result   # noqa: WPS601
                 label.styles.color = 'white'
-                self.is_resolved = True
 
             case WorkerState.ERROR:
                 raise ValueError(event)
-
-
-def indices_around(center: int, radius: int):
-    """
-    Generate indices around a center index within a given radius.
-
-    Args:
-        center (int): The center index around which to generate indices.
-        radius (int): The maximum distance from the center.
-
-    Yields:
-        int: The next valid index around the center within the specified radius.
-    """
-    directions = [-1, 1]
-    yield center
-    for render_radius in range(1, radius + 1):
-        for direction in directions:   # noqa: WPS526
-            yield center + direction * render_radius
 
 
 class InstancesList(ListView):   # noqa: WPS214
@@ -103,9 +80,22 @@ class InstancesList(ListView):   # noqa: WPS214
         Binding('p', 'provenance', 'Provenan©e'),
     ]
 
+    DEFAULT_CSS = """
+    InstancesList {
+        height: auto;
+        
+        layout: vertical;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+    """
+
+    FIRST_CHUNK_SIZE = 15
+    DEFAULT_CHUNK_SIZE = 10
+
     def __init__(
         self,
-        instances: list[NotLiteralNode],
+        instances: Iterable[NotLiteralNode],
         parent_class: NotLiteralNode,
     ):
         """Specify the instances to render and their class."""
@@ -113,43 +103,38 @@ class InstancesList(ListView):   # noqa: WPS214
         self.parent_class = parent_class
         super().__init__()
 
-    @cached_property
-    def list_item_by_instance(self) -> dict[NotLiteralNode, ListItem]:
-        """Generate a ListItem per class instance."""
-        return {
-            instance: InstanceItem(
+    def compose(self) -> ComposeResult:
+        """Load the first chunk of items."""
+        yield from self.stream_instance_items_chunk(count=self.FIRST_CHUNK_SIZE)
+
+    def stream_instance_items_chunk(
+        self,
+        count: int | None = None,
+    ) -> Iterable[InstanceItem]:
+        """Return a chunk of unique class instances."""
+        chunk = itertools.islice(
+            self.instances,
+            count or self.DEFAULT_CHUNK_SIZE,
+        )
+        for instance in chunk:  # noqa: WPS526
+            yield InstanceItem(
                 node=instance,
                 parent_class=self.parent_class,
             )
-            for instance in self.instances
-        }
 
-    def compose(self) -> ComposeResult:
-        yield from self.list_item_by_instance.values()
+    def on_list_view_highlighted(self):
+        """
+        Find out whether the last item of the list is highlighted.
 
-    def render_instances(self):
-        """Render a number of instances around the one that is highlighted."""
-        for index in indices_around(self.index or 0, INSTANCE_RENDER_RADIUS):
-            if 0 <= index < len(self.instances):
-                self._nodes[index].resolve()
+        If yes then add more elements.
+        """
+        if not self._nodes:
+            return
 
-    def on_mount(self):
-        """Render a part of the list on creation."""
-        self.run_worker(
-            self.render_instances,
-            group='render-list-items',
-            thread=True,
-            exclusive=True,
-        )
-
-    def on_list_view_selected(self):
-        """Render a part of the list on selection."""
-        self.run_worker(
-            self.render_instances,
-            group='render-list-items',
-            thread=True,
-            exclusive=True,
-        )
+        if self.index >= len(self._nodes) - 1:
+            self.extend(
+                self.stream_instance_items_chunk(),
+            )
 
     def on_list_item__child_clicked(self) -> None:   # noqa: WPS116
         """Navigate on click."""
@@ -171,21 +156,65 @@ class InstancesList(ListView):   # noqa: WPS214
         )
 
 
+class Bottom(Label):
+    """Label below the instances list."""
+
+    DEFAULT_CSS = """
+    Bottom {
+        padding-top: 1;
+        padding-bottom: 1;
+        dock: bottom;
+    }
+    """
+
+
+class InstancesBody(Vertical):
+    """Container for instances list and accompanying bells and whistles."""
+
+    DEFAULT_CSS = """
+    InstancesBody {
+        height: auto;
+        max-height: 100%;
+    }
+    """
+
+
 class Class(Facet[Widget]):
     """Render instances of a class."""
 
+    def stream_instances(self) -> Iterable[NotLiteralNode]:
+        """
+        Query and stream class instances lazily.
+
+        The operation of rendering an instance is not pure: it might cause us
+        to retrieve more data and load said data into the graph. That's because
+        we do multiple query attempts.
+
+        We have to stop if a subsequent attempt returns no results. That's why
+        we can't use `funcy.distinct()` or something similar.
+        """
+        known_instances: set[NotLiteralNode] = set()
+        while True:
+            instances = set(
+                funcy.pluck(
+                    'instance',
+                    self.stored_query('instances.sparql', iri=self.iri),
+                ),
+            ).difference(known_instances)
+
+            if not instances:
+                return
+
+            yield from instances
+
+            known_instances.update(instances)
+
     def show(self) -> Widget:
         """Render the instances list."""
-        instances = funcy.lpluck(
-            'instance',
-            self.stored_query('instances.sparql', iri=self.iri),
-        )
-        count = len(instances)
-
-        return Vertical(
+        return InstancesBody(
             InstancesList(
-                instances=instances,
+                instances=self.stream_instances(),
                 parent_class=self.iri,
             ),
-            Label(f'{count}+ instances'),
+            Bottom('Select the last element to try loading more instances.'),
         )
