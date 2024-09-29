@@ -2716,6 +2716,28 @@ rdflib = ">=4.2.0"
 testfixtures = "*"
 
 [[package]]
+name = "reasonable"
+version = "0.2.6"
+description = "An OWL 2 RL reasoner with reasonable performance"
+optional = false
+python-versions = "*"
+files = [
+    {file = "reasonable-0.2.6-cp37-abi3-macosx_10_7_x86_64.whl", hash = "sha256:4aa6bf17159b96e42821cf7af6738d95330dbc4a88e09834378a28df3333c483"},
+    {file = "reasonable-0.2.6-cp37-abi3-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:f06bfde7d128f3fff653f042634f8c4e68ded0a6150e3fa398e288d993bffbd4"},
+    {file = "reasonable-0.2.6-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:76b9f9279ca06cec734ae1d46494ec1ef9a003e528ca2029856e61ed6d6221c9"},
+    {file = "reasonable-0.2.6-cp37-abi3-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:6efa7596329e0b45421b7dd10d5806021850f1e294c41371b601ac611bfbe42b"},
+    {file = "reasonable-0.2.6-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:5e6b5aea2bbf4cadcf26a8e256d76670f37848707849a9590f94d2aa1a9c2392"},
+    {file = "reasonable-0.2.6-cp37-abi3-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:f0d9c8a15404cf3e385ee74db6fb06a7f8d04511cd5b69313162fb4068053b06"},
+    {file = "reasonable-0.2.6-cp37-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:53d8d7789f47ff777930448af82b24db081af4fe84e6a1bfd5448de74bb807a6"},
+    {file = "reasonable-0.2.6-cp37-abi3-musllinux_1_2_armv7l.whl", hash = "sha256:a32e66baa6a9d95186a042cab5cb5f250e7764b79da3721ef516726a9a947580"},
+    {file = "reasonable-0.2.6-cp37-abi3-musllinux_1_2_i686.whl", hash = "sha256:995ae5061cb31a38452d68e63dc6a301658e0bb0ef4e4efb98918927c7a73fb7"},
+    {file = "reasonable-0.2.6-cp37-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:e6d066a68672c53d9d28c670839664e860a9f070c007c1318f91800b074710d4"},
+    {file = "reasonable-0.2.6-cp37-abi3-win32.whl", hash = "sha256:6a4260330d62705eb4ea49926cd007b7a9278a9cf6548079a9ea53a6f277a15d"},
+    {file = "reasonable-0.2.6-cp37-abi3-win_amd64.whl", hash = "sha256:02332c2100748106be7580059d6e0a2769022fd687175594fe65ac8935cc32b6"},
+    {file = "reasonable-0.2.6.tar.gz", hash = "sha256:5d26aeb8b6c3f566aa2ef11c308b2208ec7669a30e9113728f243024c6276205"},
+]
+
+[[package]]
 name = "regex"
 version = "2024.7.24"
 description = "Alternative regular expression module, to replace re."
@@ -3513,4 +3535,4 @@ all = ["iolanta-tables"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.12"
-content-hash = "e0815f44206ed406f6ea0ab4a2eea7f8d6e8a2a7a7f5259d899f9ceda4e82e44"
+content-hash = "ab6478e55dff47b1466a9c18085a4ecb575e5f85c3fa52f1c153f7148ffcb6bd"
