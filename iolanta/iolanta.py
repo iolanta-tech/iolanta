@@ -143,6 +143,8 @@ class Iolanta:
 
     def infer(self, closure_class: Type[Core] = OWLRL_Extension) -> 'Iolanta':
         """Apply inference."""
+        return self
+
         self.logger.info(
             'Inference: %s started...',
             closure_class.__name__,

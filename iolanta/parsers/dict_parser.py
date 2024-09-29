@@ -1,4 +1,5 @@
 import dataclasses
+import hashlib
 import itertools
 import json
 import uuid
@@ -192,10 +193,6 @@ def parse_term(
         if datatype := term.get('datatype'):
             datatype = URIRef(datatype)
 
-            # XSD.string does not provide any extra information. Removing it.
-            if datatype == XSD.string:
-                datatype = None
-
         if language and datatype:
             datatype = None
 
@@ -207,7 +204,7 @@ def parse_term(
 
     if term_type == 'blank node':
         return BNode(
-            value=term_value.replace('_:', f'{blank_node_prefix}/'),
+            value=term_value.replace('_:', f'{blank_node_prefix}_'),
         )
 
     raise ValueError(f'Unknown term: {term}')
@@ -219,6 +216,9 @@ def parse_quads(
     blank_node_prefix: str = '',
 ) -> Iterable[Quad]:
     """Parse an N-Quads output into a Quads stream."""
+    blank_node_prefix = hashlib.md5(blank_node_prefix.encode()).hexdigest()
+    blank_node_prefix = f'_:{blank_node_prefix}'
+
     for graph_name, quads in quads_document.items():
         if graph_name == '@default':
             graph_name = graph
