@@ -6,6 +6,7 @@ from types import MappingProxyType
 from typing import Any, Iterable, Mapping
 
 import owlrl
+import reasonable
 import yaml_ld
 from rdflib import (
     DC,
@@ -17,14 +18,14 @@ from rdflib import (
     VANN,
     ConjunctiveGraph,
     URIRef,
-    Variable,
+    Variable, Literal,
 )
 from rdflib.plugins.sparql.algebra import translateQuery
 from rdflib.plugins.sparql.evaluate import evalQuery
 from rdflib.plugins.sparql.parser import parseQuery
 from rdflib.plugins.sparql.sparql import Query
 from rdflib.query import Processor
-from rdflib.term import Node
+from rdflib.term import Node, BNode
 from requests.exceptions import ConnectionError
 from yaml_ld.document_loaders.content_types import ParserNotFound
 from yaml_ld.errors import NotFound, YAMLLDError
@@ -251,13 +252,16 @@ class GlobalSPARQLProcessor(Processor):
             return
 
         with self.inference_lock:
-            closure_class = owlrl.OWLRL_Extension
-            logger.info(
-                'Inference @ cyberspace: %s (due to %s) started…',
-                closure_class.__name__,
-                self.graph.last_not_inferred_source,
-            )
-            owlrl.DeductiveClosure(closure_class).expand(self.graph)
+            reasoner = reasonable.PyReasoner()
+            reasoner.from_graph(self.graph)
+            inferred_triples = reasoner.reason()
+            inference_graph_name = BNode('_:inference')
+            inferred_quads = [
+                (*triple, inference_graph_name)
+                for triple in inferred_triples
+            ]
+            self.graph.addN(inferred_quads)
+
             logger.info('Inference @ cyberspace: complete.')
 
             self.graph.last_not_inferred_source = None
