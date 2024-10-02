@@ -14,7 +14,12 @@ class TitleFacet(Facet[str]):
     """Title of an object."""
 
     def show(self) -> str:
-        choices = self.stored_query('title.sparql', iri=self.iri)
+        """Render title of a thing."""
+        choices = self.stored_query(
+            'title.sparql',
+            iri=self.iri,
+            language=self.iolanta.language,
+        )
 
         try:
             [row] = choices
