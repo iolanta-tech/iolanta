@@ -1,10 +1,12 @@
 SELECT * WHERE {
     OPTIONAL {
         $iri rdfs:label ?rdfs_label .
+        FILTER (lang(?rdfs_label) = "" || lang(?rdfs_label) = $language)
     }
 
     OPTIONAL {
         $iri <http://purl.org/dc/elements/1.1/title> ?dc_title .
+        FILTER (lang(?dc_title) = "" || lang(?dc_title) = $language)
     }
 
     OPTIONAL {
