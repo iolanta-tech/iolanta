@@ -17,15 +17,16 @@ from rdflib import (
     RDFS,
     VANN,
     ConjunctiveGraph,
+    Literal,
     URIRef,
-    Variable, Literal,
+    Variable,
 )
 from rdflib.plugins.sparql.algebra import translateQuery
 from rdflib.plugins.sparql.evaluate import evalQuery
 from rdflib.plugins.sparql.parser import parseQuery
 from rdflib.plugins.sparql.sparql import Query
 from rdflib.query import Processor
-from rdflib.term import Node, BNode
+from rdflib.term import BNode, Node
 from requests.exceptions import ConnectionError
 from yaml_ld.document_loaders.content_types import ParserNotFound
 from yaml_ld.errors import NotFound, YAMLLDError

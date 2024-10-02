@@ -106,20 +106,6 @@ class InstancesList(ListView):   # noqa: WPS214
                 )[0],
             )
 
-    def compose(self) -> ComposeResult:
-        """Load the first chunk of items."""
-        yield from self.stream_instance_items_chunk(count=self.FIRST_CHUNK_SIZE)
-
-    def on_mount(self):
-        """Render the first chunk of instances."""
-        self.run_worker(
-            functools.partial(
-                self.render_newly_added_instances,
-                self._nodes,
-            ),
-            thread=True,
-        )
-
     def stream_instance_items_chunk(
         self,
         count: int | None = None,
@@ -141,10 +127,7 @@ class InstancesList(ListView):   # noqa: WPS214
 
         If yes then add more elements.
         """
-        if not self._nodes:
-            return
-
-        if self.index >= len(self._nodes) - 1:
+        if not self._nodes or (self.index >= len(self._nodes) - 1):
             new_instance_items = list(self.stream_instance_items_chunk())
             self.run_worker(
                 functools.partial(
@@ -153,7 +136,10 @@ class InstancesList(ListView):   # noqa: WPS214
                 ),
                 thread=True,
             )
-            self.extend(new_instance_items)
+
+            # #126 `extend()` here will lead to freeze in some situations
+            for new_item in new_instance_items:
+                self.append(new_item)
 
     def on_list_item__child_clicked(self) -> None:   # noqa: WPS116
         """Navigate on click."""
