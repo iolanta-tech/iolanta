@@ -1,19 +1,21 @@
 SELECT * WHERE {
     OPTIONAL {
         $iri rdfs:label ?rdfs_label .
-        FILTER (lang(?rdfs_label) = "" || lang(?rdfs_label) = $language)
+        FILTER (!lang(?rdfs_label) || lang(?rdfs_label) = $language)
     }
 
     OPTIONAL {
         $iri <http://purl.org/dc/elements/1.1/title> ?dc_title .
-        FILTER (lang(?dc_title) = "" || lang(?dc_title) = $language)
+        FILTER (!lang(?dc_title) || lang(?dc_title) = $language)
     }
 
     OPTIONAL {
         $iri <http://schema.org/title> ?schema_title .
+        FILTER (!lang(?schema_title) || lang(?schema_title) = $language)
     }
 
     OPTIONAL {
         $iri <http://xmlns.com/foaf/0.1/name> ?foaf_name .
+        FILTER (!lang(?foaf_name) || lang(?foaf_name) = $language)
     }
 }
