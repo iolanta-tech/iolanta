@@ -16,10 +16,7 @@ from typing import (
 )
 
 import funcy
-import owlrl
-from owlrl import OWLRL_Extension
-from owlrl.Closure import Core
-from rdflib import ConjunctiveGraph, Namespace, URIRef
+from rdflib import ConjunctiveGraph, Literal, Namespace, URIRef
 from rdflib.term import Node
 
 from iolanta import entry_points
@@ -51,7 +48,7 @@ from ldflex import LDFlex
 class Iolanta:   # noqa: WPS214
     """Iolanta is a Semantic web browser."""
 
-    language: str = 'en'
+    language: Literal = Literal('en')
 
     retrieval_directory: Optional[Path] = None
     graph: ConjunctiveGraph = field(
@@ -143,19 +140,12 @@ class Iolanta:   # noqa: WPS214
 
         return self
 
-    def infer(self, closure_class: Type[Core] = OWLRL_Extension) -> 'Iolanta':
-        """Apply inference."""
-        return self
+    def infer(self, closure_class) -> 'Iolanta':
+        """
+        Apply inference.
 
-        self.logger.info(
-            'Inference: %s started...',
-            closure_class.__name__,
-        )
-        owlrl.DeductiveClosure(closure_class).expand(self.graph)
-        self.logger.info('Inference: complete.')
-
-        self.sources_added_not_yet_inferred = []
-
+        TODO Remove this. Or use `reasonable`. Not sure.
+        """
         return self
 
     def bind_namespaces(self, **mappings: Namespace) -> 'Iolanta':
