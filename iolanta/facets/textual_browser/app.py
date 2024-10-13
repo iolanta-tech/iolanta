@@ -7,7 +7,7 @@ from typing import cast
 from rdflib import BNode, URIRef
 from rdflib.term import Node
 from textual.app import App, ComposeResult
-from textual.binding import Binding
+from textual.binding import Binding, BindingsMap
 from textual.containers import ScrollableContainer
 from textual.widgets import ContentSwitcher, Footer, Header, Placeholder, Static
 from textual.worker import Worker, WorkerState
@@ -17,6 +17,14 @@ from iolanta.facets.locator import FacetFinder
 from iolanta.facets.textual_browser.history import NavigationHistory
 from iolanta.iolanta import Iolanta
 from iolanta.models import NotLiteralNode
+
+
+@dataclass
+class FlipOption:
+    """Option to flip to another facet."""
+
+    facet_iri: URIRef
+    title: str
 
 
 @dataclass
@@ -45,22 +53,21 @@ class Page(ScrollableContainer):
     def __init__(
         self,
         renderable,
+        iri: NotLiteralNode,
         page_id: str,
-        bindings: list[Binding] | None = None,
+        flip_options: list[FlipOption],
     ):
         """Initialize the page and set bindings."""
         super().__init__(renderable, id=page_id)
-        if bindings:
-            for binding in bindings:
-                self._bindings.keys[binding.key] = binding
-
-
-@dataclass
-class FlipOption:
-    """Option to flip to another facet."""
-
-    facet_iri: URIRef
-    title: str
+        for number, flip_option in enumerate(flip_options, start=1):
+            self._bindings.bind(
+                keys=f'{number}',  # Nothing else works
+                description=flip_option.title,
+                action=(
+                    f"app.goto('{iri}', None, "
+                    f"'{flip_option.facet_iri}')"
+                ),
+            )
 
 
 class IolantaBrowser(App):   # noqa: WPS214, WPS230
@@ -179,19 +186,9 @@ class IolantaBrowser(App):   # noqa: WPS214, WPS230
                 page_id = f'page_{page_uid}'
                 page = Page(
                     renderable,
+                    iri=iri,
                     page_id=page_id,
-                    bindings=[
-                        Binding(
-                            key=f'ctrl+{number}',
-                            action=(
-                                f"app.goto('{iri}', None, "
-                                f"'{flip_option.facet_iri}')"
-                            ),
-                            description=flip_option.title,
-                        )
-                        for number, flip_option
-                        in enumerate(flip_options, start=1)
-                    ],
+                    flip_options=flip_options,
                 )
                 body.mount(page)
                 body.current = page_id
