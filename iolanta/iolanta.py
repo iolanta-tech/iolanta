@@ -140,7 +140,7 @@ class Iolanta:   # noqa: WPS214
 
         return self
 
-    def infer(self, closure_class) -> 'Iolanta':
+    def infer(self, closure_class=None) -> 'Iolanta':
         """
         Apply inference.
 
