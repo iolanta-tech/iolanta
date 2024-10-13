@@ -152,6 +152,7 @@ class FacetFinder:
             key=self.row_sorter_by_environment,
         )
 
+    @funcy.post_processing(list)
     def choices(self) -> Iterable[FoundRow]:
         """Compose a stream of all possible facet choices."""
         yield from self.by_prefix()
