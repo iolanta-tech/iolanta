@@ -5,7 +5,7 @@
 - $id: https://iolanta.tech/cli/textual
   iolanta:hasDefaultFacet:
     $id: python://iolanta.facets.textual_default.TextualDefaultFacet
-    rdfs:label: "Goo"
+    rdfs:label: Properties
 
 - $id: "urn:"
   iolanta:hasFacetByPrefix:
@@ -31,8 +31,9 @@
 - $id: owl:Ontology
   iolanta:hasInstanceFacet:
     $id: python://iolanta.facets.textual_ontology.OntologyFacet
+    rdfs:label: Ontology
     iolanta:supports:
-      $id: https://iolanta.tech/cli/default/terms
+      $id: https://iolanta.tech/cli/textual
 
 - $id: https://iolanta.tech/qname
   iolanta:hasDefaultFacet:
