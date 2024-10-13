@@ -5,6 +5,7 @@
 - $id: https://iolanta.tech/cli/textual
   iolanta:hasDefaultFacet:
     $id: python://iolanta.facets.textual_default.TextualDefaultFacet
+    rdfs:label: Properties
 
 - $id: "urn:"
   iolanta:hasFacetByPrefix:
@@ -23,14 +24,16 @@
 - $id: rdfs:Class
   iolanta:hasInstanceFacet:
     $id: python://iolanta.facets.textual_class.Class
+    rdfs:label: Instances
     iolanta:supports:
-      $id: https://iolanta.tech/cli/default/instances
+      $id: https://iolanta.tech/cli/textual
 
 - $id: owl:Ontology
   iolanta:hasInstanceFacet:
     $id: python://iolanta.facets.textual_ontology.OntologyFacet
+    rdfs:label: Ontology
     iolanta:supports:
-      $id: https://iolanta.tech/cli/default/terms
+      $id: https://iolanta.tech/cli/textual
 
 - $id: https://iolanta.tech/qname
   iolanta:hasDefaultFacet:

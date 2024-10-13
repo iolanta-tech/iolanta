@@ -25,7 +25,7 @@ more-itertools = "^9.0.0"
 owlrl = "^6.0.2"
 funcy = "^2.0"
 rich = "^13.3.1"
-textual = ">=0.47.1"
+textual = "^0.83.0"
 iolanta-tables = {version = "^0.1.7", optional = true}
 yarl = ">=1.9.4"
 boltons = "^24.0.0"
@@ -48,6 +48,7 @@ mkdocs-awesome-pages-plugin = "^2.9.2"
 mkdocs-blogging-plugin = "^2.2.11"
 mkdocstrings-python = "^1.8.0"
 textual-dev = ">=1.5.1"
+ipython = "^8.28.0"
 
 [tool.poetry.extras]
 all = ["iolanta-tables"]

@@ -8,13 +8,22 @@ from rdflib import BNode, URIRef
 from rdflib.term import Node
 from textual.app import App, ComposeResult
 from textual.containers import ScrollableContainer
-from textual.events import MouseEvent
 from textual.widgets import ContentSwitcher, Footer, Header, Placeholder, Static
 from textual.worker import Worker, WorkerState
 
+from iolanta.facets.errors import FacetError, FacetNotFound
+from iolanta.facets.locator import FacetFinder
 from iolanta.facets.textual_browser.history import NavigationHistory
 from iolanta.iolanta import Iolanta
 from iolanta.models import NotLiteralNode
+
+
+@dataclass
+class FlipOption:
+    """Option to flip to another facet."""
+
+    facet_iri: URIRef
+    title: str
 
 
 @dataclass
@@ -37,10 +46,36 @@ class Home(Placeholder):
         yield Static('Welcome to Iolanta! This is a placeholder page.')
 
 
+class Page(ScrollableContainer):
+    """Page in Iolanta browser."""
+
+    def __init__(
+        self,
+        renderable,
+        iri: NotLiteralNode,
+        page_id: str,
+        flip_options: list[FlipOption],
+    ):
+        """Initialize the page and set bindings."""
+        super().__init__(renderable, id=page_id)
+        for number, flip_option in enumerate(flip_options, start=1):
+            self._bindings.bind(
+                keys={
+                    1: 'ctrl+j',
+                    2: 'ctrl+k',
+                    3: 'ctrl+l',
+                    4: 'ctrl+;',
+                }[number],
+                description=flip_option.title,
+                action=(
+                    f"app.goto('{iri}', None, "
+                    f"'{flip_option.facet_iri}')"
+                ),
+            )
+
+
 class IolantaBrowser(App):   # noqa: WPS214, WPS230
     """Browse Linked Data."""
-
-    alt_click: bool = False
 
     def __init__(self, iolanta: Iolanta, iri: Node):
         """Set up parameters for the browser."""
@@ -76,50 +111,103 @@ class IolantaBrowser(App):   # noqa: WPS214, WPS230
         """Toggle dark mode."""
         self.dark = not self.dark
 
-    def render_iri(self, destination: NotLiteralNode):
+    def render_iri(   # noqa: WPS210
+        self, destination: NotLiteralNode, facet_iri: URIRef | None,
+    ):
         """Render an IRI in a thread."""
         self.iri = destination
-
         iolanta: Iolanta = self.iolanta
-        iri: NotLiteralNode = self.iri
-        return destination, self.call_from_thread(
-            iolanta.render,
-            iri,
-            [URIRef('https://iolanta.tech/cli/textual')],
-        )[0]
 
-    def on_worker_state_changed(self, event: Worker.StateChanged):
+        environments = [URIRef('https://iolanta.tech/cli/textual')]
+        choices = self.app.call_from_thread(
+            FacetFinder(
+                iolanta=self.iolanta,
+                node=destination,
+                environments=environments,
+            ).choices,
+        )
+
+        if not choices:
+            raise FacetNotFound(
+                node=self.iri,
+                environments=environments,
+                node_types=[],
+            )
+
+        if facet_iri is None:
+            facet_iri = choices[0]['facet']
+
+        other_facets = [
+            choice['facet']
+            for choice
+            in choices
+            if choice['facet'] != facet_iri
+        ]
+        flip_options = [
+            FlipOption(
+                facet_iri=facet,
+                title=self.app.call_from_thread(
+                    self.iolanta.render,
+                    facet,
+                    environments=[URIRef('https://iolanta.tech/env/title')],
+                )[0],
+            )
+            for facet in other_facets
+        ]
+
+        facet_class = iolanta.facet_resolver[facet_iri]
+
+        facet = facet_class(
+            iri=self.iri,
+            iolanta=iolanta,
+            environment=URIRef('https://iolanta.tech/cli/textual'),
+        )
+
+        try:
+            return (
+                destination,
+                self.app.call_from_thread(facet.show),
+                flip_options,
+            )
+
+        except Exception as err:
+            raise FacetError(
+                node=self.iri,
+                facet_iri=facet_iri,
+                error=err,
+            ) from err
+
+    def on_worker_state_changed(   # noqa: WPS210
+        self,
+        event: Worker.StateChanged,
+    ):
         """Render a page as soon as it is ready."""
         match event.state:
             case WorkerState.SUCCESS:
-                iri, renderable = event.worker.result
+                iri, renderable, flip_options = event.worker.result
                 body = cast(Body, self.query_one(Body))
-                page_id = f'page_{uuid.uuid4().hex}'
-                body.mount(
-                    ScrollableContainer(
-                        renderable,
-                        id=page_id,
-                    ),
+                page_uid = uuid.uuid4().hex
+                page_id = f'page_{page_uid}'
+                page = Page(
+                    renderable,
+                    iri=iri,
+                    page_id=page_id,
+                    flip_options=flip_options,
                 )
+                body.mount(page)
                 body.current = page_id
+                page.focus()
                 self.history.goto(Location(page_id, iri))
                 self.sub_title = iri
 
             case WorkerState.ERROR:
                 raise ValueError(event)
 
-    def on_mouse_down(self, event: MouseEvent):
-        """Make a note that an Alt + Click is in progress."""
-        self.alt_click = event.meta   # noqa: WPS601
-
-    def on_mouse_up(self, event: MouseEvent):
-        """Note that Alt + Click is no longer in progress."""
-        self.alt_click = False   # noqa: WPS601
-
     def action_goto(
         self,
         destination: str,
         iri_type_name: str | None = None,
+        facet_iri: str | None = None,
     ):
         """
         Go to an IRI.
@@ -138,6 +226,7 @@ class IolantaBrowser(App):   # noqa: WPS214, WPS230
             functools.partial(
                 self.render_iri,
                 iri,
+                facet_iri and URIRef(facet_iri),
             ),
             thread=True,
         )

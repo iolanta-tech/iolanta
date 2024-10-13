@@ -21,7 +21,6 @@ from rdflib.term import Node
 
 from iolanta import entry_points
 from iolanta.cli.formatters.node_to_qname import node_to_qname
-from iolanta.errors import InsufficientDataForRender
 from iolanta.facets.errors import FacetError
 from iolanta.facets.facet import Facet
 from iolanta.facets.locator import FacetFinder
@@ -140,7 +139,7 @@ class Iolanta:   # noqa: WPS214
 
         return self
 
-    def infer(self, closure_class) -> 'Iolanta':
+    def infer(self, closure_class=None) -> 'Iolanta':
         """
         Apply inference.
 
@@ -246,9 +245,6 @@ class Iolanta:   # noqa: WPS214
 
         try:
             return facet.show(), facet.stack
-
-        except InsufficientDataForRender:
-            raise
 
         except Exception as err:
             raise FacetError(
