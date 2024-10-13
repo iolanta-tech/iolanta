@@ -7,11 +7,13 @@ from typing import cast
 from rdflib import BNode, URIRef
 from rdflib.term import Node
 from textual.app import App, ComposeResult
+from textual.binding import Binding
 from textual.containers import ScrollableContainer
-from textual.events import MouseEvent
 from textual.widgets import ContentSwitcher, Footer, Header, Placeholder, Static
 from textual.worker import Worker, WorkerState
 
+from iolanta.facets.errors import FacetError, FacetNotFound
+from iolanta.facets.locator import FacetFinder
 from iolanta.facets.textual_browser.history import NavigationHistory
 from iolanta.iolanta import Iolanta
 from iolanta.models import NotLiteralNode
@@ -35,6 +37,22 @@ class Body(ContentSwitcher):
 class Home(Placeholder):
     def compose(self) -> ComposeResult:
         yield Static('Welcome to Iolanta! This is a placeholder page.')
+
+
+class Page(ScrollableContainer):
+    """Page in Iolanta browser."""
+
+    def __init__(
+        self,
+        renderable,
+        page_id: str,
+        bindings: list[Binding] | None = None,
+    ):
+        """Initialize the page and set bindings."""
+        super().__init__(renderable, id=page_id)
+        if bindings:
+            for binding in bindings:
+                self._bindings.keys[binding.key] = binding
 
 
 class IolantaBrowser(App):   # noqa: WPS214, WPS230
@@ -76,45 +94,80 @@ class IolantaBrowser(App):   # noqa: WPS214, WPS230
         """Toggle dark mode."""
         self.dark = not self.dark
 
-    def render_iri(self, destination: NotLiteralNode):
+    def render_iri(self, destination: NotLiteralNode):  # noqa: WPS210
         """Render an IRI in a thread."""
         self.iri = destination
-
         iolanta: Iolanta = self.iolanta
-        iri: NotLiteralNode = self.iri
-        return destination, self.call_from_thread(
-            iolanta.render,
-            iri,
-            [URIRef('https://iolanta.tech/cli/textual')],
-        )[0]
 
-    def on_worker_state_changed(self, event: Worker.StateChanged):
+        environments = [URIRef('https://iolanta.tech/cli/textual')]
+        choices = self.app.call_from_thread(
+            FacetFinder(
+                iolanta=self.iolanta,
+                node=destination,
+                environments=environments,
+            ).choices,
+        )
+
+        if not choices:
+            raise FacetNotFound(
+                node=self.iri,
+                environments=environments,
+                node_types=[],
+            )
+
+        found = choices[0]
+
+        if len(choices) > 1:
+            raise ValueError(f'TODO: display choices {choices}')
+
+        facet_class = iolanta.facet_resolver[found['facet']]
+
+        facet = facet_class(
+            iri=self.iri,
+            iolanta=iolanta,
+            environment=found['environment'],
+        )
+
+        try:
+            return destination, self.app.call_from_thread(facet.show)
+
+        except Exception as err:
+            raise FacetError(
+                node=self.iri,
+                facet_iri=found['facet'],
+                error=err,
+            ) from err
+
+    def on_worker_state_changed(   # noqa: WPS210
+        self,
+        event: Worker.StateChanged,
+    ):
         """Render a page as soon as it is ready."""
         match event.state:
             case WorkerState.SUCCESS:
                 iri, renderable = event.worker.result
                 body = cast(Body, self.query_one(Body))
-                page_id = f'page_{uuid.uuid4().hex}'
-                body.mount(
-                    ScrollableContainer(
-                        renderable,
-                        id=page_id,
-                    ),
+                page_uid = uuid.uuid4().hex
+                page_id = f'page_{page_uid}'
+                page = Page(
+                    renderable,
+                    page_id=page_id,
+                    bindings=[
+                        # Binding(
+                        #     key='ctrl+j',
+                        #     action='goto_json()',
+                        #     description='JSON',
+                        # ),
+                    ],
                 )
+                body.mount(page)
                 body.current = page_id
+                page.focus()
                 self.history.goto(Location(page_id, iri))
                 self.sub_title = iri
 
             case WorkerState.ERROR:
                 raise ValueError(event)
-
-    def on_mouse_down(self, event: MouseEvent):
-        """Make a note that an Alt + Click is in progress."""
-        self.alt_click = event.meta   # noqa: WPS601
-
-    def on_mouse_up(self, event: MouseEvent):
-        """Note that Alt + Click is no longer in progress."""
-        self.alt_click = False   # noqa: WPS601
 
     def action_goto(
         self,
