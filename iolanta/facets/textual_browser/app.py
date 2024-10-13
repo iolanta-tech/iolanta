@@ -7,7 +7,6 @@ from typing import cast
 from rdflib import BNode, URIRef
 from rdflib.term import Node
 from textual.app import App, ComposeResult
-from textual.binding import Binding, BindingsMap
 from textual.containers import ScrollableContainer
 from textual.widgets import ContentSwitcher, Footer, Header, Placeholder, Static
 from textual.worker import Worker, WorkerState
@@ -61,7 +60,12 @@ class Page(ScrollableContainer):
         super().__init__(renderable, id=page_id)
         for number, flip_option in enumerate(flip_options, start=1):
             self._bindings.bind(
-                keys=f'{number}',  # Nothing else works
+                keys={
+                    1: 'ctrl+j',
+                    2: 'ctrl+k',
+                    3: 'ctrl+l',
+                    4: 'ctrl+;',
+                }[number],
                 description=flip_option.title,
                 action=(
                     f"app.goto('{iri}', None, "
