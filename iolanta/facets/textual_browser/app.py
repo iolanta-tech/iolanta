@@ -118,19 +118,19 @@ class IolantaBrowser(App):   # noqa: WPS214, WPS230
         self.iri = destination
         iolanta: Iolanta = self.iolanta
 
-        environments = [URIRef('https://iolanta.tech/cli/textual')]
+        environments = URIRef('https://iolanta.tech/cli/textual')
         choices = self.app.call_from_thread(
             FacetFinder(
                 iolanta=self.iolanta,
                 node=destination,
-                environments=environments,
+                as_datatype=environments,
             ).choices,
         )
 
         if not choices:
             raise FacetNotFound(
                 node=self.iri,
-                environments=environments,
+                as_datatype=environments,
                 node_types=[],
             )
 
@@ -149,7 +149,7 @@ class IolantaBrowser(App):   # noqa: WPS214, WPS230
                 title=self.app.call_from_thread(
                     self.iolanta.render,
                     facet,
-                    environments=[URIRef('https://iolanta.tech/env/title')],
+                    as_datatype=URIRef('https://iolanta.tech/env/title'),
                 )[0],
             )
             for facet in other_facets

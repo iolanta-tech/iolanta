@@ -82,21 +82,21 @@ def node() -> URIRef:
 def test_fallback(node: URIRef, environment: URIRef):
     assert Iolanta().render(
         node=node,
-        environments=[environment],
+        as_datatype=environment,
     )[0] == 'Test'
 
 
 def test_label(with_label, node: URIRef, environment: URIRef, label: str):
     assert Iolanta().add(with_label).render(
         node=node,
-        environments=[environment],
+        as_datatype=environment,
     )[0] == label
 
 
 def test_label_and_icon(with_label_and_icon, node: URIRef, environment: URIRef, label: str):
     assert Iolanta().add(with_label_and_icon).render(
         node=node,
-        environments=[environment],
+        as_datatype=environment,
     )[0] == '⇔ Bazinga'
 
 
@@ -110,10 +110,12 @@ def test_label_and_html_icon(
     if environment == cli:
         pytest.skip('Not applicable to CLI.')
 
-    assert str(Iolanta().add(with_label_and_html_icon).render(
-        node=node,
-        environments=[environment],
-    )[0]) == '<span title="foo"><span>⇔</span> Bazinga</span>'
+    assert str(
+        Iolanta().add(with_label_and_html_icon).render(
+            node=node,
+            as_datatype=environment,
+        )[0],
+    ) == '<span title="foo"><span>⇔</span> Bazinga</span>'
 
 
 def test_html_comment(
@@ -125,7 +127,7 @@ def test_html_comment(
 ):
     assert Iolanta().add(with_label_and_comment).render(
         node=node,
-        environments=[html],
+        as_datatype=html,
     )[0].render() == span(label, title=comment).render()
 
 
@@ -138,7 +140,7 @@ def test_html_url(
 ):
     assert Iolanta().add(with_url).render(
         node=node,
-        environments=[html],
+        as_datatype=html,
     )[0].render() == a(
         label,
         href=url,
@@ -154,5 +156,5 @@ def test_cli_url(
 ):
     assert Iolanta().add(with_url).render(
         node=node,
-        environments=[cli],
+        as_datatype=cli,
     )[0] == Text(label, style=Style(link=url))

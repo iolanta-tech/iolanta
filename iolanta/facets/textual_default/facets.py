@@ -68,7 +68,7 @@ class PropertyName(Widget, can_focus=True, inherit_bindings=False):
     def render_title(self):
         """Render title in a separate thread."""
         environment = URIRef('https://iolanta.tech/env/title')
-        return self.app.iolanta.render(self.iri, [environment])[0]
+        return self.app.iolanta.render(self.iri, environment)[0]
 
     def render(self) -> RenderResult:
         """Render node title."""
@@ -256,7 +256,7 @@ class PropertyValue(Widget, can_focus=True, inherit_bindings=False):
         """Render title in a separate thread."""
         return self.app.iolanta.render(
             self.property_value,
-            environments=[URIRef('https://iolanta.tech/env/title')],
+            as_datatype=URIRef('https://iolanta.tech/env/title'),
         )[0]
 
     def on_worker_state_changed(self, event: Worker.StateChanged):
@@ -326,7 +326,7 @@ class PropertiesContainer(Vertical):
         for widget in widgets:
             widget.renderable = self.app.iolanta.render(
                 widget.iri,
-                environments=[URIRef('https://iolanta.tech/env/title')],
+                as_datatype=URIRef('https://iolanta.tech/env/title'),
             )[0]
 
     def on_mount(self):
@@ -487,22 +487,12 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
         if self.description:
             yield Label(self.description, id='description')
 
-        sub_facets = list(
-            self.render_all(
-                self.iri,
-                environment=URIRef('https://iolanta.tech/cli/default'),
-            ),
-        )
-
-        if sub_facets:
-            yield from sub_facets
-
     @property
     def instances(self):
         """Instances of this class."""
         return self.render(
             self.iri,
-            environments=[URIRef('https://iolanta.tech/cli/default/instances')],
+            as_datatype=URIRef('https://iolanta.tech/cli/default/instances'),
         )
 
     @property
@@ -510,7 +500,7 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
         """Terms of this ontology."""
         return self.render(
             self.iri,
-            environments=[URIRef('https://iolanta.tech/cli/default/terms')],
+            as_datatype=URIRef('https://iolanta.tech/cli/default/terms'),
         )
 
     @property

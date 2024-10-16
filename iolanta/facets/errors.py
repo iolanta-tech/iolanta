@@ -110,11 +110,11 @@ class FacetNotFound(DocumentedError):
     No way to render the node you asked for.
 
     - **Node:** `{self.node}` *({self.node_type})*
-    - **Environments tried:** `{self.environments}`
+    - **Output datatype:** `{self.as_datatype}`
     """
 
     node: Node
-    environments: List[NotLiteralNode]
+    as_datatype: NotLiteralNode
     node_types: List[NotLiteralNode] = field(default_factory=list)
 
     @property
@@ -149,10 +149,13 @@ class FacetError(DocumentedError):
     @property
     def indented_error(self):
         """Format the underlying error text."""
-        return textwrap.indent(
-            str(self.error),
-            prefix='    ',
-        )
+        try:
+            return textwrap.indent(
+                str(self.error),
+                prefix='    ',
+            )
+        except Exception:
+            return '(failing while rendering)'
 
 
 @dataclass
