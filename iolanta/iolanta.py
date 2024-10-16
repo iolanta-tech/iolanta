@@ -243,7 +243,7 @@ class Iolanta:   # noqa: WPS214
         facet = facet_class(
             iri=node,
             iolanta=self,
-            environment=found['environment'],
+            as_datatype=found['environment'],
         )
 
         try:
