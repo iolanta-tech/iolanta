@@ -10,7 +10,7 @@
 - $id: "urn:"
   iolanta:hasFacetByPrefix:
     $id: python://iolanta.facets.textual_provenance.TextualProvenanceFacet
-    iolanta:supports:
+    iolanta:outputs:
       $id: https://iolanta.tech/cli/textual
 
 - $id: https://iolanta.tech/cli/link
@@ -25,14 +25,14 @@
   iolanta:hasInstanceFacet:
     $id: python://iolanta.facets.textual_class.Class
     rdfs:label: Instances
-    iolanta:supports:
+    iolanta:outputs:
       $id: https://iolanta.tech/cli/textual
 
 - $id: owl:Ontology
   iolanta:hasInstanceFacet:
     $id: python://iolanta.facets.textual_ontology.OntologyFacet
     rdfs:label: Ontology
-    iolanta:supports:
+    iolanta:outputs:
       $id: https://iolanta.tech/cli/textual
 
 - $id: https://iolanta.tech/qname

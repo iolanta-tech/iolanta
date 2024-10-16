@@ -51,7 +51,7 @@
   iolanta:hasDatatypeFacet:
     "@type": "@id"
 
-  iolanta:supports:
+  iolanta:outputs:
     "@type": "@id"
 
   iolanta:hasDefaultFacet:

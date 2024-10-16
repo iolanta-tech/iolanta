@@ -6,7 +6,7 @@
   $type: rdfs:Class
   label: Environment a given application lives at.
 
-- $id: iolanta:supports
+- $id: iolanta:outputs
   $type: Property
   rdfs:domain:
     $id: iolanta:Facet
@@ -16,7 +16,7 @@
 
 - $id: iolanta:isSupportedBy
   owl:inverseOf:
-    $id: iolanta:supports
+    $id: iolanta:outputs
 
 - $id: iolanta:facet
   rdfs:range:

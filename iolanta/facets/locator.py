@@ -43,7 +43,7 @@ class FacetFinder:
             """
             SELECT ?environment ?facet WHERE {
                 $data_type iolanta:hasDatatypeFacet ?facet .
-                ?facet iolanta:supports ?environment .
+                ?facet iolanta:outputs ?environment .
             }
             """,
             data_type=data_type,
@@ -72,7 +72,7 @@ class FacetFinder:
             """
             SELECT ?environment ?facet WHERE {
                 $prefix iolanta:hasFacetByPrefix ?facet .
-                ?facet iolanta:supports ?environment .
+                ?facet iolanta:outputs ?environment .
             }
             """,
             prefix=URIRef(f'{scheme}:'),
@@ -94,7 +94,7 @@ class FacetFinder:
             '''
             SELECT ?environment ?facet WHERE {
                 $node iolanta:facet ?facet .
-                ?facet iolanta:supports ?environment .
+                ?facet iolanta:outputs ?environment .
             }
             ''',
             node=self.node,
@@ -114,7 +114,7 @@ class FacetFinder:
             SELECT ?environment ?facet WHERE {
                 $node a ?class .
                 ?class iolanta:hasInstanceFacet ?facet .
-                ?facet iolanta:supports ?environment .
+                ?facet iolanta:outputs ?environment .
             }
             ''',
             node=self.node,
