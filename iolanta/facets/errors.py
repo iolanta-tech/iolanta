@@ -114,7 +114,7 @@ class FacetNotFound(DocumentedError):
     """
 
     node: Node
-    as_datatype: List[NotLiteralNode]
+    as_datatype: NotLiteralNode
     node_types: List[NotLiteralNode] = field(default_factory=list)
 
     @property

@@ -118,7 +118,7 @@ class IolantaBrowser(App):   # noqa: WPS214, WPS230
         self.iri = destination
         iolanta: Iolanta = self.iolanta
 
-        environments = [URIRef('https://iolanta.tech/cli/textual')]
+        environments = URIRef('https://iolanta.tech/cli/textual')
         choices = self.app.call_from_thread(
             FacetFinder(
                 iolanta=self.iolanta,
