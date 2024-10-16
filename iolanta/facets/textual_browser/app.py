@@ -123,7 +123,7 @@ class IolantaBrowser(App):   # noqa: WPS214, WPS230
             FacetFinder(
                 iolanta=self.iolanta,
                 node=destination,
-                environments=environments,
+                as_datatype=environments,
             ).choices,
         )
 

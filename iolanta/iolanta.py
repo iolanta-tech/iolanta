@@ -232,7 +232,7 @@ class Iolanta:   # noqa: WPS214
         found = FacetFinder(
             iolanta=self,
             node=node,
-            environments=as_datatype,
+            as_datatype=as_datatype,
         ).facet_and_environment
 
         facet_class = self.facet_resolver[found['facet']]
@@ -263,7 +263,7 @@ class Iolanta:   # noqa: WPS214
             FacetFinder(
                 iolanta=self,
                 node=node,
-                environments=[environment],
+                as_datatype=[environment],
             ).choices(),
         )
 

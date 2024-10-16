@@ -23,12 +23,12 @@ class FacetFinder:
 
     iolanta: 'iolanta.Iolanta'    # type: ignore
     node: Node
-    environments: List[NotLiteralNode]
+    as_datatype: List[NotLiteralNode]
 
     @cached_property
     def row_sorter_by_environment(self):
         def _sorter(row) -> int:
-            return self.environments.index(row['environment'])
+            return self.as_datatype.index(row['environment'])
 
         return _sorter
 
@@ -49,7 +49,7 @@ class FacetFinder:
             data_type=data_type,
         )
 
-        rows = [row for row in rows if row['environment'] in self.environments]
+        rows = [row for row in rows if row['environment'] in self.as_datatype]
 
         return sorted(
             rows,
@@ -78,7 +78,7 @@ class FacetFinder:
             prefix=URIRef(f'{scheme}:'),
         )
 
-        rows = [row for row in rows if row['environment'] in self.environments]
+        rows = [row for row in rows if row['environment'] in self.as_datatype]
 
         return sorted(
             rows,
@@ -101,7 +101,7 @@ class FacetFinder:
         )
 
         # FIXME This is probably suboptimal, why don't we use `IN environments`?
-        rows = [row for row in rows if row['environment'] in self.environments]
+        rows = [row for row in rows if row['environment'] in self.as_datatype]
 
         return sorted(
             rows,
@@ -120,7 +120,7 @@ class FacetFinder:
             node=self.node,
         )
 
-        rows = [row for row in rows if row['environment'] in self.environments]
+        rows = [row for row in rows if row['environment'] in self.as_datatype]
 
         return sorted(
             rows,
@@ -137,7 +137,7 @@ class FacetFinder:
         triples = [
             triple
             for triple in triples
-            if funcy.first(triple) in self.environments
+            if funcy.first(triple) in self.as_datatype
         ]
 
         rows = [
@@ -168,6 +168,6 @@ class FacetFinder:
 
         raise FacetNotFound(
             node=self.node,
-            as_datatype=self.environments,
+            as_datatype=self.as_datatype,
             node_types=[],
         )
