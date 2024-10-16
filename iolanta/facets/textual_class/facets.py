@@ -14,6 +14,7 @@ from textual.widget import Widget
 from textual.widgets import Label, ListItem, ListView
 
 from iolanta.facets.facet import Facet
+from iolanta.facets.page_title import PageTitle
 from iolanta.facets.textual_default.facets import TripleURIRef
 from iolanta.models import NotLiteralNode
 
@@ -217,6 +218,7 @@ class Class(Facet[Widget]):
     def show(self) -> Widget:
         """Render the instances list."""
         return InstancesBody(
+            PageTitle(self.iri),
             InstancesList(
                 instances=self.stream_instances(),
                 parent_class=self.iri,

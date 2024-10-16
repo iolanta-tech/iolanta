@@ -4,12 +4,14 @@ from functools import cached_property
 from typing import Iterable
 
 import funcy
-from rdflib import Literal, URIRef
+from rdflib import URIRef
 from rich.columns import Columns
+from textual.containers import Vertical, VerticalScroll
 from textual.widget import Widget
-from textual.widgets import Label, ListItem, ListView, Static
+from textual.widgets import Static
 
 from iolanta.facets.facet import Facet
+from iolanta.facets.page_title import PageTitle
 from iolanta.models import NotLiteralNode
 
 
@@ -26,7 +28,7 @@ class TermAndStatus:
     status: TermStatus
 
 
-class TermsContent(Static):
+class TermsContent(VerticalScroll):
     """Display grouped list of terms."""
 
     DEFAULT_CSS = """
@@ -65,7 +67,17 @@ class OntologyFacet(Facet[Widget]):
 
     def show(self) -> Widget:
         """Render widget."""
-        return TermsContent(Columns(self._stream_columns(), padding=(1, 2)))
+        return Vertical(
+            PageTitle(self.iri),
+            TermsContent(
+                Static(
+                    Columns(
+                        self._stream_columns(),
+                        padding=(1, 2),
+                    ),
+                ),
+            ),
+        )
 
     def _stream_columns(self) -> Iterable[str]:
         for group, rows in self.grouped_terms.items():
