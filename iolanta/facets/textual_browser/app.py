@@ -214,13 +214,10 @@ class IolantaBrowser(App):   # noqa: WPS214, WPS230
 
         TODO: Remove iri_type_name, recognize a blank node based on destination.
         """
-        iri_type = {
-            None: URIRef,
-            'BNode': BNode,
-            'URIRef': URIRef,
-        }[iri_type_name]
-
-        iri = iri_type(destination)
+        if destination.startswith('_:'):
+            iri = BNode(destination)
+        else:
+            iri = URIRef(destination)
 
         self.run_worker(
             functools.partial(
