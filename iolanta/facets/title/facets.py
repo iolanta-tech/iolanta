@@ -34,5 +34,5 @@ class TitleFacet(Facet[str]):
 
         return self.render(
             self.iri,
-            environments=[URIRef('https://iolanta.tech/qname')],
+            as_datatype=[URIRef('https://iolanta.tech/qname')],
         )

@@ -19,7 +19,7 @@ class Record(RichFacet):
     def show(self) -> Renderable:
         rows = self.stored_query('record.sparql', node=self.iri)
 
-        caption = self.render(self.iri, environments=[IOLANTA['cli/record/title']])
+        caption = self.render(self.iri, as_datatype=[IOLANTA['cli/record/title']])
 
         table = Table(
             show_header=False,
@@ -37,11 +37,11 @@ class Record(RichFacet):
         for row in rows:
             rendered_property = self.render(
                 row['property'],
-                environments=[IOLANTA['cli/record/property']],
+                as_datatype=[IOLANTA['cli/record/property']],
             )
             rendered_value = self.render(
                 row['value'],
-                environments=[IOLANTA['cli/record/value']],
+                as_datatype=[IOLANTA['cli/record/value']],
             )
             table.add_row(rendered_property, rendered_value)
 

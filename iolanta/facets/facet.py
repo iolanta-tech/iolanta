@@ -55,12 +55,12 @@ class Facet(Generic[FacetOutput]):
     def render(
         self,
         node: Union[str, Node],
-        environments: Optional[Union[str, List[NotLiteralNode]]] = None,
+        as_datatype: Optional[Union[str, List[NotLiteralNode]]] = None,
     ) -> Any:
         """Shortcut to render something via iolanta."""
         rendered, stack = self.iolanta.render(
             node=node,
-            as_datatype=environments,
+            as_datatype=as_datatype,
         )
 
         self.stack_children.append(stack)

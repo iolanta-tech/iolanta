@@ -502,7 +502,7 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
         """Instances of this class."""
         return self.render(
             self.iri,
-            environments=[URIRef('https://iolanta.tech/cli/default/instances')],
+            as_datatype=[URIRef('https://iolanta.tech/cli/default/instances')],
         )
 
     @property
@@ -510,7 +510,7 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
         """Terms of this ontology."""
         return self.render(
             self.iri,
-            environments=[URIRef('https://iolanta.tech/cli/default/terms')],
+            as_datatype=[URIRef('https://iolanta.tech/cli/default/terms')],
         )
 
     @property
