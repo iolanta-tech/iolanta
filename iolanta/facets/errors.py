@@ -149,10 +149,13 @@ class FacetError(DocumentedError):
     @property
     def indented_error(self):
         """Format the underlying error text."""
-        return textwrap.indent(
-            str(self.error),
-            prefix='    ',
-        )
+        try:
+            return textwrap.indent(
+                str(self.error),
+                prefix='    ',
+            )
+        except Exception:
+            return '(failing while rendering)'
 
 
 @dataclass

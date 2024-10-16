@@ -17,9 +17,10 @@ class Record(RichFacet):
     )
 
     def show(self) -> Renderable:
+        return "RECORD"
         rows = self.stored_query('record.sparql', node=self.iri)
 
-        caption = self.render(self.iri, as_datatype=IOLANTA['cli/record/title'])
+        caption = self.render(self.iri, as_datatype=IOLANTA['cli/title'])
 
         table = Table(
             show_header=False,

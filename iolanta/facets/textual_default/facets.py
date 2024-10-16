@@ -68,7 +68,7 @@ class PropertyName(Widget, can_focus=True, inherit_bindings=False):
     def render_title(self):
         """Render title in a separate thread."""
         environment = URIRef('https://iolanta.tech/env/title')
-        return self.app.iolanta.render(self.iri, [environment])[0]
+        return self.app.iolanta.render(self.iri, environment)[0]
 
     def render(self) -> RenderResult:
         """Render node title."""
@@ -486,16 +486,6 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
 
         if self.description:
             yield Label(self.description, id='description')
-
-        sub_facets = list(
-            self.render_all(
-                self.iri,
-                environment=URIRef('https://iolanta.tech/cli/default'),
-            ),
-        )
-
-        if sub_facets:
-            yield from sub_facets
 
     @property
     def instances(self):
