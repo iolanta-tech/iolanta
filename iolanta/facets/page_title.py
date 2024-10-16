@@ -33,7 +33,7 @@ class PageTitle(Static):
         """Render the title via Iolanta in a thread."""
         return self.iolanta.render(
             self.iri,
-            environments=[URIRef('https://iolanta.tech/env/title')],
+            as_datatype=[URIRef('https://iolanta.tech/env/title')],
         )[0]
 
     def on_mount(self):

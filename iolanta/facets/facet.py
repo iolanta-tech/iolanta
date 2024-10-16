@@ -60,7 +60,7 @@ class Facet(Generic[FacetOutput]):
         """Shortcut to render something via iolanta."""
         rendered, stack = self.iolanta.render(
             node=node,
-            environments=environments,
+            as_datatype=environments,
         )
 
         self.stack_children.append(stack)

@@ -103,7 +103,7 @@ class InstancesList(ListView):   # noqa: WPS214
                 instance_item.update,
                 self.app.iolanta.render(
                     instance_item.node,
-                    environments=[URIRef('https://iolanta.tech/env/title')],
+                    as_datatype=[URIRef('https://iolanta.tech/env/title')],
                 )[0],
             )
 

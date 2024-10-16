@@ -13,7 +13,7 @@ def test_none(iolanta: Iolanta, env: URIRef):
     with pytest.raises(FacetNotFound):
         iolanta.render(
             LOCAL.boom,
-            environments=[env],
+            as_datatype=[env],
         )
 
 
@@ -26,7 +26,7 @@ def test_direct(iolanta: Iolanta, facet_iri: str, env: URIRef):
         },
     }).render(
         LOCAL.boom,
-        environments=[env],
+        as_datatype=[env],
     )
 
     assert response == 'foo'
@@ -64,7 +64,7 @@ def test_instance_facet(iolanta: Iolanta, facet_iri: str, env: URIRef):
         },
     }).render(
         LOCAL.boom,
-        environments=[env],
+        as_datatype=[env],
     )[0] == 'foo'
 
 
@@ -77,7 +77,7 @@ def test_default_facet(iolanta: Iolanta, facet_iri: str, env: URIRef):
         },
     }).render(
         LOCAL.boom,
-        environments=[env],
+        as_datatype=[env],
     )[0] == 'foo'
 
 
@@ -90,7 +90,7 @@ def test_datatype_facet(iolanta: Iolanta, facet_iri: str, env: URIRef):
         },
     }).render(
         Literal('foo', datatype=XSD.string),
-        environments=[env],
+        as_datatype=[env],
     )[0] == 'foo'
 
 
@@ -98,5 +98,5 @@ def test_null_datatype_facet(iolanta: Iolanta, facet_iri: str, env: URIRef):
     with pytest.raises(FacetNotFound):
         iolanta.render(
             Literal('foo'),
-            environments=[env],
+            as_datatype=[env],
         )

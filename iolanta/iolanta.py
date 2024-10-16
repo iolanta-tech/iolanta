@@ -220,10 +220,10 @@ class Iolanta:   # noqa: WPS214
     def render(
         self,
         node: Node,
-        environments: List[NotLiteralNode],
+        as_datatype: List[NotLiteralNode],
     ) -> Tuple[Any, Stack]:
         """Find an Iolanta facet for a node and render it."""
-        if not environments:
+        if not as_datatype:
             raise ValueError(
                 f'Please provide at least one environment '
                 f'to render {node} against.',
@@ -232,7 +232,7 @@ class Iolanta:   # noqa: WPS214
         found = FacetFinder(
             iolanta=self,
             node=node,
-            environments=environments,
+            environments=as_datatype,
         ).facet_and_environment
 
         facet_class = self.facet_resolver[found['facet']]

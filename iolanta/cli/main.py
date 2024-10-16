@@ -74,7 +74,7 @@ def render_command(
     try:
         renderable, stack = iolanta.render(
             node=node,
-            environments=[
+            as_datatype=[
                 iolanta.string_to_node(environment),
             ],
         )
