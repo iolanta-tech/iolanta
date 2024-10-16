@@ -168,6 +168,6 @@ class FacetFinder:
 
         raise FacetNotFound(
             node=self.node,
-            environments=self.environments,
+            as_datatype=self.environments,
             node_types=[],
         )

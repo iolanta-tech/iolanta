@@ -130,7 +130,7 @@ class IolantaBrowser(App):   # noqa: WPS214, WPS230
         if not choices:
             raise FacetNotFound(
                 node=self.iri,
-                environments=environments,
+                as_datatype=environments,
                 node_types=[],
             )
 
