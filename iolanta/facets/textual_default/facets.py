@@ -426,6 +426,16 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
             for row in property_rows
         ]
 
+        property_pairs = [
+            (property_iri, object_node)
+            for property_iri, object_node in property_pairs
+            if (
+                not isinstance(object_node, Literal)
+                or not (language := object_node.language)  # noqa: W503
+                or (language == self.iolanta.language)     # noqa: W503
+            )
+        ]
+
         return funcy.group_values(property_pairs)
 
     @functools.cached_property
