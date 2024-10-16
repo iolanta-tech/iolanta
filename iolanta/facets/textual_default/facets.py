@@ -376,6 +376,8 @@ class PropertyRow(Widget, can_focus=False, inherit_bindings=False):
 class PropertyValues(Widget):
     """Container for property values."""
 
+    MAX_COLUMN_COUNT = 6
+
     DEFAULT_CSS = """
     PropertyValues {
         layout: grid;
@@ -384,6 +386,17 @@ class PropertyValues(Widget):
         max-width: 85%;
     }
     """
+
+    def on_mount(self):
+        """Adjust column count based on children of this node."""
+        children_count = len(self.children)
+        self.styles.grid_size_columns = max(
+            min(
+                children_count,
+                self.MAX_COLUMN_COUNT,
+            ),
+            1,
+        )
 
 
 class PropertiesContainer(Vertical):
