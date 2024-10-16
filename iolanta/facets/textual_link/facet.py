@@ -18,6 +18,5 @@ class TextualLinkFacet(Facet[str | Text]):
             as_datatype=URIRef('https://iolanta.tech/env/title'),
         )
 
-        iri_type = type(self.iri).__name__
-        invocation = f"app.goto('{self.iri}', '{iri_type}')"
+        invocation = f"app.goto('{self.iri}')"
         return f'[@click="{invocation}"]{label}[/]'

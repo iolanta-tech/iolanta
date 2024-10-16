@@ -68,8 +68,7 @@ class Page(ScrollableContainer):
                 }[number],
                 description=flip_option.title,
                 action=(
-                    f"app.goto('{iri}', None, "
-                    f"'{flip_option.facet_iri}')"
+                    f"app.goto('{iri}', '{flip_option.facet_iri}')"
                 ),
             )
 
@@ -206,14 +205,9 @@ class IolantaBrowser(App):   # noqa: WPS214, WPS230
     def action_goto(
         self,
         destination: str,
-        iri_type_name: str | None = None,
         facet_iri: str | None = None,
     ):
-        """
-        Go to an IRI.
-
-        TODO: Remove iri_type_name, recognize a blank node based on destination.
-        """
+        """Go to an IRI."""
         if destination.startswith('_:'):
             iri = BNode(destination)
         else:
