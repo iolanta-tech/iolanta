@@ -15,7 +15,7 @@ class TextualLinkFacet(Facet[str | Text]):
 
         label = self.render(
             self.iri,
-            as_datatype=[URIRef('https://iolanta.tech/env/title')],
+            as_datatype=URIRef('https://iolanta.tech/env/title'),
         )
 
         iri_type = type(self.iri).__name__

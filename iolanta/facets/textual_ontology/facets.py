@@ -83,15 +83,13 @@ class OntologyFacet(Facet[Widget]):
         for group, rows in self.grouped_terms.items():
             group_title = self.render(
                 group,
-                as_datatype=[URIRef('https://iolanta.tech/env/title')],
+                as_datatype=URIRef('https://iolanta.tech/env/title'),
             ) if group is not None else '<Ungrouped>'
 
             rendered_terms = '\n'.join([
                 self.render(
                     row.term,
-                    as_datatype=[
-                        URIRef('https://iolanta.tech/cli/link'),
-                    ],
+                    as_datatype=URIRef('https://iolanta.tech/cli/link'),
                 )
                 for row in rows
             ])

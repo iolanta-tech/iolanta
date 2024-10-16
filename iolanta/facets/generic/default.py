@@ -52,7 +52,7 @@ class DefaultMixin(Facet[FacetOutput]):
         if symbol := self.description.symbol:
             rendered_symbol = self.render(
                 symbol,
-                as_datatype=[self.environment],
+                as_datatype=self.environment,
             )
             label = f'{rendered_symbol} {label}'
 

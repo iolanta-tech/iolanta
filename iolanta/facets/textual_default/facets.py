@@ -256,7 +256,7 @@ class PropertyValue(Widget, can_focus=True, inherit_bindings=False):
         """Render title in a separate thread."""
         return self.app.iolanta.render(
             self.property_value,
-            as_datatype=[URIRef('https://iolanta.tech/env/title')],
+            as_datatype=URIRef('https://iolanta.tech/env/title'),
         )[0]
 
     def on_worker_state_changed(self, event: Worker.StateChanged):
@@ -326,7 +326,7 @@ class PropertiesContainer(Vertical):
         for widget in widgets:
             widget.renderable = self.app.iolanta.render(
                 widget.iri,
-                as_datatype=[URIRef('https://iolanta.tech/env/title')],
+                as_datatype=URIRef('https://iolanta.tech/env/title'),
             )[0]
 
     def on_mount(self):
@@ -502,7 +502,7 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
         """Instances of this class."""
         return self.render(
             self.iri,
-            as_datatype=[URIRef('https://iolanta.tech/cli/default/instances')],
+            as_datatype=URIRef('https://iolanta.tech/cli/default/instances'),
         )
 
     @property
@@ -510,7 +510,7 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
         """Terms of this ontology."""
         return self.render(
             self.iri,
-            as_datatype=[URIRef('https://iolanta.tech/cli/default/terms')],
+            as_datatype=URIRef('https://iolanta.tech/cli/default/terms'),
         )
 
     @property

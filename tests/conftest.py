@@ -11,7 +11,7 @@ class FooFacet(Facet[str]):
     def show(self) -> str:
         return self.render(
             Literal('foo'),
-            as_datatype=[IOLANTA.html],
+            as_datatype=IOLANTA.html,
         )
 
 

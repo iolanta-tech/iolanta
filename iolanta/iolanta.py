@@ -192,7 +192,7 @@ class Iolanta:   # noqa: WPS214
     def __post_init__(self):
         self.add_files_from_plugins()
 
-    def string_to_node(self, name: str | Node) -> Node:
+    def string_to_node(self, name: str | Node) -> NotLiteralNode:
         """
         Parse a string into a node identifier.
 
@@ -220,7 +220,7 @@ class Iolanta:   # noqa: WPS214
     def render(
         self,
         node: Node,
-        as_datatype: List[NotLiteralNode],
+        as_datatype: NotLiteralNode,
     ) -> Tuple[Any, Stack]:
         """Find an Iolanta facet for a node and render it."""
         if not as_datatype:
@@ -228,6 +228,9 @@ class Iolanta:   # noqa: WPS214
                 f'Please provide at least one environment '
                 f'to render {node} against.',
             )
+
+        if isinstance(as_datatype, list):
+            raise NotImplementedError('Got a list for as_datatype :(')
 
         found = FacetFinder(
             iolanta=self,
@@ -263,7 +266,7 @@ class Iolanta:   # noqa: WPS214
             FacetFinder(
                 iolanta=self,
                 node=node,
-                as_datatype=[environment],
+                as_datatype=environment,
             ).choices(),
         )
 

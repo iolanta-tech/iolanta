@@ -18,5 +18,5 @@ def test_bool(
 ):
     assert Iolanta().render(
         Literal(literal, datatype=XSD.boolean),
-        as_datatype=[environment],
+        as_datatype=environment,
     )[0] == icon

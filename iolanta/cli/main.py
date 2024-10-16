@@ -74,9 +74,7 @@ def render_command(
     try:
         renderable, stack = iolanta.render(
             node=node,
-            as_datatype=[
-                iolanta.string_to_node(environment),
-            ],
+            as_datatype=iolanta.string_to_node(environment),
         )
 
     except DocumentedError as documented_error:
