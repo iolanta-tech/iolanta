@@ -225,8 +225,7 @@ class Iolanta:   # noqa: WPS214
         """Find an Iolanta facet for a node and render it."""
         if not as_datatype:
             raise ValueError(
-                f'Please provide at least one environment '
-                f'to render {node} against.',
+                f'Please provide the datatype to render {node} as.',
             )
 
         if isinstance(as_datatype, list):
@@ -236,14 +235,14 @@ class Iolanta:   # noqa: WPS214
             iolanta=self,
             node=node,
             as_datatype=as_datatype,
-        ).facet_and_environment
+        ).facet_and_output_datatype
 
         facet_class = self.facet_resolver[found['facet']]
 
         facet = facet_class(
             iri=node,
             iolanta=self,
-            as_datatype=found['environment'],
+            as_datatype=found['output_datatype'],
         )
 
         try:
@@ -259,19 +258,19 @@ class Iolanta:   # noqa: WPS214
     def render_all(
         self,
         node: Node,
-        environment: NotLiteralNode,
+        as_datatype: NotLiteralNode,
     ) -> Iterable[Any]:
         """Find all possible Iolanta facets for a node and render them."""
         choices = list(
             FacetFinder(
                 iolanta=self,
                 node=node,
-                as_datatype=environment,
+                as_datatype=as_datatype,
             ).choices(),
         )
 
         pairs = [
-            (self.facet_resolver[row['facet']], row['environment'])
+            (self.facet_resolver[row['facet']], row['output_datatype'])
             for row in choices
         ]
 
@@ -279,9 +278,9 @@ class Iolanta:   # noqa: WPS214
             facet_class(
                 iri=node,
                 iolanta=self,
-                environment=environment,
+                as_datatype=output_datatype,
             )
-            for facet_class, environment in pairs
+            for facet_class, output_datatype in pairs
         ]
 
         for facet in facet_instances:

@@ -67,8 +67,8 @@ class PropertyName(Widget, can_focus=True, inherit_bindings=False):
 
     def render_title(self):
         """Render title in a separate thread."""
-        environment = URIRef('https://iolanta.tech/env/title')
-        return self.app.iolanta.render(self.iri, environment)[0]
+        output_datatype = URIRef('https://iolanta.tech/env/title')
+        return self.app.iolanta.render(self.iri, output_datatype)[0]
 
     def render(self) -> RenderResult:
         """Render node title."""

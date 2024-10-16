@@ -14,7 +14,7 @@ from iolanta.namespaces import IOLANTA
 
 class FoundRow(TypedDict):
     facet: NotLiteralNode
-    environment: NotLiteralNode
+    as_datatype: NotLiteralNode
 
 
 @dataclass
@@ -26,7 +26,7 @@ class FacetFinder:
     as_datatype: NotLiteralNode
 
     @cached_property
-    def row_sorter_by_environment(self):
+    def row_sorter_by_output_datatype(self):
         def _sorter(row) -> int:
             return 0
 
@@ -41,19 +41,19 @@ class FacetFinder:
 
         rows = self.iolanta.query(   # noqa: WPS462
             """
-            SELECT ?environment ?facet WHERE {
+            SELECT ?output_datatype ?facet WHERE {
                 $data_type iolanta:hasDatatypeFacet ?facet .
-                ?facet iolanta:outputs ?environment .
+                ?facet iolanta:outputs ?output_datatype .
             }
             """,
             data_type=data_type,
         )
 
-        rows = [row for row in rows if row['environment'] == self.as_datatype]
+        rows = [row for row in rows if row['output_datatype'] == self.as_datatype]
 
         return sorted(
             rows,
-            key=self.row_sorter_by_environment,
+            key=self.row_sorter_by_output_datatype,
         )
 
     def by_prefix(self) -> Iterable[FoundRow]:
@@ -70,19 +70,19 @@ class FacetFinder:
 
         rows = self.iolanta.query(   # noqa: WPS462
             """
-            SELECT ?environment ?facet WHERE {
+            SELECT ?output_datatype ?facet WHERE {
                 $prefix iolanta:hasFacetByPrefix ?facet .
-                ?facet iolanta:outputs ?environment .
+                ?facet iolanta:outputs ?output_datatype .
             }
             """,
             prefix=URIRef(f'{scheme}:'),
         )
 
-        rows = [row for row in rows if row['environment'] == self.as_datatype]
+        rows = [row for row in rows if row['output_datatype'] == self.as_datatype]
 
         return sorted(
             rows,
-            key=self.row_sorter_by_environment,
+            key=self.row_sorter_by_output_datatype,
         )
 
     def by_facet(self) -> List[FoundRow]:
@@ -92,43 +92,43 @@ class FacetFinder:
 
         rows = self.iolanta.query(
             '''
-            SELECT ?environment ?facet WHERE {
+            SELECT ?output_datatype ?facet WHERE {
                 $node iolanta:facet ?facet .
-                ?facet iolanta:outputs ?environment .
+                ?facet iolanta:outputs ?output_datatype .
             }
             ''',
             node=self.node,
         )
 
-        # FIXME This is probably suboptimal, why don't we use `IN environments`?
-        rows = [row for row in rows if row['environment'] == self.as_datatype]
+        # FIXME This is probably suboptimal, why don't we use `IN output_datatypes`?
+        rows = [row for row in rows if row['output_datatype'] == self.as_datatype]
 
         return sorted(
             rows,
-            key=self.row_sorter_by_environment,
+            key=self.row_sorter_by_output_datatype,
         )
 
     def by_instance_facet(self) -> Iterable[FoundRow]:
         rows = self.iolanta.query(
             '''
-            SELECT ?environment ?facet WHERE {
+            SELECT ?output_datatype ?facet WHERE {
                 $node a ?class .
                 ?class iolanta:hasInstanceFacet ?facet .
-                ?facet iolanta:outputs ?environment .
+                ?facet iolanta:outputs ?output_datatype .
             }
             ''',
             node=self.node,
         )
 
-        rows = [row for row in rows if row['environment'] == self.as_datatype]
+        rows = [row for row in rows if row['output_datatype'] == self.as_datatype]
 
         return sorted(
             rows,
-            key=self.row_sorter_by_environment,
+            key=self.row_sorter_by_output_datatype,
         )
 
-    def by_environment_default_facet(self) -> Iterable[FoundRow]:
-        """Find facet based on environment only."""
+    def by_output_datatype_default_facet(self) -> Iterable[FoundRow]:
+        """Find facet based on output_datatype only."""
         graph: ConjunctiveGraph = self.iolanta.graph
 
         triples = graph.triples(     # type: ignore
@@ -143,13 +143,13 @@ class FacetFinder:
         rows = [
             {
                 'facet': facet,
-                'environment': environment,
-            } for environment, _, facet in triples
+                'output_datatype': output_datatype,
+            } for output_datatype, _, facet in triples
         ]
 
         return sorted(
             rows,
-            key=self.row_sorter_by_environment,
+            key=self.row_sorter_by_output_datatype,
         )
 
     @funcy.post_processing(list)
@@ -159,10 +159,10 @@ class FacetFinder:
         yield from self.by_datatype()
         yield from self.by_facet()
         yield from self.by_instance_facet()
-        yield from self.by_environment_default_facet()
+        yield from self.by_output_datatype_default_facet()
 
     @property
-    def facet_and_environment(self) -> FoundRow:
+    def facet_and_output_datatype(self) -> FoundRow:
         if choice := funcy.first(self.choices()):
             return choice
 
