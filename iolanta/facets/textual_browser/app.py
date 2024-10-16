@@ -149,7 +149,7 @@ class IolantaBrowser(App):   # noqa: WPS214, WPS230
                 title=self.app.call_from_thread(
                     self.iolanta.render,
                     facet,
-                    environments=[URIRef('https://iolanta.tech/env/title')],
+                    as_datatype=[URIRef('https://iolanta.tech/env/title')],
                 )[0],
             )
             for facet in other_facets
