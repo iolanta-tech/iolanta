@@ -160,7 +160,7 @@ class IolantaBrowser(App):   # noqa: WPS214, WPS230
         facet = facet_class(
             iri=self.iri,
             iolanta=iolanta,
-            environment=URIRef('https://iolanta.tech/cli/textual'),
+            as_datatype=URIRef('https://iolanta.tech/cli/textual'),
         )
 
         try:

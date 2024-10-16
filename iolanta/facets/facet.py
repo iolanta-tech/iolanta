@@ -20,7 +20,7 @@ class Facet(Generic[FacetOutput]):
 
     iri: NotLiteralNode
     iolanta: 'iolanta.Iolanta' = field(repr=False)
-    environment: Optional[NotLiteralNode] = None
+    as_datatype: Optional[NotLiteralNode] = None
     stack_children: List[Stack] = field(default_factory=list, repr=False)
 
     @property
