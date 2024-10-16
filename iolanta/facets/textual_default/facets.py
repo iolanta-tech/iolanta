@@ -381,6 +381,7 @@ class PropertyValues(Widget):
         layout: grid;
         grid-size: 6;
         height: auto;
+        max-width: 85%;
     }
     """
 
