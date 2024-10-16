@@ -79,41 +79,46 @@ def node() -> URIRef:
     return LOCAL.test
 
 
-def test_fallback(node: URIRef, environment: URIRef):
+def test_fallback(node: URIRef, as_datatype: URIRef):
     assert Iolanta().render(
         node=node,
-        as_datatype=environment,
+        as_datatype=as_datatype,
     )[0] == 'Test'
 
 
-def test_label(with_label, node: URIRef, environment: URIRef, label: str):
+def test_label(with_label, node: URIRef, as_datatype: URIRef, label: str):
     assert Iolanta().add(with_label).render(
         node=node,
-        as_datatype=environment,
+        as_datatype=as_datatype,
     )[0] == label
 
 
-def test_label_and_icon(with_label_and_icon, node: URIRef, environment: URIRef, label: str):
+def test_label_and_icon(
+    with_label_and_icon,
+    node: URIRef,
+    as_datatype: URIRef,
+    label: str,
+):
     assert Iolanta().add(with_label_and_icon).render(
         node=node,
-        as_datatype=environment,
+        as_datatype=as_datatype,
     )[0] == '⇔ Bazinga'
 
 
 def test_label_and_html_icon(
     with_label_and_html_icon,
     node: URIRef,
-    environment: URIRef,
+    as_datatype: URIRef,
     label: str,
     cli: URIRef,
 ):
-    if environment == cli:
+    if as_datatype == cli:
         pytest.skip('Not applicable to CLI.')
 
     assert str(
         Iolanta().add(with_label_and_html_icon).render(
             node=node,
-            as_datatype=environment,
+            as_datatype=as_datatype,
         )[0],
     ) == '<span title="foo"><span>⇔</span> Bazinga</span>'
 
