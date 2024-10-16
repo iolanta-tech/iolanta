@@ -211,6 +211,8 @@ class PropertyValue(Widget, can_focus=True, inherit_bindings=False):
     PropertyValue {
         width: auto;
         height: auto;
+        padding-right: 1;
+        padding-bottom: 1;
     }
     
     PropertyValue:hover {
@@ -366,7 +368,18 @@ class PropertyRow(Widget, can_focus=False, inherit_bindings=False):
         width: 1fr;
         height: auto;
         layout: horizontal;
-        overflow: hidden hidden;
+    }
+    """
+
+
+class PropertyValues(Widget):
+    """Container for property values."""
+
+    DEFAULT_CSS = """
+    PropertyValues {
+        layout: grid;
+        grid-size: 6;
+        height: auto;
     }
     """
 
@@ -434,20 +447,9 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
                 for property_value in property_values
             ]
 
-            property_values = more_itertools.interleave_longest(
-                property_values,
-                funcy.repeatedly(
-                    functools.partial(
-                        Label,
-                        ' • ',
-                    ),
-                    len(property_values) - 1,
-                ),
-            )
-
             yield PropertyRow(
                 property_name,
-                *property_values,
+                PropertyValues(*property_values),
             )
 
     @property
