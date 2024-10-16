@@ -22,7 +22,7 @@ def test_direct(iolanta: Iolanta, facet_iri: str, env: URIRef):
         '$id': 'boom',
         'iolanta:facet': {
             '$id': facet_iri,
-            'iolanta:supports': env,
+            'iolanta:outputs': env,
         },
     }).render(
         LOCAL.boom,
@@ -59,7 +59,7 @@ def test_instance_facet(iolanta: Iolanta, facet_iri: str, env: URIRef):
         'rdf:type': {
             'iolanta:hasInstanceFacet': {
                 '$id': facet_iri,
-                'iolanta:supports': env,
+                'iolanta:outputs': env,
             },
         },
     }).render(
@@ -73,7 +73,7 @@ def test_default_facet(iolanta: Iolanta, facet_iri: str, env: URIRef):
         '$id': env,
         'iolanta:hasDefaultFacet': {
             '$id': facet_iri,
-            'iolanta:supports': env,
+            'iolanta:outputs': env,
         },
     }).render(
         LOCAL.boom,
@@ -86,7 +86,7 @@ def test_datatype_facet(iolanta: Iolanta, facet_iri: str, env: URIRef):
         '$id': XSD.string,
         'iolanta:hasDatatypeFacet': {
             '$id': facet_iri,
-            'iolanta:supports': env,
+            'iolanta:outputs': env,
         },
     }).render(
         Literal('foo', datatype=XSD.string),
