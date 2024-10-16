@@ -58,6 +58,14 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 
+[tool.flakeheaven.exceptions."tests/**.py"]
+wemake-python-styleguide = [
+    # Found outer scope names shadowing
+    # Used for fixtures
+    "-WPS442",
+]
+
+
 [tool.flakeheaven.exceptions."iolanta/facets/textual_browser/history.py"]
 wemake-python-styleguide = [
     # Save stuff into a dataclass attribute

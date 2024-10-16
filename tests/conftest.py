@@ -26,7 +26,7 @@ def env() -> URIRef:
 
 
 @pytest.fixture(params=[IOLANTA.html, IOLANTA.cli])
-def environment(request):
+def as_datatype(request):
     return request.param
 
 

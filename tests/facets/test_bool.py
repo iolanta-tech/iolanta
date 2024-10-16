@@ -12,11 +12,11 @@ from iolanta.iolanta import Iolanta
     ],
 )
 def test_bool(
-    environment: URIRef,
+    as_datatype: URIRef,
     literal: str,
     icon: str,
 ):
     assert Iolanta().render(
         Literal(literal, datatype=XSD.boolean),
-        as_datatype=environment,
+        as_datatype=as_datatype,
     )[0] == icon
