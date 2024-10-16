@@ -110,7 +110,7 @@ class FacetNotFound(DocumentedError):
     No way to render the node you asked for.
 
     - **Node:** `{self.node}` *({self.node_type})*
-    - **Environments tried:** `{self.environments}`
+    - **Output datatype:** `{self.as_datatype}`
     """
 
     node: Node
