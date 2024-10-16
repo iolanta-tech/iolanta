@@ -252,13 +252,6 @@ class PropertyValue(Widget, can_focus=True, inherit_bindings=False):
         """Return the property IRI for compatibility."""
         return self.property_value
 
-    def render_title(self):
-        """Render title in a separate thread."""
-        return self.app.iolanta.render(
-            self.property_value,
-            as_datatype=URIRef('https://iolanta.tech/env/title'),
-        )[0]
-
     def on_worker_state_changed(self, event: Worker.StateChanged):
         """Show the title after it has been rendered."""
         match event.state:
@@ -295,6 +288,74 @@ class PropertyValue(Widget, can_focus=True, inherit_bindings=False):
         """
         if self.has_focus:
             return self.action_goto()
+
+
+class LiteralPropertyValue(Widget, can_focus=True, inherit_bindings=False):
+    """
+    Literal value of a property.
+
+    Supports provenance.
+    """
+
+    BINDINGS: ClassVar[list[BindingType]] = [
+        Binding('p', 'provenance', 'Provenan©e'),
+    ]
+
+    DEFAULT_CSS = """
+    LiteralPropertyValue {
+        width: auto;
+        height: auto;
+    }
+    
+    LiteralPropertyValue:hover {
+        background: $boost;
+    }
+
+    LiteralPropertyValue:focus {
+        background: darkslateblue;
+    }
+    """
+
+    renderable: str | None = reactive[str | None](   # noqa: WPS465
+        None,
+        init=False,
+        layout=True,
+    )
+
+    def __init__(
+        self,
+        property_value: Literal,
+        subject: NotLiteralNode,
+        property_iri: NotLiteralNode,
+    ):
+        """Initialize parameters for rendering, navigation, & provenance."""
+        self.property_value = property_value
+        self.subject = subject
+        self.property_iri = property_iri
+        super().__init__()
+        self.renderable = Text(   # noqa: WPS601
+            property_value.value,
+            style='#696969',
+        )
+
+    @property
+    def iri(self):
+        """Return the property IRI for compatibility."""
+        return self.property_value
+
+    def render(self) -> RenderResult:
+        """Render title of the node."""
+        return self.renderable
+
+    def action_provenance(self):
+        """Navigate to provenance for the property value."""
+        self.app.action_goto(
+            TripleURIRef.from_triple(
+                subject=self.subject,
+                predicate=self.property_iri,
+                object_=self.property_value,
+            ),
+        )
 
 
 class PropertyRow(Widget, can_focus=False, inherit_bindings=False):
@@ -361,7 +422,11 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
             )
 
             property_values = [
-                PropertyValue(
+                LiteralPropertyValue(
+                    property_value=property_value,
+                    subject=self.iri,
+                    property_iri=property_iri,
+                ) if isinstance(property_value, Literal) else PropertyValue(
                     property_value=property_value,
                     subject=self.iri,
                     property_iri=property_iri,
