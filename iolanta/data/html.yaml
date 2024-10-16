@@ -1,5 +1,5 @@
 - $id: iolanta:html
-  $type: iolanta:Environment
+  $type: iolanta:OutputDatatype
   owl:sameAs:
     $id: https://html.spec.whatwg.org/
   iolanta:hasDefaultFacet: python://iolanta.facets.html.Default

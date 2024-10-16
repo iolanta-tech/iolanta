@@ -2,7 +2,7 @@
   rdfs:label: For the CLI, display a link to the node or (at least) its human readable label.
 
 - $id: iolanta:cli
-  $type: iolanta:Environment
+  $type: iolanta:OutputDatatype
   iolanta:hasDefaultFacet:
     $id: python://iolanta.facets.cli.Record
     rdfs:label: Show properties of a node

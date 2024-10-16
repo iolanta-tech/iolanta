@@ -2,7 +2,7 @@
   $type: rdfs:Class
   label: Application capable to represent certain nodes of a semantic graph in a form suitable for certain user to interact with.
 
-- $id: iolanta:Environment
+- $id: iolanta:OutputDatatype
   $type: rdfs:Class
   label: Environment a given application lives at.
 
@@ -27,7 +27,7 @@
   rdfs:domain:
     $id: iolanta:Facet
   rdfs:range:
-    $id: iolanta:Environment
+    $id: iolanta:OutputDatatype
   label: Default facet used to render nodes in this environment if the node does not have a facet explicitly attached.
   owl:inverseOf:
     $id: iolanta:hasDefaultFacet
