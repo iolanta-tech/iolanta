@@ -21,6 +21,7 @@ from yarl import URL
 from iolanta.cli.formatters.node_to_qname import node_to_qname
 from iolanta.facets.errors import FacetNotFound
 from iolanta.facets.facet import Facet
+from iolanta.facets.page_title import PageTitle
 from iolanta.models import ComputedQName, NotLiteralNode, Triple
 
 
@@ -549,7 +550,7 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
 
     def compose(self) -> Iterable[Widget]:
         """Compose widgets."""
-        yield Title(self.title)
+        yield PageTitle(self.iri)
 
         if self.description:
             yield Label(self.description, id='description')
