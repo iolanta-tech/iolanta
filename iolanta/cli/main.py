@@ -42,12 +42,13 @@ app = construct_app()
 
 
 @app.command(name='browse')
-def render_command(
+def render_command(   # noqa: WPS231, WPS238
     url: Annotated[str, Argument()],
-    environment: str = Option(
-        'https://iolanta.tech/cli/interactive',
-        '--as',
-    ),
+    as_datatype: Annotated[
+        str, Option(
+            '--as',
+        ),
+    ] = 'https://iolanta.tech/cli/interactive',
     log_level: LogLevel = LogLevel.ERROR,
 ):
     """Render a given URL."""
@@ -74,7 +75,7 @@ def render_command(
     try:
         renderable, stack = iolanta.render(
             node=node,
-            as_datatype=iolanta.string_to_node(environment),
+            as_datatype=iolanta.string_to_node(as_datatype),
         )
 
     except DocumentedError as documented_error:

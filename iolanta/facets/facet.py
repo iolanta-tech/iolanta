@@ -70,9 +70,10 @@ class Facet(Generic[FacetOutput]):
     def render_all(
         self,
         node: Node,
-        environment: NotLiteralNode,
+        as_datatype: NotLiteralNode,
     ) -> Iterable[Any]:
-        return self.iolanta.render_all(node=node, environment=environment)
+        """Render all we can."""
+        return self.iolanta.render_all(node=node, as_datatype=as_datatype)
 
     def stored_query(self, file_name: str, **kwargs: SPARQLQueryArgument):
         """Execute a stored SPARQL query."""

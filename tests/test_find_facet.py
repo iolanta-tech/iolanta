@@ -40,13 +40,13 @@ def test_direct(iolanta: Iolanta, facet_iri: str, env: URIRef):
         'node': LOCAL.boom,
         'facet': {
             'iri': LOCAL.boom,
-            'environment': IOLANTA.test,
+            'as_datatype': IOLANTA.test,
         },
         'children': [{
             'node': Literal('foo'),
             'facet': {
                 'iri': Literal('foo'),
-                'environment': IOLANTA.html,
+                'as_datatype': IOLANTA.html,
             },
             'children': [],
         }],
