@@ -21,6 +21,7 @@ from yarl import URL
 from iolanta.cli.formatters.node_to_qname import node_to_qname
 from iolanta.facets.errors import FacetNotFound
 from iolanta.facets.facet import Facet
+from iolanta.facets.page_title import PageTitle
 from iolanta.models import ComputedQName, NotLiteralNode, Triple
 
 
@@ -211,6 +212,8 @@ class PropertyValue(Widget, can_focus=True, inherit_bindings=False):
     PropertyValue {
         width: auto;
         height: auto;
+        padding-right: 1;
+        padding-bottom: 1;
     }
     
     PropertyValue:hover {
@@ -252,13 +255,6 @@ class PropertyValue(Widget, can_focus=True, inherit_bindings=False):
         """Return the property IRI for compatibility."""
         return self.property_value
 
-    def render_title(self):
-        """Render title in a separate thread."""
-        return self.app.iolanta.render(
-            self.property_value,
-            as_datatype=URIRef('https://iolanta.tech/env/title'),
-        )[0]
-
     def on_worker_state_changed(self, event: Worker.StateChanged):
         """Show the title after it has been rendered."""
         match event.state:
@@ -297,6 +293,74 @@ class PropertyValue(Widget, can_focus=True, inherit_bindings=False):
             return self.action_goto()
 
 
+class LiteralPropertyValue(Widget, can_focus=True, inherit_bindings=False):
+    """
+    Literal value of a property.
+
+    Supports provenance.
+    """
+
+    BINDINGS: ClassVar[list[BindingType]] = [
+        Binding('p', 'provenance', 'Provenan©e'),
+    ]
+
+    DEFAULT_CSS = """
+    LiteralPropertyValue {
+        width: auto;
+        height: auto;
+    }
+    
+    LiteralPropertyValue:hover {
+        background: $boost;
+    }
+
+    LiteralPropertyValue:focus {
+        background: darkslateblue;
+    }
+    """
+
+    renderable: str | None = reactive[str | None](   # noqa: WPS465
+        None,
+        init=False,
+        layout=True,
+    )
+
+    def __init__(
+        self,
+        property_value: Literal,
+        subject: NotLiteralNode,
+        property_iri: NotLiteralNode,
+    ):
+        """Initialize parameters for rendering, navigation, & provenance."""
+        self.property_value = property_value
+        self.subject = subject
+        self.property_iri = property_iri
+        super().__init__()
+        self.renderable = Text(   # noqa: WPS601
+            str(property_value.value),
+            style='#696969',
+        )
+
+    @property
+    def iri(self):
+        """Return the property IRI for compatibility."""
+        return self.property_value
+
+    def render(self) -> RenderResult:
+        """Render title of the node."""
+        return self.renderable
+
+    def action_provenance(self):
+        """Navigate to provenance for the property value."""
+        self.app.action_goto(
+            TripleURIRef.from_triple(
+                subject=self.subject,
+                predicate=self.property_iri,
+                object_=self.property_value,
+            ),
+        )
+
+
 class PropertyRow(Widget, can_focus=False, inherit_bindings=False):
     """A container with horizontal layout and no scrollbars."""
 
@@ -305,9 +369,34 @@ class PropertyRow(Widget, can_focus=False, inherit_bindings=False):
         width: 1fr;
         height: auto;
         layout: horizontal;
-        overflow: hidden hidden;
     }
     """
+
+
+class PropertyValues(Widget):
+    """Container for property values."""
+
+    MAX_COLUMN_COUNT = 6
+
+    DEFAULT_CSS = """
+    PropertyValues {
+        layout: grid;
+        grid-size: 6;
+        height: auto;
+        max-width: 85%;
+    }
+    """
+
+    def on_mount(self):
+        """Adjust column count based on children of this node."""
+        children_count = len(self.children)
+        self.styles.grid_size_columns = max(
+            min(
+                children_count,
+                self.MAX_COLUMN_COUNT,
+            ),
+            1,
+        )
 
 
 class PropertiesContainer(Vertical):
@@ -350,6 +439,16 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
             for row in property_rows
         ]
 
+        property_pairs = [
+            (property_iri, object_node)
+            for property_iri, object_node in property_pairs
+            if (
+                not isinstance(object_node, Literal)
+                or not (language := object_node.language)  # noqa: W503
+                or (language == self.iolanta.language)     # noqa: W503
+            )
+        ]
+
         return funcy.group_values(property_pairs)
 
     @functools.cached_property
@@ -361,7 +460,11 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
             )
 
             property_values = [
-                PropertyValue(
+                LiteralPropertyValue(
+                    property_value=property_value,
+                    subject=self.iri,
+                    property_iri=property_iri,
+                ) if isinstance(property_value, Literal) else PropertyValue(
                     property_value=property_value,
                     subject=self.iri,
                     property_iri=property_iri,
@@ -369,20 +472,9 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
                 for property_value in property_values
             ]
 
-            property_values = more_itertools.interleave_longest(
-                property_values,
-                funcy.repeatedly(
-                    functools.partial(
-                        Label,
-                        ' • ',
-                    ),
-                    len(property_values) - 1,
-                ),
-            )
-
             yield PropertyRow(
                 property_name,
-                *property_values,
+                PropertyValues(*property_values),
             )
 
     @property
@@ -482,7 +574,7 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
 
     def compose(self) -> Iterable[Widget]:
         """Compose widgets."""
-        yield Title(self.title)
+        yield PageTitle(self.iri)
 
         if self.description:
             yield Label(self.description, id='description')

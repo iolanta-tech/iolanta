@@ -43,6 +43,9 @@ NORMALIZE_TERMS_MAP = MappingProxyType({
 })
 
 
+REASONING_ENABLED = False
+
+
 REDIRECTS = MappingProxyType({
     # FIXME This is presently hardcoded; we need to
     #   - either find a way to resolve these URLs automatically,
@@ -249,6 +252,9 @@ class GlobalSPARQLProcessor(Processor):
 
     def maybe_apply_inference(self):
         """Apply global OWL RL inference if necessary."""
+        if not REASONING_ENABLED:
+            return
+
         if self.graph.last_not_inferred_source is None:
             return
 
