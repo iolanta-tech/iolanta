@@ -33,6 +33,7 @@ from yaml_ld.errors import NotFound, YAMLLDError
 from yarl import URL
 
 from iolanta.models import Triple, TripleWithVariables
+from iolanta.namespaces import IOLANTA
 from iolanta.parsers.dict_parser import UnresolvedIRI, parse_quads
 
 logger = logging.getLogger(__name__)
@@ -155,8 +156,10 @@ class GlobalSPARQLProcessor(Processor):
         if self.graph.get_context(source):
             return None
 
-        try:  # noqa: WPS225
-            ld_rdf = yaml_ld.to_rdf(source)
+        # FIXME This is definitely inefficient. However, python-yaml-ld caches
+        #   the document, so the performance overhead is not super high.
+        try:
+            _resolved_source = yaml_ld.load_document(source)['documentUrl']
         except NotFound as not_found:
             logger.info('%s | 404 Not Found', not_found.path)
             namespaces = [RDF, RDFS, OWL, FOAF, DC, VANN]
@@ -169,6 +172,31 @@ class GlobalSPARQLProcessor(Processor):
 
             logger.info('%s | Cannot find a matching namespace', not_found.path)
             return
+
+        if _resolved_source:
+            _resolved_source_uri_ref = URIRef(_resolved_source)
+            if _resolved_source_uri_ref != source:
+                self.graph.add((
+                    URIRef(source),
+                    IOLANTA['redirects-to'],
+                    _resolved_source_uri_ref,
+                ))
+                source = _resolved_source
+
+        self.graph.add((
+            URIRef(source),
+            RDF.type,
+            IOLANTA.Graph,
+        ))
+
+        self.graph.add((
+            IOLANTA.Graph,
+            RDF.type,
+            RDFS.Class,
+        ))
+
+        try:  # noqa: WPS225
+            ld_rdf = yaml_ld.to_rdf(source)
         except ConnectionError as name_resolution_error:
             logger.info(
                 '%s | name resolution error: %s',
