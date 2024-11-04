@@ -35,6 +35,13 @@
     iolanta:outputs:
       $id: https://iolanta.tech/cli/textual
 
+- $id: iolanta:Graph
+  iolanta:hasInstanceFacet:
+    $id: python://iolanta.facets.textual_graph.GraphFacet
+    rdfs:label: Graph Triples
+    iolanta:outputs:
+      $id: https://iolanta.tech/cli/textual
+
 - $id: https://iolanta.tech/qname
   iolanta:hasDefaultFacet:
     $id: python://iolanta.facets.qname.QNameFacet
