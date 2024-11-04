@@ -1,0 +1,5 @@
+SELECT ?subject ?predicate ?object WHERE {
+    GRAPH $graph {
+        ?subject ?predicate ?object .
+    }
+} ORDER BY ?subject ?predicate ?object
