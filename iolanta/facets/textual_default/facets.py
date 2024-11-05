@@ -25,11 +25,13 @@ from iolanta.models import NotLiteralNode
 class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
     """Default rendering engine."""
 
+    query_file_name = 'properties.sparql'
+
     @functools.cached_property
     def grouped_properties(self) -> dict[NotLiteralNode, list[Node]]:
         """Properties of current node & their values."""
         property_rows = self.stored_query(
-            'properties.sparql',
+            self.query_file_name,
             iri=self.iri,
         )
 
@@ -82,6 +84,8 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
         Candidates for description.
 
         FIXME: We mutate `grouped_properties` here.
+
+        TODO: Move into a separate Facet.
         """
         choices = [
             description
@@ -130,6 +134,20 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
         """Render the content."""
         return Vertical(
             PageTitle(self.iri, extra='& its RDF properties'),
+            Static(self.description or ''),
+            self.properties,
+        )
+
+
+class InverseProperties(TextualDefaultFacet):
+    """Inverse properties view."""
+
+    query_file_name = 'inverse-properties.sparql'
+
+    def show(self) -> Widget:
+        """Render the content."""
+        return Vertical(
+            PageTitle(self.iri, extra='& its inverse RDF properties'),
             Static(self.description or ''),
             self.properties,
         )

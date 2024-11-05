@@ -7,6 +7,11 @@
     $id: python://iolanta.facets.textual_default.TextualDefaultFacet
     rdfs:label: Properties
 
+- $id: https://iolanta.tech/cli/textual
+  iolanta:hasDefaultFacet:
+    $id: python://iolanta.facets.textual_default.InverseProperties
+    rdfs:label: Inverse Properties
+
 - $id: "urn:"
   iolanta:hasFacetByPrefix:
     $id: python://iolanta.facets.textual_provenance.TextualProvenanceFacet
