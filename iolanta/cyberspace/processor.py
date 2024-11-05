@@ -167,11 +167,15 @@ class GlobalSPARQLProcessor(Processor):
             for namespace in namespaces:
                 if not_found.path.startswith(str(namespace)):
                     self.load(str(namespace))
-                    logger.info('Redirecting %s → namespace %s', not_found.path, namespace)
-                    return
+                    logger.info(
+                        'Redirecting %s → namespace %s',
+                        not_found.path,
+                        namespace,
+                    )
+                    return None
 
             logger.info('%s | Cannot find a matching namespace', not_found.path)
-            return
+            return None
 
         if _resolved_source:
             _resolved_source_uri_ref = URIRef(_resolved_source)
@@ -200,15 +204,16 @@ class GlobalSPARQLProcessor(Processor):
         except ConnectionError as name_resolution_error:
             logger.info(
                 '%s | name resolution error: %s',
-                source, str(name_resolution_error),
+                source,
+                str(name_resolution_error),
             )
-            return
+            return None
         except ParserNotFound as parser_not_found:
             logger.info('%s | %s', source, str(parser_not_found))
-            return
+            return None
         except YAMLLDError as yaml_ld_error:
             logger.info('%s | %s', source, str(yaml_ld_error))
-            return
+            return None
 
         try:
             quads = list(

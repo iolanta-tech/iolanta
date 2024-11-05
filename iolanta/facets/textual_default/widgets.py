@@ -10,7 +10,7 @@ from textual.events import Click
 from textual.reactive import reactive
 from textual.widget import Widget
 from textual.widgets import Static, TabbedContent, TabPane
-from textual.worker import Worker
+from textual.worker import Worker, WorkerState
 
 from iolanta.facets.textual_default.triple_uri_ref import TripleURIRef
 from iolanta.models import NotLiteralNode
@@ -265,7 +265,7 @@ class LiteralPropertyValue(Widget, can_focus=True, inherit_bindings=False):
         width: auto;
         height: auto;
     }
-    
+
     LiteralPropertyValue:hover {
         background: $boost;
     }
@@ -343,11 +343,11 @@ class ContentArea(VerticalScroll):
     #description {
         padding: 1;
     }
-        
+
     #properties {
         padding: 1;
     }
-    
+
     /* FIXME: This one does not work */
     DataTable .datatable--header {
         background: purple;

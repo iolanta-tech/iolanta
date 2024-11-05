@@ -58,6 +58,19 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 
+[tool.flakeheaven.exceptions."iolanta/facets/**.py"]
+wemake-python-styleguide = [
+    # Upper case constants used in Textual widget classes.
+    "-WPS115",
+]
+
+[tool.flakeheaven.exceptions."iolanta/cyberspace/processor.py"]
+wemake-python-styleguide = [
+    # Underscored variables are ok
+    "-WPS121",
+    "-WPS122",
+]
+
 [tool.flakeheaven.exceptions."tests/**.py"]
 wemake-python-styleguide = [
     # Found outer scope names shadowing
