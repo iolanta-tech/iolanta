@@ -47,7 +47,7 @@ from ldflex import LDFlex
 class Iolanta:   # noqa: WPS214
     """Iolanta is a Semantic web browser."""
 
-    language: str = 'en'
+    language: Literal = Literal('en')
 
     retrieval_directory: Optional[Path] = None
     graph: ConjunctiveGraph = field(

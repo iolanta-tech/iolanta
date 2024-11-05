@@ -133,7 +133,7 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
     def show(self) -> Widget:
         """Render the content."""
         return Vertical(
-            PageTitle(self.iri, extra='& its RDF properties'),
+            PageTitle(self.iri, extra='[i]& its RDF properties[/i]'),
             Static(self.description or ''),
             self.properties,
         )
@@ -147,7 +147,7 @@ class InverseProperties(TextualDefaultFacet):
     def show(self) -> Widget:
         """Render the content."""
         return Vertical(
-            PageTitle(self.iri, extra='& its inverse RDF properties'),
+            PageTitle(self.iri, extra='[i]& its inverse RDF properties[/i]'),
             Static(self.description or ''),
             self.properties,
         )

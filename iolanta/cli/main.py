@@ -3,6 +3,7 @@ import logging
 from typing import Annotated
 
 from documented import DocumentedError
+from rdflib import Literal
 from rich.console import Console
 from rich.logging import RichHandler
 from rich.markdown import Markdown
@@ -63,7 +64,7 @@ def render_command(   # noqa: WPS231, WPS238
     }[log_level]
 
     iolanta: Iolanta = Iolanta(
-        language=language,
+        language=Literal(language),
     )
     iolanta.logger.level = level
 

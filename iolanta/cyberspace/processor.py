@@ -1,6 +1,7 @@
 import dataclasses
 import functools
 import logging
+from pathlib import Path
 from threading import Lock
 from types import MappingProxyType
 from typing import Any, Iterable, Mapping
@@ -44,7 +45,8 @@ NORMALIZE_TERMS_MAP = MappingProxyType({
 })
 
 
-REASONING_ENABLED = False
+REASONING_ENABLED = True
+OWL_REASONING_ENABLED = False
 
 
 REDIRECTS = MappingProxyType({
@@ -283,6 +285,36 @@ class GlobalSPARQLProcessor(Processor):
 
         return term
 
+    def _infer_with_sparql(self):
+        """
+        Infer triples with SPARQL rules.
+
+        FIXME:
+          * Code these rules into SHACL or some other RDF based syntax;
+          * Make them available at iolanta.tech/visualizations/ and indexed.
+        """
+        inference = Path(__file__).parent / 'inference'
+
+        file_names = {
+            'wikibase-claim.sparql': URIRef('local:inference-wikibase-claim'),
+            'wikibase-statement-property.sparql': URIRef(
+                'local:inference-statement-property',
+            ),
+            'wikibase-entity-property.sparql': URIRef(
+                'local:wikibase-entity-property',
+            ),
+        }
+
+        for file_name, graph_name in file_names.items():
+            self.graph.update(
+                update_object=(inference / file_name).read_text(),
+            )
+            logger.info(
+                '%s: %s triple(s)',
+                file_name,
+                len(self.graph.get_context(graph_name)),
+            )
+
     def maybe_apply_inference(self):
         """Apply global OWL RL inference if necessary."""
         if not REASONING_ENABLED:
@@ -292,19 +324,25 @@ class GlobalSPARQLProcessor(Processor):
             return
 
         with self.inference_lock:
-            reasoner = reasonable.PyReasoner()
-            reasoner.from_graph(self.graph)
-            inferred_triples = reasoner.reason()
-            inference_graph_name = BNode('_:inference')
-            inferred_quads = [
-                (*triple, inference_graph_name)
-                for triple in inferred_triples
-            ]
-            self.graph.addN(inferred_quads)
-
+            self._infer_with_sparql()
+            self._infer_with_owl_rl()
             logger.info('Inference @ cyberspace: complete.')
 
             self.graph.last_not_inferred_source = None
+
+    def _infer_with_owl_rl(self):
+        if not OWL_REASONING_ENABLED:
+            return
+
+        reasoner = reasonable.PyReasoner()
+        reasoner.from_graph(self.graph)
+        inferred_triples = reasoner.reason()
+        inference_graph_name = BNode('_:inference')
+        inferred_quads = [
+            (*triple, inference_graph_name)
+            for triple in inferred_triples
+        ]
+        self.graph.addN(inferred_quads)
 
     def _apply_redirect(self, source: str) -> str:
         for pattern, destination in REDIRECTS.items():

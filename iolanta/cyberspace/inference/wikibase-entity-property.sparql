@@ -1,0 +1,12 @@
+prefix wikibase: <http://wikiba.se/ontology#>
+
+INSERT {
+  GRAPH <local:wikibase-entity-property> {
+    ?entity_statement schema:name ?name .
+  }
+}
+WHERE {
+    ?entity ?property ?entity_statement .
+    ?entity_statement ?statement_property ?destination_entity .
+    ?destination_entity rdfs:label ?name .
+}

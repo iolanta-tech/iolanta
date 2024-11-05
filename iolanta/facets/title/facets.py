@@ -2,9 +2,10 @@ from rdflib import URIRef
 
 from iolanta.facets.facet import Facet
 
-PRIORITIES = [
+PRIORITIES = [   # noqa: WPS407
     'dc_title',
     'schema_title',
+    'schema_name',
     'rdfs_label',
     'foaf_name',
 ]
