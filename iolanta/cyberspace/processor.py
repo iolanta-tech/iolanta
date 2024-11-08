@@ -1,12 +1,13 @@
 import dataclasses
+import datetime
 import functools
 import logging
+import time
 from pathlib import Path
 from threading import Lock
 from types import MappingProxyType
 from typing import Any, Iterable, Mapping
 
-import owlrl
 import reasonable
 import yaml_ld
 from rdflib import (
@@ -18,7 +19,6 @@ from rdflib import (
     RDFS,
     VANN,
     ConjunctiveGraph,
-    Literal,
     URIRef,
     Variable,
 )
@@ -306,13 +306,15 @@ class GlobalSPARQLProcessor(Processor):
         }
 
         for file_name, graph_name in file_names.items():
+            start_time = time.time()
             self.graph.update(
                 update_object=(inference / file_name).read_text(),
             )
             logger.info(
-                '%s: %s triple(s)',
+                '%s: %s triple(s), inferred at %s',
                 file_name,
                 len(self.graph.get_context(graph_name)),
+                datetime.timedelta(seconds=time.time() - start_time),
             )
 
     def maybe_apply_inference(self):
