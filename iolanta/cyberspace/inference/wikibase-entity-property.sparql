@@ -2,11 +2,16 @@ prefix wikibase: <http://wikiba.se/ontology#>
 
 INSERT {
   GRAPH <local:wikibase-entity-property> {
-    ?entity_statement schema:name ?name .
+    ?statement rdfs:label ?label .
   }
 }
 WHERE {
-    ?entity ?property ?entity_statement .
-    ?entity_statement ?statement_property ?destination_entity .
-    ?destination_entity rdfs:label ?name .
+    ?statement
+        ?prop_statement ?entity ;
+        a wikibase:Statement .
+
+    ?prop_statement a owl:ObjectProperty .
+    ?entity a wikibase:Item .
+
+    ?entity rdfs:label ?label .
 }
