@@ -10,7 +10,7 @@ from typing import Any, Iterable, Mapping
 
 import reasonable
 import yaml_ld
-from rdflib import (
+from rdflib import (  # noqa: WPS235
     DC,
     DCTERMS,
     FOAF,

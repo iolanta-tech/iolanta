@@ -5,8 +5,8 @@ from typing import Annotated
 from documented import DocumentedError
 from rdflib import Literal
 from rich.console import Console
-from rich.logging import RichHandler
 from rich.markdown import Markdown
+from textual.logging import TextualHandler
 from typer import Argument, Exit, Option, Typer
 
 from iolanta.cli.models import LogLevel
@@ -68,11 +68,13 @@ def render_command(   # noqa: WPS231, WPS238
     )
     iolanta.logger.level = level
 
+    textual_handler = TextualHandler()
+    textual_handler.level = level
     logging.basicConfig(
         level=level,
         format='%(message)s',
-        datefmt="[%X]",
-        handlers=[RichHandler()],
+        datefmt='[%X]',
+        handlers=[textual_handler],
         force=True,
     )
 
