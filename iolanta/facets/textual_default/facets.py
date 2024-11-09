@@ -5,7 +5,7 @@ import funcy
 from rdflib import DC, RDFS, SDO
 from rdflib.term import Literal, Node
 from rich.syntax import Syntax
-from textual.containers import Vertical
+from textual.containers import VerticalScroll
 from textual.widget import Widget
 from textual.widgets import Static
 
@@ -132,7 +132,7 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
 
     def show(self) -> Widget:
         """Render the content."""
-        return Vertical(
+        return VerticalScroll(
             PageTitle(self.iri, extra='[i]& its RDF properties[/i]'),
             Static(self.description or ''),
             self.properties,
@@ -146,7 +146,7 @@ class InverseProperties(TextualDefaultFacet):
 
     def show(self) -> Widget:
         """Render the content."""
-        return Vertical(
+        return VerticalScroll(
             PageTitle(self.iri, extra='[i]& its inverse RDF properties[/i]'),
             Static(self.description or ''),
             self.properties,

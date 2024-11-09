@@ -26,6 +26,13 @@
   iolanta:hasDefaultFacet:
     $id: python://iolanta.facets.title.TitleFacet
 
+- $id: http://wikiba.se/ontology#Statement
+  iolanta:hasInstanceFacet:
+    $id: python://iolanta.facets.wikibase_statement_title.WikibaseStatementTitle
+    rdfs:label: Title
+    iolanta:outputs:
+      $id: https://iolanta.tech/env/title
+
 - $id: rdfs:Class
   iolanta:hasInstanceFacet:
     $id: python://iolanta.facets.textual_class.Class

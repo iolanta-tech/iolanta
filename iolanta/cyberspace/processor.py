@@ -300,9 +300,6 @@ class GlobalSPARQLProcessor(Processor):
             'wikibase-statement-property.sparql': URIRef(
                 'local:inference-statement-property',
             ),
-            'wikibase-entity-property.sparql': URIRef(
-                'local:wikibase-entity-property',
-            ),
         }
 
         for file_name, graph_name in file_names.items():
