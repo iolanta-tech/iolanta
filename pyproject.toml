@@ -31,6 +31,7 @@ yarl = ">=1.9.4"
 boltons = "^24.0.0"
 yaml-ld = ">=1.0.12"
 reasonable = "^0.2.6"
+oxrdflib = "^0.4.0"
 
 [tool.poetry.scripts]
 iolanta = "iolanta.cli:app"

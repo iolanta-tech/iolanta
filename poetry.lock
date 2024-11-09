@@ -2403,6 +2403,21 @@ files = [
 rdflib = ">=6.0.2"
 
 [[package]]
+name = "oxrdflib"
+version = "0.4.0"
+description = "rdflib stores based on pyoxigraph"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "oxrdflib-0.4.0-py3-none-any.whl", hash = "sha256:c6203636b05817e21fbe7c469154b2e312593d0801cdaa14058c2d99dcfc12a6"},
+    {file = "oxrdflib-0.4.0.tar.gz", hash = "sha256:37d4c025d4e39c5e5472527c393998bfd10e5ac185a30e080b5b510f6dd7da86"},
+]
+
+[package.dependencies]
+pyoxigraph = ">=0.4.2,<0.5.0"
+rdflib = ">=6.3,<8.0"
+
+[[package]]
 name = "packaging"
 version = "24.1"
 description = "Core utilities for Python packages"
@@ -2923,6 +2938,36 @@ pyyaml = "*"
 
 [package.extras]
 extra = ["pygments (>=2.12)"]
+
+[[package]]
+name = "pyoxigraph"
+version = "0.4.3"
+description = "Python bindings of Oxigraph, a SPARQL database and RDF toolkit"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pyoxigraph-0.4.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c7fc2be4bf9d061005f17439222673a6edb117921937651d7215e16c16275655"},
+    {file = "pyoxigraph-0.4.3-cp310-cp310-musllinux_1_2_x86_64.whl", hash = "sha256:c6f9d195fbef44cbb8de7cc4f14e97a9717862af158e33a08043204969ad7c68"},
+    {file = "pyoxigraph-0.4.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ccf25922152f5a32be8670177e4817006127a19ea5a011f1a8a90300be568e81"},
+    {file = "pyoxigraph-0.4.3-cp311-cp311-musllinux_1_2_x86_64.whl", hash = "sha256:ece1bbc1bd8fb8df50f88ec78cc4f005b4490b3e5b59743c27b5315186ca6a4e"},
+    {file = "pyoxigraph-0.4.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c65ea9c691256f096660d0bb350ef265a13b74bdd241c6ee2c931c92d51e1a9b"},
+    {file = "pyoxigraph-0.4.3-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:4b5987b174310016eb1bcfd4ed01a7e3de03c5f420daeed3b5354265e793100f"},
+    {file = "pyoxigraph-0.4.3-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:01d7ec81baec37b00ae8208dc8093e782b615a5f035b3cb5214fa1554dca54b6"},
+    {file = "pyoxigraph-0.4.3-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:5e6f72dbae82a7c6e4972fd99117be2def3e584893644f40ab3c5390ce25a7ad"},
+    {file = "pyoxigraph-0.4.3-cp38-abi3-macosx_10_14_x86_64.macosx_11_0_arm64.macosx_10_14_universal2.whl", hash = "sha256:013045cdc256d96f2a4759d4a54f7147fe1ea84d797b8c02b8ef876a8ad85755"},
+    {file = "pyoxigraph-0.4.3-cp38-abi3-macosx_10_14_x86_64.whl", hash = "sha256:5b41415f41eb13e6e64a750c13abce4376e42a3debc280cefd3d17ede9d68901"},
+    {file = "pyoxigraph-0.4.3-cp38-abi3-macosx_11_0_arm64.whl", hash = "sha256:91c0cd48f36cd5abc8d0a51ea44ceb463d1ac3c5da38219d8b3c57cb05f40828"},
+    {file = "pyoxigraph-0.4.3-cp38-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:8987563f76184be1497835addec4aea6e0e55fc3b784d2a2ba4dcb2758666dc9"},
+    {file = "pyoxigraph-0.4.3-cp38-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:e0532bbba74321cd4909c7fbaa4bc639a2347e0275bf9135f32eec43cc35f8c0"},
+    {file = "pyoxigraph-0.4.3-cp38-abi3-win_amd64.whl", hash = "sha256:03957842b625792ddbf9513b5b2d1eb0cf0700403face657249026f8bb499121"},
+    {file = "pyoxigraph-0.4.3-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:af974ecb2e3154dd75f94e1790d9868af0b6b386e64ecb51d7ac89b9e09fc3ca"},
+    {file = "pyoxigraph-0.4.3-cp38-cp38-musllinux_1_2_x86_64.whl", hash = "sha256:9eba07daf7b1aa0b6dff4962649702234afe017db1e68e1904935f829f7f5b87"},
+    {file = "pyoxigraph-0.4.3-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:4123c03bf73b964eefdaa54c5b27d5bfa3919d08d8bba1a1123fbe63c7ee7d18"},
+    {file = "pyoxigraph-0.4.3-cp39-cp39-musllinux_1_2_x86_64.whl", hash = "sha256:2e273f1abb27004d7f9dc452e1d0fb35d9ec23289a8b6da787907d73f1a3f6e1"},
+    {file = "pyoxigraph-0.4.3-pp310-pypy310_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9d50fee489e3bb487d7038107519b6765a2ebac542c83c217923e9f74f7a4840"},
+    {file = "pyoxigraph-0.4.3-pp39-pypy39_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:2fd2020e181bb2149ba97176939c52712ca7f2186144c0d513d9af38692ae375"},
+    {file = "pyoxigraph-0.4.3.tar.gz", hash = "sha256:c675e179417f21159a96d7248a402000f36c033c1e2b4cfcde64932e34c711f9"},
+]
 
 [[package]]
 name = "pyparsing"
@@ -4030,4 +4075,4 @@ all = ["iolanta-tables"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.12"
-content-hash = "443299694cbf062142a61a8135450d9c15ae99ece5da77369ea9db9ae5b4a2a7"
+content-hash = "5a27f32b1b2d44b9f8a31f4eb98d049724439f70474447758e0adf5c34f4068f"
