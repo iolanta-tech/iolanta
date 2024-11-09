@@ -2,9 +2,10 @@ from rdflib import URIRef
 
 from iolanta.facets.facet import Facet
 
-PRIORITIES = [
+PRIORITIES = [   # noqa: WPS407
     'dc_title',
     'schema_title',
+    'schema_name',
     'rdfs_label',
     'foaf_name',
 ]
@@ -21,16 +22,17 @@ class TitleFacet(Facet[str]):
             language=self.iolanta.language,
         )
 
-        try:
-            [row] = choices
-        except ValueError:
-            raise ValueError(
-                f'Not exactly one choice, what do we do?! {choices}',
-            )
-
-        for alternative in PRIORITIES:
-            if label := row.get(alternative):
-                return str(label)
+        if choices:
+            try:
+                [row] = choices
+            except ValueError:
+                raise ValueError(
+                    f'Not exactly one choice, what do we do?! {choices}',
+                )
+    
+            for alternative in PRIORITIES:
+                if label := row.get(alternative):
+                    return str(label)
 
         return self.render(
             self.iri,

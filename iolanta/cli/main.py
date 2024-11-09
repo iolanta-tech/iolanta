@@ -1,20 +1,19 @@
+import locale
 import logging
-from pathlib import Path
-from typing import Annotated, Optional
+from typing import Annotated
 
-import typer
 from documented import DocumentedError
+from rdflib import Literal
 from rich.console import Console
-from rich.logging import RichHandler
 from rich.markdown import Markdown
-from rich.table import Table
 from textual.logging import TextualHandler
-from typer import Argument, Context, Option, Typer
+from typer import Argument, Exit, Option, Typer
 
-from iolanta.cli.formatters.choose import cli_print
 from iolanta.cli.models import LogLevel
 from iolanta.iolanta import Iolanta
-from iolanta.models import QueryResultsFormat
+
+DEFAULT_LANGUAGE = locale.getlocale()[0].split('_')[0]
+
 
 logger = logging.getLogger('iolanta')
 console = Console()
@@ -49,6 +48,11 @@ def render_command(   # noqa: WPS231, WPS238
             '--as',
         ),
     ] = 'https://iolanta.tech/cli/interactive',
+    language: Annotated[
+        str, Option(
+            help='Data language to prefer.',
+        ),
+    ] = DEFAULT_LANGUAGE,
     log_level: LogLevel = LogLevel.ERROR,
 ):
     """Render a given URL."""
@@ -59,14 +63,18 @@ def render_command(   # noqa: WPS231, WPS238
         LogLevel.ERROR: logging.ERROR,
     }[log_level]
 
-    iolanta: Iolanta = Iolanta()
+    iolanta: Iolanta = Iolanta(
+        language=Literal(language),
+    )
     iolanta.logger.level = level
 
+    textual_handler = TextualHandler()
+    textual_handler.level = level
     logging.basicConfig(
         level=level,
         format='%(message)s',
-        datefmt="[%X]",
-        handlers=[RichHandler()],
+        datefmt='[%X]',
+        handlers=[textual_handler],
         force=True,
     )
 
@@ -88,14 +96,14 @@ def render_command(   # noqa: WPS231, WPS238
                 justify='left',
             ),
         )
-        raise typer.Exit(1)
+        raise Exit(1)
 
     except Exception as err:
         if iolanta.logger.level in {logging.DEBUG, logging.INFO}:
             raise
 
         console.print(str(err))
-        raise typer.Exit(1)
+        raise Exit(1)
 
     else:
         Console().print(renderable)

@@ -1,3 +1,6 @@
-from iolanta.facets.textual_default.facets import TextualDefaultFacet
+from iolanta.facets.textual_default.facets import (
+    InverseProperties,
+    TextualDefaultFacet,
+)
 
-__all__ = ['TextualDefaultFacet']
+__all__ = ['TextualDefaultFacet', 'InverseProperties']

@@ -15,6 +15,11 @@ SELECT * WHERE {
     }
 
     OPTIONAL {
+        $iri <http://schema.org/name> ?schema_name .
+        FILTER (!lang(?schema_name) || lang(?schema_name) = $language)
+    }
+
+    OPTIONAL {
         $iri <http://xmlns.com/foaf/0.1/name> ?foaf_name .
         FILTER (!lang(?foaf_name) || lang(?foaf_name) = $language)
     }

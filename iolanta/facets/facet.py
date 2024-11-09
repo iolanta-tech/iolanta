@@ -4,7 +4,7 @@ from functools import cached_property
 from pathlib import Path
 from typing import Any, Generic, Iterable, List, Optional, TypeVar, Union
 
-from rdflib.term import BNode, Node, URIRef
+from rdflib.term import BNode, Literal, Node, URIRef
 
 from iolanta.models import NotLiteralNode, Triple, TripleTemplate
 from iolanta.stack import Stack
@@ -88,12 +88,17 @@ class Facet(Generic[FacetOutput]):
         raise NotImplementedError()
 
     @property
-    def language(self):
-        # return self.iolanta.language
-        return 'en'
+    def language(self) -> Literal:
+        """Preferred language for Iolanta output."""
+        return self.iolanta.language
 
     @property
     def stack(self):
+        """
+        Return stack.
+
+        FIXME: I have no idea. Maybe delete this nonsense.
+        """
         return Stack(
             node=self.iri,
             facet=self,

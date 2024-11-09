@@ -18,9 +18,10 @@ class PageTitle(Static):
     }
     """
 
-    def __init__(self, iri: NotLiteralNode) -> None:
+    def __init__(self, iri: NotLiteralNode, extra=None) -> None:
         """Initialize."""
         self.iri = iri
+        self.extra = extra
         qname = self.iolanta.node_as_qname(iri)
         super().__init__(qname)
 
@@ -48,6 +49,8 @@ class PageTitle(Static):
         match event.state:
             case WorkerState.SUCCESS:
                 title = event.worker.result
+                if self.extra:
+                    title = f'{title} {self.extra}'
                 self.renderable = title
                 self.refresh()
 

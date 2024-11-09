@@ -10,12 +10,9 @@ from textual.widget import Widget
 from textual.widgets import Label
 
 from iolanta.facets.facet import Facet
-from iolanta.facets.textual_default.facets import (
-    PropertyName,
-    PropertyRow,
-    Title,
-    TripleURIRef,
-)
+from iolanta.facets.textual_default.facets import PropertyName
+from iolanta.facets.textual_default.triple_uri_ref import TripleURIRef
+from iolanta.facets.textual_default.widgets import PropertyRow, Title
 from iolanta.models import NotLiteralNode, Triple
 from iolanta.namespaces import LOCAL
 

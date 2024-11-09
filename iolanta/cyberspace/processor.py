@@ -1,14 +1,16 @@
 import dataclasses
+import datetime
 import functools
 import logging
+import time
+from pathlib import Path
 from threading import Lock
 from types import MappingProxyType
 from typing import Any, Iterable, Mapping
 
-import owlrl
 import reasonable
 import yaml_ld
-from rdflib import (
+from rdflib import (  # noqa: WPS235
     DC,
     DCTERMS,
     FOAF,
@@ -17,7 +19,6 @@ from rdflib import (
     RDFS,
     VANN,
     ConjunctiveGraph,
-    Literal,
     URIRef,
     Variable,
 )
@@ -33,6 +34,7 @@ from yaml_ld.errors import NotFound, YAMLLDError
 from yarl import URL
 
 from iolanta.models import Triple, TripleWithVariables
+from iolanta.namespaces import IOLANTA
 from iolanta.parsers.dict_parser import UnresolvedIRI, parse_quads
 
 logger = logging.getLogger(__name__)
@@ -41,6 +43,10 @@ NORMALIZE_TERMS_MAP = MappingProxyType({
     URIRef(_url := 'http://www.w3.org/2002/07/owl'): URIRef(f'{_url}#'),
     URIRef(_url := 'http://www.w3.org/2000/01/rdf-schema'): URIRef(f'{_url}#'),
 })
+
+
+REASONING_ENABLED = True
+OWL_REASONING_ENABLED = False
 
 
 REDIRECTS = MappingProxyType({
@@ -152,8 +158,10 @@ class GlobalSPARQLProcessor(Processor):
         if self.graph.get_context(source):
             return None
 
-        try:  # noqa: WPS225
-            ld_rdf = yaml_ld.to_rdf(source)
+        # FIXME This is definitely inefficient. However, python-yaml-ld caches
+        #   the document, so the performance overhead is not super high.
+        try:
+            _resolved_source = yaml_ld.load_document(source)['documentUrl']
         except NotFound as not_found:
             logger.info('%s | 404 Not Found', not_found.path)
             namespaces = [RDF, RDFS, OWL, FOAF, DC, VANN]
@@ -161,23 +169,53 @@ class GlobalSPARQLProcessor(Processor):
             for namespace in namespaces:
                 if not_found.path.startswith(str(namespace)):
                     self.load(str(namespace))
-                    logger.info('Redirecting %s → namespace %s', not_found.path, namespace)
-                    return
+                    logger.info(
+                        'Redirecting %s → namespace %s',
+                        not_found.path,
+                        namespace,
+                    )
+                    return None
 
             logger.info('%s | Cannot find a matching namespace', not_found.path)
-            return
+            return None
+
+        if _resolved_source:
+            _resolved_source_uri_ref = URIRef(_resolved_source)
+            if _resolved_source_uri_ref != source:
+                self.graph.add((
+                    URIRef(source),
+                    IOLANTA['redirects-to'],
+                    _resolved_source_uri_ref,
+                ))
+                source = _resolved_source
+
+        self.graph.add((
+            URIRef(source),
+            RDF.type,
+            IOLANTA.Graph,
+        ))
+
+        self.graph.add((
+            IOLANTA.Graph,
+            RDF.type,
+            RDFS.Class,
+        ))
+
+        try:  # noqa: WPS225
+            ld_rdf = yaml_ld.to_rdf(source)
         except ConnectionError as name_resolution_error:
             logger.info(
                 '%s | name resolution error: %s',
-                source, str(name_resolution_error),
+                source,
+                str(name_resolution_error),
             )
-            return
+            return None
         except ParserNotFound as parser_not_found:
             logger.info('%s | %s', source, str(parser_not_found))
-            return
+            return None
         except YAMLLDError as yaml_ld_error:
             logger.info('%s | %s', source, str(yaml_ld_error))
-            return
+            return None
 
         try:
             quads = list(
@@ -247,25 +285,63 @@ class GlobalSPARQLProcessor(Processor):
 
         return term
 
+    def _infer_with_sparql(self):
+        """
+        Infer triples with SPARQL rules.
+
+        FIXME:
+          * Code these rules into SHACL or some other RDF based syntax;
+          * Make them available at iolanta.tech/visualizations/ and indexed.
+        """
+        inference = Path(__file__).parent / 'inference'
+
+        file_names = {
+            'wikibase-claim.sparql': URIRef('local:inference-wikibase-claim'),
+            'wikibase-statement-property.sparql': URIRef(
+                'local:inference-statement-property',
+            ),
+        }
+
+        for file_name, graph_name in file_names.items():
+            start_time = time.time()
+            self.graph.update(
+                update_object=(inference / file_name).read_text(),
+            )
+            logger.info(
+                '%s: %s triple(s), inferred at %s',
+                file_name,
+                len(self.graph.get_context(graph_name)),
+                datetime.timedelta(seconds=time.time() - start_time),
+            )
+
     def maybe_apply_inference(self):
         """Apply global OWL RL inference if necessary."""
+        if not REASONING_ENABLED:
+            return
+
         if self.graph.last_not_inferred_source is None:
             return
 
         with self.inference_lock:
-            reasoner = reasonable.PyReasoner()
-            reasoner.from_graph(self.graph)
-            inferred_triples = reasoner.reason()
-            inference_graph_name = BNode('_:inference')
-            inferred_quads = [
-                (*triple, inference_graph_name)
-                for triple in inferred_triples
-            ]
-            self.graph.addN(inferred_quads)
-
+            self._infer_with_sparql()
+            self._infer_with_owl_rl()
             logger.info('Inference @ cyberspace: complete.')
 
             self.graph.last_not_inferred_source = None
+
+    def _infer_with_owl_rl(self):
+        if not OWL_REASONING_ENABLED:
+            return
+
+        reasoner = reasonable.PyReasoner()
+        reasoner.from_graph(self.graph)
+        inferred_triples = reasoner.reason()
+        inference_graph_name = BNode('_:inference')
+        inferred_quads = [
+            (*triple, inference_graph_name)
+            for triple in inferred_triples
+        ]
+        self.graph.addN(inferred_quads)
 
     def _apply_redirect(self, source: str) -> str:
         for pattern, destination in REDIRECTS.items():

@@ -15,7 +15,7 @@ from textual.widgets import Label, ListItem, ListView
 
 from iolanta.facets.facet import Facet
 from iolanta.facets.page_title import PageTitle
-from iolanta.facets.textual_default.facets import TripleURIRef
+from iolanta.facets.textual_default.triple_uri_ref import TripleURIRef
 from iolanta.models import NotLiteralNode
 
 INSTANCE_RENDER_RADIUS = 50

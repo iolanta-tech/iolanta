@@ -29,8 +29,9 @@ textual = "^0.83.0"
 iolanta-tables = {version = "^0.1.7", optional = true}
 yarl = ">=1.9.4"
 boltons = "^24.0.0"
-yaml-ld = ">=1.0.10"
+yaml-ld = ">=1.0.12"
 reasonable = "^0.2.6"
+oxrdflib = "^0.4.0"
 
 [tool.poetry.scripts]
 iolanta = "iolanta.cli:app"
@@ -57,6 +58,22 @@ all = ["iolanta-tables"]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
+
+[tool.flakeheaven.exceptions."iolanta/facets/**.py"]
+wemake-python-styleguide = [
+    # Upper case constants used in Textual widget classes.
+    "-WPS115",
+
+    # __all__ in __init__.py is ok
+    "-WPS410",
+]
+
+[tool.flakeheaven.exceptions."iolanta/cyberspace/processor.py"]
+wemake-python-styleguide = [
+    # Underscored variables are ok
+    "-WPS121",
+    "-WPS122",
+]
 
 [tool.flakeheaven.exceptions."tests/**.py"]
 wemake-python-styleguide = [
