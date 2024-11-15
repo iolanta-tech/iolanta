@@ -20,7 +20,6 @@ from rdflib import ConjunctiveGraph, Literal, Namespace, URIRef
 from rdflib.term import Node
 
 from iolanta import entry_points
-from iolanta.node_to_qname import node_to_qname
 from iolanta.facets.errors import FacetError
 from iolanta.facets.facet import Facet
 from iolanta.facets.locator import FacetFinder
@@ -35,6 +34,7 @@ from iolanta.models import (
     TripleTemplate,
 )
 from iolanta.namespaces import LOCAL
+from iolanta.node_to_qname import node_to_qname
 from iolanta.parsers.yaml import YAML
 from iolanta.plugin import Plugin
 from iolanta.resolvers.python_import import PythonImportResolver
