@@ -129,28 +129,19 @@ class FacetFinder:
 
     def by_output_datatype_default_facet(self) -> Iterable[FoundRow]:
         """Find facet based on output_datatype only."""
-        graph: ConjunctiveGraph = self.iolanta.graph
-
-        triples = graph.triples(     # type: ignore
-            (None, IOLANTA.hasDefaultFacet, None),
+        rows = self.iolanta.query(
+            '''
+            SELECT ?facet ?output_datatype WHERE {
+              $output_datatype iolanta:hasDefaultFacet ?facet .
+            }
+            ''',
+            output_datatype=self.as_datatype,
         )
-        triples = [
-            triple
-            for triple in triples
-            if funcy.first(triple) == self.as_datatype
-        ]
 
-        rows = [
-            {
-                'facet': facet,
-                'output_datatype': output_datatype,
-            } for output_datatype, _, facet in triples
+        return [
+            FoundRow(facet=row['facet'], output_datatype=row['output_datatype'])
+            for row in rows
         ]
-
-        return sorted(
-            rows,
-            key=self.row_sorter_by_output_datatype,
-        )
 
     @funcy.post_processing(list)
     def choices(self) -> Iterable[FoundRow]:
