@@ -1,4 +1,4 @@
-# Title
+# :material-format-title: Title
 
 <script type="application/ld+json">
   {
@@ -23,3 +23,9 @@
 </script>
 
 A short string naming something. Used in links, lists, page titles, property tables, and many other cases.
+
+| Property | Value |
+| --- | --- |
+| ∈ Instance Of | `rdf:Datatype` |
+| ⊊ Subclass Of | `xsd:string` |
+| Has default facet | :material-language-python: `iolanta.facets.title.TitleFacet` | 
