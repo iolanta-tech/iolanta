@@ -16,6 +16,7 @@ from iolanta.facets.locator import FacetFinder
 from iolanta.facets.textual_browser.history import NavigationHistory
 from iolanta.iolanta import Iolanta
 from iolanta.models import NotLiteralNode
+from iolanta.namespaces import DATATYPES
 
 
 @dataclass
@@ -148,7 +149,7 @@ class IolantaBrowser(App):   # noqa: WPS214, WPS230
                 title=self.app.call_from_thread(
                     self.iolanta.render,
                     facet,
-                    as_datatype=URIRef('https://iolanta.tech/env/title'),
+                    as_datatype=DATATYPES.title,
                 )[0],
             )
             for facet in other_facets

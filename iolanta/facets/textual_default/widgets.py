@@ -14,6 +14,7 @@ from textual.worker import Worker, WorkerState
 
 from iolanta.facets.textual_default.triple_uri_ref import TripleURIRef
 from iolanta.models import NotLiteralNode
+from iolanta.namespaces import DATATYPES
 
 
 class PropertyName(Widget, can_focus=True, inherit_bindings=False):
@@ -59,8 +60,7 @@ class PropertyName(Widget, can_focus=True, inherit_bindings=False):
 
     def render_title(self):
         """Render title in a separate thread."""
-        output_datatype = URIRef('https://iolanta.tech/env/title')
-        return self.app.iolanta.render(self.iri, output_datatype)[0]
+        return self.app.iolanta.render(self.iri, DATATYPES.title)[0]
 
     def render(self) -> RenderResult:
         """Render node title."""
@@ -203,7 +203,7 @@ class PropertiesContainer(Vertical):
         for widget in widgets:
             widget.renderable = self.app.iolanta.render(
                 widget.iri,
-                as_datatype=URIRef('https://iolanta.tech/env/title'),
+                as_datatype=DATATYPES.title,
             )[0]
 
     def on_mount(self):

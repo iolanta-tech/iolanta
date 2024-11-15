@@ -2,6 +2,7 @@ import funcy
 from rdflib import URIRef
 
 from iolanta.facets.facet import Facet
+from iolanta.namespaces import DATATYPES
 
 
 class WikibaseStatementTitle(Facet[str]):
@@ -24,5 +25,5 @@ class WikibaseStatementTitle(Facet[str]):
 
         return self.render(
             row['entity'],
-            as_datatype=URIRef('https://iolanta.tech/env/title'),
+            as_datatype=DATATYPES.title,
         )

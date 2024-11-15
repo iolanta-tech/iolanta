@@ -13,9 +13,12 @@ from textual.widgets import Static
 from iolanta.facets.facet import Facet
 from iolanta.facets.page_title import PageTitle
 from iolanta.models import NotLiteralNode
+from iolanta.namespaces import DATATYPES
 
 
 class TermStatus(StrEnum):
+    """Status of an ontology term."""
+
     STABLE = 'stable'
     ARCHAIC = 'archaic'
     TESTING = 'testing'
@@ -83,7 +86,7 @@ class OntologyFacet(Facet[Widget]):
         for group, rows in self.grouped_terms.items():
             group_title = self.render(
                 group,
-                as_datatype=URIRef('https://iolanta.tech/env/title'),
+                as_datatype=DATATYPES.title,
             ) if group is not None else '<Ungrouped>'
 
             rendered_terms = '\n'.join([

@@ -4,6 +4,7 @@ from textual.worker import Worker, WorkerState
 
 from iolanta.iolanta import Iolanta
 from iolanta.models import NotLiteralNode
+from iolanta.namespaces import DATATYPES
 
 
 class PageTitle(Static):
@@ -34,7 +35,7 @@ class PageTitle(Static):
         """Render the title via Iolanta in a thread."""
         return self.iolanta.render(
             self.iri,
-            as_datatype=URIRef('https://iolanta.tech/env/title'),
+            as_datatype=DATATYPES.title,
         )[0]
 
     def on_mount(self):

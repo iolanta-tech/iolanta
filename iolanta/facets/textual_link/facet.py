@@ -3,6 +3,7 @@ from rich.style import Style
 from rich.text import Text
 
 from iolanta.facets.facet import Facet
+from iolanta.namespaces import DATATYPES
 
 
 class TextualLinkFacet(Facet[str | Text]):
@@ -15,7 +16,7 @@ class TextualLinkFacet(Facet[str | Text]):
 
         label = self.render(
             self.iri,
-            as_datatype=URIRef('https://iolanta.tech/env/title'),
+            as_datatype=DATATYPES.title,
         )
 
         invocation = f"app.goto('{self.iri}')"
