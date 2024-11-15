@@ -22,10 +22,6 @@
   iolanta:hasDefaultFacet:
     $id: python://iolanta.facets.textual_link.TextualLinkFacet
 
-- $id: https://iolanta.tech/datatypes/title
-  iolanta:hasDefaultFacet:
-    $id: python://iolanta.facets.title.TitleFacet
-
 - $id: http://wikiba.se/ontology#Statement
   iolanta:hasInstanceFacet:
     $id: python://iolanta.facets.wikibase_statement_title.WikibaseStatementTitle
