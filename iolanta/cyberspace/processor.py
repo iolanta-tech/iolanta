@@ -238,12 +238,12 @@ class GlobalSPARQLProcessor(Processor):
 
         graph = URIRef(source)
         quad_tuples = [
-            (
+            tuple([
                 normalize_term(term) for term in dataclasses.replace(
                     quad,
                     graph=graph,
                 ).as_tuple()
-            )
+            ])
             for quad in quads
         ]
 
