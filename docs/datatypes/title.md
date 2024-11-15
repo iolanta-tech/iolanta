@@ -14,6 +14,7 @@
         "@type": "@id"
       }
     },
+    "@id": "https://iolanta.tech/datatypes/title",
     "rdfs:label": "Title",
     "rdfs:description": "A short string naming something. Used in links, lists, page titles, property tables, and many other cases.",
     "rdfs:subClassOf": "xsd:string",
