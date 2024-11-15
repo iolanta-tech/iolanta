@@ -16,10 +16,14 @@ def install_mkdocs_insiders():
 
 def deploy_to_github_pages():
     """Build the docs & deploy → gh-pages branch."""
-    sh.mkdocs('gh-deploy', '--force', '--clean', '--verbose')
+    try:
+        sh.mkdocs('gh-deploy', '--force', '--clean', '--verbose')
+    except sh.ErrorReturnCode as error:
+        raise ValueError(error.stderr.decode('utf-8'))
 
 
 def install_graphviz():
+    """Install graphviz."""
     sh.sudo('apt-get', 'install', '-y', 'graphviz')
 
 
