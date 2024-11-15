@@ -1336,17 +1336,6 @@ files = [
 colorama = ">=0.4"
 
 [[package]]
-name = "hjson"
-version = "3.1.0"
-description = "Hjson, a user interface for JSON."
-optional = false
-python-versions = "*"
-files = [
-    {file = "hjson-3.1.0-py3-none-any.whl", hash = "sha256:65713cdcf13214fb554eb8b4ef803419733f4f5e551047c9b711098ab7186b89"},
-    {file = "hjson-3.1.0.tar.gz", hash = "sha256:55af475a27cf83a7969c808399d7bccdec8fb836a07ddbd574587593b9cdcf75"},
-]
-
-[[package]]
 name = "html5lib-modern"
 version = "1.2"
 description = "HTML parser based on the WHATWG HTML specification"
@@ -1387,6 +1376,21 @@ files = [
     {file = "iniconfig-2.0.0-py3-none-any.whl", hash = "sha256:b6a85871a79d2e3b22d2d1b94ac2824226a63c6b741c88f7ae975f18b6778374"},
     {file = "iniconfig-2.0.0.tar.gz", hash = "sha256:2d91e135bf72d31a410b17c16da610a82cb55f6b0477d1a902134b24a455b8b3"},
 ]
+
+[[package]]
+name = "iolanta-jinja2"
+version = "0.1.4"
+description = "Render Jinja2 templates from Iolanta graph"
+optional = false
+python-versions = ">=3.10,<4.0"
+files = [
+    {file = "iolanta_jinja2-0.1.4-py3-none-any.whl", hash = "sha256:9670c6810f8778a3bb7f05763d349302be052b63d575e4a931587f5fe413c3e7"},
+    {file = "iolanta_jinja2-0.1.4.tar.gz", hash = "sha256:a8db8289ee96e1a48aafe4ef8b75ee3ab8bd8ac193ae604a5d267d4473f29f27"},
+]
+
+[package.dependencies]
+iolanta = ">=1.0.12,<2.0.0"
+Jinja2 = ">=3.1.2,<4.0.0"
 
 [[package]]
 name = "iolanta-tables"
@@ -2016,29 +2020,42 @@ platformdirs = ">=2.2.0"
 pyyaml = ">=5.1"
 
 [[package]]
-name = "mkdocs-macros-plugin"
-version = "1.3.6"
-description = "Unleash the power of MkDocs with macros and variables"
+name = "mkdocs-iolanta"
+version = "0.1.7"
+description = "MkDocs plugin to integrate with Iolanta semantic web framework."
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.10,<4.0"
 files = [
-    {file = "mkdocs_macros_plugin-1.3.6-py3-none-any.whl", hash = "sha256:74fd418c8e1f9f021b7a45bb1c7d7461d8ae09ccec241787f3971e733374da8c"},
-    {file = "mkdocs_macros_plugin-1.3.6.tar.gz", hash = "sha256:074bc072cac14c28724037b6988743cd9425752bdd35ae05fbf96b1b2457f3b7"},
+    {file = "mkdocs_iolanta-0.1.7-py3-none-any.whl", hash = "sha256:034febce1d7898182fed475ddc8e06f7b07bb24e1ada109a523deebaee23d1f3"},
+    {file = "mkdocs_iolanta-0.1.7.tar.gz", hash = "sha256:e94a44ae070d3a0102412a2d0c361d47f1109baa0cae4eea10f6712ebacef82f"},
 ]
 
 [package.dependencies]
-hjson = "*"
+iolanta = ">=1.0.14,<2.0.0"
+iolanta-jinja2 = ">=0.1.2,<0.2.0"
+mkdocs = ">=1.4.2,<2.0.0"
+mkdocs-macros-plugin = ">=0.7.0,<0.8.0"
+
+[[package]]
+name = "mkdocs-macros-plugin"
+version = "0.7.0"
+description = "Unleash the power of MkDocs with macros and variables"
+optional = false
+python-versions = ">=3.5"
+files = [
+    {file = "mkdocs-macros-plugin-0.7.0.tar.gz", hash = "sha256:9e64e1cabcf6925359de29fe54f62d5847fb455c2528c440b87f8f1240650608"},
+    {file = "mkdocs_macros_plugin-0.7.0-py3-none-any.whl", hash = "sha256:96bdabeb98b96139544f0048ea2f5cb80c7befde6b21e94c6d4596c22774cbcf"},
+]
+
+[package.dependencies]
 jinja2 = "*"
 mkdocs = ">=0.17"
-packaging = "*"
-pathspec = "*"
 python-dateutil = "*"
 pyyaml = "*"
-super-collections = "*"
 termcolor = "*"
 
 [package.extras]
-test = ["mkdocs-include-markdown-plugin", "mkdocs-macros-test", "mkdocs-material (>=6.2)", "mkdocs-test"]
+test = ["mkdocs-include-markdown-plugin", "mkdocs-macros-test", "mkdocs-material (>=6.2)"]
 
 [[package]]
 name = "mkdocs-material"
@@ -3619,23 +3636,6 @@ files = [
 pbr = ">=2.0.0"
 
 [[package]]
-name = "super-collections"
-version = "0.5.3"
-description = "file: README.md"
-optional = false
-python-versions = ">=3.8"
-files = [
-    {file = "super_collections-0.5.3-py3-none-any.whl", hash = "sha256:907d35b25dc4070910e8254bf2f5c928348af1cf8a1f1e8259e06c666e902cff"},
-    {file = "super_collections-0.5.3.tar.gz", hash = "sha256:94c1ec96c0a0d5e8e7d389ed8cde6882ac246940507c5e6b86e91945c2968d46"},
-]
-
-[package.dependencies]
-hjson = "*"
-
-[package.extras]
-test = ["pytest (>=7.0)"]
-
-[[package]]
 name = "termcolor"
 version = "2.5.0"
 description = "ANSI color formatting for output in terminal"
@@ -4075,4 +4075,4 @@ all = ["iolanta-tables"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.12"
-content-hash = "5a27f32b1b2d44b9f8a31f4eb98d049724439f70474447758e0adf5c34f4068f"
+content-hash = "8c078b354ed4ad4ed5070599c0706e964f6044e658c8750cb863dd03c0d818e9"

@@ -4,7 +4,7 @@ from rdflib import Graph
 
 from iolanta.cli.formatters.csv import csv_print
 from iolanta.cli.formatters.json import print_json
-from iolanta.cli.formatters.node_to_qname import node_to_qname
+from iolanta.node_to_qname import node_to_qname
 from iolanta.cli.formatters.pretty import pretty_print
 from iolanta.models import QueryResultsFormat
 from ldflex.ldflex import SelectResult

@@ -1,4 +1,4 @@
-from iolanta.cli.formatters.node_to_qname import node_to_qname
+from iolanta.node_to_qname import node_to_qname
 from iolanta.facets.facet import Facet
 from iolanta.models import ComputedQName, NotLiteralNode
 

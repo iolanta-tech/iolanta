@@ -22,7 +22,7 @@
   iolanta:hasDefaultFacet:
     $id: python://iolanta.facets.textual_link.TextualLinkFacet
 
-- $id: https://iolanta.tech/env/title
+- $id: https://iolanta.tech/datatypes/title
   iolanta:hasDefaultFacet:
     $id: python://iolanta.facets.title.TitleFacet
 
@@ -31,7 +31,7 @@
     $id: python://iolanta.facets.wikibase_statement_title.WikibaseStatementTitle
     rdfs:label: Title
     iolanta:outputs:
-      $id: https://iolanta.tech/env/title
+      $id: https://iolanta.tech/datatypes/title
 
 - $id: rdfs:Class
   iolanta:hasInstanceFacet:

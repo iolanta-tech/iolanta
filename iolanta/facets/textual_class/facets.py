@@ -17,6 +17,7 @@ from iolanta.facets.facet import Facet
 from iolanta.facets.page_title import PageTitle
 from iolanta.facets.textual_default.triple_uri_ref import TripleURIRef
 from iolanta.models import NotLiteralNode
+from iolanta.namespaces import DATATYPES
 
 INSTANCE_RENDER_RADIUS = 50
 
@@ -103,7 +104,7 @@ class InstancesList(ListView):   # noqa: WPS214
                 instance_item.update,
                 self.app.iolanta.render(
                     instance_item.node,
-                    as_datatype=URIRef('https://iolanta.tech/env/title'),
+                    as_datatype=DATATYPES.title,
                 )[0],
             )
 
