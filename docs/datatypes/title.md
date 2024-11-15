@@ -18,7 +18,7 @@
     "rdfs:label": "Title",
     "rdfs:description": "A short string naming something. Used in links, lists, page titles, property tables, and many other cases.",
     "rdfs:subClassOf": "xsd:string",
-    "@type": "rdf:Datatype",
+    "@type": "rdfs:Datatype",
     "iolanta:hasDefaultFacet": "python://iolanta.facets.title.TitleFacet"
   }
 </script>
@@ -27,6 +27,6 @@ A short string naming something. Used in links, lists, page titles, property tab
 
 | Property | Value |
 | --- | --- |
-| ∈ Instance Of | `rdf:Datatype` |
+| ∈ Instance Of | `rdfs:Datatype` |
 | ⊊ Subclass Of | `xsd:string` |
 | Has default facet | :material-language-python: `iolanta.facets.title.TitleFacet` | 

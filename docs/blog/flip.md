@@ -11,7 +11,7 @@ A few changes needed for that.
 
 ```mermaid
 graph TD
-    env-to-type("<code>environment</code> → <code>rdf:Datatype</code>") --> subtypes("Subtypes<br/><em>Anything there already?</em>") --> generic("Generic types")
+    env-to-type("<code>environment</code> → <code>rdfs:Datatype</code>") --> subtypes("Subtypes<br/><em>Anything there already?</em>") --> generic("Generic types")
     subtypes --> dependent("Dependent/parametric types") --> propagate("Propagate params downward?") 
     env-to-type --- no-viewpoints("Viewpoints<br/>no longer needed!")
     subtypes --> json("Use <code>rdf:JSON</code>!")
