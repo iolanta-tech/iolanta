@@ -20,21 +20,19 @@ console = Console()
 
 
 def construct_app() -> Typer:
+    """
+    Construct Typer app.
+
+    FIXME: Remove this function, just create the app on module level.
+    """
     iolanta = Iolanta(logger=logger)
 
-    cli = Typer(
+    return Typer(
         no_args_is_help=True,
         context_settings={
             'obj': iolanta,
         },
     )
-
-    plugins = iolanta.plugins
-    for plugin in plugins:
-        if (subcommand := plugin.typer_app) is not None:
-            cli.add_typer(subcommand)
-
-    return cli
 
 
 app = construct_app()
