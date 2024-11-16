@@ -174,6 +174,9 @@ class Iolanta:   # noqa: WPS214
             except YAMLLDError as yaml_ld_error:
                 self.logger.info('%s | %s', source, str(yaml_ld_error))
                 continue
+            except ValueError as value_error:
+                self.logger.info('%s | %s', source, str(value_error))
+                continue
 
             graph = path_to_iri(source_file)
             try:

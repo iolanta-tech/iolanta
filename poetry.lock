@@ -2021,13 +2021,13 @@ pyyaml = ">=5.1"
 
 [[package]]
 name = "mkdocs-iolanta"
-version = "0.1.13"
+version = "0.1.14"
 description = "MkDocs plugin to integrate with Iolanta semantic web framework."
 optional = false
 python-versions = "<4.0,>=3.10"
 files = [
-    {file = "mkdocs_iolanta-0.1.13-py3-none-any.whl", hash = "sha256:b466f75fcd1c402c54fd99d5f9845e93f176a80bc4a7a0558df86f2bd2877eb2"},
-    {file = "mkdocs_iolanta-0.1.13.tar.gz", hash = "sha256:92e68534da4ace8a9ed5e3608e4d89d7e58052de721b55897eb1fffa66c5a15b"},
+    {file = "mkdocs_iolanta-0.1.14-py3-none-any.whl", hash = "sha256:0b572220cc78368c7e46ab87a2c248c04b97a6771dd7bc722fe959d2e53a294f"},
+    {file = "mkdocs_iolanta-0.1.14.tar.gz", hash = "sha256:cc7b7d281bcf83e7cccd40d39ca33380769bb4a7e3b0fc2f08637600f703fb5f"},
 ]
 
 [package.dependencies]
@@ -4085,4 +4085,4 @@ all = ["iolanta-tables"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.12"
-content-hash = "0238e9ea2e8c850ff00313dc89e66e3620ae8c5c48a1f7cd2df4ef990d87cfa1"
+content-hash = "4021dcbf73f67489805d280ac6229f1292d8611bf86773a9f5707a8e92f660d2"
