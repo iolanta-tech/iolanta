@@ -1,3 +1,4 @@
+import logging
 from dataclasses import dataclass
 from enum import StrEnum
 from functools import cached_property
@@ -14,6 +15,9 @@ from iolanta.facets.facet import Facet
 from iolanta.facets.page_title import PageTitle
 from iolanta.models import NotLiteralNode
 from iolanta.namespaces import DATATYPES
+
+
+logger = logging.getLogger(__name__)
 
 
 class TermStatus(StrEnum):
@@ -70,6 +74,13 @@ class OntologyFacet(Facet[Widget]):
 
     def show(self) -> Widget:
         """Render widget."""
+
+        index_title = self.render(
+            URIRef('https://iolanta.tech/visualizations/index.yaml'),
+            as_datatype=DATATYPES.title,
+        )
+        logger.info('Index Retrieved: %s', index_title)
+
         return Vertical(
             PageTitle(self.iri),
             TermsContent(
