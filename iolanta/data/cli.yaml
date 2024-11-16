@@ -1,20 +1,30 @@
-- $id: python://iolanta.facets.cli.Default
-  rdfs:label: For the CLI, display a link to the node or (at least) its human readable label.
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  vann: http://purl.org/vocab/vann/
+  foaf: http://xmlns.com/foaf/0.1/
+  owl: http://www.w3.org/2002/07/owl#
+  iolanta: https://iolanta.tech/
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
 
-- $id: iolanta:cli
-  $type: iolanta:OutputDatatype
-  iolanta:hasDefaultFacet:
-    $id: python://iolanta.facets.cli.Record
-    rdfs:label: Show properties of a node
+$included:
+  - $id: python://iolanta.facets.cli.Default
+    rdfs:label: For the CLI, display a link to the node or (at least) its human readable label.
 
-- $id: https://iolanta.tech/cli/record/title
-  iolanta:hasDefaultFacet:
-    $id: python://iolanta.facets.cli.Default
+  - $id: iolanta:cli
+    $type: iolanta:OutputDatatype
+    iolanta:hasDefaultFacet:
+      $id: python://iolanta.facets.cli.Record
+      rdfs:label: Show properties of a node
 
-- $id: https://iolanta.tech/cli/record/property
-  iolanta:hasDefaultFacet:
-    $id: python://iolanta.facets.cli.Default
+  - $id: https://iolanta.tech/cli/record/title
+    iolanta:hasDefaultFacet:
+      $id: python://iolanta.facets.cli.Default
 
-- $id: https://iolanta.tech/cli/record/value
-  iolanta:hasDefaultFacet:
-    $id: python://iolanta.facets.cli.Default
+  - $id: https://iolanta.tech/cli/record/property
+    iolanta:hasDefaultFacet:
+      $id: python://iolanta.facets.cli.Default
+
+  - $id: https://iolanta.tech/cli/record/value
+    iolanta:hasDefaultFacet:
+      $id: python://iolanta.facets.cli.Default

@@ -1,9 +1,8 @@
 import functools
 import logging
-from dataclasses import dataclass, field
-from functools import cached_property
+from dataclasses import dataclass, field, replace
 from pathlib import Path
-from typing import (
+from typing import (  # noqa: WPS235
     Any,
     Dict,
     Iterable,
@@ -16,10 +15,15 @@ from typing import (
 )
 
 import funcy
+import yaml_ld
 from rdflib import ConjunctiveGraph, Literal, Namespace, URIRef
 from rdflib.term import Node
+from yaml_ld.document_loaders.content_types import ParserNotFound
+from yaml_ld.errors import YAMLLDError
 
 from iolanta import entry_points
+from iolanta.conversions import path_to_iri
+from iolanta.cyberspace.processor import normalize_term
 from iolanta.facets.errors import FacetError
 from iolanta.facets.facet import Facet
 from iolanta.facets.locator import FacetFinder
@@ -35,6 +39,7 @@ from iolanta.models import (
 )
 from iolanta.namespaces import LOCAL
 from iolanta.node_to_qname import node_to_qname
+from iolanta.parsers.dict_parser import UnresolvedIRI, parse_quads
 from iolanta.parsers.yaml import YAML
 from iolanta.plugin import Plugin
 from iolanta.resolvers.python_import import PythonImportResolver
@@ -80,8 +85,13 @@ class Iolanta:   # noqa: WPS214
         init=False,
     )
 
-    @cached_property
+    @functools.cached_property
     def loader(self) -> Loader[SourceType]:
+        """
+        Construct loader.
+
+        FIXME: Delete this.
+        """
         return construct_root_loader(logger=self.logger)
 
     @property
@@ -89,54 +99,115 @@ class Iolanta:   # noqa: WPS214
         """Installed Iolanta plugins."""
         return self.force_plugins or entry_points.plugins('iolanta.plugins')
 
-    @cached_property
+    @functools.cached_property
     def plugins(self) -> List[Plugin]:
+        """
+        Construct a list of installed plugin instances.
+
+        # FIXME: Get rid of those.
+        """
         return [
             plugin_class(iolanta=self)
             for plugin_class in self.plugin_classes
         ]
 
-    @cached_property
+    @functools.cached_property
     def ldflex(self) -> LDFlex:
-        """LDFlex is a wrapper to make SPARQL querying RDF graphs bearable."""
+        """
+        Create ldflex instance.
+
+        FIXME: Get rid of it.
+        """
         return LDFlex(self.graph)
 
-    @cached_property
+    @functools.cached_property
     def namespaces_to_bind(self) -> Dict[str, Namespace]:
+        """
+        Namespaces globally specified for the graph.
+
+        FIXME: Probably get rid of this, I do not know.
+        """
         return {
             key: Namespace(value)
-            for key, value in self.default_context['@context'].items()
+            for key, value in self.default_context['@context'].items()  # noqa
             if (
                 isinstance(value, str)
-                and not value.startswith('@')
-                and not key.startswith('@')
+                and not value.startswith('@')   # noqa: W503
+                and not key.startswith('@')   # noqa: W503
             )
         }
 
-    def add(  # type: ignore
+    def add(  # noqa: C901, WPS231, WPS210
         self,
-        source: Any,
+        source: Path,
         context: Optional[LDContext] = None,
         graph_iri: Optional[URIRef] = None,
     ) -> 'Iolanta':
-        """Parse & load information from given URL into the graph."""
+        """
+        Parse & load information from given URL into the graph.
+
+        FIXME:
+          * Maybe implement context.json/context.yaml files support.
+        """
         self.logger.info('Adding to graph: %s', source)
         self.sources_added_not_yet_inferred.append(source)
 
-        quads = list(
-            self.loader.as_quad_stream(
-                source=source,
-                iri=graph_iri,
-                context=context or self.default_context,
-                root_loader=self.loader,
-            ),
-        )
+        if not isinstance(source, Path):
+            source = Path(source)
 
-        quad_tuples = [quad.as_tuple() for quad in quads]
-        self.graph.addN(quad_tuples)
+        for source_file in source.rglob('*'):
+            if source_file.is_dir():
+                continue
+
+            try:  # noqa: WPS225
+                ld_rdf = yaml_ld.to_rdf(source_file)
+            except ConnectionError as name_resolution_error:
+                self.logger.info(
+                    '%s | name resolution error: %s',
+                    source_file,
+                    str(name_resolution_error),
+                )
+                continue
+            except ParserNotFound as parser_not_found:
+                self.logger.info('%s | %s', source, str(parser_not_found))
+                continue
+            except YAMLLDError as yaml_ld_error:
+                self.logger.info('%s | %s', source, str(yaml_ld_error))
+                continue
+
+            graph = path_to_iri(source_file)
+            try:
+                quads = list(
+                    parse_quads(
+                        quads_document=ld_rdf,
+                        graph=graph,
+                        blank_node_prefix=str(source),
+                    ),
+                )
+            except UnresolvedIRI as err:
+                raise replace(
+                    err,
+                    context=None,
+                    iri=graph,
+                )
+
+            if not quads:
+                self.logger.warning('%s | No data found', source_file)
+                continue
+
+            quad_tuples = [
+                tuple([
+                    normalize_term(term) for term in replace(
+                        quad,
+                        graph=graph,
+                    ).as_tuple()
+                ])
+                for quad in quads
+            ]
+
+            self.graph.addN(quad_tuples)
 
         self.bind_namespaces(**self.namespaces_to_bind)
-
         return self
 
     def infer(self, closure_class=None) -> 'Iolanta':
@@ -161,8 +232,13 @@ class Iolanta:   # noqa: WPS214
         self.maybe_infer()
         return self.ldflex.query
 
-    @cached_property
+    @functools.cached_property
     def context_paths(self) -> Iterable[Path]:
+        """
+        Compile list of context files.
+
+        FIXME: Get rid of those.
+        """
         directory = Path(__file__).parent / 'data'
 
         yield directory / 'context.yaml'
@@ -171,7 +247,7 @@ class Iolanta:   # noqa: WPS214
             if path := plugin.context_path:
                 yield path
 
-    @cached_property
+    @functools.cached_property
     def default_context(self) -> LDContext:
         """Construct default context from plugins."""
         context_documents = [
@@ -186,10 +262,27 @@ class Iolanta:   # noqa: WPS214
         return merge_contexts(*context_documents)   # type: ignore
 
     def add_files_from_plugins(self):
+        """
+        Load files from plugins.
+
+        FIXME: Get rid of plugins.
+        """
         for plugin in self.plugins:
-            self.add(plugin.data_files)
+            try:
+                self.add(plugin.data_files)
+            except Exception as error:
+                self.logger.error(
+                    'Cannot load %s plugin data files: %s',
+                    plugin,
+                    error,
+                )
 
     def __post_init__(self):
+        """
+        Load stuff from plugins.
+
+        FIXME: Get rid of plugins.
+        """
         self.add_files_from_plugins()
 
     def string_to_node(self, name: str | Node) -> NotLiteralNode:
