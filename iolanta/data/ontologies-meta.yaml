@@ -1,47 +1,57 @@
-- $id: "owl:"
-  $type: owl:Ontology
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  vann: http://purl.org/vocab/vann/
+  foaf: http://xmlns.com/foaf/0.1/
+  owl: http://www.w3.org/2002/07/owl#
+  iolanta: https://iolanta.tech/
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
 
-- $id: "http://purl.org/dc/terms/"
-  $type: owl:Ontology
+$included:
+  - $id: "owl:"
+    $type: owl:Ontology
 
-- $id: "rdf:"
-  vann:termGroup:
-    - rdfs:label: Properties
-      $reverse:
-        rdf:type:
-          - rdf:Property
-          - rdf:type
+  - $id: "http://purl.org/dc/terms/"
+    $type: owl:Ontology
 
-    - rdfs:label: Triples
-      $reverse:
-        rdf:type:
-          - rdf:subject
-          - rdf:predicate
-          - rdf:object
-          - rdf:Statement
-    - rdfs:label: Containers
-      $reverse:
-        rdf:type:
-          - rdf:first
-          - rdf:rest
-          - rdf:List
-          - rdf:nil
-          - rdf:Bag
-          - rdf:Seq
-          - rdf:Alt
-    - rdfs:label: Language
-      $reverse:
-        rdf:type:
-          - rdf:langString
-          - rdf:language
+  - $id: "rdf:"
+    vann:termGroup:
+      - rdfs:label: Properties
+        $reverse:
+          rdf:type:
+            - rdf:Property
+            - rdf:type
 
-    - $id: rdfs:Datatype
-    - rdfs:label: Compound Literal
-      $reverse:
-        rdf:type:
-          - rdf:CompoundLiteral
-          - rdf:direction
-    - rdfs:label: Value
-      $reverse:
-        rdf:type:
-          - rdf:value
+      - rdfs:label: Triples
+        $reverse:
+          rdf:type:
+            - rdf:subject
+            - rdf:predicate
+            - rdf:object
+            - rdf:Statement
+      - rdfs:label: Containers
+        $reverse:
+          rdf:type:
+            - rdf:first
+            - rdf:rest
+            - rdf:List
+            - rdf:nil
+            - rdf:Bag
+            - rdf:Seq
+            - rdf:Alt
+      - rdfs:label: Language
+        $reverse:
+          rdf:type:
+            - rdf:langString
+            - rdf:language
+
+      - $id: rdfs:Datatype
+      - rdfs:label: Compound Literal
+        $reverse:
+          rdf:type:
+            - rdf:CompoundLiteral
+            - rdf:direction
+      - rdfs:label: Value
+        $reverse:
+          rdf:type:
+            - rdf:value
