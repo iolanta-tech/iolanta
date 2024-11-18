@@ -2,6 +2,9 @@ from pathlib import Path
 
 import rich
 import sh
+from rich.console import Console
+
+console = Console()
 
 
 def install_mkdocs_insiders():
