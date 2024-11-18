@@ -2021,13 +2021,13 @@ pyyaml = ">=5.1"
 
 [[package]]
 name = "mkdocs-iolanta"
-version = "0.1.14"
+version = "0.1.15"
 description = "MkDocs plugin to integrate with Iolanta semantic web framework."
 optional = false
 python-versions = "<4.0,>=3.10"
 files = [
-    {file = "mkdocs_iolanta-0.1.14-py3-none-any.whl", hash = "sha256:0b572220cc78368c7e46ab87a2c248c04b97a6771dd7bc722fe959d2e53a294f"},
-    {file = "mkdocs_iolanta-0.1.14.tar.gz", hash = "sha256:cc7b7d281bcf83e7cccd40d39ca33380769bb4a7e3b0fc2f08637600f703fb5f"},
+    {file = "mkdocs_iolanta-0.1.15-py3-none-any.whl", hash = "sha256:f6301832fb50e5d9bee101d37cdb936be200f360525a11f7277ebe2cc2eecb9e"},
+    {file = "mkdocs_iolanta-0.1.15.tar.gz", hash = "sha256:a74d78e8bc827ce8c3a7fb59cf11baf9e01747f39f5359f8b328699f963de560"},
 ]
 
 [package.dependencies]
@@ -3965,13 +3965,13 @@ typing_extensions = ">=4.0,<5.0"
 
 [[package]]
 name = "yaml-ld"
-version = "1.0.13"
+version = "1.0.16"
 description = "YAML-LD for Python"
 optional = false
 python-versions = "<4.0,>=3.10"
 files = [
-    {file = "yaml_ld-1.0.13-py3-none-any.whl", hash = "sha256:cc515ce54c8fb6812a0f77b827218a2853e28d3d573dc49a304f06ce7320cb06"},
-    {file = "yaml_ld-1.0.13.tar.gz", hash = "sha256:38d6a9cd987850242f29f53edb40dc4003f66543de447d69adf0c71ef6c26431"},
+    {file = "yaml_ld-1.0.16-py3-none-any.whl", hash = "sha256:93f477f1ce516e3f4217f49f84bc9bd9e890282a304b240f6c0a84594e035476"},
+    {file = "yaml_ld-1.0.16.tar.gz", hash = "sha256:5097b5f489cdf0a490d737a75e9558786cb9ca0c4812f35310042d00d1b5c010"},
 ]
 
 [package.dependencies]
@@ -4085,4 +4085,4 @@ all = ["iolanta-tables"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.12"
-content-hash = "9c425244fdb9895dcdbfaa90869a1707bd271ce24451e4772060ae94f02f4d69"
+content-hash = "f01d779ae27cc31356483329209ce419cbaf48c02e84d317d585f2ef2fa3a312"
