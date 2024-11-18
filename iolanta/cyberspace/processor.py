@@ -1,7 +1,6 @@
 import dataclasses
 import datetime
 import functools
-import json
 import logging
 import time
 from pathlib import Path
@@ -145,13 +144,6 @@ class GlobalSPARQLProcessor(Processor):
 
         TODO This function is too big, we have to refactor it.
         """
-        raise ValueError(
-            json.dumps(
-                yaml_ld.expand(str(source)),
-                indent=2,
-            )
-        )
-
         url = URL(source)
 
         if url.scheme in {'file', 'python', 'local', 'urn'}:
