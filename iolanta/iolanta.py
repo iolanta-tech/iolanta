@@ -178,6 +178,8 @@ class Iolanta:   # noqa: WPS214
                 self.logger.info('%s | %s', source, str(value_error))
                 continue
 
+            self.logger.info('%s is loaded.', source_file)
+
             graph = path_to_iri(source_file)
             try:
                 quads = list(
