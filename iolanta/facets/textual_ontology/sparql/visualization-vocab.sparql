@@ -1,0 +1,3 @@
+SELECT ?vocab WHERE {
+    ?iri iolanta:visualized-with ?vocab .
+}

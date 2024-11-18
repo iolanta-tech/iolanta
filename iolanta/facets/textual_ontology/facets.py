@@ -80,6 +80,21 @@ class OntologyFacet(Facet[Widget]):
         )
         logger.info('Index Retrieved: %s', index_title)
 
+        vocabs = funcy.lpluck(
+            'vocab',
+            self.stored_query('visualization-vocab.sparql', iri=self.iri),
+        )
+
+        for vocab in vocabs:
+            vocab_title = self.render(
+                vocab,
+                as_datatype=DATATYPES.title,
+            )
+            logger.info(
+                'Visualization vocabulary retrieved: %s',
+                vocab_title,
+            )
+
         return Vertical(
             PageTitle(self.iri),
             TermsContent(
