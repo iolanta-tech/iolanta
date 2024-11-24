@@ -2,7 +2,7 @@ import functools
 import uuid
 
 from rdflib import BNode, URIRef
-from textual.widgets import ContentSwitcher
+from textual.widgets import ContentSwitcher, RichLog
 from textual.worker import Worker, WorkerState
 
 from iolanta.facets.errors import FacetError, FacetNotFound
@@ -28,13 +28,18 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
     BINDINGS = [  # noqa: WPS115
         ('alt+left', 'back', 'Back'),
         ('alt+right', 'forward', 'Fwd'),
-        ('t', 'toggle_dark', 'Toggle Dark Mode'),
-        ('q', 'quit', 'Quit'),
+        ('f12', 'console', 'Console'),
     ]
 
     def __init__(self):
         """Set Home as first tab."""
-        super().__init__(initial='home')
+        super().__init__(id='page_switcher', initial='home')
+
+    def action_console(self):
+        """Open dev console."""
+        console_switcher = self.app.query_one(ConsoleSwitcher)
+        console_switcher.current = 'console'
+        console_switcher.query_one(DevConsole).focus()
 
     @functools.cached_property
     def history(self) -> NavigationHistory[Location]:
@@ -166,3 +171,35 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
     def action_forward(self):
         """Go forward."""
         self.current = self.history.forward().page_id
+
+
+class ConsoleSwitcher(ContentSwitcher):
+    """Switch between page switcher and dev console."""
+
+    def __init__(self):
+        """Specify initial params."""
+        super().__init__(
+            id='console_switcher',
+            initial='page_switcher',
+        )
+
+    def compose(self):
+        """Compose two tabs."""
+        yield PageSwitcher()
+        yield DevConsole(id='console')
+
+
+class DevConsole(RichLog):
+    """Development console."""
+
+    BINDINGS = [
+        ('f12,escape', 'close', 'Close Console'),
+    ]
+
+    def action_close(self):
+        """Close the dev console."""
+        console_switcher = self.app.query_one(ConsoleSwitcher)
+        console_switcher.current = 'page_switcher'
+
+        page_switcher = console_switcher.query_one(PageSwitcher)
+        page_switcher.visible_content.focus()

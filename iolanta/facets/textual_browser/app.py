@@ -4,7 +4,10 @@ from rdflib.term import Node
 from textual.app import App, ComposeResult
 from textual.widgets import Footer, Header
 
-from iolanta.facets.textual_browser.page_switcher import PageSwitcher
+from iolanta.facets.textual_browser.page_switcher import (
+    ConsoleSwitcher,
+    PageSwitcher,
+)
 from iolanta.iolanta import Iolanta
 
 
@@ -27,7 +30,7 @@ class IolantaBrowser(App):   # noqa: WPS214, WPS230
         """Compose widgets."""
         yield Header(icon='👁️')
         yield Footer()
-        yield PageSwitcher()
+        yield ConsoleSwitcher()
 
     def on_mount(self):
         """Set title."""
