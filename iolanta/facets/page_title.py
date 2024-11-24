@@ -1,13 +1,12 @@
-from rdflib import URIRef
 from textual.widgets import Static
 from textual.worker import Worker, WorkerState
 
-from iolanta.iolanta import Iolanta
 from iolanta.models import NotLiteralNode
 from iolanta.namespaces import DATATYPES
+from iolanta.widgets.mixin import IolantaWidgetMixin
 
 
-class PageTitle(Static):
+class PageTitle(IolantaWidgetMixin, Static):
     """Iolanta page title."""
 
     DEFAULT_CSS = """
@@ -25,11 +24,6 @@ class PageTitle(Static):
         self.extra = extra
         qname = self.iolanta.node_as_qname(iri)
         super().__init__(qname)
-
-    @property
-    def iolanta(self) -> Iolanta:
-        """Iolanta instance."""
-        return self.app.iolanta
 
     def construct_title(self):
         """Render the title via Iolanta in a thread."""
