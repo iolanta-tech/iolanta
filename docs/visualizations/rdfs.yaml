@@ -12,30 +12,30 @@ vann:termGroup:
   - rdfs:label: Properties
     $reverse:
       rdf:type:
-        - rdfs:domain
-        - rdfs:range
-        - rdfs:subPropertyOf
+        - $id: rdfs:domain
+        - $id: rdfs:range
+        - $id: rdfs:subPropertyOf
   - rdfs:label: Classes
     $reverse:
       rdf:type:
-        - rdfs:Class
-        - rdfs:Resource
-        - rdfs:Datatype
-        - rdfs:Literal
-        - rdfs:subClassOf
+        - $id: rdfs:Class
+        - $id: rdfs:Resource
+        - $id: rdfs:Datatype
+        - $id: rdfs:Literal
+        - $id: rdfs:subClassOf
   - rdfs:label: Human Readable
     $reverse:
       rdf:type:
-        - rdfs:label
-        - rdfs:comment
+        - $id: rdfs:label
+        - $id: rdfs:comment
   - rdfs:label: Provenance
     $reverse:
       rdf:type:
-        - rdfs:isDefinedBy
-        - rdfs:seeAlso
+        - $id: rdfs:isDefinedBy
+        - $id: rdfs:seeAlso
   - rdfs:label: Containers
     $reverse:
       rdf:type:
-        - rdfs:Container
-        - rdfs:ContainerMembershipProperty
-        - rdfs:member
+        - $id: rdfs:Container
+        - $id: rdfs:ContainerMembershipProperty
+        - $id: rdfs:member
