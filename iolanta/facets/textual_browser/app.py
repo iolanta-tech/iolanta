@@ -35,7 +35,7 @@ class Location:
     url: str
 
 
-class Body(ContentSwitcher):
+class PageSwitcher(ContentSwitcher):
     """Browser body."""
 
     def on_mount(self):
@@ -100,7 +100,7 @@ class IolantaBrowser(App):   # noqa: WPS214, WPS230
         """Compose widgets."""
         yield Header(icon='👁️')
         yield Footer()
-        with Body(initial='home'):
+        with PageSwitcher(initial='home'):
             yield Home(id='home')
 
     def on_mount(self):
@@ -185,7 +185,7 @@ class IolantaBrowser(App):   # noqa: WPS214, WPS230
         match event.state:
             case WorkerState.SUCCESS:
                 iri, renderable, flip_options = event.worker.result
-                body = cast(Body, self.query_one(Body))
+                body = cast(PageSwitcher, self.query_one(PageSwitcher))
                 page_uid = uuid.uuid4().hex
                 page_id = f'page_{page_uid}'
                 page = Page(
@@ -225,8 +225,8 @@ class IolantaBrowser(App):   # noqa: WPS214, WPS230
 
     def action_back(self):
         """Go backward."""
-        self.query_one(Body).current = self.history.back().page_id
+        self.query_one(PageSwitcher).current = self.history.back().page_id
 
     def action_forward(self):
         """Go forward."""
-        self.query_one(Body).current = self.history.forward().page_id
+        self.query_one(PageSwitcher).current = self.history.forward().page_id
