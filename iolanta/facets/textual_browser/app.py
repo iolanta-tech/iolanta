@@ -38,6 +38,12 @@ class Location:
 class PageSwitcher(ContentSwitcher):
     """Browser body."""
 
+    def __init__(self):
+        super().__init__(initial='home')
+
+    def compose(self):
+        yield Home(id='home')
+
     def on_mount(self):
         self.app.action_goto(self.app.iri)
 
@@ -100,8 +106,7 @@ class IolantaBrowser(App):   # noqa: WPS214, WPS230
         """Compose widgets."""
         yield Header(icon='👁️')
         yield Footer()
-        with PageSwitcher(initial='home'):
-            yield Home(id='home')
+        yield PageSwitcher()
 
     def on_mount(self):
         """Set title."""
