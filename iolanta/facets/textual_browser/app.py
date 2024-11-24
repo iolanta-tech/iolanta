@@ -1,17 +1,34 @@
+import logging
 from concurrent.futures import ThreadPoolExecutor
 
 from rdflib.term import Node
+from rich.console import RenderableType
 from textual.app import App, ComposeResult
 from textual.widgets import Footer, Header
 
 from iolanta.facets.textual_browser.page_switcher import (
     ConsoleSwitcher,
+    DevConsole,
     PageSwitcher,
 )
 from iolanta.iolanta import Iolanta
 
 
-class IolantaBrowser(App):   # noqa: WPS214, WPS230
+class DevConsoleHandler(logging.Handler):
+    """Pipe log output → dev console."""
+
+    def __init__(self, console: DevConsole, level=logging.NOTSET) -> None:
+        """Set parameters."""
+        self.console = console
+        super().__init__(level=level)
+
+    def emit(self, record: logging.LogRecord) -> None:
+        """Write a message when invoked by `logging`."""
+        message = self.format(record)
+        self.console.write(message)
+
+
+class IolantaBrowser(App):  # noqa: WPS214, WPS230
     """Browse Linked Data."""
 
     def __init__(self, iolanta: Iolanta, iri: Node):
@@ -36,6 +53,17 @@ class IolantaBrowser(App):   # noqa: WPS214, WPS230
         """Set title."""
         self.title = 'Iolanta'
 
+        logging.basicConfig(
+            level=logging.INFO,
+            handlers=[
+                DevConsoleHandler(
+                    console=self.query_one(DevConsole),
+                    level=logging.INFO,
+                ),
+            ],
+            force=True,
+        )
+
     def action_toggle_dark(self) -> None:
         """Toggle dark mode."""
         self.dark = not self.dark
@@ -47,3 +75,7 @@ class IolantaBrowser(App):   # noqa: WPS214, WPS230
     ):
         """Go to an IRI."""
         self.query_one(PageSwitcher).action_goto(destination, facet_iri)
+
+    def dev_console_log(self, renderable: RenderableType | object):
+        """Print a renderable to the dev console."""
+        self.query_one(DevConsole).write(renderable)

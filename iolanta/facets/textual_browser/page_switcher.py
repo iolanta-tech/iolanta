@@ -186,7 +186,7 @@ class ConsoleSwitcher(ContentSwitcher):
     def compose(self):
         """Compose two tabs."""
         yield PageSwitcher()
-        yield DevConsole(id='console')
+        yield DevConsole()
 
 
 class DevConsole(RichLog):
@@ -195,6 +195,10 @@ class DevConsole(RichLog):
     BINDINGS = [
         ('f12,escape', 'close', 'Close Console'),
     ]
+
+    def __init__(self):
+        """Set default props for console."""
+        super().__init__(highlight=True, markup=True, id='console')
 
     def action_close(self):
         """Close the dev console."""
