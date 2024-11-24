@@ -214,7 +214,7 @@ class GlobalSPARQLProcessor(Processor):
             logger.info('%s | %s', source, str(parser_not_found))
             return None
         except YAMLLDError as yaml_ld_error:
-            logger.info('%s | %s', source, str(yaml_ld_error))
+            logger.error('%s | %s', source, str(yaml_ld_error))
             return None
 
         try:
