@@ -1,24 +1,71 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from functools import cached_property
-from typing import Dict, Iterable, List, Optional, Type, TypedDict
+from graphlib import TopologicalSorter
+from typing import Iterable, List, TypedDict
 
 import funcy
-from rdflib import ConjunctiveGraph
 from rdflib.term import Literal, Node, URIRef
 from yarl import URL
 
 from iolanta.facets.errors import FacetNotFound
 from iolanta.models import NotLiteralNode
-from iolanta.namespaces import IOLANTA
 
 
 class FoundRow(TypedDict):
+    """Facet and datatype to render an IRI."""
+
     facet: NotLiteralNode
     as_datatype: NotLiteralNode
 
 
+def reorder_rows_by_facet_preferences(   # noqa: WPS214, WPS210
+    rows: list[FoundRow],
+    ordering: set[tuple[URIRef, URIRef]],
+) -> list[FoundRow]:
+    """
+    Apply a partial ordering to given rows.
+
+    Preserve existing ordering.
+
+    Note: I must confess I did not dive into this logic, it was what ChatGPT
+    had suggested to me and it seemed working.
+
+    To be fair, this should be understood and unit tested.
+    """
+    # Map each facet to its index in the original list for stable ordering
+    row_index_map = {row['facet']: index for index, row in enumerate(rows)}
+
+    # Initialize the topological sorter
+    ts = TopologicalSorter()
+
+    # Add edges to the graph based on ordering
+    for before, after in ordering:
+        if before in row_index_map and after in row_index_map:
+            ts.add(after, before)
+
+    # Compute the topological order
+    sorted_facets = list(ts.static_order())
+
+    # Append any remaining facets not in the ordering, preserving their original
+    # order
+    remaining_facets = [
+        facet
+        for facet in row_index_map
+        if facet not in sorted_facets
+    ]
+
+    # Combine sorted and remaining facets
+    final_order = sorted_facets + remaining_facets
+
+    # Map back to rows and sort them
+    return sorted(
+        rows,
+        key=lambda row: final_order.index(row['facet']),
+    )
+
+
 @dataclass
-class FacetFinder:
+class FacetFinder:   # noqa: WPS214
     """Engine to find facets for a given node."""
 
     iolanta: 'iolanta.Iolanta'    # type: ignore
@@ -143,17 +190,39 @@ class FacetFinder:
             for row in rows
         ]
 
-    @funcy.post_processing(list)
-    def choices(self) -> Iterable[FoundRow]:
-        """Compose a stream of all possible facet choices."""
-        yield from self.by_prefix()
-        yield from self.by_datatype()
-        yield from self.by_facet()
-        yield from self.by_instance_facet()
-        yield from self.by_output_datatype_default_facet()
+    def retrieve_facets_preference_ordering(self) -> set[tuple[URIRef, URIRef]]:
+        """
+        Construct partial ordering on the set of facets.
+
+        In each pair, the first element is preferred over the latter.
+        """
+        rows = self.iolanta.query(  # noqa: WPS462
+            """
+            SELECT ?preferred ?over WHERE {
+                ?preferred iolanta:is-preferred-over ?over
+            }
+            """,
+        )
+
+        return {
+            (row['preferred'], row['over'])
+            for row in rows
+        }
+
+    def choices(self) -> list[FoundRow]:
+        """Return all suitable facets."""
+        rows = list(self._found_facets())
+
+        if len(rows) == 1:
+            # Nothing to order.
+            return rows
+
+        ordering = self.retrieve_facets_preference_ordering()
+        return reorder_rows_by_facet_preferences(rows, ordering)
 
     @property
     def facet_and_output_datatype(self) -> FoundRow:
+        """Choose the best facet for the IRI."""
         if choice := funcy.first(self.choices()):
             return choice
 
@@ -162,3 +231,11 @@ class FacetFinder:
             as_datatype=self.as_datatype,
             node_types=[],
         )
+
+    def _found_facets(self) -> Iterable[FoundRow]:
+        """Compose a stream of all possible facet choices."""
+        yield from self.by_prefix()
+        yield from self.by_datatype()
+        yield from self.by_facet()
+        yield from self.by_instance_facet()
+        yield from self.by_output_datatype_default_facet()
