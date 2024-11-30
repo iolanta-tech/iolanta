@@ -44,7 +44,7 @@ base = "iolanta:IolantaBase"
 cyberspace = "iolanta.cyberspace.processor:GlobalSPARQLProcessor"
 
 [tool.poetry.group.dev.dependencies]
-jeeves-yeti-pyproject = ">=0.2.42"
+jeeves-yeti-pyproject = ">=0.2.44"
 mkdocs-awesome-pages-plugin = ">=2.9.2"
 mkdocs-blogging-plugin = ">=2.2.11"
 mkdocstrings-python = ">=1.8.0"
@@ -101,4 +101,11 @@ pycodestyle = [
     # blank line contains whitespace
     # This is TCSS, WTF?
     "-W293"
+]
+
+
+[tool.flakeheaven.exceptions."**/*.md"]
+flake8-eradicate = [
+    # Found commented out code [flake8-eradicate]
+    "-E800",
 ]

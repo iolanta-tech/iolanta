@@ -16,11 +16,15 @@
     iolanta:hasDefaultFacet:
       $id: python://iolanta.facets.textual_default.TextualDefaultFacet
       rdfs:label: Properties
+      iolanta:is-preferred-over:
+        $id: python://iolanta.facets.textual_default.InverseProperties
 
   - $id: https://iolanta.tech/cli/textual
     iolanta:hasDefaultFacet:
       $id: python://iolanta.facets.textual_default.InverseProperties
       rdfs:label: Inverse Properties
+      iolanta:is-preferred-over:
+        $id: python://iolanta.facets.textual_graph.GraphFacet
 
   - $id: "urn:"
     iolanta:hasFacetByPrefix:
@@ -52,6 +56,8 @@
       rdfs:label: Ontology
       iolanta:outputs:
         $id: https://iolanta.tech/cli/textual
+      iolanta:is-preferred-over:
+        - $id: python://iolanta.facets.textual_default.TextualDefaultFacet
 
   - $id: iolanta:Graph
     iolanta:hasInstanceFacet:
