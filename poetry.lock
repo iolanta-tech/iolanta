@@ -1512,13 +1512,13 @@ all = ["sh (>=2.0.4)"]
 
 [[package]]
 name = "jeeves-yeti-pyproject"
-version = "0.2.42"
+version = "0.2.44"
 description = "Opinionated Jeeves plugin for Python projects."
 optional = false
 python-versions = "<4.0,>=3.10"
 files = [
-    {file = "jeeves_yeti_pyproject-0.2.42-py3-none-any.whl", hash = "sha256:d0b0be2dca6ec1b2528defa63e57cc3c13d4629b8190c13923a7202a7e7b9073"},
-    {file = "jeeves_yeti_pyproject-0.2.42.tar.gz", hash = "sha256:ba9a1e38a08f29238e6d599d1d886f92b9eea0e947808911a44eb9391669068e"},
+    {file = "jeeves_yeti_pyproject-0.2.44-py3-none-any.whl", hash = "sha256:c80a2685f81fd06601bbb892865f2c1c44699380d273e874dd7963c8aac96f6c"},
+    {file = "jeeves_yeti_pyproject-0.2.44.tar.gz", hash = "sha256:4684fddec638d66327238f73ccde4b328c12409587f4852ad2016e39652e3d9f"},
 ]
 
 [package.dependencies]
@@ -4087,4 +4087,4 @@ all = ["iolanta-tables"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.12"
-content-hash = "2e5361a5a02166e78c0c06b428e3d9eb653b640e885e6db269e1c86711642d6f"
+content-hash = "f1f0808989e216a91e2bd7ed7fcb89cf5538d3eaecf8dbe375d28123093572bd"
