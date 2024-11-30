@@ -109,11 +109,6 @@ class OntologyFacet(Facet[Widget]):
 
     def _stream_columns(self) -> Iterable[str]:
         for group, rows in self.grouped_terms.items():
-            group_title = self.render(
-                group,
-                as_datatype=DATATYPES.title,
-            ) if group is not None else '<Ungrouped>'
-
             rendered_terms = '\n'.join([
                 self.render(
                     row.term,
@@ -122,4 +117,13 @@ class OntologyFacet(Facet[Widget]):
                 for row in rows
             ])
 
-            yield f'[b]{group_title}[/b]\n\n{rendered_terms}'
+            if group is None:
+                yield rendered_terms
+
+            else:
+                group_title = self.render(
+                    group,
+                    as_datatype=DATATYPES.title,
+                )
+
+                yield f'[b]{group_title}[/b]\n\n{rendered_terms}'
