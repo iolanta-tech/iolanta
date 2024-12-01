@@ -1,7 +1,7 @@
 {
   "name": "Iolanta Demo",
   "image": "mcr.microsoft.com/devcontainers/python:3.11",
-  "postCreateCommand": "pip install iolanta && iolanta rdfs:",
+  "postCreateCommand": "iolanta rdfs:",
   "customizations": {
     "vscode": {
       "settings": {
