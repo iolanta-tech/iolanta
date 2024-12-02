@@ -2022,6 +2022,17 @@ platformdirs = ">=2.2.0"
 pyyaml = ">=5.1"
 
 [[package]]
+name = "mkdocs-glightbox"
+version = "0.4.0"
+description = "MkDocs plugin supports image lightbox with GLightbox."
+optional = false
+python-versions = "*"
+files = [
+    {file = "mkdocs-glightbox-0.4.0.tar.gz", hash = "sha256:392b34207bf95991071a16d5f8916d1d2f2cd5d5bb59ae2997485ccd778c70d9"},
+    {file = "mkdocs_glightbox-0.4.0-py3-none-any.whl", hash = "sha256:e0107beee75d3eb7380ac06ea2d6eac94c999eaa49f8c3cbab0e7be2ac006ccf"},
+]
+
+[[package]]
 name = "mkdocs-iolanta"
 version = "0.1.15"
 description = "MkDocs plugin to integrate with Iolanta semantic web framework."
@@ -4087,4 +4098,4 @@ all = ["iolanta-tables"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.12"
-content-hash = "f1f0808989e216a91e2bd7ed7fcb89cf5538d3eaecf8dbe375d28123093572bd"
+content-hash = "64c794719b510782ee3a2c734146f0efb42719faf7cbd620e2a3ec035a8f326d"
