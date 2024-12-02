@@ -15,10 +15,10 @@ hide:
 </h1>
 
 ```shell
-iolanta browse foaf:
+iolanta rdfs:
 ```
 
-![](reference/ontology/foaf-ontology.png)
+[![RDFS Vocabulary rendered with Iolanta](screenshots/rdfs.svg)](/screenshots/)
 
 ## Iolanta Vocabulary
 

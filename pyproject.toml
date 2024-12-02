@@ -51,6 +51,7 @@ mkdocstrings-python = ">=1.8.0"
 textual-dev = ">=1.5.1"
 ipython = "^8.28.0"
 mkdocs-iolanta = ">=0.1.15"
+mkdocs-glightbox = "^0.4.0"
 
 [tool.poetry.extras]
 all = ["iolanta-tables"]
