@@ -138,22 +138,6 @@ def assign_key_if_not_present(  # type: ignore
     return document
 
 
-def raise_if_term_is_qname(term_value: str):
-    """Raise an error if a QName is provided instead of a full IRI."""
-    prefix, etc = term_value.split(':', 1)
-
-    if etc.startswith('/'):
-        return
-
-    if prefix in {'local', 'templates', 'urn'}:
-        return
-
-    raise UnresolvedIRI(
-        iri=term_value,
-        prefix=prefix,
-    )
-
-
 @dataclass
 class ExpandError(DocumentedError):
     """

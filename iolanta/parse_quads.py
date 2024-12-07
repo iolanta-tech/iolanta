@@ -5,8 +5,8 @@ from typing import Iterable
 from rdflib import BNode, Literal, URIRef
 from rdflib.term import Node
 
+from iolanta.errors import UnresolvedIRI
 from iolanta.models import Quad
-from iolanta.parsers.dict_parser import raise_if_term_is_qname
 from iolanta.parsers.errors import SpaceInProperty
 
 
@@ -79,3 +79,19 @@ def parse_quads(
                     err,
                     iri=graph,
                 )
+
+
+def raise_if_term_is_qname(term_value: str):
+    """Raise an error if a QName is provided instead of a full IRI."""
+    prefix, etc = term_value.split(':', 1)
+
+    if etc.startswith('/'):
+        return
+
+    if prefix in {'local', 'templates', 'urn'}:
+        return
+
+    raise UnresolvedIRI(
+        iri=term_value,
+        prefix=prefix,
+    )
