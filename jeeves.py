@@ -74,11 +74,11 @@ def screenshots(iri: Annotated[str | None, Argument()] = None):
         'rdfs:Class': 'rdfs-class.svg',
         'rdf:': 'rdf.svg',
         'rdf:type': 'rdf-type.svg',
-        'foaf:': 'foaf.svg',
+        'foaf:Person': 'foaf.svg',
         'owl:': 'owl.svg',
         'owl:Ontology': 'owl-ontology.svg',
         'vann:': 'vann.svg',
-        'http://www.wikidata.org/entity/Q204606': 'wikidata-cyberspace.svg',
+        'https://www.wikidata.org/entity/Q204606': 'wikidata-cyberspace.svg',
     }
 
     with ThreadPoolExecutor(max_workers=10) as executor:
