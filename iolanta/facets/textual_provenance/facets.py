@@ -1,7 +1,7 @@
 from typing import ClassVar
 
 import funcy
-from rdflib import RDF, URIRef
+from rdflib import URIRef
 from rdflib.term import BNode, Literal, Node
 from textual.app import ComposeResult, RenderResult
 from textual.binding import Binding, BindingType
@@ -14,7 +14,7 @@ from iolanta.facets.textual_default.facets import PropertyName
 from iolanta.facets.textual_default.triple_uri_ref import TripleURIRef
 from iolanta.facets.textual_default.widgets import PropertyRow, Title
 from iolanta.models import NotLiteralNode, Triple
-from iolanta.namespaces import LOCAL
+from iolanta.namespaces import LOCAL, RDF
 
 
 class RDFTermView(Widget, can_focus=True, inherit_bindings=False):

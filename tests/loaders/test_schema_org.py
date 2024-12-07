@@ -1,4 +1,4 @@
-from rdflib import SDO, URIRef
+from rdflib import URIRef
 
 from iolanta.iolanta import Iolanta
 
@@ -11,4 +11,4 @@ def test_schema_org():
     }).query('select ?type where { local:johndoe a ?type }')
 
     row, = rows
-    assert row['type'] == URIRef('http://schema.org/Person')
+    assert row['type'] == URIRef('https://schema.org/Person')

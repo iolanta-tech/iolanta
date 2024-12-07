@@ -3,10 +3,8 @@ import itertools
 from typing import ClassVar, Iterable
 
 import funcy
-from rdflib import RDF, URIRef
 from rich.console import RenderResult
 from rich.text import Text
-from textual.app import ComposeResult
 from textual.binding import Binding, BindingType
 from textual.containers import Vertical
 from textual.reactive import Reactive
@@ -17,7 +15,7 @@ from iolanta.facets.facet import Facet
 from iolanta.facets.page_title import PageTitle
 from iolanta.facets.textual_default.triple_uri_ref import TripleURIRef
 from iolanta.models import NotLiteralNode
-from iolanta.namespaces import DATATYPES
+from iolanta.namespaces import DATATYPES, RDF
 
 INSTANCE_RENDER_RADIUS = 50
 

@@ -2,6 +2,7 @@ import dataclasses
 import datetime
 import functools
 import logging
+import re
 import time
 from pathlib import Path
 from threading import Lock
@@ -10,18 +11,7 @@ from typing import Any, Iterable, Mapping
 
 import reasonable
 import yaml_ld
-from rdflib import (  # noqa: WPS235
-    DC,
-    DCTERMS,
-    FOAF,
-    OWL,
-    RDF,
-    RDFS,
-    VANN,
-    ConjunctiveGraph,
-    URIRef,
-    Variable,
-)
+from rdflib import ConjunctiveGraph, URIRef, Variable
 from rdflib.plugins.sparql.algebra import translateQuery
 from rdflib.plugins.sparql.evaluate import evalQuery
 from rdflib.plugins.sparql.parser import parseQuery
@@ -34,14 +24,14 @@ from yaml_ld.errors import NotFound, YAMLLDError
 from yarl import URL
 
 from iolanta.models import Triple, TripleWithVariables
-from iolanta.namespaces import IOLANTA
+from iolanta.namespaces import DC, DCTERMS, FOAF, IOLANTA, OWL, RDF, RDFS, VANN
 from iolanta.parsers.dict_parser import UnresolvedIRI, parse_quads
 
 logger = logging.getLogger(__name__)
 
 NORMALIZE_TERMS_MAP = MappingProxyType({
-    URIRef(_url := 'http://www.w3.org/2002/07/owl'): URIRef(f'{_url}#'),
-    URIRef(_url := 'http://www.w3.org/2000/01/rdf-schema'): URIRef(f'{_url}#'),
+    URIRef(_url := 'https://www.w3.org/2002/07/owl'): URIRef(f'{_url}#'),
+    URIRef(_url := 'https://www.w3.org/2000/01/rdf-schema'): URIRef(f'{_url}#'),
 })
 
 
@@ -53,12 +43,16 @@ REDIRECTS = MappingProxyType({
     # FIXME This is presently hardcoded; we need to
     #   - either find a way to resolve these URLs automatically,
     #   - or create a repository of those redirects online.
-    'http://purl.org/vocab/vann/': 'https://vocab.org/vann/vann-vocab-20100607.rdf',
+    'https://purl.org/vocab/vann/': (
+        'https://vocab.org/vann/vann-vocab-20100607.rdf'
+    ),
     str(DC): str(DCTERMS),
     str(RDF): str(RDF),
     str(RDFS): str(RDFS),
     str(OWL): str(OWL),
-    str(FOAF): str(FOAF),
+
+    # This one does not answer via HTTPS :(
+    'https://xmlns.com/foaf/0.1/': 'http://xmlns.com/foaf/0.1/',
 })
 
 
@@ -88,6 +82,9 @@ def normalize_term(term: Node) -> Node:
       * A dirty hack;
       * Based on hard code.
     """
+    if isinstance(term, URIRef) and term.startswith('http://'):
+        term = URIRef(re.sub('^http', 'https', term))
+
     return NORMALIZE_TERMS_MAP.get(term, term)
 
 

@@ -1,6 +1,5 @@
-from rdflib import RDF
-
 from iolanta.iolanta import Iolanta
+from iolanta.namespaces import RDF
 
 
 def test_resolve_variable():

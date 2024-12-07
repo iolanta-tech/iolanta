@@ -3978,22 +3978,22 @@ typing_extensions = ">=4.0,<5.0"
 
 [[package]]
 name = "yaml-ld"
-version = "1.0.16"
+version = "1.0.18"
 description = "YAML-LD for Python"
 optional = false
 python-versions = "<4.0,>=3.10"
 files = [
-    {file = "yaml_ld-1.0.16-py3-none-any.whl", hash = "sha256:93f477f1ce516e3f4217f49f84bc9bd9e890282a304b240f6c0a84594e035476"},
-    {file = "yaml_ld-1.0.16.tar.gz", hash = "sha256:5097b5f489cdf0a490d737a75e9558786cb9ca0c4812f35310042d00d1b5c010"},
+    {file = "yaml_ld-1.0.18-py3-none-any.whl", hash = "sha256:bb569e45edc35a65d934cd0c7838f4a07fefa2c3da672816998b6c194fc2f85d"},
+    {file = "yaml_ld-1.0.18.tar.gz", hash = "sha256:b369fe0414b79eb182c6b8d3b13cfb7899894803f0cc3c16c839b8813cd3a672"},
 ]
 
 [package.dependencies]
-beautifulsoup4 = ">=4.12.3,<5.0.0"
+beautifulsoup4 = ">=4.12.3"
 pydantic = ">=2.7.4"
 PyLD = ">=2.0.4"
 pyyaml = ">=6.0.1"
-rdflib-pyld-compat = ">=0.1.0,<0.2.0"
-requests-cache = ">=1.2.1,<2.0.0"
+rdflib-pyld-compat = ">=0.1.0"
+requests-cache = ">=1.2.1"
 yarl = ">=1.9.4"
 
 [[package]]
@@ -4098,4 +4098,4 @@ all = ["iolanta-tables"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.12"
-content-hash = "64c794719b510782ee3a2c734146f0efb42719faf7cbd620e2a3ec035a8f326d"
+content-hash = "c2a3c53680a6df55fac75a7030bc6b39983cd9692efbf3a8923e7d33c5f789b2"

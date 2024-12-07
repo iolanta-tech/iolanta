@@ -3,9 +3,9 @@
 <script type="application/ld+json">
   {
     "@context": {
-      "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-      "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-      "xsd": "http://www.w3.org/2001/XMLSchema#",
+      "rdfs": "https://www.w3.org/2000/01/rdf-schema#",
+      "rdf": "https://www.w3.org/1999/02/22-rdf-syntax-ns#",
+      "xsd": "https://www.w3.org/2001/XMLSchema#",
       "iolanta": "https://iolanta.tech/",
       "iolanta:hasDefaultFacet": {
         "@type": "@id"

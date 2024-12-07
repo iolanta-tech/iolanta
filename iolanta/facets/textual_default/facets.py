@@ -2,7 +2,6 @@ import functools
 from xml.dom import minidom  # noqa: S408
 
 import funcy
-from rdflib import DC, RDFS, SDO
 from rdflib.term import Literal, Node
 from rich.syntax import Syntax
 from textual.containers import VerticalScroll
@@ -20,6 +19,7 @@ from iolanta.facets.textual_default.widgets import (
     PropertyValues,
 )
 from iolanta.models import NotLiteralNode
+from iolanta.namespaces import DC, RDFS, SDO
 
 
 class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214

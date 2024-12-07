@@ -1,12 +1,12 @@
-prefix wikibase: <http://wikiba.se/ontology#>
+prefix wikibase: <https://wikiba.se/ontology#>
 
 SELECT ?prop_statement ?entity WHERE {
     $statement ?prop_statement ?entity .
 
     {
-        ?prop_statement a owl:ObjectProperty .
+        ?prop_statement rdf:type owl:ObjectProperty .
     } UNION {
-        ?prop_statement a owl:DatatypeProperty .
+        ?prop_statement rdf:type owl:DatatypeProperty .
     }
 
     FILTER (?prop_statement NOT IN (wikibase:rank))

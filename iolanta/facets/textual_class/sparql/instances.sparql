@@ -1,5 +1,5 @@
 SELECT ?instance WHERE {
-    ?instance a $iri .
+    ?instance rdf:type $iri .
 
     FILTER(!isLiteral(?instance)) .
 } ORDER BY ?instance
