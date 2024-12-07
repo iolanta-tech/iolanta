@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iolanta"
-version = "1.1.0"
+version = "1.1.1"
 description = "Semantic Web browser"
 authors = ["Anatoly Scherbakov <altaisoft@gmail.com>"]
 license = "MIT"
@@ -109,4 +109,15 @@ pycodestyle = [
 flake8-eradicate = [
     # Found commented out code [flake8-eradicate]
     "-E800",
+]
+
+[tool.flakeheaven.exceptions."iolanta/namespaces.py"]
+wemake-python-styleguide = [
+    # Found upper-case constant in a class: _NS
+    "-WPS115",
+]
+
+flake8-docstrings = [
+    # Missing docstring in public class
+    "-D101",
 ]
