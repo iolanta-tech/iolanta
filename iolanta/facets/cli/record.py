@@ -1,11 +1,10 @@
 from dataclasses import dataclass, field
 
-from rdflib import OWL, URIRef
+from rdflib import URIRef
 from rich.table import Table
 
 from iolanta.facets.cli import Renderable, RichFacet
-from iolanta.facets.facet import FacetOutput
-from iolanta.namespaces import IOLANTA
+from iolanta.namespaces import IOLANTA, OWL
 
 
 @dataclass

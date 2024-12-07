@@ -7,15 +7,15 @@ from dataclasses import dataclass
 from typing import Any, Iterable, Optional
 
 from documented import DocumentedError
-from pyld import jsonld
-from pyld.jsonld import JsonLdError, _resolved_context_cache
-from rdflib import RDF, XSD, BNode, Literal, URIRef
+from pyld.jsonld import _resolved_context_cache  # noqa: WPS450
+from pyld.jsonld import JsonLdError, expand, flatten, to_rdf  # noqa: WPS347
+from rdflib import BNode, Literal, URIRef
 from rdflib.term import Node
 from yarl import URL
 
 from iolanta.loaders import Loader
 from iolanta.models import LDContext, LDDocument, NotLiteralNode, Quad
-from iolanta.namespaces import IOLANTA, LOCAL
+from iolanta.namespaces import IOLANTA, LOCAL, RDF
 from iolanta.parsers.base import Parser, RawDataType
 from iolanta.parsers.errors import SpaceInProperty
 
@@ -49,7 +49,7 @@ class DictParser(Parser[LDDocument]):
         )
 
         try:
-            document = jsonld.expand(
+            document = expand(
                 document,
                 options={
                     'expandContext': context,
@@ -69,7 +69,7 @@ class DictParser(Parser[LDDocument]):
                 document_loader=root_loader,
             ) from err
 
-        document = jsonld.flatten(document)
+        document = flatten(document)
 
         static_quads = [
             Quad(iri, RDF.type, IOLANTA.File, iri),
@@ -78,7 +78,7 @@ class DictParser(Parser[LDDocument]):
         try:
             parsed_quads = list(
                 parse_quads(
-                    quads_document=jsonld.to_rdf(document),
+                    quads_document=to_rdf(document),
                     # FIXME:
                     #   title: Can iri be None in a parser?
                     #   description: |

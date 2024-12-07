@@ -137,13 +137,13 @@ class FacetFinder:   # noqa: WPS214
         if isinstance(self.node, Literal):
             return []
 
-        rows = self.iolanta.query(
-            '''
+        rows = self.iolanta.query(   # noqa: WPS462
+            """
             SELECT ?output_datatype ?facet WHERE {
                 $node iolanta:facet ?facet .
                 ?facet iolanta:outputs ?output_datatype .
             }
-            ''',
+            """,
             node=self.node,
         )
 
@@ -156,14 +156,15 @@ class FacetFinder:   # noqa: WPS214
         )
 
     def by_instance_facet(self) -> Iterable[FoundRow]:
-        rows = self.iolanta.query(
-            '''
+        """Find facet by classes the IRI belongs to."""
+        rows = self.iolanta.query(   # noqa: WPS462
+            """
             SELECT ?output_datatype ?facet WHERE {
-                $node a ?class .
+                $node rdf:type ?class .
                 ?class iolanta:hasInstanceFacet ?facet .
                 ?facet iolanta:outputs ?output_datatype .
             }
-            ''',
+            """,
             node=self.node,
         )
 
