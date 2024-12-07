@@ -2,11 +2,11 @@ from dataclasses import asdict
 
 import pytest
 from boltons.iterutils import remap
-from rdflib import XSD, Literal, URIRef
+from rdflib import Literal, URIRef
 
 from iolanta.facets.errors import FacetNotFound
 from iolanta.iolanta import Iolanta
-from iolanta.namespaces import IOLANTA, LOCAL
+from iolanta.namespaces import IOLANTA, LOCAL, XSD
 
 
 def test_none(iolanta: Iolanta, env: URIRef):

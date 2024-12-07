@@ -1,7 +1,8 @@
 import pytest
-from rdflib import XSD, Literal, URIRef
+from rdflib import Literal, URIRef
 
 from iolanta.iolanta import Iolanta
+from iolanta.namespaces import XSD
 
 
 @pytest.mark.parametrize(
