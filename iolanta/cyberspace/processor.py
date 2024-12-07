@@ -26,7 +26,7 @@ from yarl import URL
 from iolanta.errors import UnresolvedIRI
 from iolanta.models import Triple, TripleWithVariables
 from iolanta.namespaces import DC, DCTERMS, FOAF, IOLANTA, OWL, RDF, RDFS, VANN
-from iolanta.parsers.dict_parser import parse_quads
+from iolanta.parse_quads import parse_quads
 
 logger = logging.getLogger(__name__)
 

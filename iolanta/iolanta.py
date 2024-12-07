@@ -40,7 +40,7 @@ from iolanta.models import (
     TripleTemplate,
 )
 from iolanta.node_to_qname import node_to_qname
-from iolanta.parsers.dict_parser import parse_quads
+from iolanta.parse_quads import parse_quads
 from iolanta.parsers.yaml import YAML
 from iolanta.plugin import Plugin
 from iolanta.resolvers.python_import import PythonImportResolver

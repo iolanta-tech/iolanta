@@ -1,5 +1,4 @@
 import dataclasses
-import hashlib
 import itertools
 import json
 import uuid
@@ -9,20 +8,26 @@ from typing import Any, Iterable, Optional
 from documented import DocumentedError
 from pyld.jsonld import _resolved_context_cache  # noqa: WPS450
 from pyld.jsonld import JsonLdError, expand, flatten, to_rdf  # noqa: WPS347
-from rdflib import BNode, Literal, URIRef
-from rdflib.term import Node
+from rdflib import BNode, URIRef
 from yarl import URL
 
 from iolanta.errors import UnresolvedIRI
 from iolanta.loaders import Loader
 from iolanta.models import LDContext, LDDocument, NotLiteralNode, Quad
 from iolanta.namespaces import IOLANTA, LOCAL, RDF
+from iolanta.parse_quads import parse_quads
 from iolanta.parsers.base import Parser, RawDataType
-from iolanta.parsers.errors import SpaceInProperty
 
 
 class DictParser(Parser[LDDocument]):
+    """
+    Old version of dict parser.
+
+    FIXME: Remove this.
+    """
+
     def as_jsonld_document(self, raw_data: LDDocument) -> LDDocument:
+        """Do nothing."""
         return raw_data
 
     def as_quad_stream(
@@ -32,6 +37,7 @@ class DictParser(Parser[LDDocument]):
         context: LDContext,
         root_loader: Loader,
     ) -> Iterable[Quad]:
+        """Do nonsense."""
         # This helps avoid weird bugs when loading data.
         _resolved_context_cache.clear()
 
@@ -146,75 +152,6 @@ def raise_if_term_is_qname(term_value: str):
         iri=term_value,
         prefix=prefix,
     )
-
-
-def parse_term(
-    term,
-    blank_node_prefix,
-) -> Node:
-    """Parse N-Quads term into a Quad."""
-    if term is None:
-        raise SpaceInProperty()
-
-    term_type = term['type']
-    term_value = term['value']
-
-    if term_type == 'IRI':
-        raise_if_term_is_qname(term_value)
-        return URIRef(term_value)
-
-    if term_type == 'literal':
-        language = term.get('language')
-
-        if datatype := term.get('datatype'):
-            datatype = URIRef(datatype)
-
-        if language and datatype:
-            datatype = None
-
-        return Literal(
-            term_value,
-            datatype=datatype,
-            lang=language,
-        )
-
-    if term_type == 'blank node':
-        return BNode(
-            value=term_value.replace('_:', f'{blank_node_prefix}_'),
-        )
-
-    raise ValueError(f'Unknown term: {term}')
-
-
-def parse_quads(
-    quads_document,
-    graph: URIRef,
-    blank_node_prefix: str = '',
-) -> Iterable[Quad]:
-    """Parse an N-Quads output into a Quads stream."""
-    blank_node_prefix = hashlib.md5(blank_node_prefix.encode()).hexdigest()
-    blank_node_prefix = f'_:{blank_node_prefix}'
-
-    for graph_name, quads in quads_document.items():
-        if graph_name == '@default':
-            graph_name = graph
-
-        else:
-            graph_name = URIRef(graph_name)
-
-        for quad in quads:
-            try:
-                yield Quad(
-                    subject=parse_term(quad['subject'], blank_node_prefix),
-                    predicate=parse_term(quad['predicate'], blank_node_prefix),
-                    object=parse_term(quad['object'], blank_node_prefix),
-                    graph=graph_name,
-                )
-            except SpaceInProperty as err:
-                raise dataclasses.replace(
-                    err,
-                    iri=graph,
-                )
 
 
 @dataclass
