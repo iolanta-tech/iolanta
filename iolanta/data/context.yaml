@@ -1,13 +1,13 @@
 "@context":
-  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
-  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  rdfs: "https://www.w3.org/2000/01/rdf-schema#"
+  rdf: https://www.w3.org/1999/02/22-rdf-syntax-ns#
   iolanta: https://iolanta.tech/
-  owl: http://www.w3.org/2002/07/owl#
+  owl: https://www.w3.org/2002/07/owl#
   schema: https://schema.org/
-  xsd: http://www.w3.org/2001/XMLSchema#
-  skos: http://www.w3.org/2004/02/skos/core#
-  foaf: http://xmlns.com/foaf/0.1/
-  vann: http://purl.org/vocab/vann/
+  xsd: https://www.w3.org/2001/XMLSchema#
+  skos: https://www.w3.org/2004/02/skos/core#
+  foaf: https://xmlns.com/foaf/0.1/
+  vann: https://purl.org/vocab/vann/
 
   "@vocab": "local:"
   "@base": "local:"
