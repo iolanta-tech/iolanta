@@ -8,7 +8,7 @@ Presently, when I'm trying to render something, `Link` is the default facet.
 
 ```shell
 $ iolanta render rdfs:comment
-http://www.w3.org/2000/01/rdf-schema#comment
+https://www.w3.org/2000/01/rdf-schema#comment
 ```
 
 ## Decision

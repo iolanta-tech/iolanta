@@ -60,7 +60,7 @@ hide: [navigation, toc]
         
     ![FOAF](foaf.svg)
 
-    Friend of a Friend Vocabulary.
+    Friend of a Friend Vocabulary, Person class.
 
 -   :material-code-greater-than:{ .lg .middle } __`iolanta vann:`__
 
@@ -70,7 +70,7 @@ hide: [navigation, toc]
 
     VANN Vocabulary.
 
--   :material-code-greater-than:{ .lg .middle } __`iolanta http://www.wikidata.org/entity/Q204606`__
+-   :material-code-greater-than:{ .lg .middle } __`iolanta https://www.wikidata.org/entity/Q204606`__
 
     ---
         

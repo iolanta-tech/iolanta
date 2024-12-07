@@ -1,6 +1,6 @@
 "@context":
   "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
-  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  rdfs: "https://www.w3.org/2000/01/rdf-schema#"
   iolanta: https://iolanta.tech/
   "@base": https://iolanta.tech/visualizations/
   →:
@@ -13,5 +13,5 @@ rdfs:label: Iolanta visualizations index 1.0
 $included:
   - $id: "rdfs:"
     →: rdfs.yaml
-  - $id: http://xmlns.com/foaf/0.1/
+  - $id: https://xmlns.com/foaf/0.1/
     →: foaf.yaml
