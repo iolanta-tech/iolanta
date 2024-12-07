@@ -1378,21 +1378,6 @@ files = [
 ]
 
 [[package]]
-name = "iolanta-jinja2"
-version = "0.1.4"
-description = "Render Jinja2 templates from Iolanta graph"
-optional = false
-python-versions = ">=3.10,<4.0"
-files = [
-    {file = "iolanta_jinja2-0.1.4-py3-none-any.whl", hash = "sha256:9670c6810f8778a3bb7f05763d349302be052b63d575e4a931587f5fe413c3e7"},
-    {file = "iolanta_jinja2-0.1.4.tar.gz", hash = "sha256:a8db8289ee96e1a48aafe4ef8b75ee3ab8bd8ac193ae604a5d267d4473f29f27"},
-]
-
-[package.dependencies]
-iolanta = ">=1.0.12,<2.0.0"
-Jinja2 = ">=3.1.2,<4.0.0"
-
-[[package]]
 name = "iolanta-tables"
 version = "0.1.7"
 description = "Linked Data as tables"
@@ -2034,20 +2019,19 @@ files = [
 
 [[package]]
 name = "mkdocs-iolanta"
-version = "0.1.15"
+version = "0.1.16"
 description = "MkDocs plugin to integrate with Iolanta semantic web framework."
 optional = false
-python-versions = "<4.0,>=3.10"
+python-versions = "<3.12,>=3.10"
 files = [
-    {file = "mkdocs_iolanta-0.1.15-py3-none-any.whl", hash = "sha256:f6301832fb50e5d9bee101d37cdb936be200f360525a11f7277ebe2cc2eecb9e"},
-    {file = "mkdocs_iolanta-0.1.15.tar.gz", hash = "sha256:a74d78e8bc827ce8c3a7fb59cf11baf9e01747f39f5359f8b328699f963de560"},
+    {file = "mkdocs_iolanta-0.1.16-py3-none-any.whl", hash = "sha256:1c1d2cfcf96fa9f8f3db9e81136e0debbc8290c37d36f9c9ece2194a76a317f3"},
+    {file = "mkdocs_iolanta-0.1.16.tar.gz", hash = "sha256:d1d7879b7d5248a53022db8d4db5f84565ba85d5cfdec7c474a9f1c249d5fb9a"},
 ]
 
 [package.dependencies]
-iolanta = ">=1.0.14,<2.0.0"
-iolanta-jinja2 = ">=0.1.2,<0.2.0"
-mkdocs = ">=1.4.2,<2.0.0"
-mkdocs-macros-plugin = ">=0.7.0,<0.8.0"
+iolanta = ">=1.1.0"
+mkdocs = ">=1.4.2"
+mkdocs-macros-plugin = ">=0.7,<1.4"
 
 [[package]]
 name = "mkdocs-macros-plugin"
@@ -4098,4 +4082,4 @@ all = ["iolanta-tables"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.12"
-content-hash = "c2a3c53680a6df55fac75a7030bc6b39983cd9692efbf3a8923e7d33c5f789b2"
+content-hash = "2c3804231e572f8c20964ee4994161b696ab878233b941db57287263d59f7843"
