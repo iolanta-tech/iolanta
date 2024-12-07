@@ -229,7 +229,7 @@ class Iolanta:   # noqa: WPS214
             self.graph,
             bind_namespaces='none',
         )
-        self.graph.bind(prefix='local', namespace=LOCAL)
+        self.graph.bind(prefix='local', namespace=namespaces.LOCAL)
         self.graph.bind(prefix='iolanta', namespace=namespaces.IOLANTA)
         self.graph.bind(prefix='rdf', namespace=namespaces.RDF)
         self.graph.bind(prefix='rdfs', namespace=namespaces.RDFS)
