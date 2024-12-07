@@ -23,9 +23,10 @@ from yaml_ld.document_loaders.content_types import ParserNotFound
 from yaml_ld.errors import NotFound, YAMLLDError
 from yarl import URL
 
+from iolanta.errors import UnresolvedIRI
 from iolanta.models import Triple, TripleWithVariables
 from iolanta.namespaces import DC, DCTERMS, FOAF, IOLANTA, OWL, RDF, RDFS, VANN
-from iolanta.parsers.dict_parser import UnresolvedIRI, parse_quads
+from iolanta.parsers.dict_parser import parse_quads
 
 logger = logging.getLogger(__name__)
 

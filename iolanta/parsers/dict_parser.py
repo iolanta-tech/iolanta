@@ -13,6 +13,7 @@ from rdflib import BNode, Literal, URIRef
 from rdflib.term import Node
 from yarl import URL
 
+from iolanta.errors import UnresolvedIRI
 from iolanta.loaders import Loader
 from iolanta.models import LDContext, LDDocument, NotLiteralNode, Quad
 from iolanta.namespaces import IOLANTA, LOCAL, RDF
@@ -129,31 +130,6 @@ def assign_key_if_not_present(  # type: ignore
         ]
 
     return document
-
-
-@dataclass
-class UnresolvedIRI(DocumentedError):
-    """
-    An unresolved IRI found.
-
-        IRI: {self.iri}
-        file: {self.file}
-        prefix: {self.prefix}
-
-    Perhaps you forgot to import appropriate context? For example:
-
-    ```yaml
-    "@context":
-        - {self.prefix}: https://example.com/{self.prefix}/
-    ```
-
-    Context: {self.context}
-    """
-
-    iri: str
-    prefix: str
-    file: Optional[str] = None
-    context: Optional[LDContext] = None
 
 
 def raise_if_term_is_qname(term_value: str):
