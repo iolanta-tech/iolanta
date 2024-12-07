@@ -1,0 +1,4 @@
+SELECT * WHERE {
+    $person schema:familyName ?family_name .
+    $person schema:givenName ?given_name .
+}
