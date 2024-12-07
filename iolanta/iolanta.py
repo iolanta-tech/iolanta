@@ -17,11 +17,12 @@ from typing import (  # noqa: WPS235
 import funcy
 import yaml_ld
 from rdflib import ConjunctiveGraph, Literal, Namespace, URIRef
+from rdflib.namespace import NamespaceManager
 from rdflib.term import Node
 from yaml_ld.document_loaders.content_types import ParserNotFound
 from yaml_ld.errors import YAMLLDError
 
-from iolanta import entry_points
+from iolanta import entry_points, namespaces
 from iolanta.conversions import path_to_iri
 from iolanta.cyberspace.processor import normalize_term
 from iolanta.facets.errors import FacetError
@@ -212,7 +213,6 @@ class Iolanta:   # noqa: WPS214
 
             self.graph.addN(quad_tuples)
 
-        self.bind_namespaces(**self.namespaces_to_bind)
         return self
 
     def infer(self, closure_class=None) -> 'Iolanta':
@@ -223,17 +223,24 @@ class Iolanta:   # noqa: WPS214
         """
         return self
 
-    def bind_namespaces(self, **mappings: Namespace) -> 'Iolanta':
+    def bind_namespaces(self):
         """Bind namespaces."""
+        self.graph.namespace_manager = NamespaceManager(
+            self.graph,
+            bind_namespaces='none',
+        )
         self.graph.bind(prefix='local', namespace=LOCAL)
-
-        for prefix, namespace in mappings.items():
-            self.graph.bind(prefix=prefix, namespace=namespace)
-
-        return self
+        self.graph.bind(prefix='iolanta', namespace=namespaces.IOLANTA)
+        self.graph.bind(prefix='rdf', namespace=namespaces.RDF)
+        self.graph.bind(prefix='rdfs', namespace=namespaces.RDFS)
+        self.graph.bind(prefix='owl', namespace=namespaces.OWL)
+        self.graph.bind(prefix='foaf', namespace=namespaces.FOAF)
+        self.graph.bind(prefix='schema', namespace=namespaces.SDO)
+        self.graph.bind(prefix='vann', namespace=namespaces.VANN)
 
     @property
     def query(self):
+        """Make a SPARQL query."""
         self.maybe_infer()
         return self.ldflex.query
 
@@ -288,6 +295,7 @@ class Iolanta:   # noqa: WPS214
 
         FIXME: Get rid of plugins.
         """
+        self.bind_namespaces()
         self.add_files_from_plugins()
 
     def string_to_node(self, name: str | Node) -> NotLiteralNode:
