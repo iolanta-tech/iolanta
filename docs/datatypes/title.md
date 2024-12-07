@@ -19,14 +19,28 @@
     "rdfs:description": "A short string naming something. Used in links, lists, page titles, property tables, and many other cases.",
     "rdfs:subClassOf": "xsd:string",
     "@type": "rdfs:Datatype",
-    "iolanta:hasDefaultFacet": "python://iolanta.facets.title.TitleFacet"
-  }
+    "iolanta:hasDefaultFacet": "python://iolanta.facets.title.TitleFacet",
+    "@included": {
+        "@id": "foaf:Person",
+        "iolanta:hasInstanceFacet": {
+            "@id": "python://iolanta.facets.foaf_person_title.FOAFPersonTitle",    
+            "iolanta:outputs": "https://iolanta.tech/datatypes/title"    
+        }
+    }
+}
 </script>
 
 A short string naming something. Used in links, lists, page titles, property tables, and many other cases.
 
-| Property | Value |
-| --- | --- |
-| ∈ Instance Of | `rdfs:Datatype` |
-| ⊊ Subclass Of | `xsd:string` |
+| Property           | Value                                                        |
+|-------------------|--------------------------------------------------------------|
+| ∈ Instance Of     | `rdfs:Datatype`                                              |
+| ⊊ Subclass Of     | `xsd:string`                                                 |
 | Has default facet | :material-language-python: `iolanta.facets.title.TitleFacet` | 
+
+
+## Specialized Facets
+
+| Class         | Facet                                                       | Description                                            |
+|---------------|-------------------------------------------------------------|--------------------------------------------------------|
+| `foaf:Person` | `python://iolanta.facets.foaf_person_title.FOAFPersonTitle` | Render name of a person from their first and last name | 

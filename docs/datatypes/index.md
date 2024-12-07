@@ -14,4 +14,11 @@ hide: [navigation]
 
     A short string naming something. Used in links, lists, page titles, property tables, and many other cases.
 
+
+-   :material-format-title:{ .lg .middle } __[Fallback Title](fallback-title/)__
+
+    ---
+
+    Type that only the default, fallback title facet can output. Used to fallback to the default implementation if a more specialized one does not work.
+
 </div>
