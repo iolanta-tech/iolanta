@@ -25,6 +25,7 @@ from yaml_ld.errors import YAMLLDError
 from iolanta import entry_points, namespaces
 from iolanta.conversions import path_to_iri
 from iolanta.cyberspace.processor import normalize_term
+from iolanta.errors import UnresolvedIRI
 from iolanta.facets.errors import FacetError
 from iolanta.facets.facet import Facet
 from iolanta.facets.locator import FacetFinder
@@ -38,9 +39,8 @@ from iolanta.models import (
     Triple,
     TripleTemplate,
 )
-from iolanta.namespaces import LOCAL
 from iolanta.node_to_qname import node_to_qname
-from iolanta.parsers.dict_parser import UnresolvedIRI, parse_quads
+from iolanta.parse_quads import parse_quads
 from iolanta.parsers.yaml import YAML
 from iolanta.plugin import Plugin
 from iolanta.resolvers.python_import import PythonImportResolver
@@ -59,7 +59,7 @@ class Iolanta:   # noqa: WPS214
     graph: ConjunctiveGraph = field(
         default_factory=functools.partial(
             ConjunctiveGraph,
-            identifier=LOCAL.term('_inference'),
+            identifier=namespaces.LOCAL.term('_inference'),
         ),
     )
     force_plugins: List[Type[Plugin]] = field(default_factory=list)
@@ -229,7 +229,7 @@ class Iolanta:   # noqa: WPS214
             self.graph,
             bind_namespaces='none',
         )
-        self.graph.bind(prefix='local', namespace=LOCAL)
+        self.graph.bind(prefix='local', namespace=namespaces.LOCAL)
         self.graph.bind(prefix='iolanta', namespace=namespaces.IOLANTA)
         self.graph.bind(prefix='rdf', namespace=namespaces.RDF)
         self.graph.bind(prefix='rdfs', namespace=namespaces.RDFS)

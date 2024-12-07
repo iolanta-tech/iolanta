@@ -133,7 +133,7 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
     def show(self) -> Widget:
         """Render the content."""
         return VerticalScroll(
-            PageTitle(self.iri, extra='[i]& its RDF properties[/i]'),
+            PageTitle(self.iri),
             Static(self.description or ''),
             self.properties,
         )
