@@ -1,3 +1,4 @@
+import logging
 from dataclasses import dataclass
 from functools import cached_property
 from graphlib import TopologicalSorter
@@ -9,6 +10,8 @@ from yarl import URL
 
 from iolanta.facets.errors import FacetNotFound
 from iolanta.models import NotLiteralNode
+
+logger = logging.getLogger(__name__)
 
 
 class FoundRow(TypedDict):
@@ -155,12 +158,30 @@ class FacetFinder:   # noqa: WPS214
             key=self.row_sorter_by_output_datatype,
         )
 
+    def _filter_by_instance_facet_rows(
+        self,
+        rows: Iterable[FoundRow],
+    ) -> Iterable[FoundRow]:
+        for row in rows:
+            output_datatype = row['output_datatype']
+
+            if output_datatype == self.as_datatype:
+                yield row
+
+            elif isinstance(output_datatype, Literal):
+                logger.warning(
+                    'Datatype %s is a literal; URIRef or BNode expected.',
+                    output_datatype,
+                )
+
     def by_instance_facet(self) -> Iterable[FoundRow]:
         """Find facet by classes the IRI belongs to."""
-        rows = self.iolanta.query(   # noqa: WPS462
+        rows: list[FoundRow] = self.iolanta.query(   # noqa: WPS462
             """
             SELECT ?output_datatype ?facet WHERE {
-                $node rdf:type ?class .
+                $node
+                    rdf:type / (owl:equivalentClass|^owl:equivalentClass)*
+                    ?class .
                 ?class iolanta:hasInstanceFacet ?facet .
                 ?facet iolanta:outputs ?output_datatype .
             }
@@ -168,7 +189,7 @@ class FacetFinder:   # noqa: WPS214
             node=self.node,
         )
 
-        rows = [row for row in rows if row['output_datatype'] == self.as_datatype]
+        rows = list(self._filter_by_instance_facet_rows(rows))
 
         return sorted(
             rows,
