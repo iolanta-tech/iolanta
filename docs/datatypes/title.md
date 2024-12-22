@@ -12,7 +12,8 @@
       },
       "rdfs:subClassOf": {
         "@type": "@id"
-      }
+      },
+      "foaf": "https://xmlns.com/foaf/0.1/"
     },
     "@id": "https://iolanta.tech/datatypes/title",
     "rdfs:label": "Title",
