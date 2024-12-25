@@ -1,6 +1,5 @@
 import dataclasses
 import datetime
-import functools
 import logging
 import re
 import time
@@ -9,22 +8,28 @@ from threading import Lock
 from types import MappingProxyType
 from typing import Any, Iterable, Mapping
 
+import funcy
 import reasonable
 import yaml_ld
-from rdflib import ConjunctiveGraph, URIRef, Variable
+from rdflib import ConjunctiveGraph, Namespace, URIRef, Variable
 from rdflib.plugins.sparql.algebra import translateQuery
 from rdflib.plugins.sparql.evaluate import evalQuery
 from rdflib.plugins.sparql.parser import parseQuery
 from rdflib.plugins.sparql.sparql import Query
 from rdflib.query import Processor
-from rdflib.term import BNode, Node
+from rdflib.term import BNode, Literal, Node
 from requests.exceptions import ConnectionError
 from yaml_ld.document_loaders.content_types import ParserNotFound
-from yaml_ld.errors import NotFound, YAMLLDError
+from yaml_ld.errors import (
+    InvalidEncoding,
+    NoLinkedDataFoundInHTML,
+    NotFound,
+    YAMLLDError,
+)
 from yarl import URL
 
 from iolanta.errors import UnresolvedIRI
-from iolanta.models import Triple, TripleWithVariables
+from iolanta.models import TripleWithVariables
 from iolanta.namespaces import DC, DCTERMS, FOAF, IOLANTA, OWL, RDF, RDFS, VANN
 from iolanta.parse_quads import parse_quads
 
@@ -57,18 +62,78 @@ REDIRECTS = MappingProxyType({
 })
 
 
-def construct_flat_triples(algebra: Mapping[str, Any]) -> Iterable[Triple]:
-    """Extract flat triples from parsed SPARQL query."""
-    if isinstance(algebra, Mapping):
-        for key, value in algebra.items():  # noqa: WPS110
-            if key == 'triples':
-                yield from [   # noqa: WPS353
-                    Triple(*raw_triple)
-                    for raw_triple in value
-                ]
+def _extract_from_mapping(  # noqa: WPS213
+    algebra: Mapping[str, Any],
+) -> Iterable[URIRef | Variable]:
+    match algebra.name:
+        case 'SelectQuery' | 'Project' | 'Distinct':
+            yield from extract_mentioned_urls(algebra['p'])
 
-            else:
-                yield from construct_flat_triples(value)
+        case 'BGP':
+            yield from [   # noqa: WPS353, WPS221
+                term
+                for triple in algebra['triples']
+                for term in triple
+                if not isinstance(term, Literal)
+            ]
+
+        case 'Filter' | 'UnaryNot':
+            yield from extract_mentioned_urls(algebra['expr'])   # noqa: WPS204
+
+        case built_in if built_in.startswith('Builtin_'):
+            yield from extract_mentioned_urls(algebra['arg'])
+
+        case 'RelationalExpression':
+            yield from extract_mentioned_urls(algebra['expr'])
+            yield from extract_mentioned_urls(algebra['other'])
+
+        case 'LeftJoin':
+            yield from extract_mentioned_urls(algebra['p1'])
+            yield from extract_mentioned_urls(algebra['p2'])
+            yield from extract_mentioned_urls(algebra['expr'])
+
+        case 'ConditionalOrExpression' | 'ConditionalAndExpression':
+            yield from extract_mentioned_urls(algebra['expr'])
+            yield from extract_mentioned_urls(algebra['other'])
+
+        case 'OrderBy':
+            yield from extract_mentioned_urls(algebra['p'])
+            yield from extract_mentioned_urls(algebra['expr'])
+
+        case 'TrueFilter':
+            return
+
+        case unknown_name:
+            formatted_keys = ', '.join(algebra.keys())
+            raise ValueError(
+                f'Unknown SPARQL expression {unknown_name}({formatted_keys}): '
+                f'{algebra}',
+            )
+
+
+def extract_mentioned_urls(
+    algebra,
+) -> Iterable[URIRef | Variable]:
+    """Extract flat triples from parsed SPARQL query."""
+    match algebra:
+        case Variable() as query_variable:
+            yield query_variable
+
+        case URIRef() as uri_ref:
+            yield uri_ref
+
+        case dict():
+            yield from _extract_from_mapping(algebra)
+
+        case list() as expressions:
+            for expression in expressions:
+                yield from extract_mentioned_urls(expression)
+
+        case unknown_algebra:
+            algebra_type = type(unknown_algebra)
+            raise ValueError(
+                f'Algebra of unknown type {algebra_type}: {unknown_algebra}',
+            )
 
 
 def normalize_term(term: Node) -> Node:
@@ -89,8 +154,58 @@ def normalize_term(term: Node) -> Node:
     return NORMALIZE_TERMS_MAP.get(term, term)
 
 
+def resolve_variables(
+    terms: Iterable[URIRef | Variable],
+    bindings: Mapping[str, Node],
+):
+    """Replace variables with their values."""
+    for term in terms:
+        match term:
+            case URIRef():
+                yield term
+
+            case Variable() as query_variable:
+                variable_value = bindings.get(str(query_variable))
+                if (
+                    variable_value is not None
+                    and isinstance(variable_value, URIRef)
+                ):
+                    yield variable_value
+
+
+def extract_mentioned_urls_from_query(
+    query: str,
+    bindings: dict[str, Node],
+    base: str | None,
+    namespaces: dict[str, Namespace],
+) -> tuple[Query, set[URIRef]]:
+    """Extract URLs that a SPARQL query somehow mentions."""
+    parse_tree = parseQuery(query)
+    query = translateQuery(parse_tree, base, namespaces)
+
+    return query, set(
+        resolve_variables(
+            extract_mentioned_urls(query.algebra),
+            bindings=bindings,
+        ),
+    )
+
+
+@dataclasses.dataclass
+class Loaded:
+    """The data was loaded successfully."""
+
+
+@dataclasses.dataclass
+class Skipped:
+    """The data is already in the graph and loading was skipped."""
+
+
+LoadResult = Loaded | Skipped
+
+
 @dataclasses.dataclass(frozen=True)
-class GlobalSPARQLProcessor(Processor):
+class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
     """
     Execute SPARQL queries against the whole Linked Data Web, or The Cyberspace.
 
@@ -104,184 +219,6 @@ class GlobalSPARQLProcessor(Processor):
     def __post_init__(self):
         """Note that we do not presently need OWL inference."""
         self.graph.last_not_inferred_source = None
-
-    def query(   # noqa: WPS211, WPS210
-        self,
-        strOrQuery,
-        initBindings=None,
-        initNs=None,
-        base=None,
-        DEBUG=False,
-    ):
-        """
-        Evaluate a query with the given initial bindings, and initial
-        namespaces. The given base is used to resolve relative URIs in
-        the query and will be overridden by any BASE given in the query.
-        """
-        initBindings = initBindings or {}
-        initNs = initNs or {}
-
-        if isinstance(strOrQuery, Query):
-            query = strOrQuery
-
-        else:
-            parsetree = parseQuery(strOrQuery)
-            query = translateQuery(parsetree, base, initNs)
-
-            triples = construct_flat_triples(query.algebra)
-            for triple in triples:
-                self.load_data_for_triple(triple, bindings=initBindings)
-
-        self.maybe_apply_inference()
-        return evalQuery(self.graph, query, initBindings, base)
-
-    @functools.lru_cache(maxsize=None)    # noqa: B019
-    def load(self, source: str):   # noqa: C901, WPS210, WPS212, WPS213, WPS231
-        """
-        Try to load LD denoted by the given `source`.
-
-        TODO This function is too big, we have to refactor it.
-        """
-        url = URL(source)
-
-        if url.scheme in {'file', 'python', 'local', 'urn'}:
-            # FIXME temporary fix. `yaml-ld` doesn't read `context.*` files and
-            #   fails.
-            return None
-
-        new_source = self._apply_redirect(source)
-        if new_source != source:
-            return self.load(new_source)
-
-        if self.graph.get_context(source):
-            return None
-
-        # FIXME This is definitely inefficient. However, python-yaml-ld caches
-        #   the document, so the performance overhead is not super high.
-        try:
-            _resolved_source = yaml_ld.load_document(source)['documentUrl']
-        except NotFound as not_found:
-            logger.info('%s | 404 Not Found', not_found.path)
-            namespaces = [RDF, RDFS, OWL, FOAF, DC, VANN]
-
-            for namespace in namespaces:
-                if not_found.path.startswith(str(namespace)):
-                    self.load(str(namespace))
-                    logger.info(
-                        'Redirecting %s → namespace %s',
-                        not_found.path,
-                        namespace,
-                    )
-                    return None
-
-            logger.info('%s | Cannot find a matching namespace', not_found.path)
-            return None
-
-        if _resolved_source:
-            _resolved_source_uri_ref = URIRef(_resolved_source)
-            if _resolved_source_uri_ref != source:
-                self.graph.add((
-                    URIRef(source),
-                    IOLANTA['redirects-to'],
-                    _resolved_source_uri_ref,
-                ))
-                source = _resolved_source
-
-        self.graph.add((
-            URIRef(source),
-            RDF.type,
-            IOLANTA.Graph,
-        ))
-
-        self.graph.add((
-            IOLANTA.Graph,
-            RDF.type,
-            RDFS.Class,
-        ))
-
-        try:  # noqa: WPS225
-            ld_rdf = yaml_ld.to_rdf(source)
-        except ConnectionError as name_resolution_error:
-            logger.info(
-                '%s | name resolution error: %s',
-                source,
-                str(name_resolution_error),
-            )
-            return None
-        except ParserNotFound as parser_not_found:
-            logger.info('%s | %s', source, str(parser_not_found))
-            return None
-        except YAMLLDError as yaml_ld_error:
-            logger.error('%s | %s', source, str(yaml_ld_error))
-            return None
-
-        try:
-            quads = list(
-                parse_quads(
-                    quads_document=ld_rdf,
-                    graph=source,  # type: ignore
-                    blank_node_prefix=str(source),
-                ),
-            )
-        except UnresolvedIRI as err:
-            raise dataclasses.replace(
-                err,
-                context=None,
-                iri=source,
-            )
-
-        if not quads:
-            logger.warning('%s | No data found', source)
-            return None
-
-        graph = URIRef(source)
-        quad_tuples = [
-            tuple([
-                normalize_term(term) for term in dataclasses.replace(
-                    quad,
-                    graph=graph,
-                ).as_tuple()
-            ])
-            for quad in quads
-        ]
-
-        self.graph.addN(quad_tuples)
-        self.graph.last_not_inferred_source = source
-        logger.info('%s | loaded successfully.', source)
-
-    def load_data_for_triple(
-        self,
-        triple: TripleWithVariables,
-        bindings: dict[str, Node],
-    ):
-        """Load data for a given triple."""
-        triple = TripleWithVariables(
-            *[
-                self.resolve_term(term, bindings=bindings)
-                for term in triple
-            ],
-        )
-
-        subject, _predicate, rdf_object = triple
-
-        if isinstance(subject, URIRef):
-            try:
-                self.load(str(subject))
-            except Exception:
-                logger.exception('Failed to load information about %s', subject)
-
-        if isinstance(rdf_object, URIRef):
-            self.load(str(rdf_object))
-
-    def resolve_term(self, term: Node, bindings: dict[str, Node]):
-        """Resolve triple elements against initial variable bindings."""
-        if isinstance(term, Variable):
-            return bindings.get(
-                str(term),
-                term,
-            )
-
-        return term
 
     def _infer_with_sparql(self):
         """
@@ -348,3 +285,266 @@ class GlobalSPARQLProcessor(Processor):
                 return destination
 
         return source
+
+    def query(   # noqa: WPS211, WPS210, WPS231, C901
+        self,
+        strOrQuery,
+        initBindings=None,
+        initNs=None,
+        base=None,
+        DEBUG=False,
+    ):
+        """
+        Evaluate a query with the given initial bindings, and initial
+        namespaces. The given base is used to resolve relative URIs in
+        the query and will be overridden by any BASE given in the query.
+        """
+        initBindings = initBindings or {}
+        initNs = initNs or {}
+
+        if isinstance(strOrQuery, Query):
+            query = strOrQuery
+
+        else:
+            query, urls = extract_mentioned_urls_from_query(
+                query=strOrQuery,
+                bindings=initBindings,
+                base=base,
+                namespaces=initNs,
+            )
+
+            for url in urls:
+                try:
+                    self.load(str(url))
+                except Exception as err:
+                    logger.error('Failed to load %s: %s', url, err)
+
+        self.maybe_apply_inference()
+
+        is_anything_loaded = True
+        while is_anything_loaded:
+            is_anything_loaded = False
+
+            query_result = evalQuery(self.graph, query, initBindings, base)
+
+            bindings = list(query_result['bindings'])
+            for row in bindings:
+                for _, maybe_iri in row.items():
+                    if (
+                        isinstance(maybe_iri, URIRef)
+                        and isinstance(self.load(str(maybe_iri)), Loaded)
+                    ):
+                        is_anything_loaded = True   # noqa: WPS220
+                        logger.warning(   # noqa: WPS220
+                            'Newly loaded: %s',
+                            maybe_iri,
+                        )
+
+        query_result['bindings'] = bindings
+        return query_result
+
+    def load(   # noqa: C901, WPS210, WPS212, WPS213, WPS231
+        self,
+        source: str,
+    ) -> LoadResult:
+        """
+        Try to load LD denoted by the given `source`.
+
+        TODO This function is too big, we have to refactor it.
+        """
+        url = URL(source)
+
+        if url.scheme in {'file', 'python', 'local', 'urn'}:
+            # FIXME temporary fix. `yaml-ld` doesn't read `context.*` files and
+            #   fails.
+            return Skipped()
+
+        new_source = self._apply_redirect(source)
+        if new_source != source:
+            return self.load(new_source)
+
+        source_uri = URIRef(source.replace('http://', 'https://'))
+        existing_triple = funcy.first(
+            self.graph.quads(
+                (
+                    None,
+                    None,
+                    None,
+                    source_uri,
+                ),
+            ),
+        )
+        if existing_triple is not None:
+            return Skipped()
+        else:
+            logger.warning('No triples for %s', source)
+
+        # FIXME This is definitely inefficient. However, python-yaml-ld caches
+        #   the document, so the performance overhead is not super high.
+        try:
+            _resolved_source = yaml_ld.load_document(source)['documentUrl']
+        except NotFound as not_found:
+            logger.info('%s | 404 Not Found', not_found.path)
+            namespaces = [RDF, RDFS, OWL, FOAF, DC, VANN]
+
+            for namespace in namespaces:
+                if not_found.path.startswith(str(namespace)):
+                    self.load(str(namespace))
+                    logger.info(
+                        'Redirecting %s → namespace %s',
+                        not_found.path,
+                        namespace,
+                    )
+                    return Loaded()
+
+            logger.info('%s | Cannot find a matching namespace', not_found.path)
+
+            self.graph.add((
+                source_uri,
+                RDF.type,
+                IOLANTA.Graph,
+            ))
+
+            self.graph.add((
+                source_uri,
+                RDF.type,
+                IOLANTA['not-found'],
+                source_uri,
+            ))
+
+            self.graph.add((
+                IOLANTA.Graph,
+                RDF.type,
+                RDFS.Class,
+            ))
+
+            return Loaded()
+
+        except (NoLinkedDataFoundInHTML, InvalidEncoding) as err:
+            logger.info('%s | No linked data found in HTML: %s', source, err)
+
+            self.graph.add((
+                source_uri,
+                RDF.type,
+                IOLANTA.Graph,
+            ))
+
+            self.graph.add((
+                URIRef(source),
+                RDF.type,
+                IOLANTA['not-found'],
+                source_uri,
+            ))
+
+            self.graph.add((
+                IOLANTA.Graph,
+                RDF.type,
+                RDFS.Class,
+            ))
+            return Loaded()
+
+        if _resolved_source:
+            _resolved_source_uri_ref = URIRef(_resolved_source)
+            if _resolved_source_uri_ref != URIRef(source):
+                self.graph.add((
+                    source_uri,
+                    IOLANTA['redirects-to'],
+                    _resolved_source_uri_ref,
+                ))
+                source = _resolved_source
+
+        self.graph.add((
+            source_uri,
+            RDF.type,
+            IOLANTA.Graph,
+        ))
+
+        self.graph.add((
+            IOLANTA.Graph,
+            RDF.type,
+            RDFS.Class,
+        ))
+
+        try:  # noqa: WPS225
+            ld_rdf = yaml_ld.to_rdf(source)
+        except ConnectionError as name_resolution_error:
+            logger.info(
+                '%s | name resolution error: %s',
+                source,
+                str(name_resolution_error),
+            )
+            return Loaded()
+        except ParserNotFound as parser_not_found:
+            logger.info('%s | %s', source, str(parser_not_found))
+            return Loaded()
+        except YAMLLDError as yaml_ld_error:
+            logger.error('%s | %s', source, str(yaml_ld_error))
+            return Loaded()
+
+        try:
+            quads = list(
+                parse_quads(
+                    quads_document=ld_rdf,
+                    graph=source,  # type: ignore
+                    blank_node_prefix=str(source),
+                ),
+            )
+        except UnresolvedIRI as err:
+            raise dataclasses.replace(
+                err,
+                context=None,
+                iri=source,
+            )
+
+        if not quads:
+            logger.warning('%s | No data found', source)
+            return Loaded()
+
+        quad_tuples = [
+            tuple([
+                normalize_term(term) for term in dataclasses.replace(
+                    quad,
+                    graph=source_uri,
+                ).as_tuple()
+            ])
+            for quad in quads
+        ]
+
+        self.graph.addN(quad_tuples)
+        self.graph.last_not_inferred_source = source
+        logger.info('%s | loaded successfully.', source)
+        return Loaded()
+
+    def load_data_for_triple(
+        self,
+        triple: TripleWithVariables,
+        bindings: dict[str, Node],
+    ):
+        """Load data for a given triple."""
+        triple = TripleWithVariables(
+            *[
+                self.resolve_term(term, bindings=bindings)
+                for term in triple
+            ],
+        )
+
+        subject, _predicate, rdf_object = triple
+
+        if isinstance(subject, URIRef):
+            try:
+                self.load(str(subject))
+            except Exception:
+                logger.exception('Failed to load information about %s', subject)
+
+        if isinstance(rdf_object, URIRef):
+            self.load(str(rdf_object))
+
+    def resolve_term(self, term: Node, bindings: dict[str, Node]):
+        """Resolve triple elements against initial variable bindings."""
+        if isinstance(term, Variable):
+            return bindings.get(
+                str(term),
+                term,
+            )
+
+        return term
