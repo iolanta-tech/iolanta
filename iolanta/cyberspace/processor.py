@@ -77,7 +77,7 @@ def _extract_from_mapping(  # noqa: WPS213
                 if not isinstance(term, Literal)
             ]
 
-        case 'Filter' | 'UnaryNot':
+        case 'Filter' | 'UnaryNot' | 'OrderCondition':
             yield from extract_mentioned_urls(algebra['expr'])   # noqa: WPS204
 
         case built_in if built_in.startswith('Builtin_'):
@@ -103,12 +103,19 @@ def _extract_from_mapping(  # noqa: WPS213
         case 'TrueFilter':
             return
 
+        case 'Graph':
+            yield from extract_mentioned_urls(algebra['p'])
+            yield from extract_mentioned_urls(algebra['term'])
+
         case unknown_name:
             formatted_keys = ', '.join(algebra.keys())
-            raise ValueError(
-                f'Unknown SPARQL expression {unknown_name}({formatted_keys}): '
-                f'{algebra}',
+            logger.error(
+                'Unknown SPARQL expression %s(%s): %s',
+                unknown_name,
+                formatted_keys,
+                algebra,
             )
+            return
 
 
 def extract_mentioned_urls(
@@ -420,8 +427,8 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
 
             return Loaded()
 
-        except (NoLinkedDataFoundInHTML, InvalidEncoding) as err:
-            logger.info('%s | No linked data found in HTML: %s', source, err)
+        except Exception as err:
+            logger.info('%s | Failed: %s', source, err)
 
             self.graph.add((
                 source_uri,
@@ -432,7 +439,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             self.graph.add((
                 URIRef(source),
                 RDF.type,
-                IOLANTA['not-found'],
+                IOLANTA['failed'],
                 source_uri,
             ))
 
