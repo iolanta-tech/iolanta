@@ -158,38 +158,39 @@ class FacetFinder:   # noqa: WPS214
             key=self.row_sorter_by_output_datatype,
         )
 
-    def _filter_by_instance_facet_rows(
-        self,
-        rows: Iterable[FoundRow],
-    ) -> Iterable[FoundRow]:
-        for row in rows:
-            output_datatype = row['output_datatype']
-
-            if output_datatype == self.as_datatype:
-                yield row
-
-            elif isinstance(output_datatype, Literal):
-                logger.warning(
-                    'Datatype %s is a literal; URIRef or BNode expected.',
-                    output_datatype,
-                )
-
-    def by_instance_facet(self) -> Iterable[FoundRow]:
-        """Find facet by classes the IRI belongs to."""
-        rows: list[FoundRow] = self.iolanta.query(   # noqa: WPS462
+    def _classes_for_node(self, node: NotLiteralNode) -> list[NotLiteralNode]:
+        rows = self.iolanta.query(  # noqa: WPS462
             """
-            SELECT ?output_datatype ?facet WHERE {
+            SELECT DISTINCT ?class WHERE {
                 $node
                     rdf:type / (owl:equivalentClass|^owl:equivalentClass)*
                     ?class .
-                ?class iolanta:hasInstanceFacet ?facet .
-                ?facet iolanta:outputs ?output_datatype .
             }
             """,
-            node=self.node,
+            node=node,
         )
 
-        rows = list(self._filter_by_instance_facet_rows(rows))
+        return funcy.lpluck('class', rows)
+
+    def by_instance_facet(self) -> Iterable[FoundRow]:
+        """Find facet by classes the IRI belongs to."""
+        classes = self._classes_for_node(self.node)
+        if not classes:
+            return []
+
+        formatted_classes = ', '.join(f'<{iri}>' for iri in classes)
+
+        rows: list[FoundRow] = self.iolanta.query(   # noqa: WPS462
+            """
+            SELECT ?output_datatype ?facet WHERE {
+                ?class iolanta:hasInstanceFacet ?facet .
+                ?facet iolanta:outputs ?output_datatype .
+                FILTER(?class IN (%s)) .
+            }
+            """ % formatted_classes,
+            classes=classes,
+            output_datatype=self.as_datatype,
+        )
 
         return sorted(
             rows,
