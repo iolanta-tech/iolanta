@@ -1,9 +1,11 @@
 import functools
 from dataclasses import dataclass
+from typing import ClassVar
 
 from mypy.memprofile import defaultdict
 from rdflib.term import Literal, Node
 from rich.text import Text
+from textual.binding import Binding, BindingType
 from textual.containers import Vertical
 from textual.widget import Widget
 from textual.widgets import Tree
@@ -24,8 +26,12 @@ class TreeNodeData:
     is_rendered: bool = False
 
 
-class TriplesTree(Tree):
+class TriplesTree(Tree):   # noqa: WPS214
     """Triples as tree."""
+
+    BINDINGS: ClassVar[list[BindingType]] = [
+        Binding('enter', 'goto', 'Goto'),
+    ]
 
     def __init__(  # noqa: WPS210
         self,
@@ -35,6 +41,7 @@ class TriplesTree(Tree):
         """Initialize the tree."""
         self.triples = triples
         self.iolanta = iolanta
+        self.selected_node = None
         super().__init__(label='Triples')
 
         self.show_root = False
@@ -109,6 +116,15 @@ class TriplesTree(Tree):
             ),
             thread=True,
         )
+
+    def on_tree_node_selected(self, event: Tree.NodeSelected[TreeNodeData]):
+        """Handle node selection."""
+        self.selected_node = event.node
+
+    def action_goto(self) -> None:
+        """Navigate to the selected node."""
+        if self.selected_node:
+            self.app.action_goto(self.selected_node.data.node)
 
     def _format_not_rendered_iri(self, node: Node):
         return Text(str(node), style='#696969')
