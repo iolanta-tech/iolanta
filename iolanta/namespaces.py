@@ -37,3 +37,7 @@ class FOAF(rdflib.FOAF):
 
 class XSD(rdflib.XSD):
     _NS = rdflib.Namespace('https://www.w3.org/2001/XMLSchema#')
+
+
+class PROV(rdflib.PROV):
+    _NS = rdflib.Namespace('https://www.w3.org/ns/prov#')
