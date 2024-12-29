@@ -96,12 +96,12 @@ class Quad:
         return Triple(self.subject, self.predicate, self.object)
 
     def __repr__(self):
-        (
-            rendered_subject,
-            rendered_predicate,
-            rendered_object,
-            rendered_graph,
-        ) = map(render_node, self)
+        """Represent the quad as string."""
+        rendered_subject = render_node(self.subject)
+        rendered_predicate = render_node(self.predicate)
+        rendered_object = render_node(self.object)
+        rendered_graph = render_node(self.graph)
+
         return (
             f'({rendered_subject} {rendered_predicate} {rendered_object} @ '
             f'{rendered_graph})'  # noqa: WPS326
