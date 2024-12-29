@@ -1,5 +1,6 @@
 import dataclasses
 import datetime
+import itertools
 import logging
 import re
 import time
@@ -20,17 +21,21 @@ from rdflib.query import Processor
 from rdflib.term import BNode, Literal, Node
 from requests.exceptions import ConnectionError
 from yaml_ld.document_loaders.content_types import ParserNotFound
-from yaml_ld.errors import (
-    InvalidEncoding,
-    NoLinkedDataFoundInHTML,
-    NotFound,
-    YAMLLDError,
-)
+from yaml_ld.errors import NotFound, YAMLLDError
 from yarl import URL
 
 from iolanta.errors import UnresolvedIRI
-from iolanta.models import TripleWithVariables
-from iolanta.namespaces import DC, DCTERMS, FOAF, IOLANTA, OWL, RDF, RDFS, VANN
+from iolanta.namespaces import (  # noqa: WPS235
+    DC,
+    DCTERMS,
+    FOAF,
+    IOLANTA,
+    OWL,
+    PROV,
+    RDF,
+    RDFS,
+    VANN,
+)
 from iolanta.parse_quads import parse_quads
 
 logger = logging.getLogger(__name__)
@@ -52,13 +57,17 @@ REDIRECTS = MappingProxyType({
     'https://purl.org/vocab/vann/': (
         'https://vocab.org/vann/vann-vocab-20100607.rdf'
     ),
-    str(DC): str(DCTERMS),
-    str(RDF): str(RDF),
-    str(RDFS): str(RDFS),
-    str(OWL): str(OWL),
+    URIRef(DC): URIRef(DCTERMS),
+    URIRef(RDF): URIRef(RDF),
+    URIRef(RDFS): URIRef(RDFS),
+    URIRef(OWL): URIRef(OWL),
 
     # This one does not answer via HTTPS :(
-    'https://xmlns.com/foaf/0.1/': 'http://xmlns.com/foaf/0.1/',
+    URIRef('https://xmlns.com/foaf/0.1/'): URIRef('http://xmlns.com/foaf/0.1/'),
+    URIRef('https://www.nanopub.org/nschema'): URIRef(
+        'https://www.nanopub.net/nschema',
+    ),
+    URIRef(PROV): URIRef('https://www.w3.org/ns/prov-o'),
 })
 
 
@@ -285,7 +294,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
         ]
         self.graph.addN(inferred_quads)
 
-    def _apply_redirect(self, source: str) -> str:
+    def _apply_redirect(self, source: URIRef) -> URIRef:
         for pattern, destination in REDIRECTS.items():
             if source.startswith(pattern):
                 logger.info('Rewriting: %s → %s', source, destination)
@@ -322,7 +331,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
 
             for url in urls:
                 try:
-                    self.load(str(url))
+                    self.load(url)
                 except Exception as err:
                     logger.error('Failed to load %s: %s', url, err)
 
@@ -339,7 +348,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
                 for _, maybe_iri in row.items():
                     if (
                         isinstance(maybe_iri, URIRef)
-                        and isinstance(self.load(str(maybe_iri)), Loaded)
+                        and isinstance(self.load(maybe_iri), Loaded)
                     ):
                         is_anything_loaded = True   # noqa: WPS220
                         logger.warning(   # noqa: WPS220
@@ -352,7 +361,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
 
     def load(   # noqa: C901, WPS210, WPS212, WPS213, WPS231
         self,
-        source: str,
+        source: URIRef,
     ) -> LoadResult:
         """
         Try to load LD denoted by the given `source`.
@@ -361,7 +370,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
         """
         url = URL(source)
 
-        if url.scheme in {'file', 'python', 'local', 'urn'}:
+        if url.scheme in {'file', 'python', 'local', 'urn', 'doi'}:
             # FIXME temporary fix. `yaml-ld` doesn't read `context.*` files and
             #   fails.
             return Skipped()
@@ -370,7 +379,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
         if new_source != source:
             return self.load(new_source)
 
-        source_uri = URIRef(source.replace('http://', 'https://'))
+        source_uri = normalize_term(source)
         existing_triple = funcy.first(
             self.graph.quads(
                 (
@@ -396,7 +405,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
 
             for namespace in namespaces:
                 if not_found.path.startswith(str(namespace)):
-                    self.load(str(namespace))
+                    self.load(URIRef(namespace))
                     logger.info(
                         'Redirecting %s → namespace %s',
                         not_found.path,
@@ -509,42 +518,41 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
 
         quad_tuples = [
             tuple([
-                normalize_term(term) for term in dataclasses.replace(
-                    quad,
-                    graph=source_uri,
-                ).as_tuple()
+                normalize_term(term) for term in quad.as_tuple()
             ])
             for quad in quads
         ]
 
         self.graph.addN(quad_tuples)
         self.graph.last_not_inferred_source = source
-        logger.info('%s | loaded successfully.', source)
-        return Loaded()
 
-    def load_data_for_triple(
-        self,
-        triple: TripleWithVariables,
-        bindings: dict[str, Node],
-    ):
-        """Load data for a given triple."""
-        triple = TripleWithVariables(
-            *[
-                self.resolve_term(term, bindings=bindings)
-                for term in triple
-            ],
+        created_graphs = {
+            normalize_term(quad.graph)
+            for quad in quads
+            if quad.graph != source_uri
+        }
+        self.graph.addN(
+            itertools.chain.from_iterable(
+                [
+                    (
+                        source_uri,
+                        IOLANTA['has-sub-graph'],
+                        created_graph,
+                        source_uri,
+                    ),
+                    (
+                        created_graph,
+                        RDF.type,
+                        IOLANTA.Graph,
+                        source_uri,
+                    ),
+                ]
+                for created_graph in created_graphs
+            ),
         )
 
-        subject, _predicate, rdf_object = triple
-
-        if isinstance(subject, URIRef):
-            try:
-                self.load(str(subject))
-            except Exception:
-                logger.exception('Failed to load information about %s', subject)
-
-        if isinstance(rdf_object, URIRef):
-            self.load(str(rdf_object))
+        logger.info('%s | loaded successfully.', source)
+        return Loaded()
 
     def resolve_term(self, term: Node, bindings: dict[str, Node]):
         """Resolve triple elements against initial variable bindings."""
