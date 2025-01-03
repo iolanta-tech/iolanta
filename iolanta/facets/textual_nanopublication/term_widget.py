@@ -56,12 +56,14 @@ class TermWidget(   # noqa: WPS214
         as_datatype: NotLiteralNode = DATATYPES.title,
         triple: Triple | None = None,
         position: TermPositionInTriple | None = None,
+        background_color: str | None = None,
     ):
         """Initialize parameters for rendering, navigation, & provenance."""
         self.uri = uri
         self.as_datatype = as_datatype
         self.triple = triple
         self.position_in_triple = position
+        self.background_color = background_color
         super().__init__()
         qname = self.app.iolanta.node_as_qname(  # noqa: WPS601
             uri,
@@ -71,14 +73,8 @@ class TermWidget(   # noqa: WPS214
             style='#696969',
         )
 
-        self.default_background_color = None
-        if position:
-            self.default_background_color = {
-                TermPositionInTriple.SUBJECT: 'darkred',
-                TermPositionInTriple.PREDICATE: 'darkolivegreen',
-                TermPositionInTriple.OBJECT: 'darkgoldenrod',
-            }[position]
-            self.styles.background = self.default_background_color
+        if self.background_color:
+            self.styles.background = self.background_color
 
     def on_worker_state_changed(self, event: Worker.StateChanged):
         """Show the title after it has been rendered."""
@@ -119,10 +115,10 @@ class TermWidget(   # noqa: WPS214
 
     def on_focus(self):
         """Handle focus state."""
-        if self.default_background_color:
+        if self.background_color:
             self.styles.background = 'darkslateblue'
 
     def on_blur(self):
         """Handle blur state."""
-        if self.default_background_color:
-            self.styles.background = self.default_background_color
+        if self.background_color:
+            self.styles.background = self.background_color
