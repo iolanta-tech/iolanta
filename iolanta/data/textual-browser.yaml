@@ -97,6 +97,13 @@
       iolanta:outputs:
         $id: https://iolanta.tech/cli/textual
 
+  - $id: https://iolanta.tech/datatypes/textual-graph-triples
+    rdfs:label: Graph Triples
+    iolanta:hasDefaultFacet:
+      $id: python://iolanta.facets.textual_graph_triples.GraphTriplesFacet
+      iolanta:outputs:
+        $id: https://iolanta.tech/datatypes/textual-graph-triples
+
   - $id: https://iolanta.tech/qname
     iolanta:hasDefaultFacet:
       $id: python://iolanta.facets.qname.QNameFacet
