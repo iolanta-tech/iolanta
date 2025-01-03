@@ -6,8 +6,36 @@
   iolanta: https://iolanta.tech/
   rdfs: "https://www.w3.org/2000/01/rdf-schema#"
   rdf: https://www.w3.org/1999/02/22-rdf-syntax-ns#
+  np: https://www.nanopub.org/nschema#
+  dcterms: https://purl.org/dc/terms/
+  xsd: https://www.w3.org/2001/XMLSchema#
 
 "@included":
+  - $id: iolanta:icon
+    rdfs:label: Icon
+    rdfs:subClassOf:
+      $id: xsd:string
+
+  - $id: dcterms:creator
+    iolanta:icon: ©️
+
+  - $id: https://iolanta.tech/datatypes/icon
+    rdfs:label: Icon
+    iolanta:hasDefaultFacet:
+      $id: python://iolanta.facets.icon.IconFacet
+      iolanta:outputs:
+        $id: https://iolanta.tech/datatypes/icon
+
+  - $id: np:Nanopublication
+    rdfs:label: Nanopublication
+    iolanta:hasInstanceFacet:
+      $id: python://iolanta.facets.textual_nanopublication.NanopublicationFacet
+      rdfs:label: Nanopublication
+      iolanta:outputs:
+        $id: https://iolanta.tech/cli/textual
+      iolanta:is-preferred-over:
+        $id: python://iolanta.facets.textual_default.TextualDefaultFacet
+
   - $id: https://iolanta.tech/cli/interactive
     iolanta:hasDefaultFacet:
       $id: python://iolanta.facets.textual_browser.TextualBrowserFacet

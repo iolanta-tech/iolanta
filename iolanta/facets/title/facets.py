@@ -1,3 +1,4 @@
+import funcy
 from rdflib import URIRef
 
 from iolanta.facets.facet import Facet
@@ -23,13 +24,7 @@ class TitleFacet(Facet[str]):
         )
 
         if choices:
-            try:
-                [row] = choices
-            except ValueError:
-                raise ValueError(
-                    f'Not exactly one choice, what do we do?! {choices}',
-                )
-    
+            row = funcy.first(choices)
             for alternative in PRIORITIES:
                 if label := row.get(alternative):
                     return str(label)
