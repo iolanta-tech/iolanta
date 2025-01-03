@@ -4,6 +4,7 @@ LOCAL = rdflib.Namespace('local:')
 IOLANTA = rdflib.Namespace('https://iolanta.tech/')
 DATATYPES = rdflib.Namespace('https://iolanta.tech/datatypes/')
 PYTHON = rdflib.Namespace('python://')
+NP = rdflib.Namespace('https://www.nanopub.org/nschema#')
 SDO = rdflib.SDO
 
 
