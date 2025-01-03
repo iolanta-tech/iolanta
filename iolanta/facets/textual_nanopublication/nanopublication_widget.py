@@ -53,11 +53,12 @@ class NanopublicationScreen(IolantaWidgetMixin, VerticalScroll):
             graph=row['assertion'],
         )
 
+        yield self.iolanta.render(
+            row['assertion'],
+            as_datatype=DATATYPES['textual-graph-triples'],
+        )[0]
+
         yield TermList([
-            TermWidget(term)
-            for row in rows
-            for term in row.values()
-        ] + [
             TermWidget(DCTERMS.creator, as_datatype=DATATYPES.icon),
             TermWidget(row['author']),
             TermWidget(row['created_time']),
