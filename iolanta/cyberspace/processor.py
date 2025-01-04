@@ -1,7 +1,6 @@
 import dataclasses
 import datetime
 import itertools
-import logging
 import re
 import time
 from pathlib import Path
@@ -10,6 +9,7 @@ from types import MappingProxyType
 from typing import Any, Iterable, Mapping
 
 import funcy
+import loguru
 import reasonable
 import yaml_ld
 from rdflib import ConjunctiveGraph, Namespace, URIRef, Variable
@@ -37,8 +37,6 @@ from iolanta.namespaces import (  # noqa: WPS235
     VANN,
 )
 from iolanta.parse_quads import parse_quads
-
-logger = logging.getLogger(__name__)
 
 NORMALIZE_TERMS_MAP = MappingProxyType({
     URIRef(_url := 'https://www.w3.org/2002/07/owl'): URIRef(f'{_url}#'),
@@ -118,7 +116,7 @@ def _extract_from_mapping(  # noqa: WPS213
 
         case unknown_name:
             formatted_keys = ', '.join(algebra.keys())
-            logger.error(
+            loguru.logger.error(
                 'Unknown SPARQL expression %s(%s): %s',
                 unknown_name,
                 formatted_keys,
@@ -231,6 +229,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
 
     graph: ConjunctiveGraph
     inference_lock: Lock = dataclasses.field(default_factory=Lock)
+    logger: Any = loguru.logger
 
     def __post_init__(self):
         """Note that we do not presently need OWL inference."""
@@ -258,7 +257,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             self.graph.update(
                 update_object=(inference / file_name).read_text(),
             )
-            logger.info(
+            self.logger.info(
                 '%s: %s triple(s), inferred at %s',
                 file_name,
                 len(self.graph.get_context(graph_name)),
@@ -276,7 +275,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
         with self.inference_lock:
             self._infer_with_sparql()
             self._infer_with_owl_rl()
-            logger.info('Inference @ cyberspace: complete.')
+            self.logger.info('Inference @ cyberspace: complete.')
 
             self.graph.last_not_inferred_source = None
 
@@ -297,7 +296,11 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
     def _apply_redirect(self, source: URIRef) -> URIRef:
         for pattern, destination in REDIRECTS.items():
             if source.startswith(pattern):
-                logger.info('Rewriting: %s → %s', source, destination)
+                self.logger.info(
+                    'Rewriting: {source} → {destination}',
+                    source=source,
+                    destination=destination,
+                )
                 return destination
 
         return source
@@ -333,7 +336,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
                 try:
                     self.load(url)
                 except Exception as err:
-                    logger.error('Failed to load %s: %s', url, err)
+                    self.logger.error('Failed to load %s: %s', url, err)
 
         self.maybe_apply_inference()
 
@@ -351,9 +354,9 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
                         and isinstance(self.load(maybe_iri), Loaded)
                     ):
                         is_anything_loaded = True   # noqa: WPS220
-                        logger.warning(   # noqa: WPS220
-                            'Newly loaded: %s',
-                            maybe_iri,
+                        self.logger.warning(   # noqa: WPS220
+                            'Newly loaded: {uri}',
+                            uri=maybe_iri,
                         )
 
         query_result['bindings'] = bindings
@@ -392,28 +395,29 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
         )
         if existing_triple is not None:
             return Skipped()
-        else:
-            logger.warning('No triples for %s', source)
 
         # FIXME This is definitely inefficient. However, python-yaml-ld caches
         #   the document, so the performance overhead is not super high.
         try:
             _resolved_source = yaml_ld.load_document(source)['documentUrl']
         except NotFound as not_found:
-            logger.info('%s | 404 Not Found', not_found.path)
+            self.logger.info('%s | 404 Not Found', not_found.path)
             namespaces = [RDF, RDFS, OWL, FOAF, DC, VANN]
 
             for namespace in namespaces:
                 if not_found.path.startswith(str(namespace)):
                     self.load(URIRef(namespace))
-                    logger.info(
+                    self.logger.info(
                         'Redirecting %s → namespace %s',
                         not_found.path,
                         namespace,
                     )
                     return Loaded()
 
-            logger.info('%s | Cannot find a matching namespace', not_found.path)
+            self.logger.info(
+                '{path} | Cannot find a matching namespace',
+                path=not_found.path,
+            )
 
             self.graph.add((
                 source_uri,
@@ -437,7 +441,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             return Loaded()
 
         except Exception as err:
-            logger.info('%s | Failed: %s', source, err)
+            self.logger.info('%s | Failed: %s', source, err)
 
             self.graph.add((
                 source_uri,
@@ -484,17 +488,17 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
         try:  # noqa: WPS225
             ld_rdf = yaml_ld.to_rdf(source)
         except ConnectionError as name_resolution_error:
-            logger.info(
+            self.logger.info(
                 '%s | name resolution error: %s',
                 source,
                 str(name_resolution_error),
             )
             return Loaded()
         except ParserNotFound as parser_not_found:
-            logger.info('%s | %s', source, str(parser_not_found))
+            self.logger.info('%s | %s', source, str(parser_not_found))
             return Loaded()
         except YAMLLDError as yaml_ld_error:
-            logger.error('%s | %s', source, str(yaml_ld_error))
+            self.logger.error('%s | %s', source, str(yaml_ld_error))
             return Loaded()
 
         try:
@@ -513,7 +517,13 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             )
 
         if not quads:
-            logger.warning('%s | No data found', source)
+            self.logger.warning('{source} | No data found', source=source)
+            self.graph.addN([(
+                source_uri,
+                RDF.type,
+                IOLANTA.Graph,
+                source_uri,
+            )])
             return Loaded()
 
         quad_tuples = [
@@ -551,7 +561,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             ),
         )
 
-        logger.info('%s | loaded successfully.', source)
+        self.logger.info('%s | loaded successfully.', source)
         return Loaded()
 
     def resolve_term(self, term: Node, bindings: dict[str, Node]):
