@@ -1,4 +1,5 @@
 import funcy
+from rdflib import Literal
 from textual.containers import VerticalScroll
 
 from iolanta.facets.page_title import PageTitle
@@ -9,7 +10,7 @@ from iolanta.namespaces import DATATYPES, DCTERMS, NP
 from iolanta.widgets.mixin import IolantaWidgetMixin
 
 NANOPUBLICATION_QUERY = """
-SELECT ?assertion ?author ?created_time WHERE {
+SELECT ?assertion ?author ?created_time ?retract WHERE {
     $uri np:hasAssertion ?assertion .
 
     OPTIONAL {
@@ -22,6 +23,14 @@ SELECT ?assertion ?author ?created_time WHERE {
 
     OPTIONAL {
         $uri dcterms:created ?created_time .
+    }
+
+    OPTIONAL {
+        GRAPH ?retracting_assertion {
+            ?retractor <https://purl.org/nanopub/x/retracts> $uri .
+        }
+
+        ?retract np:hasAssertion ?retracting_assertion .
     }
 }
 """
@@ -65,6 +74,12 @@ class NanopublicationScreen(IolantaWidgetMixin, VerticalScroll):
             provenance.append(
                 TermWidget(row['created_time']),
             )
+
+        if retract := row.get('retract'):
+            provenance.extend([
+                TermWidget(Literal('Retracted by'), background_color='darkred'),
+                TermWidget(retract, background_color='darkred'),
+            ])
 
         if provenance:
             yield TermList(provenance)
