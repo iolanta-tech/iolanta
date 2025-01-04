@@ -1,4 +1,3 @@
-import logging
 from dataclasses import dataclass
 from functools import cached_property
 from graphlib import TopologicalSorter
@@ -10,8 +9,6 @@ from yarl import URL
 
 from iolanta.facets.errors import FacetNotFound
 from iolanta.models import NotLiteralNode
-
-logger = logging.getLogger(__name__)
 
 
 class FoundRow(TypedDict):

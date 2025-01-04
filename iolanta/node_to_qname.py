@@ -1,12 +1,8 @@
-import logging
-
 from classes import typeclass
 from rdflib import Graph, URIRef
 from rdflib.term import Node
 
 from iolanta.models import ComputedQName
-
-logger = logging.getLogger(__name__)
 
 
 @typeclass

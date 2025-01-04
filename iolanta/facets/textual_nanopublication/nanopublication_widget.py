@@ -8,6 +8,24 @@ from iolanta.models import NotLiteralNode
 from iolanta.namespaces import DATATYPES, DCTERMS, NP
 from iolanta.widgets.mixin import IolantaWidgetMixin
 
+NANOPUBLICATION_QUERY = """
+SELECT ?assertion ?author ?created_time WHERE {
+    $uri np:hasAssertion ?assertion .
+
+    OPTIONAL {
+        $uri (
+            dcterms:creator
+            | <https://purl.org/pav/createdBy>
+            | <https://swan.mindinformatics.org/ontologies/1.2/pav/createdBy>
+        ) ?author .
+    }
+
+    OPTIONAL {
+        $uri dcterms:created ?created_time .
+    }
+}
+"""
+
 
 class NanopublicationScreen(IolantaWidgetMixin, VerticalScroll):
     """Nanopublication screen."""
@@ -23,17 +41,7 @@ class NanopublicationScreen(IolantaWidgetMixin, VerticalScroll):
 
         row = funcy.first(
             self.iolanta.query(   # noqa: WPS462
-                """
-                SELECT ?assertion ?author ?created_time WHERE {
-                    $uri
-                        np:hasAssertion ?assertion ;
-                        (
-                            dcterms:creator
-                            | <https://purl.org/pav/createdBy>
-                        ) ?author ;
-                        dcterms:created ?created_time .
-                }
-                """,
+                NANOPUBLICATION_QUERY,
                 uri=self.uri,
             ),
         )
@@ -41,25 +49,22 @@ class NanopublicationScreen(IolantaWidgetMixin, VerticalScroll):
         if not row:
             return
 
-        rows = self.iolanta.query(   # noqa: WPS462
-            """
-            SELECT ?subject ?predicate ?object WHERE {
-                GRAPH $graph {
-                    ?subject ?predicate ?object .
-                }
-            }
-            ORDER BY ?subject ?predicate ?object
-            """,
-            graph=row['assertion'],
-        )
-
         yield self.iolanta.render(
             row['assertion'],
             as_datatype=DATATYPES['textual-graph-triples'],
         )[0]
 
-        yield TermList([
-            TermWidget(DCTERMS.creator, as_datatype=DATATYPES.icon),
-            TermWidget(row['author']),
-            TermWidget(row['created_time']),
-        ])
+        provenance = []
+        if row.get('author'):
+            provenance.extend([
+                TermWidget(DCTERMS.creator, as_datatype=DATATYPES.icon),
+                TermWidget(row['author']),
+            ])
+
+        if row.get('created_time'):
+            provenance.append(
+                TermWidget(row['created_time']),
+            )
+
+        if provenance:
+            yield TermList(provenance)

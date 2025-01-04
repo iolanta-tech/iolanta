@@ -16,8 +16,6 @@ from iolanta.facets.page_title import PageTitle
 from iolanta.models import NotLiteralNode
 from iolanta.namespaces import DATATYPES
 
-logger = logging.getLogger(__name__)
-
 
 class TermStatus(StrEnum):
     """Status of an ontology term."""

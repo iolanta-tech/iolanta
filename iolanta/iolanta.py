@@ -1,5 +1,4 @@
 import functools
-import logging
 from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import (  # noqa: WPS235
@@ -9,12 +8,14 @@ from typing import (  # noqa: WPS235
     List,
     Mapping,
     Optional,
+    Protocol,
     Set,
     Tuple,
     Type,
 )
 
 import funcy
+import loguru
 import yaml_ld
 from rdflib import ConjunctiveGraph, Literal, Namespace, URIRef
 from rdflib.namespace import NamespaceManager
@@ -49,6 +50,28 @@ from iolanta.stack import Stack
 from ldflex import LDFlex
 
 
+class LoggerProtocol(Protocol):
+    """
+    Abstract Logger interface.
+
+    Unites `loguru` & standard `logging`.
+    """
+
+    def info(   # noqa: WPS110
+        self,
+        message: str,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
+        """Log an INFO message."""
+
+    def error(self, message: str, *args: Any, **kwargs: Any) -> None:
+        """Log an ERROR message."""
+
+    def warning(self, message: str, *args: Any, **kwargs: Any) -> None:
+        """Log a WARNING message."""
+
+
 @dataclass
 class Iolanta:   # noqa: WPS214
     """Iolanta is a Semantic web browser."""
@@ -68,12 +91,7 @@ class Iolanta:   # noqa: WPS214
         default_factory=PythonImportResolver,
     )
 
-    logger: logging.Logger = field(
-        default_factory=functools.partial(
-            logging.getLogger,
-            name='iolanta',
-        ),
-    )
+    logger: LoggerProtocol = loguru.logger
 
     sources_added_not_yet_inferred: list[SourceType] = field(
         default_factory=list,

@@ -112,6 +112,11 @@ class Facet(Generic[FacetOutput]):
         """Lightweight procedure to find a triple by template."""
         return self.iolanta.find_triple(triple_template=triple)
 
+    @cached_property
+    def logger(self):
+        """Logger."""
+        return self.iolanta.logger.bind(facet=self.__class__.__name__)
+
     def __str__(self):
         """Render."""
         return str(self.show())

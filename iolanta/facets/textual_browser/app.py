@@ -64,6 +64,16 @@ class IolantaBrowser(App):  # noqa: WPS214, WPS230
             force=True,
         )
 
+        # Disable stderr logging, to not break the TUI.
+        self.iolanta.logger.remove(0)
+
+        # Log to the dev console.
+        self.iolanta.logger.add(
+            lambda msg: self.query_one(DevConsole).write(msg),
+            level='INFO',
+            format='{time} {level} {message}',
+        )
+
     def action_toggle_dark(self) -> None:
         """Toggle dark mode."""
         self.dark = not self.dark

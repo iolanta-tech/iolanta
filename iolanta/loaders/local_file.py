@@ -15,8 +15,6 @@ from iolanta.parsers.json import JSON
 from iolanta.parsers.markdown import Markdown
 from iolanta.parsers.yaml import YAML
 
-logger = logging.getLogger(__name__)
-
 
 def choose_parser_by_extension(path: Path) -> Type[Parser]:
     """
