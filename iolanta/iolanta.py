@@ -331,6 +331,8 @@ class Iolanta:   # noqa: WPS214
         as_datatype: NotLiteralNode,
     ) -> Tuple[Any, Stack]:
         """Find an Iolanta facet for a node and render it."""
+        node = normalize_term(node)
+
         if not as_datatype:
             raise ValueError(
                 f'Please provide the datatype to render {node} as.',
