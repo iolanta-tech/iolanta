@@ -2,11 +2,12 @@ import locale
 import logging
 from typing import Annotated
 
+import loguru
+import platformdirs
 from documented import DocumentedError
 from rdflib import Literal
 from rich.console import Console
 from rich.markdown import Markdown
-from textual.logging import TextualHandler
 from typer import Argument, Exit, Option, Typer
 
 from iolanta.cli.models import LogLevel
@@ -15,7 +16,6 @@ from iolanta.iolanta import Iolanta
 DEFAULT_LANGUAGE = locale.getlocale()[0].split('_')[0]
 
 
-logger = logging.getLogger('iolanta')
 console = Console()
 
 
@@ -25,7 +25,7 @@ def construct_app() -> Typer:
 
     FIXME: Remove this function, just create the app on module level.
     """
-    iolanta = Iolanta(logger=logger)
+    iolanta = Iolanta()
 
     return Typer(
         no_args_is_help=True,
@@ -61,19 +61,22 @@ def render_command(   # noqa: WPS231, WPS238
         LogLevel.ERROR: logging.ERROR,
     }[log_level]
 
+    log_file_path = platformdirs.user_log_path(
+        'iolanta',
+        ensure_exists=True,
+    ) / 'iolanta.log'
+
+    logger = loguru.logger
+    logger.add(
+        log_file_path,
+        level=level,
+        format='{time} {level} {message}',
+        enqueue=True,
+    )
+
     iolanta: Iolanta = Iolanta(
         language=Literal(language),
-    )
-    iolanta.logger.level = level
-
-    textual_handler = TextualHandler()
-    textual_handler.level = level
-    logging.basicConfig(
-        level=level,
-        format='%(message)s',
-        datefmt='[%X]',
-        handlers=[textual_handler],
-        force=True,
+        logger=logger,
     )
 
     node = iolanta.string_to_node(url)
@@ -97,7 +100,7 @@ def render_command(   # noqa: WPS231, WPS238
         raise Exit(1)
 
     except Exception as err:
-        if iolanta.logger.level in {logging.DEBUG, logging.INFO}:
+        if level in {logging.DEBUG, logging.INFO}:
             raise
 
         console.print(str(err))
