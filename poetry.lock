@@ -2782,7 +2782,10 @@ files = [
 [package.dependencies]
 annotated-types = ">=0.6.0"
 pydantic-core = "2.23.4"
-typing-extensions = {version = ">=4.6.1", markers = "python_version < \"3.13\""}
+typing-extensions = [
+    {version = ">=4.12.2", markers = "python_version >= \"3.13\""},
+    {version = ">=4.6.1", markers = "python_version < \"3.13\""},
+]
 
 [package.extras]
 email = ["email-validator (>=2.0.0)"]
@@ -4113,5 +4116,5 @@ all = ["iolanta-tables"]
 
 [metadata]
 lock-version = "2.0"
-python-versions = ">=3.10,<3.12"
-content-hash = "a1b4f94b9881a4a3dc9b21786823319c503b2607d527fcc6bc91e219ea054690"
+python-versions = ">=3.10,<4.0"
+content-hash = "aee725a437bdd1a15b7820d049b1146f46b7fdad91f1c53fbc006454f016d6a3"
