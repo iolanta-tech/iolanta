@@ -257,6 +257,7 @@ class Iolanta:   # noqa: WPS214
         self.graph.bind(prefix='vann', namespace=namespaces.VANN)
         self.graph.bind(prefix='np', namespace=namespaces.NP)
         self.graph.bind(prefix='dcterms', namespace=namespaces.DCTERMS)
+        self.graph.bind(prefix='rdfg', namespace=namespaces.RDFG)
 
     @property
     def query(self):
