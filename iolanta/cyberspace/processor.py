@@ -257,11 +257,11 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             self.graph.update(
                 update_object=(inference / file_name).read_text(),
             )
+            triple_count = len(self.graph.get_context(graph_name))
+            duration = datetime.timedelta(seconds=time.time() - start_time)
             self.logger.info(
-                '%s: %s triple(s), inferred at %s',
-                file_name,
-                len(self.graph.get_context(graph_name)),
-                datetime.timedelta(seconds=time.time() - start_time),
+                f'{file_name}: {triple_count} triple(s), '
+                f'inferred at {duration}',
             )
 
     def maybe_apply_inference(self):
@@ -401,7 +401,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
         try:
             _resolved_source = yaml_ld.load_document(source)['documentUrl']
         except NotFound as not_found:
-            self.logger.info('%s | 404 Not Found', not_found.path)
+            self.logger.info(f'{not_found.path} | 404 Not Found')
             namespaces = [RDF, RDFS, OWL, FOAF, DC, VANN]
 
             for namespace in namespaces:
@@ -561,7 +561,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             ),
         )
 
-        self.logger.info('%s | loaded successfully.', source)
+        self.logger.info(f'{source} | loaded successfully.')
         return Loaded()
 
     def resolve_term(self, term: Node, bindings: dict[str, Node]):
