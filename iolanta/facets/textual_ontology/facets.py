@@ -76,7 +76,7 @@ class OntologyFacet(Facet[Widget]):
             URIRef('https://iolanta.tech/visualizations/index.yaml'),
             as_datatype=DATATYPES.title,
         )
-        logger.info('Index Retrieved: %s', index_title)
+        self.logger.info('Index Retrieved: %s', index_title)
 
         vocabs = funcy.lpluck(
             'vocab',
@@ -88,7 +88,7 @@ class OntologyFacet(Facet[Widget]):
                 vocab,
                 as_datatype=DATATYPES.title,
             )
-            logger.info(
+            self.logger.info(
                 'Visualization vocabulary retrieved: %s',
                 vocab_title,
             )
