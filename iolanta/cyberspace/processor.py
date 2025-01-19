@@ -52,7 +52,7 @@ REDIRECTS = MappingProxyType({
     # FIXME This is presently hardcoded; we need to
     #   - either find a way to resolve these URLs automatically,
     #   - or create a repository of those redirects online.
-    'https://purl.org/vocab/vann/': (
+    'https://purl.org/vocab/vann/': URIRef(
         'https://vocab.org/vann/vann-vocab-20100607.rdf'
     ),
     URIRef(DC): URIRef(DCTERMS),
