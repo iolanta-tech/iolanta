@@ -168,7 +168,7 @@ class Iolanta:   # noqa: WPS214
         FIXME:
           * Maybe implement context.json/context.yaml files support.
         """
-        self.logger.info('Adding to graph: %s', source)
+        self.logger.info(f'Adding to graph: {source}')
         self.sources_added_not_yet_inferred.append(source)
 
         if not isinstance(source, Path):
@@ -188,16 +188,16 @@ class Iolanta:   # noqa: WPS214
                 )
                 continue
             except ParserNotFound as parser_not_found:
-                self.logger.info('%s | %s', source, str(parser_not_found))
+                self.logger.info(f'{source} | {parser_not_found}')
                 continue
             except YAMLLDError as yaml_ld_error:
-                self.logger.info('%s | %s', source, str(yaml_ld_error))
+                self.logger.info(f'{source} | {yaml_ld_error}')
                 continue
             except ValueError as value_error:
-                self.logger.info('%s | %s', source, str(value_error))
+                self.logger.info(f'{source} | {value_error}')
                 continue
 
-            self.logger.info('%s is loaded.', source_file)
+            self.logger.info(f'{source_file} is loaded.')
 
             graph = path_to_iri(source_file)
             try:
@@ -216,7 +216,7 @@ class Iolanta:   # noqa: WPS214
                 )
 
             if not quads:
-                self.logger.warning('%s | No data found', source_file)
+                self.logger.warning(f'{source_file} | No data found')
                 continue
 
             quad_tuples = [
