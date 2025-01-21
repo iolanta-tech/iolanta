@@ -50,6 +50,10 @@
         #cyberspace h2, #cyberspace p, #cyberspace li {
             color: white;
         }
+
+        aside {
+            display: none;
+        }
     </style>
 </head>
 <body class="shower list">
@@ -82,6 +86,10 @@
                 color: white;
             }
         </style>
+
+        <aside>
+          Thank you very much, hello everyone, I would like to talk about the issues of navigating Linked Data and a potential approach to that problem I am currently working on, and I will be very happy to hear what you think.
+        </aside>
     </section>
 
     <section class="slide">
@@ -103,19 +111,18 @@
             </ul>
           </li>
         </ul>
+        <aside>
+          My name's Anatoly, I am a Python software developer. I am also kind of a fan of Linked Data. I am involved with W3C JSON for Linked Data working group, particularly with YAML-LD, which is a notation for JSON-LD that tries to make Linked Data more easily writeable by a live person, while JSON-LD, with which I am also trying to help, is more easily writeable for a machine.
+        </aside>
     </section>
 
     <section class="slide" id="rdf">
       <h2>RDF</h2>
-      <p class="next">Meta language</p>
-      <p class="next">Lingua franca</p>
+      <p>Consists of quads</p>
+      <aside>
+        In general, the topic of interaction between Linked Data and humans is important to me, and I believe there are improvements to be done. There is a great deal of information already available as Linked Data, but many potential users who are not specifically Linked Data professionals have certain difficulties using that data.
+      </aside>
     </section>
-
-    <!--section class="slide" id="lingua-franca">
-      <h2>RDF</h2>
-      <p class="next">Triples</p>
-      <p class="next">Quads</p>
-    </section-->
 
     <section class="slide" id="cyberspace">
       <h2>Cyberspace</h2>
@@ -133,12 +140,18 @@
           </ul>
         </li>
       </ul>
+      <aside>
+        For the purposes of this presentation, I propose the term "cyberspace" to denote the set of all RDF quads available to an individual, the whole volume of machine readable data a particular person or machine can access. We will also assume that the named graph in each of those quads signifies the source from which the quad is retrievable. We are a hijacking a term coined by William Gibson, a sci-fi writer, and I also hope he will forgive us.
+      </aside>
     </section>
 
     <section class="slide" id="show">
       <h2>
         Show Time!
       </h2>
+      <aside>
+        I've written a little tool, named Iolanta, that might assist in navigating the vast depths of the cyberspace. I apologize if the LLM-generated backgrounds on my slides were hinting on something colorful and three-dimensional, and vaguely futuristic, - Iolanta is nothing of the sort, it is merely a terminal application.
+      </aside>
     </section>
 
     <section class="slide">
@@ -147,22 +160,35 @@
         iolanta https://purl.org/np/RAYskLSM5x29icArnWvo9nVrIVEN2mfPoDq3TQSgm-9kk
       </code>
       </small>
-    </section>
+      <aside>
+        <p>
+          Let us copy and paste this command into the terminal. This is a URL of a nanopublication. Unfortunately, not all parts of this nanopublication have been converted to a human readable form. We can see this is Tobias, and we will have to guess that he retracts another nanopublication. Let's click on it.
+        </p>
 
-    <section class="slide">
-      <small>
-      <code>
-        iolanta https://orcid.org/0000-0002-1267-0234
-      </code>
-      </small>
-    </section>
+        <p>
+          Now this is a bit more interesting. This nanopublication asserts a few triples about red things, which are a class, have a label and a definition. All written by Tobias again, and then retracted using the publication we have already seen.
+        </p>
 
-    <section class="slide">
-      <small>
-      <code>
-        iolanta https://orcid.org/0000-0002-1267-0234 --as https://iolanta.tech/datatypes/title
-      </code>
-      </small>
+        <p>
+          Let's click on the <code>label</code>. From the header of the screen, one might guess that this is a regular <code>label</code> property from RDF Schema vocabulary, but this page is trying to make it more explicit. We can see that RDFS defines this term and we can jump to the whole vocabulary.
+        </p>
+
+        <p>
+          Which conveniently shows us its terms, grouped by rather arbitrary categories. This is only one of possible views for the RDFS ontology, it is designed to present it, well, as ontology - that is why Iolanta chooses it as a default. However, there are other views, this is the Properties view which describes the ontology itself.
+        </p>
+
+        <p>
+          Note that one of its properties is <code>Term Group</code>, and that's exactly what defines grouping of terms that we have been looking at. This term is defined by VANN ontology by Ian Davis back in 2010.
+        </p>
+
+        <p>
+          I would like to show one more example. Let's go back, here, and see what we know about Tobias. His information is being sourced from ORCID portal, and this page shows a lot of pieces that we fail to properly render, they are just blank node identifiers. Like this one, which could theoretically be nicely rendered as Scopus ID. This still needs a lot of work.
+        </p>
+
+        <p>
+          On this screen, I will return to the presentation; if you have questions or thoughts, we can always come back during the discussion.
+        </p>
+      </aside>
     </section>
 
     <section class="slide">
@@ -173,6 +199,22 @@
         <li>Inject Cyberspace-sourced information into human readable content</li>
         <li>Ideas are welcome!</li>
       </ul>
+
+      <aside>
+        <p>
+          What is Iolanta good for? Why is it built? - In order to make machine readable data more readable for a human. Now opinions might differ as to how human friendly a terminal is, but as a programmer, I use terminal a lot, and this environment was a natural habitat for me to experiment within.
+        </p>
+        <p>
+          In addition, terminal gives you quite a lot of interoperability. At this point, Iolanta is drawing a text based user interface, but it will be even easier to generate JSON, YAML, HTML, TeX or any other textual format - based on Linked Data available in the Cyberspace.
+        </p>
+        <p>
+          Therefore, in addition to merely browsing the Cyberspace, retrieval of information from there for use in other programs, or as part of documents, is also an important use case.
+        </p>
+
+        <p>
+          I will be thrilled to hear your ideas of how it might be useful in your work.
+        </p>
+      </aside>
     </section>
 
     <section class="slide">
@@ -186,20 +228,21 @@
           Feedback, bug reports, issues, PRs are very much welcome!
         </li>
       </ul>
+      <aside>
+        These are some links; I will make a publication on the site of the tool with the slides this presentation.
+      </aside>
     </section>
 
     <section class="slide">
       <h2 class="shout">Thank you!<br/><small>Any rotten 🍅?</small></h2>
+      <aside>
+        Thank you very much, and I will be happy to answer any questions.
+      </aside>
     </section>
-
-    <footer class="badge">
-        <a href="https://github.com/shower/shower">Fork me on GitHub</a>
-    </footer>
 
     <div class="progress"></div>
 
     <script src="shower//shower.js"></script>
-    <!-- Copyright © 3000 Yours Truly, Famous Inc. -->
 
 </body>
 </html>
