@@ -12,10 +12,12 @@ import funcy
 import loguru
 import reasonable
 import yaml_ld
+from nanopub import NanopubClient
 from rdflib import ConjunctiveGraph, Namespace, URIRef, Variable
 from rdflib.plugins.sparql.algebra import translateQuery
 from rdflib.plugins.sparql.evaluate import evalQuery
 from rdflib.plugins.sparql.parser import parseQuery
+from rdflib.plugins.sparql.parserutils import CompValue
 from rdflib.plugins.sparql.sparql import Query
 from rdflib.query import Processor
 from rdflib.term import BNode, Literal, Node
@@ -38,6 +40,8 @@ from iolanta.namespaces import (  # noqa: WPS235
 )
 from iolanta.parse_quads import parse_quads
 
+ENABLE_FETCHING_RETRACTED_NANOPUBS = False
+
 NORMALIZE_TERMS_MAP = MappingProxyType({
     URIRef(_url := 'https://www.w3.org/2002/07/owl'): URIRef(f'{_url}#'),
     URIRef(_url := 'https://www.w3.org/2000/01/rdf-schema'): URIRef(f'{_url}#'),
@@ -53,7 +57,7 @@ REDIRECTS = MappingProxyType({
     #   - either find a way to resolve these URLs automatically,
     #   - or create a repository of those redirects online.
     'https://purl.org/vocab/vann/': URIRef(
-        'https://vocab.org/vann/vann-vocab-20100607.rdf'
+        'https://vocab.org/vann/vann-vocab-20100607.rdf',
     ),
     URIRef(DC): URIRef(DCTERMS),
     URIRef(RDF): URIRef(RDF),
@@ -188,15 +192,12 @@ def resolve_variables(
 
 
 def extract_mentioned_urls_from_query(
-    query: str,
+    query: Query,
     bindings: dict[str, Node],
     base: str | None,
     namespaces: dict[str, Namespace],
 ) -> tuple[Query, set[URIRef]]:
     """Extract URLs that a SPARQL query somehow mentions."""
-    parse_tree = parseQuery(query)
-    query = translateQuery(parse_tree, base, namespaces)
-
     return query, set(
         resolve_variables(
             extract_mentioned_urls(query.algebra),
@@ -216,6 +217,35 @@ class Skipped:
 
 
 LoadResult = Loaded | Skipped
+
+
+def _extract_nanopublication_uris(
+    algebra: CompValue,
+) -> Iterable[URIRef]:
+    """Extract nanopublications to get retracting information for."""
+    match algebra.name:
+        case 'SelectQuery' | 'Project' | 'Distinct' | 'Graph':
+            yield from _extract_nanopublication_uris(algebra['p'])
+
+        case 'BGP':
+            for retractor, retracts, retractee in algebra['triples']:
+                if retracts == URIRef(
+                    'https://purl.org/nanopub/x/retracts',
+                ) and isinstance(retractor, Variable):
+                    yield retractee
+
+        case 'LeftJoin' | 'Join':
+            yield from _extract_nanopublication_uris(algebra['p1'])
+            yield from _extract_nanopublication_uris(algebra['p2'])
+
+        case 'Filter' | 'OrderBy':
+            return
+
+        case unknown_name:
+            raise ValueError(
+                f'Unknown algebra name: {unknown_name}, '
+                f'content: {algebra}',
+            )
 
 
 @dataclasses.dataclass(frozen=True)
@@ -325,8 +355,18 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             query = strOrQuery
 
         else:
+            parse_tree = parseQuery(strOrQuery)
+            query = translateQuery(parse_tree, base, initNs)
+
+            self.load_retracting_nanopublications_by_query(
+                query=query,
+                bindings=initBindings,
+                base=base,
+                namespaces=initNs,
+            )
+
             query, urls = extract_mentioned_urls_from_query(
-                query=strOrQuery,
+                query=query,
                 bindings=initBindings,
                 base=base,
                 namespaces=initNs,
@@ -441,7 +481,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             return Loaded()
 
         except Exception as err:
-            self.logger.info('%s | Failed: %s', source, err)
+            self.logger.info(f'{source} | Failed: {err}')
 
             self.graph.add((
                 source_uri,
@@ -573,3 +613,40 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             )
 
         return term
+
+    def load_retracting_nanopublications_by_query(    # noqa: WPS231
+        self,
+        query: Query,
+        bindings: dict[str, Node],
+        base: str | None,
+        namespaces: dict[str, Namespace],
+    ):
+        """
+        If the query requires information about retracting nanopubs, load them.
+
+        FIXME: This function presently does nothing because `nanopub` library
+          has problems: https://github.com/fair-workflows/nanopub/issues/168
+
+        TODO: Generalize this mechanism to allow for plugins which analyze
+          SPARQL queries and load information into the graph based on their
+          content.
+        """
+        nanopublications = list(
+            resolve_variables(
+                terms=_extract_nanopublication_uris(query.algebra),
+                bindings=bindings,
+            ),
+        )
+
+        if ENABLE_FETCHING_RETRACTED_NANOPUBS and nanopublications:
+            client = NanopubClient()
+
+            for nanopublication in nanopublications:
+                self.logger.info(
+                    f'Looking for nanopubs retracting {nanopublication}...',
+                )
+                retracting_publications = client.find_retractions_of(
+                    str(nanopublication),
+                )
+                for retracting_publication in retracting_publications:
+                    self.load(URIRef(retracting_publication))
