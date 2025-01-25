@@ -26,6 +26,7 @@ from yaml_ld.document_loaders.content_types import ParserNotFound
 from yaml_ld.errors import NotFound, YAMLLDError
 from yarl import URL
 
+from find_retracting import use_server
 from iolanta.errors import UnresolvedIRI
 from iolanta.namespaces import (  # noqa: WPS235
     DC,
@@ -39,8 +40,6 @@ from iolanta.namespaces import (  # noqa: WPS235
     VANN,
 )
 from iolanta.parse_quads import parse_quads
-
-ENABLE_FETCHING_RETRACTED_NANOPUBS = False
 
 NORMALIZE_TERMS_MAP = MappingProxyType({
     URIRef(_url := 'https://www.w3.org/2002/07/owl'): URIRef(f'{_url}#'),
@@ -638,15 +637,25 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             ),
         )
 
-        if ENABLE_FETCHING_RETRACTED_NANOPUBS and nanopublications:
-            client = NanopubClient()
+        if nanopublications:
+            # See https://github.com/fair-workflows/nanopub/issues/168 for
+            # context of this dirty hack.
+            server = 'http://grlc.nanopubs.lod.labs.vu.nl/api/local/local/'
+
+            client = NanopubClient(
+                use_server=server,
+            )
+            client.grlc_urls = [use_server]
 
             for nanopublication in nanopublications:
                 self.logger.info(
                     f'Looking for nanopubs retracting {nanopublication}...',
                 )
                 retracting_publications = client.find_retractions_of(
-                    str(nanopublication),
+                    str(nanopublication).replace(
+                        'https://',
+                        'http://',
+                    ),
                 )
                 for retracting_publication in retracting_publications:
                     self.load(URIRef(retracting_publication))
