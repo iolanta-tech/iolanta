@@ -8,8 +8,10 @@ from threading import Lock
 from types import MappingProxyType
 from typing import Any, Iterable, Mapping
 
+import diskcache
 import funcy
 import loguru
+import platformdirs
 import reasonable
 import yaml_ld
 from nanopub import NanopubClient
@@ -26,7 +28,6 @@ from yaml_ld.document_loaders.content_types import ParserNotFound
 from yaml_ld.errors import NotFound, YAMLLDError
 from yarl import URL
 
-from find_retracting import use_server
 from iolanta.errors import UnresolvedIRI
 from iolanta.namespaces import (  # noqa: WPS235
     DC,
@@ -70,6 +71,34 @@ REDIRECTS = MappingProxyType({
     ),
     URIRef(PROV): URIRef('https://www.w3.org/ns/prov-o'),
 })
+
+
+@diskcache.Cache(
+    directory=str(
+        platformdirs.user_cache_path(
+            appname='iolanta',
+        ) / 'find_retractions_for',
+    ),
+).memoize(expire=datetime.timedelta(days=8).total_seconds())
+def find_retractions_for(nanopublication: URIRef) -> set[URIRef]:
+    """Find nanopublications that retract the given one."""
+    # See https://github.com/fair-workflows/nanopub/issues/168 for
+    # context of this dirty hack.
+    use_server = 'http://grlc.nanopubs.lod.labs.vu.nl/api/local/local/'
+
+    client = NanopubClient(
+        use_server=use_server,
+    )
+    client.grlc_urls = [use_server]
+
+    retractions = client.find_retractions_of(
+        str(nanopublication).replace(
+            'https://',
+            'http://',
+        ),
+    )
+
+    return {URIRef(retraction) for retraction in retractions}
 
 
 def _extract_from_mapping(  # noqa: WPS213
@@ -637,25 +666,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             ),
         )
 
-        if nanopublications:
-            # See https://github.com/fair-workflows/nanopub/issues/168 for
-            # context of this dirty hack.
-            server = 'http://grlc.nanopubs.lod.labs.vu.nl/api/local/local/'
-
-            client = NanopubClient(
-                use_server=server,
-            )
-            client.grlc_urls = [use_server]
-
-            for nanopublication in nanopublications:
-                self.logger.info(
-                    f'Looking for nanopubs retracting {nanopublication}...',
-                )
-                retracting_publications = client.find_retractions_of(
-                    str(nanopublication).replace(
-                        'https://',
-                        'http://',
-                    ),
-                )
-                for retracting_publication in retracting_publications:
-                    self.load(URIRef(retracting_publication))
+        for nanopublication in nanopublications:
+            retractions = find_retractions_for(nanopublication)
+            for retraction in retractions:
+                self.load(retraction)
