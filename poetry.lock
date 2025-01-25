@@ -4209,4 +4209,4 @@ all = ["iolanta-tables"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<4.0"
-content-hash = "2336ab7d035b41e1233c96ae98a5a43278b230cae51206de7ac58a82f2ae0ef7"
+content-hash = "f35af60ee6267ffc95564d2804bbc33e72b8268ec71d6f5ff53d41211f8c5496"
