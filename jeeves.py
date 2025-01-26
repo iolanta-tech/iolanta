@@ -1,14 +1,10 @@
-import functools
 import os
-from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
-from typing import Annotated
 
-import rich
 import sh
 import typer
+from jeeves_yeti_pyproject import flakeheaven
 from rich.console import Console
-from typer import Argument
 
 gh = sh.gh.bake(_env={**os.environ, 'NO_COLOR': '1'})
 
@@ -50,6 +46,8 @@ def serve():
 
 def ci():
     """Run pytest and save the results to artifacts directory."""
+    flakeheaven.call(Path(__file__).parent)
+
     try:
         sh.pytest.bake(
             color='no',

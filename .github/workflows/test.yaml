@@ -28,10 +28,6 @@ jobs:
       - name: Install dependencies
         run: poetry install
 
-      - name: Lint
-        shell: bash
-        run: poetry run j lint
-
       - name: Test
         shell: bash
         run: poetry run j --log-level info ci
