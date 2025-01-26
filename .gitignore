@@ -219,3 +219,5 @@ site/
 
 mkdocs-material-insiders
 .flakeheaven_cache
+
+tests/artifacts

@@ -2,7 +2,6 @@ import os
 from pathlib import Path
 
 import sh
-import typer
 from jeeves_yeti_pyproject import flakeheaven
 from rich.console import Console
 
@@ -48,16 +47,13 @@ def ci():
     """Run pytest and save the results to artifacts directory."""
     flakeheaven.call(Path(__file__).parent)
 
-    try:
-        sh.pytest.bake(
-            color='no',
-            junitxml=pytest_xml,
-            cov_report='term-missing:skip-covered',
-            cov='iolanta',
-        ).tests(
-            _out=artifacts / 'coverage.txt',
-        )
-    except sh.ErrorReturnCode as err:
-        typer.echo(err)
-        typer.echo(err.stdout)
-        typer.echo(err.stderr)
+    artifacts.mkdir(parents=True, exist_ok=True)
+
+    sh.pytest.bake(
+        color='no',
+        junitxml=pytest_xml,
+        cov_report='term-missing:skip-covered',
+        cov='iolanta',
+    ).tests(
+        _out=artifacts / 'coverage.txt',
+    )

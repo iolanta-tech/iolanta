@@ -5,6 +5,8 @@ from yarl import URL
 
 SCREENSHOTS = Path(__file__).parent.parent / 'docs/screenshots'
 
+SCREENSHOT_TIMEOUT = 32
+
 
 def generate_screenshot(url: URL) -> str:
     """Generate a screenshot of a given URL and test it."""
@@ -13,7 +15,7 @@ def generate_screenshot(url: URL) -> str:
 
     sh.textual.run.bake(
         '-c',
-        screenshot=7,
+        screenshot=SCREENSHOT_TIMEOUT,
         screenshot_path=SCREENSHOTS,
         screenshot_filename=file_name,
     ).iolanta(
