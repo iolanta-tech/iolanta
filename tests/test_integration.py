@@ -17,7 +17,7 @@ def generate_screenshot(url: URL) -> str:
         screenshot_path=SCREENSHOTS,
         screenshot_filename=file_name,
     ).iolanta(
-        str(url)
+        str(url),
     )
 
     file_path = SCREENSHOTS / file_name
@@ -50,9 +50,11 @@ def test_orcid_page():
 
 def test_red_things_nanopublication():
     """Test a red things nanopublication."""
-    svg = generate_screenshot(URL(
-        'https://purl.org/np/RARv1-bZWsdvQs88TDH2trcwNoGF1g5AawE2sPKeh5K_0',
-    ))
+    svg = generate_screenshot(
+        URL(
+            'https://purl.org/np/RARv1-bZWsdvQs88TDH2trcwNoGF1g5AawE2sPKeh5K_0',
+        ),
+    )
     assert 'red' in svg
     assert 'things' in svg
     assert 'Class' in svg

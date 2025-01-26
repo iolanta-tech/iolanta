@@ -1,0 +1,56 @@
+name: Unit tests
+
+on: [pull_request]
+
+jobs:
+  test:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        python-version: ["3.11"]
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Lint
+        shell: bash
+        run: poetry run j lint
+
+      - name: Test
+        shell: bash
+        run: poetry run j --log-level info ci
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+
+      - name: Pytest coverage comment
+        if: github.actor != 'dependabot[bot]'
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-coverage-path: tests/artifacts/coverage.txt
+          junitxml-path: tests/artifacts/pytest.xml
+
+      - name: Post Test Report
+        if: github.actor != 'dependabot[bot]'
+        uses: dorny/test-reporter@v1
+        with:
+          name: pytest
+          path: tests/artifacts/pytest.xml
+          reporter: java-junit
+          fail-on-error: false
