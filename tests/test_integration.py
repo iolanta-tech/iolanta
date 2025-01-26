@@ -53,5 +53,6 @@ def test_red_things_nanopublication():
     svg = generate_screenshot(URL(
         'https://purl.org/np/RARv1-bZWsdvQs88TDH2trcwNoGF1g5AawE2sPKeh5K_0',
     ))
-    assert 'Red' in svg
+    assert 'red' in svg
     assert 'things' in svg
+    assert 'Class' in svg
