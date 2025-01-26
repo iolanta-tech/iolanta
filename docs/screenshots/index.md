@@ -6,6 +6,23 @@ hide: [navigation, toc]
 
 <div class="grid cards" markdown>
 
+-   :material-code-greater-than:{ .lg .middle } __`iolanta https://purl.org/np/RARv1-bZWsdvQs88TDH2trcwNoGF1g5AawE2sPKeh5K_0`__
+
+    ---
+
+    ![Nanopublication about red things](purl.org.np.rarv1-bzwsdvqs88tdh2trcwnogf1g5aawe2spkeh5k_0.svg)
+
+    A retracted nanopublication.
+
+
+-   :material-code-greater-than:{ .lg .middle } __`iolanta https://orcid.org/0000-0002-1825-0097`__
+
+    ---
+
+    ![ORCID Profile](orcid.org.0000-0002-1825-0097.svg)
+
+    ORCID Profile of a fictitious person.
+
 -   :material-code-greater-than:{ .lg .middle } __`iolanta rdfs:`__
 
     ---

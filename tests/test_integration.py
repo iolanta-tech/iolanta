@@ -1,21 +1,19 @@
 from pathlib import Path
 
-import pytest
 import sh
 from yarl import URL
-
 
 SCREENSHOTS = Path(__file__).parent.parent / 'docs/screenshots'
 
 
 def generate_screenshot(url: URL) -> str:
     """Generate a screenshot of a given URL and test it."""
-    path = url.path.strip('/').replace('/', '.')
+    path = url.path.strip('/').replace('/', '.').lower()
     file_name = f'{url.host}.{path}.svg'
 
     sh.textual.run.bake(
         '-c',
-        screenshot=5,
+        screenshot=7,
         screenshot_path=SCREENSHOTS,
         screenshot_filename=file_name,
     ).iolanta(
@@ -43,17 +41,17 @@ def generate_screenshot(url: URL) -> str:
     return file_path.read_text()
 
 
-@pytest.fixture(autouse=True, scope='session')
-def ensure_commit_is_clean():
-    """Ensure that the commit is clean."""
-    return
-
-    git_status = sh.git.status().strip()
-    assert not git_status, git_status
-
-
 def test_orcid_page():
     """Test an ORCID page."""
     svg = generate_screenshot(URL('https://orcid.org/0000-0002-1825-0097'))
     assert 'Josiah' in svg
     assert 'Carberry' in svg
+
+
+def test_red_things_nanopublication():
+    """Test a red things nanopublication."""
+    svg = generate_screenshot(URL(
+        'https://purl.org/np/RARv1-bZWsdvQs88TDH2trcwNoGF1g5AawE2sPKeh5K_0',
+    ))
+    assert 'Red' in svg
+    assert 'things' in svg
