@@ -1,15 +1,14 @@
-import functools
-from concurrent.futures import ThreadPoolExecutor
+import os
 from pathlib import Path
-from typing import Annotated
 
-import rich
 import sh
+from jeeves_yeti_pyproject import flakeheaven
 from rich.console import Console
-from typer import Argument
 
-# Screenshot delay.
-SCREENSHOT_DELAY = 35
+gh = sh.gh.bake(_env={**os.environ, 'NO_COLOR': '1'})
+
+artifacts = Path(__file__).parent / 'tests/artifacts'
+pytest_xml = artifacts / 'pytest.xml'
 
 console = Console()
 
@@ -32,29 +31,6 @@ def deploy_to_github_pages():
         raise ValueError(error.stderr.decode('utf-8'))
 
 
-def install_graphviz():
-    """Install graphviz."""
-    sh.sudo('apt-get', 'install', '-y', 'graphviz')
-
-
-def todo():
-    """Print TODOs."""
-    rows: str = sh.grep(
-        '-oP',
-        r'\{# todo: (\K[^#]+) #\}',
-        'docs/project/whitepaper/index.md',
-    )
-
-    todos = [
-        row.replace(' #}', '')
-        for row in rows.split('\n')
-    ]
-
-    for todo_item in todos:
-        if todo_item:
-            rich.print(f'▢ {todo_item}')
-
-
 def serve():
     """
     Serve the iolanta.tech site.
@@ -67,37 +43,17 @@ def serve():
     )
 
 
-def screenshots(iri: Annotated[str | None, Argument()] = None):
-    """Generate screenshots."""
-    filename_by_iri = {
-        'rdfs:': 'rdfs.svg',
-        'rdfs:Class': 'rdfs-class.svg',
-        'rdf:': 'rdf.svg',
-        'rdf:type': 'rdf-type.svg',
-        'foaf:Person': 'foaf.svg',
-        'owl:': 'owl.svg',
-        'owl:Ontology': 'owl-ontology.svg',
-        'vann:': 'vann.svg',
-        'https://www.wikidata.org/entity/Q204606': 'wikidata-cyberspace.svg',
-    }
+def ci():
+    """Run pytest and save the results to artifacts directory."""
+    flakeheaven.call(Path(__file__).parent)
 
-    with ThreadPoolExecutor(max_workers=10) as executor:
-        for destination, filename in filename_by_iri.items():
-            if iri is not None and iri != destination:
-                continue
+    artifacts.mkdir(parents=True, exist_ok=True)
 
-            screenshot_path = Path(__file__).parent / 'docs/screenshots'
-
-            executor.submit(
-                functools.partial(
-                    sh.textual.run.bake(
-                        '-c',
-                        screenshot=SCREENSHOT_DELAY,
-                        screenshot_path=screenshot_path,
-                        screenshot_filename=filename,
-                    ).iolanta,
-                    destination,
-                ),
-            )
-
-        executor.shutdown()
+    sh.pytest.bake(
+        color='no',
+        junitxml=pytest_xml,
+        cov_report='term-missing:skip-covered',
+        cov='iolanta',
+    ).tests(
+        _out=artifacts / 'coverage.txt',
+    )
