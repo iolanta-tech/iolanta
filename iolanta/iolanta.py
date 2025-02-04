@@ -104,15 +104,6 @@ class Iolanta:   # noqa: WPS214
         init=False,
     )
 
-    @functools.cached_property
-    def loader(self) -> Loader[SourceType]:
-        """
-        Construct loader.
-
-        FIXME: Delete this.
-        """
-        return construct_root_loader(logger=self.logger)
-
     @property
     def plugin_classes(self) -> List[Type[Plugin]]:
         """Installed Iolanta plugins."""
