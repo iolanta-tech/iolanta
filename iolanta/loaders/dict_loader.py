@@ -1,18 +1,12 @@
 from dataclasses import dataclass
 from typing import Iterable, Optional, TextIO, Type
 
-from rdflib import Literal, URIRef
+from rdflib import URIRef
 
-from iolanta.conversions import url_to_iri
 from iolanta.loaders.base import Loader
-from iolanta.loaders.errors import IsAContext, ParserNotFound
 from iolanta.models import LDContext, LDDocument, Quad
-from iolanta.namespaces import IOLANTA
 from iolanta.parsers.base import Parser
 from iolanta.parsers.dict_parser import DictParser
-from iolanta.parsers.json import JSON
-from iolanta.parsers.markdown import Markdown
-from iolanta.parsers.yaml import YAML
 
 
 @dataclass(frozen=True)
