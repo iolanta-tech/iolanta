@@ -28,6 +28,12 @@ jobs:
       - name: Install dependencies
         run: poetry install
 
+      - name: Download mypy baseline
+        uses: actions/download-artifact@v3
+        with:
+          name: mypy-baseline
+          path: tests/artifacts
+
       - name: Test
         shell: bash
         run: poetry run j --log-level info ci
