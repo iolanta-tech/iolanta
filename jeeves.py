@@ -80,11 +80,11 @@ def ci():
 def _mypy_errors_count() -> tuple[str, int]:
     """Run mypy and count its errors."""
     try:
-        output = sh.poetry.run.mypy(
+        sh.poetry.run.mypy(
             project_directory,
             *construct_mypy_flags(),
         )
-    except sh.ErrorReturnCode_1 as error:
+    except sh.ErrorReturnCode_2 as error:
         output = error.stdout.decode('utf-8')
         return output, funcy.ilen(
             line
