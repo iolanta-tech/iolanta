@@ -45,7 +45,6 @@ from iolanta.parse_quads import parse_quads
 from iolanta.parsers.yaml import YAML
 from iolanta.plugin import Plugin
 from iolanta.resolvers.python_import import PythonImportResolver
-from iolanta.shortcuts import construct_root_loader
 from iolanta.stack import Stack
 from ldflex import LDFlex
 
