@@ -22,5 +22,10 @@ jobs:
           path: mkdocs-material-insiders
           token: ${{ secrets.INSIDERS_TOKEN }}
 
-      - run: j install-mkdocs-insiders
-      - run: j deploy-to-github-pages
+      - run: j master
+
+      - name: Upload mypy baseline
+        uses: actions/upload-artifact@v3
+        with:
+          name: mypy-baseline
+          path: tests/artifacts/mypy_baseline.json
