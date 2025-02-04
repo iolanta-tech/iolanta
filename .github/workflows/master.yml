@@ -25,7 +25,7 @@ jobs:
       - run: j master
 
       - name: Upload mypy baseline
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: mypy-baseline
           path: tests/artifacts/mypy_baseline.json
