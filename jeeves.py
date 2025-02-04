@@ -84,7 +84,7 @@ def _mypy_errors_count() -> tuple[str, int]:
             project_directory,
             *construct_mypy_flags(),
         )
-    except sh.ErrorReturnCode_2 as error:
+    except sh.ErrorReturnCode as error:
         output = error.stdout.decode('utf-8')
         return output, funcy.ilen(
             line
