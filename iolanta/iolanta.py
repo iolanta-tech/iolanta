@@ -3,7 +3,6 @@ from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import (  # noqa: WPS235
     Any,
-    Dict,
     Iterable,
     List,
     Mapping,
@@ -17,7 +16,7 @@ from typing import (  # noqa: WPS235
 import funcy
 import loguru
 import yaml_ld
-from rdflib import ConjunctiveGraph, Literal, Namespace, URIRef
+from rdflib import ConjunctiveGraph, Literal, URIRef
 from rdflib.namespace import NamespaceManager
 from rdflib.term import Node
 from yaml_ld.document_loaders.content_types import ParserNotFound
@@ -30,9 +29,7 @@ from iolanta.errors import UnresolvedIRI
 from iolanta.facets.errors import FacetError
 from iolanta.facets.facet import Facet
 from iolanta.facets.locator import FacetFinder
-from iolanta.loaders import Loader
 from iolanta.loaders.base import SourceType
-from iolanta.loaders.local_directory import merge_contexts
 from iolanta.models import (
     ComputedQName,
     LDContext,
@@ -42,7 +39,6 @@ from iolanta.models import (
 )
 from iolanta.node_to_qname import node_to_qname
 from iolanta.parse_quads import parse_quads
-from iolanta.parsers.yaml import YAML
 from iolanta.plugin import Plugin
 from iolanta.resolvers.python_import import PythonImportResolver
 from iolanta.stack import Stack
@@ -129,24 +125,7 @@ class Iolanta:   # noqa: WPS214
         """
         return LDFlex(self.graph)
 
-    @functools.cached_property
-    def namespaces_to_bind(self) -> Dict[str, Namespace]:
-        """
-        Namespaces globally specified for the graph.
-
-        FIXME: Probably get rid of this, I do not know.
-        """
-        return {
-            key: Namespace(value)
-            for key, value in self.default_context['@context'].items()  # noqa
-            if (
-                isinstance(value, str)
-                and not value.startswith('@')   # noqa: W503
-                and not key.startswith('@')   # noqa: W503
-            )
-        }
-
-    def add(  # noqa: C901, WPS231, WPS210
+    def add(  # noqa: C901, WPS231, WPS210, WPS213
         self,
         source: Path,
         context: Optional[LDContext] = None,
@@ -270,36 +249,6 @@ class Iolanta:   # noqa: WPS214
             if path := plugin.context_path:
                 yield path
 
-    @functools.cached_property
-    def default_context(self) -> LDContext:
-        """Construct default context from plugins."""
-        context_documents = [
-            YAML().as_jsonld_document(path.open('r'))
-            for path in self.context_paths
-        ]
-
-        for context in context_documents:
-            if isinstance(context, list):
-                raise ValueError('Context cannot be a list: %s', context)
-
-        return merge_contexts(*context_documents)   # type: ignore
-
-    def add_files_from_plugins(self):
-        """
-        Load files from plugins.
-
-        FIXME: Get rid of plugins.
-        """
-        for plugin in self.plugins:
-            try:
-                self.add(plugin.data_files)
-            except Exception as error:
-                self.logger.error(
-                    'Cannot load %s plugin data files: %s',
-                    plugin,
-                    error,
-                )
-
     def __post_init__(self):
         """
         Load stuff from plugins.
@@ -307,7 +256,6 @@ class Iolanta:   # noqa: WPS214
         FIXME: Get rid of plugins.
         """
         self.bind_namespaces()
-        self.add_files_from_plugins()
 
     def string_to_node(self, name: str | Node) -> NotLiteralNode:
         """
