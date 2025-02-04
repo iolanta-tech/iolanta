@@ -22,7 +22,7 @@ jobs:
           path: mkdocs-material-insiders
           token: ${{ secrets.INSIDERS_TOKEN }}
 
-      - run: j master
+      - run: j --log-level info master
 
       - name: Upload mypy baseline
         uses: actions/upload-artifact@v4

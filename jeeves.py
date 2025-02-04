@@ -101,6 +101,7 @@ def master():
     deploy_to_github_pages()
 
     _output, count = _mypy_errors_count()
+    artifacts.mkdir(parents=True, exist_ok=True)
     (artifacts / 'mypy_baseline.json').write_text(
         json.dumps({
             'count': count,
