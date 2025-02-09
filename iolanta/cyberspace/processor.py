@@ -463,6 +463,8 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
         )
         if existing_triple is not None:
             return Skipped()
+        else:
+            self.logger.warning(f'Existing triples not found for {source_uri}')
 
         # FIXME This is definitely inefficient. However, python-yaml-ld caches
         #   the document, so the performance overhead is not super high.
@@ -604,32 +606,13 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
         self.graph.addN(quad_tuples)
         self.graph.last_not_inferred_source = source
 
-        created_graphs = {
-            normalize_term(quad.graph)
+        into_graphs = ', '.join({
+            quad.graph
             for quad in quads
-            if quad.graph != source_uri
-        }
-        self.graph.addN(
-            itertools.chain.from_iterable(
-                [
-                    (
-                        source_uri,
-                        IOLANTA['has-sub-graph'],
-                        created_graph,
-                        source_uri,
-                    ),
-                    (
-                        created_graph,
-                        RDF.type,
-                        IOLANTA.Graph,
-                        source_uri,
-                    ),
-                ]
-                for created_graph in created_graphs
-            ),
+        })
+        self.logger.info(
+            f'{source} | loaded successfully into graphs: {into_graphs}',
         )
-
-        self.logger.info(f'{source} | loaded successfully.')
         return Loaded()
 
     def resolve_term(self, term: Node, bindings: dict[str, Node]):
