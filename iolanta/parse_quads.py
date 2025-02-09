@@ -7,6 +7,7 @@ from rdflib.term import Node
 
 from iolanta.errors import UnresolvedIRI
 from iolanta.models import Quad
+from iolanta.namespaces import IOLANTA, RDF
 from iolanta.parsers.errors import SpaceInProperty
 
 
@@ -65,6 +66,20 @@ def parse_quads(
 
         else:
             graph_name = URIRef(graph_name)
+
+            yield Quad(
+                graph,
+                IOLANTA['has-sub-graph'],
+                graph_name,
+                graph,
+            )
+
+        yield Quad(
+            graph_name,
+            RDF.type,
+            IOLANTA.Graph,
+            IOLANTA.meta,
+        )
 
         for quad in quads:
             try:
