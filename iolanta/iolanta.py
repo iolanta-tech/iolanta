@@ -153,19 +153,14 @@ class Iolanta:   # noqa: WPS214
         context: Optional[LDContext] = None,
         graph_iri: Optional[URIRef] = None,
     ) -> 'Iolanta':
-        """
-        Parse & load information from given URL into the graph.
-
-        FIXME:
-          * Maybe implement context.json/context.yaml files support.
-        """
+        """Parse & load information from given URL into the graph."""
         self.logger.info(f'Adding to graph: {source}')
         self.sources_added_not_yet_inferred.append(source)
 
         if not isinstance(source, Path):
             source = Path(source)
 
-        for source_file in source.rglob('*'):
+        for source_file in list(source.rglob('*')) or [source]:
             if source_file.is_dir():
                 continue
 
@@ -309,31 +304,6 @@ class Iolanta:   # noqa: WPS214
         """
         self.bind_namespaces()
         self.add_files_from_plugins()
-
-    def string_to_node(self, name: str | Node) -> NotLiteralNode:
-        """
-        Parse a string into a node identifier.
-
-        String might be:
-          * a full IRI,
-          * a qname,
-          * a qname with implied `local:` part,
-          * or a blank node identifier.
-        """
-        if isinstance(name, Node):
-            return name
-
-        if ':' in name:
-            # This is either a full IRI, a qname, or a blank node identifier.
-            try:
-                # Trying to interpret this as QName.
-                return self.graph.namespace_manager.expand_curie(name)
-            except ValueError:
-                # If it is not a QName then it is an IRI, let's return it.
-                return URIRef(name)
-
-        # This string does not include an ":", so we imply `local:`.
-        return URIRef(f'local:{name}')
 
     def render(
         self,
