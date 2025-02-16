@@ -93,18 +93,22 @@ def render_command(   # noqa: WPS231, WPS238, WPS210, C901
         enqueue=True,
     )
 
-    iolanta: Iolanta = Iolanta(
-        language=Literal(language),
-        logger=logger,
-    )
-
     node_url = URL(url)
     if node_url.scheme:
         node = URIRef(url)
+
+        iolanta: Iolanta = Iolanta(
+            language=Literal(language),
+            logger=logger,
+        )
     else:
         path = Path(url).absolute()
         node = URIRef(f'file://{path}')
-        iolanta.add(path)
+        iolanta: Iolanta = Iolanta(
+            language=Literal(language),
+            logger=logger,
+            project_root=path,
+        )
 
     try:
         renderable, stack = iolanta.render(
