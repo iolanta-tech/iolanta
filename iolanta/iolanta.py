@@ -125,7 +125,7 @@ class Iolanta:   # noqa: WPS214
             for plugin_class in self.plugin_classes
         ]
 
-    @functools.cached_property
+    @property
     def ldflex(self) -> LDFlex:
         """
         Create ldflex instance.
@@ -153,7 +153,7 @@ class Iolanta:   # noqa: WPS214
 
     def reset(self):
         """Reset Iolanta graph."""
-        self.graph = _create_default_graph()  # noqa: WPS601
+        self.graph = _create_default_graph()   # noqa: WPS601
         self.__post_init__()
 
     def add(  # noqa: C901, WPS231, WPS210, WPS213
