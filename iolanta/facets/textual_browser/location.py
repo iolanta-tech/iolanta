@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from rdflib import URIRef
+
 
 @dataclass
 class Location:
@@ -7,3 +9,4 @@ class Location:
 
     page_id: str
     url: str
+    facet_iri: URIRef | None = None
