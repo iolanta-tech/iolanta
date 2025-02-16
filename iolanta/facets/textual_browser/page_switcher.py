@@ -1,5 +1,7 @@
 import functools
 import uuid
+from dataclasses import dataclass
+from typing import Any
 
 from rdflib import BNode, URIRef
 from textual.widgets import ContentSwitcher, RichLog
@@ -18,6 +20,21 @@ from iolanta.namespaces import DATATYPES
 from iolanta.widgets.mixin import IolantaWidgetMixin
 
 
+@dataclass
+class RenderResult:
+    """
+    We asked a thread to render something for us.
+
+    This is what did we get back.
+    """
+
+    iri: NotLiteralNode
+    renderable: Any
+    flip_options: list[FlipOption]
+    facet_iri: URIRef
+    is_reload: bool
+
+
 class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
     """
     Container for open pages.
@@ -28,6 +45,7 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
     BINDINGS = [  # noqa: WPS115
         ('alt+left', 'back', 'Back'),
         ('alt+right', 'forward', 'Fwd'),
+        ('f5', 'reload', 'Reload'),
         ('f12', 'console', 'Console'),
     ]
 
@@ -55,8 +73,11 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
         self.action_goto(self.app.iri)
 
     def render_iri(   # noqa: WPS210
-        self, destination: NotLiteralNode, facet_iri: URIRef | None,
-    ):
+        self,
+        destination: NotLiteralNode,
+        facet_iri: URIRef | None,
+        is_reload: bool,
+    ) -> RenderResult:
         """Render an IRI in a thread."""
         self.iri = destination
         iolanta: Iolanta = self.iolanta
@@ -106,11 +127,7 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
         )
 
         try:
-            return (
-                destination,
-                self.app.call_from_thread(facet.show),
-                flip_options,
-            )
+            renderable = self.app.call_from_thread(facet.show)
 
         except Exception as err:
             raise FacetError(
@@ -119,6 +136,14 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
                 error=err,
             ) from err
 
+        return RenderResult(
+            iri=destination,
+            renderable=renderable,
+            flip_options=flip_options,
+            facet_iri=facet_iri,
+            is_reload=is_reload,
+        )
+
     def on_worker_state_changed(   # noqa: WPS210
         self,
         event: Worker.StateChanged,
@@ -126,23 +151,56 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
         """Render a page as soon as it is ready."""
         match event.state:
             case WorkerState.SUCCESS:
-                iri, renderable, flip_options = event.worker.result
-                page_uid = uuid.uuid4().hex
-                page_id = f'page_{page_uid}'
-                page = Page(
-                    renderable,
-                    iri=iri,
-                    page_id=page_id,
-                    flip_options=flip_options,
-                )
-                self.mount(page)
-                self.current = page_id
-                page.focus()
-                self.history.goto(Location(page_id, iri))
-                self.app.sub_title = iri
+                render_result: RenderResult = event.worker.result
+
+                if render_result.is_reload:
+                    # We are reloading the current page.
+                    current_page = self.query_one(f'#{self.current}', Page)
+                    current_page.remove_children()
+                    current_page.mount(render_result.renderable)
+
+                    # FIXME: This does not actually change the flip options,
+                    #   but maybe that's okay
+                    current_page.flip_options = render_result.flip_options
+
+                else:
+                    # We are navigating to a new page.
+                    page_uid = uuid.uuid4().hex
+                    page_id = f'page_{page_uid}'
+                    page = Page(
+                        render_result.renderable,
+                        iri=render_result.iri,
+                        page_id=page_id,
+                        flip_options=render_result.flip_options,
+                    )
+                    self.mount(page)
+                    self.current = page_id
+                    page.focus()
+                    self.history.goto(
+                        Location(
+                            page_id,
+                            url=render_result.iri,
+                            facet_iri=render_result.facet_iri,
+                        ),
+                    )
+                    self.app.sub_title = render_result.iri
 
             case WorkerState.ERROR:
                 raise ValueError(event)
+
+    def action_reload(self):
+        """Reset Iolanta graph and re-render current view."""
+        self.iolanta.reset()
+
+        self.run_worker(
+            functools.partial(
+                self.render_iri,
+                destination=self.app.iri,
+                facet_iri=self.history.current.facet_iri,
+                is_reload=True,
+            ),
+            thread=True,
+        )
 
     def action_goto(
         self,
@@ -158,8 +216,9 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
         self.run_worker(
             functools.partial(
                 self.render_iri,
-                iri,
-                facet_iri and URIRef(facet_iri),
+                destination=iri,
+                facet_iri=facet_iri and URIRef(facet_iri),
+                is_reload=False,
             ),
             thread=True,
         )
