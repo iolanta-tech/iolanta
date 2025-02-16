@@ -2,6 +2,7 @@ import functools
 from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import (  # noqa: WPS235
+    Annotated,
     Any,
     Dict,
     Iterable,
@@ -30,7 +31,6 @@ from iolanta.errors import UnresolvedIRI
 from iolanta.facets.errors import FacetError
 from iolanta.facets.facet import Facet
 from iolanta.facets.locator import FacetFinder
-from iolanta.loaders import Loader
 from iolanta.loaders.base import SourceType
 from iolanta.loaders.local_directory import merge_contexts
 from iolanta.models import (
@@ -45,7 +45,6 @@ from iolanta.parse_quads import parse_quads
 from iolanta.parsers.yaml import YAML
 from iolanta.plugin import Plugin
 from iolanta.resolvers.python_import import PythonImportResolver
-from iolanta.shortcuts import construct_root_loader
 from iolanta.stack import Stack
 from ldflex import LDFlex
 
@@ -72,19 +71,24 @@ class LoggerProtocol(Protocol):
         """Log a WARNING message."""
 
 
+def _create_default_graph():
+    return ConjunctiveGraph(identifier=namespaces.LOCAL.term('_inference'))
+
+
 @dataclass
 class Iolanta:   # noqa: WPS214
     """Iolanta is a Semantic web browser."""
 
     language: Literal = Literal('en')
 
-    retrieval_directory: Optional[Path] = None
-    graph: ConjunctiveGraph = field(
-        default_factory=functools.partial(
-            ConjunctiveGraph,
-            identifier=namespaces.LOCAL.term('_inference'),
+    project_root: Annotated[
+        Path | None,
+        (
+            'File or directory the contents of which '
+            'Iolanta will automatically load into the graph.'
         ),
-    )
+    ] = None
+    graph: ConjunctiveGraph = field(default_factory=_create_default_graph)
     force_plugins: List[Type[Plugin]] = field(default_factory=list)
 
     facet_resolver: Mapping[URIRef, Type[Facet]] = field(
@@ -147,7 +151,12 @@ class Iolanta:   # noqa: WPS214
             )
         }
 
-    def add(  # noqa: C901, WPS231, WPS210
+    def reset(self):
+        """Reset Iolanta graph."""
+        self.graph = _create_default_graph()  # noqa: WPS601
+        self.__post_init__()
+
+    def add(  # noqa: C901, WPS231, WPS210, WPS213
         self,
         source: Path,
         context: Optional[LDContext] = None,
@@ -304,6 +313,8 @@ class Iolanta:   # noqa: WPS214
         """
         self.bind_namespaces()
         self.add_files_from_plugins()
+        if self.project_root:
+            self.add(self.project_root)
 
     def render(
         self,
