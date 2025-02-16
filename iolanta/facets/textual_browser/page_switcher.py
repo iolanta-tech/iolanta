@@ -1,8 +1,10 @@
 import functools
+import threading
 import uuid
 from dataclasses import dataclass
 from typing import Any
 
+import watchfiles
 from rdflib import BNode, URIRef
 from textual.widgets import ContentSwitcher, RichLog
 from textual.worker import Worker, WorkerState
@@ -52,6 +54,7 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
     def __init__(self):
         """Set Home as first tab."""
         super().__init__(id='page_switcher', initial='home')
+        self.stop_file_watcher_event = threading.Event()
 
     def action_console(self):
         """Open dev console."""
@@ -71,6 +74,22 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
     def on_mount(self):
         """Navigate to the initial page."""
         self.action_goto(self.app.iri)
+        if self.iolanta.project_root:
+            self.run_worker(
+                self._watch_files,
+                thread=True,
+            )
+
+    def on_unmount(self) -> None:
+        """Stop watching files."""
+        self.stop_file_watcher_event.set()
+
+    def _watch_files(self):
+        for _ in watchfiles.watch(   # noqa: WPS352
+            self.iolanta.project_root,
+            stop_event=self.stop_file_watcher_event,
+        ):
+            self.app.call_from_thread(self.action_reload)
 
     def render_iri(   # noqa: WPS210
         self,
