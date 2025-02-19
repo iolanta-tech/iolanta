@@ -13,6 +13,8 @@ from iolanta.facets.textual_browser.page_switcher import (
 )
 from iolanta.iolanta import Iolanta
 
+POPUP_TIMEOUT = 30   # seconds
+
 
 class DevConsoleHandler(logging.Handler):
     """Pipe log output → dev console."""
@@ -75,7 +77,11 @@ class IolantaBrowser(App):  # noqa: WPS214, WPS230
         )
 
         self.iolanta.logger.add(
-            lambda msg: self.notify(msg, severity='warning', timeout=30),
+            lambda msg: self.notify(
+                msg,
+                severity='warning',
+                timeout=POPUP_TIMEOUT,
+            ),
             level='WARNING',
             format='{message}',
         )
