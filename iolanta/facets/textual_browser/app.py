@@ -75,7 +75,7 @@ class IolantaBrowser(App):  # noqa: WPS214, WPS230
         )
 
         self.iolanta.logger.add(
-            lambda msg: self.notify(msg, severity='warning', timeout=10),
+            lambda msg: self.notify(msg, severity='warning', timeout=30),
             level='WARNING',
             format='{message}',
         )
