@@ -214,7 +214,7 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
         self.run_worker(
             functools.partial(
                 self.render_iri,
-                destination=self.app.iri,
+                destination=self.history.current.url,
                 facet_iri=self.history.current.facet_iri,
                 is_reload=True,
             ),
@@ -245,10 +245,12 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
     def action_back(self):
         """Go backward."""
         self.current = self.history.back().page_id
+        self.focus()
 
     def action_forward(self):
         """Go forward."""
         self.current = self.history.forward().page_id
+        self.focus()
 
 
 class ConsoleSwitcher(ContentSwitcher):
