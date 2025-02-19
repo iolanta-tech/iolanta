@@ -1,0 +1,67 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  vann: https://purl.org/vocab/vann/
+  foaf: https://xmlns.com/foaf/0.1/
+  owl: https://www.w3.org/2002/07/owl#
+  iolanta: https://iolanta.tech/
+  rdfs: "https://www.w3.org/2000/01/rdf-schema#"
+  rdf: https://www.w3.org/1999/02/22-rdf-syntax-ns#
+  dcterms: https://purl.org/dc/terms/
+  dcam: https://purl.org/dc/dcam/
+
+$id: "owl:"
+$type: owl:Ontology
+vann:termGroup:
+  - rdfs:label: Property Classes
+    $reverse:
+      rdf:type:
+        - $id: owl:AnnotationProperty
+        - $id: owl:DatatypeProperty
+        - $id: owl:ObjectProperty
+        - $id: owl:FunctionalProperty
+        - $id: owl:AsymmetricProperty
+        - $id: owl:ReflexiveProperty
+        - $id: owl:IrreflexiveProperty
+        - $id: owl:SymmetricProperty
+        - $id: owl:assertionProperty
+        - $id: owl:TransitiveProperty
+        - $id: owl:InverseFunctionalProperty
+        - $id: owl:OntologyProperty
+
+  - rdfs:label: Deprecation
+    $reverse:
+      rdf:type:
+        - $id: owl:deprecated
+        - $id: owl:DeprecatedClass
+        - $id: owl:DeprecatedProperty
+        - $id: owl:DeprecatedIndividual
+
+  - rdfs:label: on
+    $reverse:
+      rdf:type:
+        - $id: owl:onClass
+        - $id: owl:onDataRange
+        - $id: owl:onDatatype
+        - $id: owl:onProperties
+        - $id: owl:onProperty
+
+  - rdfs:label: Versions
+    $reverse:
+      rdf:type:
+        - $id: owl:priorVersion
+        - $id: owl:versionIRI
+        - $id: owl:versionInfo
+
+  - rdfs:label: has
+    $reverse:
+      rdf:type:
+        - $id: owl:hasValue
+        - $id: owl:hasKey
+        - $id: owl:hasSelf
+
+  - rdfs:label: Sets
+    $reverse:
+      rdf:type:
+        - $id: owl:intersectionOf
+        - $id: owl:inverseOf
+        - $id: owl:unionOf
