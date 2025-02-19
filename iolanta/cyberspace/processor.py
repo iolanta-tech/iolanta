@@ -422,7 +422,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
                         and isinstance(self.load(maybe_iri), Loaded)
                     ):
                         is_anything_loaded = True   # noqa: WPS220
-                        self.logger.warning(   # noqa: WPS220
+                        self.logger.info(   # noqa: WPS220
                             'Newly loaded: {uri}',
                             uri=maybe_iri,
                         )
@@ -464,7 +464,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
         if existing_triple is not None:
             return Skipped()
         else:
-            self.logger.warning(f'Existing triples not found for {source_uri}')
+            self.logger.info(f'Existing triples not found for {source_uri}')
 
         # FIXME This is definitely inefficient. However, python-yaml-ld caches
         #   the document, so the performance overhead is not super high.
