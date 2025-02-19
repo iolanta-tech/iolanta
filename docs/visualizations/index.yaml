@@ -22,3 +22,6 @@ $included:
 
   - $id: https://purl.org/dc/terms/
     →: dcterms.yaml
+
+  - $id: "https://www.w3.org/2002/07/owl#"
+    →: owl.yaml
