@@ -1,0 +1,50 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  vann: https://purl.org/vocab/vann/
+  foaf: https://xmlns.com/foaf/0.1/
+  owl: https://www.w3.org/2002/07/owl#
+  iolanta: https://iolanta.tech/
+  rdfs: "https://www.w3.org/2000/01/rdf-schema#"
+  rdf: https://www.w3.org/1999/02/22-rdf-syntax-ns#
+
+$id: "rdf:"
+vann:termGroup:
+  - rdfs:label: Properties
+    $reverse:
+      rdf:type:
+        - $id: rdf:Property
+        - $id: rdf:type
+
+  - rdfs:label: Triples
+    $reverse:
+      rdf:type:
+        - $id: rdf:subject
+        - $id: rdf:predicate
+        - $id: rdf:object
+        - $id: rdf:Statement
+  - rdfs:label: Containers
+    $reverse:
+      rdf:type:
+        - $id: rdf:first
+        - $id: rdf:rest
+        - $id: rdf:List
+        - $id: rdf:nil
+        - $id: rdf:Bag
+        - $id: rdf:Seq
+        - $id: rdf:Alt
+  - rdfs:label: Language
+    $reverse:
+      rdf:type:
+        - $id: rdf:langString
+        - $id: rdf:language
+
+  - $id: rdfs:Datatype
+  - rdfs:label: Compound Literal
+    $reverse:
+      rdf:type:
+        - $id: rdf:CompoundLiteral
+        - $id: rdf:direction
+  - rdfs:label: Value
+    $reverse:
+      rdf:type:
+        - $id: rdf:value

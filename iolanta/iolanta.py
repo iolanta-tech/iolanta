@@ -176,20 +176,20 @@ class Iolanta:   # noqa: WPS214
             try:  # noqa: WPS225
                 ld_rdf = yaml_ld.to_rdf(source_file)
             except ConnectionError as name_resolution_error:
-                self.logger.info(
+                self.logger.warning(
                     '%s | name resolution error: %s',
                     source_file,
                     str(name_resolution_error),
                 )
                 continue
             except ParserNotFound as parser_not_found:
-                self.logger.info(f'{source} | {parser_not_found}')
+                self.logger.error(f'{source} | {parser_not_found}')
                 continue
             except YAMLLDError as yaml_ld_error:
-                self.logger.info(f'{source} | {yaml_ld_error}')
+                self.logger.error(f'{source} | {yaml_ld_error}')
                 continue
             except ValueError as value_error:
-                self.logger.info(f'{source} | {value_error}')
+                self.logger.error(f'{source} | {value_error}')
                 continue
 
             self.logger.info(f'{source_file} is loaded.')

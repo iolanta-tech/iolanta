@@ -74,6 +74,12 @@ class IolantaBrowser(App):  # noqa: WPS214, WPS230
             format='{time} {level} {message}',
         )
 
+        self.iolanta.logger.add(
+            lambda msg: self.notify(msg, severity='warning', timeout=10),
+            level='WARNING',
+            format='{message}',
+        )
+
     def action_toggle_dark(self) -> None:
         """Toggle dark mode."""
         self.dark = not self.dark

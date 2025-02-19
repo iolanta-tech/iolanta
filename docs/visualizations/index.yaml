@@ -13,5 +13,9 @@ rdfs:label: Iolanta visualizations index 1.0
 $included:
   - $id: "rdfs:"
     →: rdfs.yaml
+
   - $id: https://xmlns.com/foaf/0.1/
     →: foaf.yaml
+
+  - $id: "https://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    →: rdf.yaml
