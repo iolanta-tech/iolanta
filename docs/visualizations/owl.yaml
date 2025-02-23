@@ -45,23 +45,79 @@ vann:termGroup:
         - $id: owl:onProperties
         - $id: owl:onProperty
 
-  - rdfs:label: Versions
+  - rdfs:label: Sets
     $reverse:
       rdf:type:
+        - $id: owl:Class
+        - $id: owl:equivalentClass
+        - $id: owl:intersectionOf
+        - $id: owl:inverseOf
+        - $id: owl:unionOf
+        - $id: owl:disjointUnionOf
+        - $id: owl:disjointWith
+        - $id: owl:complementOf
+        - $id: owl:Nothing
+
+  - rdfs:label: Axioms
+    $reverse:
+      rdf:type:
+        - $id: owl:Axiom
+        - $id: owl:members
+        - $id: owl:AllDifferent
+        - $id: owl:AllDisjointClasses
+        - $id: owl:AllDisjointProperties
+
+  - rdfs:label: Ontologies
+    $reverse:
+      rdf:type:
+        - $id: owl:Ontology
+        - $id: owl:imports
+        - $id: owl:backwardCompatibleWith
+        - $id: owl:incompatibleWith
         - $id: owl:priorVersion
         - $id: owl:versionIRI
         - $id: owl:versionInfo
 
-  - rdfs:label: has
+  - rdfs:label: Restrictions
     $reverse:
       rdf:type:
+        - $id: owl:Restriction
         - $id: owl:hasValue
-        - $id: owl:hasKey
+        - $id: owl:someValuesFrom
+        - $id: owl:allValuesFrom
         - $id: owl:hasSelf
+        - $id: owl:hasKey
+        - $id: owl:hasValue
+        - $id: owl:withRestrictions
 
-  - rdfs:label: Sets
+  - rdfs:label: Cardinality
     $reverse:
       rdf:type:
-        - $id: owl:intersectionOf
-        - $id: owl:inverseOf
-        - $id: owl:unionOf
+        - $id: owl:cardinality
+        - $id: owl:minCardinality
+        - $id: owl:maxCardinality
+        - $id: owl:qualifiedCardinality
+        - $id: owl:minQualifiedCardinality
+        - $id: owl:maxQualifiedCardinality
+
+  - rdfs:label: (in)Equality
+    $reverse:
+      rdf:type:
+        - $id: owl:sameAs
+        - $id: owl:differentFrom
+
+  - rdfs:label: Deprecated
+    $reverse:
+      rdf:type:
+        - $id: owl:DataRange
+
+  - rdfs:label: Negative Property Assertions
+    $reverse:
+      rdf:type:
+        - $id: owl:NegativePropertyAssertion
+        - $id: owl:targetValue
+
+  - rdfs:label: Datatypes
+    $reverse:
+      rdf:type:
+        - $id: owl:datatypeComplementOf
