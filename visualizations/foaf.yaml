@@ -1,0 +1,113 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  vann: https://purl.org/vocab/vann/
+  foaf: https://xmlns.com/foaf/0.1/
+  owl: https://www.w3.org/2002/07/owl#
+  iolanta: https://iolanta.tech/
+  rdfs: "https://www.w3.org/2000/01/rdf-schema#"
+  rdf: https://www.w3.org/1999/02/22-rdf-syntax-ns#
+
+$id: "foaf:"
+$type: owl:Ontology
+vann:termGroup:
+  - rdfs:label: Core Classes
+    $reverse:
+      rdf:type:
+        - $id: foaf:Person
+        - $id: foaf:Organization
+        - $id: foaf:Group
+        - $id: foaf:Agent
+
+  - rdfs:label: Docs & Images
+    $reverse:
+      rdf:type:
+        - $id: foaf:Document
+        - $id: foaf:Image
+        - $id: foaf:img
+        - $id: foaf:depiction
+        - $id: foaf:page
+        - $id: foaf:topic
+        - $id: foaf:PersonalProfileDocument
+        - $id: foaf:primaryTopic
+        - $id: foaf:isPrimaryTopicOf
+        - $id: foaf:sha1
+
+  - rdfs:label: Personal
+    $reverse:
+      rdf:type:
+        - $id: foaf:name
+        - $id: foaf:lastName
+        - $id: foaf:title
+        - $id: foaf:surname
+        - $id: foaf:familyName
+        - $id: foaf:givenName
+        - $id: foaf:family_name
+        - $id: foaf:firstName
+        - $id: foaf:gender
+        - $id: foaf:birthday
+        - $id: foaf:age
+        - $id: foaf:status
+        - $id: foaf:myersBriggs
+        - $id: foaf:dnaChecksum
+        - $id: foaf:nick
+        - $id: foaf:topic_interest
+        - $id: foaf:publications
+        - $id: foaf:workInfoHomepage
+
+  - rdfs:label: Online Presence
+    $reverse:
+      rdf:type:
+        - $id: foaf:mbox
+        - $id: foaf:phone
+        - $id: foaf:OnlineAccount
+        - $id: foaf:OnlineEcommerceAccount
+        - $id: foaf:OnlineGamingAccount
+        - $id: foaf:OnlineChatAccount
+        - $id: foaf:account
+        - $id: foaf:accountServiceHomepage
+        - $id: foaf:accountName
+        - $id: foaf:aimChatID
+        - $id: foaf:jabberID
+        - $id: foaf:skypeID
+        - $id: foaf:msnChatID
+        - $id: foaf:yahooChatID
+        - $id: foaf:openid
+        - $id: foaf:homepage
+        - $id: foaf:weblog
+        - $id: foaf:geekcode
+        - $id: foaf:workplaceHomepage
+        - $id: foaf:schoolHomepage
+        - $id: foaf:mbox_sha1sum
+
+  - rdfs:label: Social
+    $reverse:
+      rdf:type:
+        - $id: foaf:knows
+        - $id: foaf:friendOf
+        - $id: foaf:member
+        - $id: foaf:membershipClass
+        - $id: foaf:depiction
+        - $id: foaf:depicts
+        - $id: foaf:thumbnail
+        - $id: foaf:based_near
+        - $id: foaf:icqChatID
+
+  - rdfs:label: Activities & Projects
+    $reverse:
+      rdf:type:
+        - $id: foaf:Project
+        - $id: foaf:fundedBy
+        - $id: foaf:interest
+        - $id: foaf:currentProject
+        - $id: foaf:pastProject
+        - $id: foaf:logo
+        - $id: foaf:maker
+        - $id: foaf:made
+        - $id: foaf:plan
+        - $id: foaf:tipjar
+
+  - rdfs:label: Meta
+    $reverse:
+      rdf:type:
+        - $id: foaf:LabelProperty
+        - $id: foaf:focus
