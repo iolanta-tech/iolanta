@@ -1,0 +1,123 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  vann: https://purl.org/vocab/vann/
+  foaf: https://xmlns.com/foaf/0.1/
+  owl: https://www.w3.org/2002/07/owl#
+  iolanta: https://iolanta.tech/
+  rdfs: "https://www.w3.org/2000/01/rdf-schema#"
+  rdf: https://www.w3.org/1999/02/22-rdf-syntax-ns#
+  dcterms: https://purl.org/dc/terms/
+  dcam: https://purl.org/dc/dcam/
+
+$id: "owl:"
+$type: owl:Ontology
+vann:termGroup:
+  - rdfs:label: Property Classes
+    $reverse:
+      rdf:type:
+        - $id: owl:AnnotationProperty
+        - $id: owl:DatatypeProperty
+        - $id: owl:ObjectProperty
+        - $id: owl:FunctionalProperty
+        - $id: owl:AsymmetricProperty
+        - $id: owl:ReflexiveProperty
+        - $id: owl:IrreflexiveProperty
+        - $id: owl:SymmetricProperty
+        - $id: owl:assertionProperty
+        - $id: owl:TransitiveProperty
+        - $id: owl:InverseFunctionalProperty
+        - $id: owl:OntologyProperty
+
+  - rdfs:label: Deprecation
+    $reverse:
+      rdf:type:
+        - $id: owl:deprecated
+        - $id: owl:DeprecatedClass
+        - $id: owl:DeprecatedProperty
+        - $id: owl:DeprecatedIndividual
+
+  - rdfs:label: on…
+    $reverse:
+      rdf:type:
+        - $id: owl:onClass
+        - $id: owl:onDataRange
+        - $id: owl:onDatatype
+        - $id: owl:onProperties
+        - $id: owl:onProperty
+
+  - rdfs:label: Sets
+    $reverse:
+      rdf:type:
+        - $id: owl:Class
+        - $id: owl:equivalentClass
+        - $id: owl:intersectionOf
+        - $id: owl:inverseOf
+        - $id: owl:unionOf
+        - $id: owl:disjointUnionOf
+        - $id: owl:disjointWith
+        - $id: owl:complementOf
+        - $id: owl:Nothing
+
+  - rdfs:label: Axioms
+    $reverse:
+      rdf:type:
+        - $id: owl:Axiom
+        - $id: owl:members
+        - $id: owl:AllDifferent
+        - $id: owl:AllDisjointClasses
+        - $id: owl:AllDisjointProperties
+
+  - rdfs:label: Ontologies
+    $reverse:
+      rdf:type:
+        - $id: owl:Ontology
+        - $id: owl:imports
+        - $id: owl:backwardCompatibleWith
+        - $id: owl:incompatibleWith
+        - $id: owl:priorVersion
+        - $id: owl:versionIRI
+        - $id: owl:versionInfo
+
+  - rdfs:label: Restrictions
+    $reverse:
+      rdf:type:
+        - $id: owl:Restriction
+        - $id: owl:hasValue
+        - $id: owl:someValuesFrom
+        - $id: owl:allValuesFrom
+        - $id: owl:hasSelf
+        - $id: owl:hasKey
+        - $id: owl:hasValue
+        - $id: owl:withRestrictions
+
+  - rdfs:label: Cardinality
+    $reverse:
+      rdf:type:
+        - $id: owl:cardinality
+        - $id: owl:minCardinality
+        - $id: owl:maxCardinality
+        - $id: owl:qualifiedCardinality
+        - $id: owl:minQualifiedCardinality
+        - $id: owl:maxQualifiedCardinality
+
+  - rdfs:label: (in)Equality
+    $reverse:
+      rdf:type:
+        - $id: owl:sameAs
+        - $id: owl:differentFrom
+
+  - rdfs:label: Deprecated
+    $reverse:
+      rdf:type:
+        - $id: owl:DataRange
+
+  - rdfs:label: Negative Property Assertions
+    $reverse:
+      rdf:type:
+        - $id: owl:NegativePropertyAssertion
+        - $id: owl:targetValue
+
+  - rdfs:label: Datatypes
+    $reverse:
+      rdf:type:
+        - $id: owl:datatypeComplementOf
