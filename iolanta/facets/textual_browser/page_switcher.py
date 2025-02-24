@@ -149,7 +149,7 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
         )
 
         try:
-            renderable = self.app.call_from_thread(facet.show)
+            renderable = facet.show()
 
         except Exception as err:
             raise FacetError(
