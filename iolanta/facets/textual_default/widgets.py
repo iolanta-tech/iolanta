@@ -130,17 +130,15 @@ class PropertyValue(Widget, can_focus=True, inherit_bindings=False):
         property_value: Node,
         subject: NotLiteralNode,
         property_iri: NotLiteralNode,
+        property_qname: str,
     ):
         """Initialize parameters for rendering, navigation, & provenance."""
         self.property_value = property_value
         self.subject = subject
         self.property_iri = property_iri
         super().__init__()
-        qname = self.app.iolanta.node_as_qname(  # noqa: WPS601
-            property_value,
-        )
         self.renderable = Text(  # noqa: WPS601
-            f'⏳ {qname}',
+            f'⏳ {property_qname}',
             style='#696969',
         )
 

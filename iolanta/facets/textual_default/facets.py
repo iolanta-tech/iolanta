@@ -70,6 +70,7 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
                     property_value=property_value,
                     subject=self.iri,
                     property_iri=property_iri,
+                    property_qname=self.iolanta.node_as_qname(property_iri),
                 )
                 for property_value in property_values
             ]
