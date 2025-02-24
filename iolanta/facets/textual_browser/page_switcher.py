@@ -107,13 +107,11 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
         iolanta: Iolanta = self.iolanta
 
         as_datatype = URIRef('https://iolanta.tech/cli/textual')
-        choices = self.app.call_from_thread(
-            FacetFinder(
-                iolanta=self.iolanta,
-                node=destination,
-                as_datatype=as_datatype,
-            ).choices,
-        )
+        choices = FacetFinder(
+            iolanta=self.iolanta,
+            node=destination,
+            as_datatype=as_datatype,
+        ).choices()
 
         if not choices:
             raise FacetNotFound(
