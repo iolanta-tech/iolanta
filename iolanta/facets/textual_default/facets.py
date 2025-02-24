@@ -58,6 +58,7 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
         for property_iri, property_values in self.grouped_properties.items():
             property_name = PropertyName(
                 iri=property_iri,
+                qname=self.iolanta.node_as_qname(property_iri),
             )
 
             property_values = [

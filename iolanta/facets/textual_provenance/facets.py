@@ -80,18 +80,19 @@ class ProvenanceView(Vertical):
         """Build page structure."""
         yield Title('Provenan©e for a triple')
 
+        # TODO: Calculate QNames somehow.
         yield PropertyRow(
-            PropertyName(RDF.subject),
+            PropertyName(RDF.subject, qname=str(RDF.subject)),
             RDFTermView(self.triple.subject),
         )
 
         yield PropertyRow(
-            PropertyName(RDF.predicate),
+            PropertyName(RDF.predicate, qname=str(RDF.predicate)),
             RDFTermView(self.triple.predicate),
         )
 
         yield PropertyRow(
-            PropertyName(RDF.object),
+            PropertyName(RDF.object, qname=str(RDF.object)),
             RDFTermView(self.triple.object),
         )
 

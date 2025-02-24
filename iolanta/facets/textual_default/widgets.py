@@ -48,11 +48,11 @@ class PropertyName(Widget, can_focus=True, inherit_bindings=False):
     def __init__(
         self,
         iri: NotLiteralNode,
+        qname: str,
     ):
         """Set the IRI."""
         self.iri = iri
         super().__init__()
-        qname = self.app.iolanta.node_as_qname(iri)
         self.renderable = Text(  # noqa: WPS601
             f'⏳ {qname}',
             style='#696969',
