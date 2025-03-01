@@ -47,7 +47,8 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
     BINDINGS = [  # noqa: WPS115
         ('alt+left', 'back', 'Back'),
         ('alt+right', 'forward', 'Fwd'),
-        ('f5', 'reload', 'Reload'),
+        ('f5', 'reload', '🔄 Reload'),
+        ('escape', 'abort', '🛑 Abort'),
         ('f12', 'console', 'Console'),
     ]
 
@@ -102,13 +103,11 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
         iolanta: Iolanta = self.iolanta
 
         as_datatype = URIRef('https://iolanta.tech/cli/textual')
-        choices = self.app.call_from_thread(
-            FacetFinder(
-                iolanta=self.iolanta,
-                node=destination,
-                as_datatype=as_datatype,
-            ).choices,
-        )
+        choices = FacetFinder(
+            iolanta=self.iolanta,
+            node=destination,
+            as_datatype=as_datatype,
+        ).choices()
 
         if not choices:
             raise FacetNotFound(
@@ -146,7 +145,7 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
         )
 
         try:
-            renderable = self.app.call_from_thread(facet.show)
+            renderable = facet.show()
 
         except Exception as err:
             raise FacetError(
@@ -207,6 +206,15 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
             case WorkerState.ERROR:
                 raise ValueError(event)
 
+    @property
+    def is_loading(self) -> bool:
+        """Determine if the app is presently loading something."""
+        for worker in self.workers:
+            if worker.name == 'render_iri':
+                return True
+
+        return False
+
     def action_reload(self):
         """Reset Iolanta graph and re-render current view."""
         self.iolanta.reset()
@@ -219,7 +227,39 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
                 is_reload=True,
             ),
             thread=True,
+            exclusive=True,
+            name='render_iri',
         )
+        self.refresh_bindings()
+
+    def action_abort(self):
+        """Abort loading."""
+        self.notify(
+            'Aborted.',
+            severity='warning',
+        )
+
+        for worker in self.workers:
+            if worker.name == 'render_iri':
+                worker.cancel()
+                break
+
+        self.refresh_bindings()
+
+    def check_action(
+        self,
+        action: str,
+        parameters: tuple[object, ...],   # noqa: WPS110
+    ) -> bool | None:
+        """Check if action is available."""
+        is_loading = self.is_loading
+        match action:
+            case 'reload':
+                return not is_loading
+            case 'abort':
+                return is_loading
+
+        return True
 
     def action_goto(
         self,
@@ -240,7 +280,10 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
                 is_reload=False,
             ),
             thread=True,
+            exclusive=True,
+            name='render_iri',
         )
+        self.refresh_bindings()
 
     def action_back(self):
         """Go backward."""

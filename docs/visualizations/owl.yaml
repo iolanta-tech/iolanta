@@ -121,3 +121,10 @@ vann:termGroup:
     $reverse:
       rdf:type:
         - $id: owl:datatypeComplementOf
+
+  - rdfs:label: Individuals
+    $reverse:
+      rdf:type:
+        - $id: owl:NamedIndividual
+        - $id: owl:sourceIndividual
+        - $id: owl:targetIndividual

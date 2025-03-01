@@ -131,6 +131,10 @@ def _extract_from_mapping(  # noqa: WPS213
             yield from extract_mentioned_urls(algebra['p2'])
             yield from extract_mentioned_urls(algebra['expr'])
 
+        case 'Join':
+            yield from extract_mentioned_urls(algebra['p1'])
+            yield from extract_mentioned_urls(algebra['p2'])
+
         case 'ConditionalOrExpression' | 'ConditionalAndExpression':
             yield from extract_mentioned_urls(algebra['expr'])
             yield from extract_mentioned_urls(algebra['other'])
@@ -149,10 +153,8 @@ def _extract_from_mapping(  # noqa: WPS213
         case unknown_name:
             formatted_keys = ', '.join(algebra.keys())
             loguru.logger.error(
-                'Unknown SPARQL expression %s(%s): %s',
-                unknown_name,
-                formatted_keys,
-                algebra,
+                'Unknown SPARQL expression '
+                f'{unknown_name}({formatted_keys}): {algebra}',
             )
             return
 
@@ -565,10 +567,10 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             )
             return Loaded()
         except ParserNotFound as parser_not_found:
-            self.logger.info('%s | %s', source, str(parser_not_found))
+            self.logger.info(f'{source} | {parser_not_found}')
             return Loaded()
         except YAMLLDError as yaml_ld_error:
-            self.logger.error('%s | %s', source, str(yaml_ld_error))
+            self.logger.error(f'{source} | {yaml_ld_error}')
             return Loaded()
 
         try:

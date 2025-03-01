@@ -22,8 +22,7 @@ class PageTitle(IolantaWidgetMixin, Static):
         """Initialize."""
         self.iri = iri
         self.extra = extra
-        qname = self.iolanta.node_as_qname(iri)
-        super().__init__(qname)
+        super().__init__(iri)
 
     def construct_title(self):
         """Render the title via Iolanta in a thread."""
