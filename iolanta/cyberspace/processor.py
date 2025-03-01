@@ -131,6 +131,10 @@ def _extract_from_mapping(  # noqa: WPS213
             yield from extract_mentioned_urls(algebra['p2'])
             yield from extract_mentioned_urls(algebra['expr'])
 
+        case 'Join':
+            yield from extract_mentioned_urls(algebra['p1'])
+            yield from extract_mentioned_urls(algebra['p2'])
+
         case 'ConditionalOrExpression' | 'ConditionalAndExpression':
             yield from extract_mentioned_urls(algebra['expr'])
             yield from extract_mentioned_urls(algebra['other'])
