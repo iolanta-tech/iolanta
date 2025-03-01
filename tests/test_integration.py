@@ -5,7 +5,7 @@ from yarl import URL
 
 SCREENSHOTS = Path(__file__).parent.parent / 'docs/screenshots'
 
-SCREENSHOT_TIMEOUT = 45
+SCREENSHOT_TIMEOUT = 50
 
 
 def generate_screenshot(url: URL) -> str:
