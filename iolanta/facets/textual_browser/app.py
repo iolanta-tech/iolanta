@@ -4,6 +4,7 @@ from concurrent.futures import ThreadPoolExecutor
 from rdflib.term import Node
 from rich.console import RenderableType
 from textual.app import App, ComposeResult
+from textual.css.query import NoMatches
 from textual.widgets import Footer, Header
 
 from iolanta.facets.textual_browser.page_switcher import (
@@ -28,6 +29,17 @@ class DevConsoleHandler(logging.Handler):
         """Write a message when invoked by `logging`."""
         message = self.format(record)
         self.console.write(message)
+
+
+def _log_message_to_dev_console(app: App):
+    """Log a message to the dev console."""
+    def log_message_to_dev_console(message: str):   # noqa: WPS430
+        try:
+            app.query_one(DevConsole).write(message)
+        except NoMatches:
+            return
+
+    return log_message_to_dev_console
 
 
 class IolantaBrowser(App):  # noqa: WPS214, WPS230
@@ -71,7 +83,7 @@ class IolantaBrowser(App):  # noqa: WPS214, WPS230
 
         # Log to the dev console.
         self.iolanta.logger.add(
-            lambda msg: self.query_one(DevConsole).write(msg),
+            _log_message_to_dev_console(self),
             level='INFO',
             format='{time} {level} {message}',
         )
