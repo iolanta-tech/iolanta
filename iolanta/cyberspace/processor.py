@@ -149,10 +149,8 @@ def _extract_from_mapping(  # noqa: WPS213
         case unknown_name:
             formatted_keys = ', '.join(algebra.keys())
             loguru.logger.error(
-                'Unknown SPARQL expression %s(%s): %s',
-                unknown_name,
-                formatted_keys,
-                algebra,
+                'Unknown SPARQL expression '
+                f'{unknown_name}({formatted_keys}): {algebra}',
             )
             return
 
