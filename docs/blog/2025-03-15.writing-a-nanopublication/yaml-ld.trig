@@ -1,0 +1,13 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix fip: <https://w3id.org/fair/fip/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+{
+    <https://json-ld.github.io/yaml-ld/spec/> a owl:NamedIndividual,
+            fip:Knowledge-representation-language ;
+        rdfs:label "YAML-LD" ;
+        dcterms:description """A set of conventions built on top of YAML, which outlines how to serialize
+Linked Data as YAML based on JSON-LD syntax, semantics, and APIs.
+""" .
+}
