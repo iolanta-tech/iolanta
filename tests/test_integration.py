@@ -60,3 +60,13 @@ def test_red_things_nanopublication():
     assert 'red' in svg
     assert 'things' in svg
     assert 'Class' in svg
+
+
+def test_yaml_ld_nanopublication():
+    """Test a red things nanopublication."""
+    svg = generate_screenshot(
+        URL(
+            'https://w3id.org/np/RA7OYmnx-3ln_AY233lElN01wSDJWDOXPz061Ah93EQ2I',
+        ),
+    )
+    assert 'YAML-LD' in svg

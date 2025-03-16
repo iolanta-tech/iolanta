@@ -1,6 +1,3 @@
 nav:
-  - index.md
-  - screenshots
+  - Home: index.md
   - blog
-  - datatypes
-  - reference
