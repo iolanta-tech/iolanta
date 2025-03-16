@@ -432,6 +432,25 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
         query_result['bindings'] = bindings
         return query_result
 
+    def _is_loaded(self, uri: URIRef) -> bool:
+        """Find out if this URI in the graph already."""
+        return funcy.first(
+            self.graph.quads((
+                uri,
+                IOLANTA['last-loaded-time'],
+                None,
+                URIRef('iolanta://_meta'),
+            )),
+        ) is not None
+
+    def _mark_as_loaded(self, uri: URIRef):
+        self.graph.add((
+            uri,
+            IOLANTA['last-loaded-time'],
+            Literal(datetime.datetime.now()),
+            URIRef('iolanta://_meta'),
+        ))
+
     def load(   # noqa: C901, WPS210, WPS212, WPS213, WPS231
         self,
         source: URIRef,
@@ -448,25 +467,23 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             #   fails.
             return Skipped()
 
+        if url.fragment:
+            # Fragment on an HTML page resolves to that same page. Let us remove
+            # this ambiguity, then.
+            # TODO: It works differently for JSON-LD documents AFAIK. Need to
+            #   double check that.
+            url = url.with_fragment(None)
+            source = URIRef(str(url))
+
         new_source = self._apply_redirect(source)
         if new_source != source:
             return self.load(new_source)
 
         source_uri = normalize_term(source)
-        existing_triple = funcy.first(
-            self.graph.quads(
-                (
-                    None,
-                    None,
-                    None,
-                    source_uri,
-                ),
-            ),
-        )
-        if existing_triple is not None:
+        if self._is_loaded(source_uri):
             return Skipped()
         else:
-            self.logger.info(f'Existing triples not found for {source_uri}')
+            self.logger.info(f'{source_uri} is not loaded yet')
 
         # FIXME This is definitely inefficient. However, python-yaml-ld caches
         #   the document, so the performance overhead is not super high.
@@ -510,6 +527,8 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
                 RDFS.Class,
             ))
 
+            self._mark_as_loaded(source_uri)
+
             return Loaded()
 
         except Exception as err:
@@ -533,6 +552,9 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
                 RDF.type,
                 RDFS.Class,
             ))
+
+            self._mark_as_loaded(source_uri)
+
             return Loaded()
 
         if _resolved_source:
@@ -556,6 +578,8 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             RDF.type,
             RDFS.Class,
         ))
+
+        self._mark_as_loaded(source_uri)
 
         try:  # noqa: WPS225
             ld_rdf = yaml_ld.to_rdf(source)
