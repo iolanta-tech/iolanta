@@ -1,0 +1,15 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  vann: https://purl.org/vocab/vann/
+  foaf: https://xmlns.com/foaf/0.1/
+  owl: https://www.w3.org/2002/07/owl#
+  iolanta: https://iolanta.tech/
+  rdfs: "https://www.w3.org/2000/01/rdf-schema#"
+  rdf: https://www.w3.org/1999/02/22-rdf-syntax-ns#
+  fip: https://w3id.org/fair/fip/terms/
+
+  owl:import:
+    "@type": "@id"
+
+$id: "fip:"
+owl:import: https://peta-pico.github.io/FAIR-nanopubs/fip/ontology.json
