@@ -1,0 +1,24 @@
+@prefix : <http://purl.org/nanopub/temp/keyDeclaration#> .
+@prefix np: <http://www.nanopub.org/nschema#> .
+@prefix npx: <http://purl.org/nanopub/x/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix orcid: <https://orcid.org/> .
+
+:Head {
+  : a np:Nanopublication ;
+    np:hasAssertion :assertion ;
+    np:hasProvenance :provenance ;
+    np:hasPublicationInfo :pubinfo .
+}
+
+:assertion {
+  orcid:0009-0001-8740-4213 npx:hasPublicKey "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCn6rJWI3NmhXLeWDIE+uuqZu2tPbDJ9ARhL5DFPmQahm7aFQ2hCtduWhucML5gBj4bQl/+PsG4bcjz2cFQEgEqCiV7WoK6d7zlm+ru3UbOK+8J1Nbd84zvSjtg/SCo4VOxiu2tgMZR1Ys7S+sm/9GB5jBuZUy2GQxQpKiuK+TDfa4vCZyUt7P6FlyTE7ELNsgeJe4Be+V1lFSjEsmArE166zUOYPMdbpar/r23bHRGr98UbfKUsqHJCVc9YWWzuFwL3Nbuj9f9fZi1DjFJsJb0euEb47AMfA3sadWgnDPgaQ18JDMHLVLuwB9isrTNUn+XXGa2kI4papVPdnmntRuJiZ2ijV8V6b50Wd8uqu7Evy6lx97cEDVQPmuf69AhuBxi7jzczNHRy06xnN8uUb2wPxua9vzlfpBAsE+qLfzlMdbaoqUTJRf+WrsSi8/tReCymVgKhkd66Zd5e43oYNmXvtEK7ITFnERh/bOOb9flTa0F+HsfNGHQj25TJ/GGinDvhToYZ+LHHzG1sTAfVfMDoVM8y/a6sU+ELZeoWh3HxXuhn4y2FAD63i10L+94gbZEwOqvqgvr8q60WLa8U1c+hMSpurFCappp31qjAp2blTzJFPpaL5v4E+ZkTu6CTeC4Vo4rErlQBj6zEwbRuB9w+7tFLvsRGs2tXc6StHJIRQ== anatoly@iolanta.tech" .
+}
+
+:provenance {
+  :assertion prov:wasAttributedTo orcid:0009-0001-8740-4213 .
+}
+
+:pubinfo {
+  : prov:wasAttributedTo orcid:0009-0001-8740-4213 .
+}

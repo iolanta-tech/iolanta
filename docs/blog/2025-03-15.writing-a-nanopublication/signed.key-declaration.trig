@@ -1,0 +1,47 @@
+PREFIX this: <https://w3id.org/np/RA4HXxJzLF16VTtq-Anxz76DsPys618OGVK2_-44BE-ts>
+PREFIX sub: <https://w3id.org/np/RA4HXxJzLF16VTtq-Anxz76DsPys618OGVK2_-44BE-ts#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX np: <http://www.nanopub.org/nschema#>
+PREFIX npx: <http://purl.org/nanopub/x/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX pav: <http://purl.org/pav/>
+PREFIX schema: <https://schema.org/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX orcid: <https://orcid.org/>
+PREFIX biolink: <https://w3id.org/biolink/vocab/>
+PREFIX infores: <https://w3id.org/biolink/infores/>
+
+GRAPH sub:Head {
+  <https://w3id.org/np/RA4HXxJzLF16VTtq-Anxz76DsPys618OGVK2_-44BE-ts> a np:Nanopublication;
+    np:hasAssertion sub:assertion;
+    np:hasProvenance sub:provenance;
+    np:hasPublicationInfo sub:pubinfo.
+}
+
+GRAPH sub:assertion {
+  orcid:0009-0001-8740-4213
+    npx:hasPublicKey "AAAAB3NzaC1yc2EAAAADAQABAAACAQCn6rJWI3NmhXLeWDIE+uuqZu2tPbDJ9ARhL5DFPmQahm7aFQ2hCtduWhucML5gBj4bQl/+PsG4bcjz2cFQEgEqCiV7WoK6d7zlm+ru3UbOK+8J1Nbd84zvSjtg/SCo4VOxiu2tgMZR1Ys7S+sm/9GB5jBuZUy2GQxQpKiuK+TDfa4vCZyUt7P6FlyTE7ELNsgeJe4Be+V1lFSjEsmArE166zUOYPMdbpar/r23bHRGr98UbfKUsqHJCVc9YWWzuFwL3Nbuj9f9fZi1DjFJsJb0euEb47AMfA3sadWgnDPgaQ18JDMHLVLuwB9isrTNUn+XXGa2kI4papVPdnmntRuJiZ2ijV8V6b50Wd8uqu7Evy6lx97cEDVQPmuf69AhuBxi7jzczNHRy06xnN8uUb2wPxua9vzlfpBAsE+qLfzlMdbaoqUTJRf+WrsSi8/tReCymVgKhkd66Zd5e43oYNmXvtEK7ITFnERh/bOOb9flTa0F+HsfNGHQj25TJ/GGinDvhToYZ+LHHzG1sTAfVfMDoVM8y/a6sU+ELZeoWh3HxXuhn4y2FAD63i10L+94gbZEwOqvqgvr8q60WLa8U1c+hMSpurFCappp31qjAp2blTzJFPpaL5v4E+ZkTu6CTeC4Vo4rErlQBj6zEwbRuB9w+7tFLvsRGs2tXc6StHJIRQ==".
+}
+
+GRAPH sub:provenance {
+  sub:assertion
+    prov:wasAttributedTo orcid:0009-0001-8740-4213.
+}
+
+GRAPH sub:pubinfo {
+  <https://w3id.org/np/RA4HXxJzLF16VTtq-Anxz76DsPys618OGVK2_-44BE-ts>
+    dcterms:created "2025-03-22T17:07:15.842Z"^^xsd:dateTime;
+    prov:wasAttributedTo orcid:0009-0001-8740-4213.
+
+  sub:sig
+    npx:hasAlgorithm "RSA";
+    npx:hasPublicKey "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCn6rJWI3NmhXLeWDIE+uuqZu2tPbDJ9ARhL5DFPmQahm7aFQ2hCtduWhucML5gBj4bQl/+PsG4bcjz2cFQEgEqCiV7WoK6d7zlm+ru3UbOK+8J1Nbd84zvSjtg/SCo4VOxiu2tgMZR1Ys7S+sm/9GB5jBuZUy2GQxQpKiuK+TDfa4vCZyUt7P6FlyTE7ELNsgeJe4Be+V1lFSjEsmArE166zUOYPMdbpar/r23bHRGr98UbfKUsqHJCVc9YWWzuFwL3Nbuj9f9fZi1DjFJsJb0euEb47AMfA3sadWgnDPgaQ18JDMHLVLuwB9isrTNUn+XXGa2kI4papVPdnmntRuJiZ2ijV8V6b50Wd8uqu7Evy6lx97cEDVQPmuf69AhuBxi7jzczNHRy06xnN8uUb2wPxua9vzlfpBAsE+qLfzlMdbaoqUTJRf+WrsSi8/tReCymVgKhkd66Zd5e43oYNmXvtEK7ITFnERh/bOOb9flTa0F+HsfNGHQj25TJ/GGinDvhToYZ+LHHzG1sTAfVfMDoVM8y/a6sU+ELZeoWh3HxXuhn4y2FAD63i10L+94gbZEwOqvqgvr8q60WLa8U1c+hMSpurFCappp31qjAp2blTzJFPpaL5v4E+ZkTu6CTeC4Vo4rErlQBj6zEwbRuB9w+7tFLvsRGs2tXc6StHJIRQ== anatoly@iolanta.tech";
+    npx:hasSignature "SSYcyrZfDFbxzgVwATDPhdR370/M4yKW5Mqg5la2sJ5vfrqfaA3Mqr3OaYtF8Spgl9Z1joOIdf0dueAwRCxeYBBnNj1zou3QSqnyHqfvyUrIEOG8RDieab5zMpxl40H5Alybu8yYvc2RNpgpNyyiJ3h9Sir1D5Q71A4DQHw1xEljCFsF4ukuHCV43HsuS90rHep4Ci1gGfm24vEaWxNSlsRO4SVmWmL6g9kPkyTV/VgwVumkp15aWD1oaRTVz2NcZKqFmcUjmlCHQ+VFw4FZJF5rxrlgGBYxhYxFDn7UqfDNz3Rl69kK1gwGsLuNLuP3Xgl3sy3DKdMeaihuYAMXZM8t9eMKVhsZqKrtmwO2m3/SJeVu6sdpyv3zTR3fyeKHQTP69Sisyra7oVvDemNET72KzSgy8TkPAaLIc44tJHdC3QSV8HG3p62oAceBicBrgX1Su7QBfn+k47evaI2T9fTzTNnC0Tg7rcRqM5Y+1A6G/EsK0zM63Qc1rejr0E9tDeLJXER5gOsYNcOna7ZbI+UjzgP0vlC4341DvqxGmQjPrX1blitaGS5U/RB7re5+90GfNE58HJ6kIdBd5ZQATs1OEO0biLxPb1lGONt7mCgD2VLDED3m2OND4cuSHrr/8cV7p1Xg0eGKlwj71HCtyyPd9i+X2HdhxWi/ZarJZ3Q=";
+    npx:hasSignatureTarget <https://w3id.org/np/RA4HXxJzLF16VTtq-Anxz76DsPys618OGVK2_-44BE-ts>.
+}
