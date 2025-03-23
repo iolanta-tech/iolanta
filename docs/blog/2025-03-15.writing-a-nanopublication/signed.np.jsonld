@@ -1,0 +1,49 @@
+PREFIX this: <https://w3id.org/np/RAZIrVNUTUEnIHgcKXzFUMRTLQKnMGIQh-xEvbbgUBfY4>
+PREFIX sub: <https://w3id.org/np/RAZIrVNUTUEnIHgcKXzFUMRTLQKnMGIQh-xEvbbgUBfY4#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX np: <http://www.nanopub.org/nschema#>
+PREFIX npx: <http://purl.org/nanopub/x/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX pav: <http://purl.org/pav/>
+PREFIX schema: <https://schema.org/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX orcid: <https://orcid.org/>
+PREFIX biolink: <https://w3id.org/biolink/vocab/>
+PREFIX infores: <https://w3id.org/biolink/infores/>
+
+GRAPH sub:Head {
+  <https://w3id.org/np/RAZIrVNUTUEnIHgcKXzFUMRTLQKnMGIQh-xEvbbgUBfY4> a np:Nanopublication;
+    np:hasAssertion sub:assertion;
+    np:hasProvenance sub:provenance;
+    np:hasPublicationInfo sub:pubinfo.
+}
+
+GRAPH sub:assertion {
+  <https://json-ld.github.io/yaml-ld/spec/> a owl:NamedIndividual,
+      <https://w3id.org/fair/fip/terms/Knowledge-representation-language>;
+    dcterms:description "A set of conventions built on top of YAML, which outlines how to serialize Linked Data as YAML based on JSON-LD syntax, semantics, and APIs.";
+    rdfs:label "YAML-LD".
+}
+
+GRAPH sub:provenance {
+  sub:assertion
+    prov:hadPrimarySource <https://json-ld.github.io/yaml-ld/spec/>.
+}
+
+GRAPH sub:pubinfo {
+  <https://w3id.org/np/RAZIrVNUTUEnIHgcKXzFUMRTLQKnMGIQh-xEvbbgUBfY4>
+    dcterms:created "2025-03-22T16:24:32.627Z"^^xsd:dateTime;
+    prov:wasAttributedTo orcid:0009-0001-8740-4213.
+
+  sub:sig
+    npx:hasAlgorithm "RSA";
+    npx:hasPublicKey "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCn6rJWI3NmhXLeWDIE+uuqZu2tPbDJ9ARhL5DFPmQahm7aFQ2hCtduWhucML5gBj4bQl/+PsG4bcjz2cFQEgEqCiV7WoK6d7zlm+ru3UbOK+8J1Nbd84zvSjtg/SCo4VOxiu2tgMZR1Ys7S+sm/9GB5jBuZUy2GQxQpKiuK+TDfa4vCZyUt7P6FlyTE7ELNsgeJe4Be+V1lFSjEsmArE166zUOYPMdbpar/r23bHRGr98UbfKUsqHJCVc9YWWzuFwL3Nbuj9f9fZi1DjFJsJb0euEb47AMfA3sadWgnDPgaQ18JDMHLVLuwB9isrTNUn+XXGa2kI4papVPdnmntRuJiZ2ijV8V6b50Wd8uqu7Evy6lx97cEDVQPmuf69AhuBxi7jzczNHRy06xnN8uUb2wPxua9vzlfpBAsE+qLfzlMdbaoqUTJRf+WrsSi8/tReCymVgKhkd66Zd5e43oYNmXvtEK7ITFnERh/bOOb9flTa0F+HsfNGHQj25TJ/GGinDvhToYZ+LHHzG1sTAfVfMDoVM8y/a6sU+ELZeoWh3HxXuhn4y2FAD63i10L+94gbZEwOqvqgvr8q60WLa8U1c+hMSpurFCappp31qjAp2blTzJFPpaL5v4E+ZkTu6CTeC4Vo4rErlQBj6zEwbRuB9w+7tFLvsRGs2tXc6StHJIRQ== anatoly@iolanta.tech";
+    npx:hasSignature "NBGNA9x+kMynoZtOmLBprVlXV7BZ2qAzX+OoiCu8TtWTX1zGG2TFV3mlAbTqo9nwZEXSvz87o7nZzDuVTNDcARzTTTX84u3uVzijBb/4e8gh8JY4beaSbyG2RrJq3YajBNk2Q2VG25jxJef+cFTeZIUqLME6FQXzEQAXJLZDHQkfOv5iVq1pGdL2cThcas70pnx2rZpxm3uiXIa+UBHj6eICGcmmWbsWl9B1+N9vi44wcp8A7E0GybXb42I5b8/5xmg32Uf7GtjIORwLdAMnkIDJwqaIePO5e7NoPmh66fWyVKx3xE6lPlR1xNfyna6KlY3z6DKLD+ZdoYH4RWNgAdNwt1LHwy2l6TFfss8TKJqyZ+CxTrhLqO+Rv1sv4BA5jhgni6S8Q5ozrBqNU5M+DBJ8//gKalmJ7zyHARavIFDQqLKnvUw+8KJUOwGJBfwBH8kGWHU6hQD3hoZvzi/LJC9sFh+Xk7NAL2EiWsfVL9EHI1N0/LryP0wohz6WQaLFJgvMkDOfxJUgLcvWlG4CSPrmX4Dy8VnET/3Vr2XduCumiTaBWR1Ffvme6B3mWMAstSOukeREdAj+ZcDkNWHicqsOefhPdibi9GWDg2Ac/kMvuv/OmcyNrisMIXL2Db+1xJOiXnemYmAPfmBx6b6u+wD/E7wREOjOLDvw9wBu51s=";
+    npx:hasSignatureTarget <https://w3id.org/np/RAZIrVNUTUEnIHgcKXzFUMRTLQKnMGIQh-xEvbbgUBfY4>.
+}
