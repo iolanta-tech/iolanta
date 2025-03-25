@@ -29,5 +29,5 @@ $included:
   - $id: "https://w3id.org/fair/fip/terms/"
     →: fair-fip.yamlld
 
-  - $id: https://nanopub.org/nschema#
+  - $id: https://www.nanopub.org/nschema#
     →: nschema.yamlld
