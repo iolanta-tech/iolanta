@@ -50,6 +50,9 @@ NORMALIZE_TERMS_MAP = MappingProxyType({
 
 REASONING_ENABLED = True
 OWL_REASONING_ENABLED = False
+INDICES = [
+    URIRef('https://iolanta.tech/visualizations/index.yaml'),
+]
 
 
 REDIRECTS = MappingProxyType({
@@ -67,10 +70,10 @@ REDIRECTS = MappingProxyType({
     # This one does not answer via HTTPS :(
     URIRef('https://xmlns.com/foaf/0.1/'): URIRef('http://xmlns.com/foaf/0.1/'),
     URIRef('https://www.nanopub.org/nschema'): URIRef(
-        'https://www.nanopub.net/nschema',
+        'https://www.nanopub.net/nschema#',
     ),
     URIRef('https://nanopub.org/nschema'): URIRef(
-        'https://nanopub.net/nschema',
+        'https://nanopub.net/nschema#',
     ),
     URIRef(PROV): URIRef('https://www.w3.org/ns/prov-o'),
 })
@@ -306,6 +309,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
     def __post_init__(self):
         """Note that we do not presently need OWL inference."""
         self.graph.last_not_inferred_source = None
+        self.graph._indices_loaded = False
 
     def _infer_with_sparql(self):
         """
@@ -365,6 +369,13 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
         ]
         self.graph.addN(inferred_quads)
 
+    def _maybe_load_indices(self):
+        if not self.graph._indices_loaded:
+            for index in INDICES:
+                self.load(index)
+
+            self.graph._indices_loaded = True
+
     def query(   # noqa: WPS211, WPS210, WPS231, C901
         self,
         strOrQuery,
@@ -378,6 +389,8 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
         namespaces. The given base is used to resolve relative URIs in
         the query and will be overridden by any BASE given in the query.
         """
+        self._maybe_load_indices()
+
         initBindings = initBindings or {}
         initNs = initNs or {}
 
@@ -406,7 +419,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
                 try:
                     self.load(url)
                 except Exception as err:
-                    self.logger.error('Failed to load %s: %s', url, err)
+                    self.logger.error(f'Failed to load {url}: {err}', url, err)
 
         self.maybe_apply_inference()
 
@@ -451,6 +464,15 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             URIRef('iolanta://_meta'),
         ))
 
+    def _follow_is_visualized_with_links(self, uri: URIRef):
+        """Follow `iolanta:is-visualized-with` links."""
+        self.logger.info(f'Following links for {uri}…')
+        triples = self.graph.triples((uri, IOLANTA['visualized-with'], None))
+        for _, _, visualization in triples:
+            if isinstance(visualization, URIRef):
+                self.load(visualization)
+        self.logger.info('Links followed.')
+
     def load(   # noqa: C901, WPS210, WPS212, WPS213, WPS231
         self,
         source: URIRef,
@@ -473,7 +495,9 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             # TODO: It works differently for JSON-LD documents AFAIK. Need to
             #   double check that.
             url = url.with_fragment(None)
-            source = URIRef(str(url))
+            source = URIRef(str(f'{url}#'))
+
+        self._follow_is_visualized_with_links(source)
 
         new_source = apply_redirect(source)
         if new_source != source:
