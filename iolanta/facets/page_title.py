@@ -45,8 +45,7 @@ class PageTitle(IolantaWidgetMixin, Static):
                 title = event.worker.result
                 if self.extra:
                     title = f'{title} {self.extra}'
-                self.renderable = title
-                self.refresh()
+                self.update(title)
 
             case WorkerState.ERROR:
                 raise ValueError(event)
