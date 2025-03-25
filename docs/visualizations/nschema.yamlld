@@ -1,0 +1,15 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  np: https://nanopub.org/nschema#
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  $: rdfs:label
+  →:
+    "@id": rdfs:seeAlso
+    "@type": "@id"
+
+$included:
+  - $id: np:Nanopublication
+    $: Nanopublication
+
+  - $id: https://nanopub.org/nschema
+    →: "np:"
