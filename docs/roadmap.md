@@ -11,7 +11,9 @@ Roadmap of Iolanta development shows known yet unsolved bugs and to-do items. So
 
 ```mermaid
 graph LR
-    nanopub-blog-post("Blog post:<br/><strong>Nanopublishing with Iolanta</strong>")
+    nanopub-blog-post("Blog post:<br/><strong>Nanopublishing with Iolanta</strong>") --> markdown-nanopub-blog-post("Blog post:<br/><strong>Quick & readable Nanopublications with Markdown-LD")
+    
+    nanopub-rs-graph("Publish an assertion from file<br/>@ <code>nanopub-rs</code>") --> nanopub-yaml-ld("Publish a YAML-LD assertion<br/>@ <code>nanopub-rs</code>") --> nanopub-blog-post
     
     subgraph "YAML-LD nanopublication on the front page"
         direction LR
@@ -27,22 +29,15 @@ graph LR
     
         fwd("'Fwd' → link is visible") --> nanopublication-is-not-satisfactory
         class fwd bug
-    
-        nanopub-title("Title states the full URL<br/>instead of a readable title") --> nanopublication-is-not-satisfactory
-        click nanopub-title "https://github.com/iolanta-tech/iolanta/issues/270"
-        class nanopub-title bug
             
-        spec-not-visible("Spec link not visible") --> spec("YAML-LD spec is a URL<br/>not title") --> nanopublication-is-not-satisfactory
+        spec("YAML-LD spec is a URL<br/>not title") --> nanopublication-is-not-satisfactory
         class spec bug
-        class spec-not-visible bug
-        
-        app-title-empty("App title is empty:<br/><code>Iolanta —</code>") --> nanopublication-is-not-satisfactory
     end
     
     nanopublication-is-not-satisfactory --> fip-term-messy("<strong>Knowledge representation language</strong><br/>display is messy") --> nanopub-blog-post
     class fip-term-messy bug
     
-    python-yaml-ld-markdown-ld("➕ Markdown-LD parser<br/>@ <code>python-yaml-ld</code>") --> markdown-ld("Edit a Markdown-LD document") --> nanopub-blog-post
+    python-yaml-ld-markdown-ld("➕ Markdown-LD parser<br/>@ <code>python-yaml-ld</code>") --> markdown-ld("Edit a Markdown-LD document") --> markdown-nanopub-blog-post
     click markdown-ld "https://github.com/iolanta-tech/iolanta/issues/261"
         
     classDef bug fill:#f96,color:#f00,stroke:#f00,stroke-width:1px;
