@@ -69,6 +69,9 @@ REDIRECTS = MappingProxyType({
     URIRef('https://www.nanopub.org/nschema'): URIRef(
         'https://www.nanopub.net/nschema',
     ),
+    URIRef('https://nanopub.org/nschema'): URIRef(
+        'https://nanopub.net/nschema',
+    ),
     URIRef(PROV): URIRef('https://www.w3.org/ns/prov-o'),
 })
 
@@ -278,6 +281,15 @@ def _extract_nanopublication_uris(
             )
 
 
+def apply_redirect(source: URIRef) -> URIRef:
+    """Rewrite the URL."""
+    for pattern, destination in REDIRECTS.items():
+        if source.startswith(pattern):
+            return destination
+
+    return source
+
+
 @dataclasses.dataclass(frozen=True)
 class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
     """
@@ -352,18 +364,6 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             for triple in inferred_triples
         ]
         self.graph.addN(inferred_quads)
-
-    def _apply_redirect(self, source: URIRef) -> URIRef:
-        for pattern, destination in REDIRECTS.items():
-            if source.startswith(pattern):
-                self.logger.info(
-                    'Rewriting: {source} → {destination}',
-                    source=source,
-                    destination=destination,
-                )
-                return destination
-
-        return source
 
     def query(   # noqa: WPS211, WPS210, WPS231, C901
         self,
@@ -475,8 +475,13 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             url = url.with_fragment(None)
             source = URIRef(str(url))
 
-        new_source = self._apply_redirect(source)
+        new_source = apply_redirect(source)
         if new_source != source:
+            self.logger.info(
+                'Rewriting: {source} → {new_source}',
+                source=source,
+                new_source=new_source,
+            )
             return self.load(new_source)
 
         source_uri = normalize_term(source)

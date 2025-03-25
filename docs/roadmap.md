@@ -29,8 +29,9 @@ graph LR
         class fwd bug
     
         nanopub-title("Title states the full URL<br/>instead of a readable title") --> nanopublication-is-not-satisfactory
+        click nanopub-title "https://github.com/iolanta-tech/iolanta/issues/270"
         class nanopub-title bug
-        
+            
         spec-not-visible("Spec link not visible") --> spec("YAML-LD spec is a URL<br/>not title") --> nanopublication-is-not-satisfactory
         class spec bug
         class spec-not-visible bug
@@ -44,7 +45,7 @@ graph LR
     python-yaml-ld-markdown-ld("➕ Markdown-LD parser<br/>@ <code>python-yaml-ld</code>") --> markdown-ld("Edit a Markdown-LD document") --> nanopub-blog-post
     click markdown-ld "https://github.com/iolanta-tech/iolanta/issues/261"
         
-    classDef bug fill:#f96,color:#fff,stroke:#f00,stroke-width:1px;
+    classDef bug fill:#f96,color:#f00,stroke:#f00,stroke-width:1px;
 ```
 
 Want to contribute? Thank you, and see [:material-github: issues](https://github.com/iolanta-tech/iolanta/issues)!
