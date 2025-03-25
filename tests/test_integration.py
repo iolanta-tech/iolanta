@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 import sh
@@ -20,6 +21,11 @@ def generate_screenshot(url: URL) -> str:
         screenshot_filename=file_name,
     ).iolanta(
         str(url),
+        _env={
+            **os.environ,
+            'LINES': '34',     # Based on the YAML-LD nanopublication test
+            'COLUMNS': '113',  # For the sake of proportions
+        },
     )
 
     file_path = SCREENSHOTS / file_name
