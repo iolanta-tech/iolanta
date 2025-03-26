@@ -24,12 +24,6 @@ graph LR
         click literal-clickable "https://github.com/iolanta-tech/iolanta/issues/260"
         class literal-clickable bug
         
-        back("'Back' ← link is visible") --> nanopublication-is-not-satisfactory
-        class back bug
-    
-        fwd("'Fwd' → link is visible") --> nanopublication-is-not-satisfactory
-        class fwd bug
-            
         spec("YAML-LD spec is a URL<br/>not title") --> nanopublication-is-not-satisfactory
         class spec bug
     end
