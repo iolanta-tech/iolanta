@@ -258,6 +258,10 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
                 return not is_loading
             case 'abort':
                 return is_loading
+            case 'back':
+                return bool(self.history.past)
+            case 'forward':
+                return bool(self.history.future)
 
         return True
 
@@ -288,12 +292,15 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
     def action_back(self):
         """Go backward."""
         self.current = self.history.back().page_id
-        self.focus()
+        if page := self.visible_content:
+            page.focus()
 
     def action_forward(self):
         """Go forward."""
         self.current = self.history.forward().page_id
         self.focus()
+        if page := self.visible_content:
+            page.focus()
 
 
 class ConsoleSwitcher(ContentSwitcher):
