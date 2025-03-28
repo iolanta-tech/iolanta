@@ -43,11 +43,7 @@ graph LR
     subgraph "YAML-LD spec"
         spec-not-ld("Spec does not expose LD") --> spec
         class spec-not-ld bug
-        
-        pac("🔗 https://orcid.org/0000-0001-7046-4474<br/>crashes Iolanta") --> spec-not-ld
-        class pac bug
-        click pac https://github.com/iolanta-tech/iolanta/issues/277
-        
+
         rel-alternate("Spec does not show<br/>a rel=alternate link") --> spec-not-ld
         class rel-alternate bug
         

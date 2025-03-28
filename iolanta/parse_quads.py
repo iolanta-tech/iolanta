@@ -23,7 +23,6 @@ def parse_term(   # noqa: C901
     term_value = term['value']
 
     if term_type == 'IRI':
-        raise_if_term_is_qname(term_value)
         return URIRef(term_value)
 
     if term_type == 'literal':
