@@ -300,9 +300,7 @@ class Iolanta:   # noqa: WPS214
                 self.add(plugin.data_files)
             except Exception as error:
                 self.logger.error(
-                    'Cannot load %s plugin data files: %s',
-                    plugin,
-                    error,
+                    f'Cannot load {plugin} plugin data files: {error}',
                 )
 
     def __post_init__(self):

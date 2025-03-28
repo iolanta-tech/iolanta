@@ -630,7 +630,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             quads = list(
                 parse_quads(
                     quads_document=ld_rdf,
-                    graph=source,  # type: ignore
+                    graph=source_uri,
                     blank_node_prefix=str(source),
                 ),
             )

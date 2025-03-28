@@ -47,9 +47,6 @@ graph LR
         rel-alternate("Spec does not show<br/>a rel=alternate link") --> spec-not-ld
         class rel-alternate bug
         
-        gk("https://greggkellogg.net/foaf.ttl<br/>crashes python-yaml-ld") --> spec-not-ld
-        class gk bug
-        
         w3c-license("https://purl.org/NET/rdflicense/W3C1.0.ttl<br/>crashes python-yaml-ld") --> spec-not-ld
         class w3c-license bug
         
