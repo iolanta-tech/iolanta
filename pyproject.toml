@@ -29,7 +29,7 @@ textual = ">=0.83.0"
 iolanta-tables = {version = "^0.1.7", optional = true}
 yarl = ">=1.9.4"
 boltons = ">=24.0.0"
-yaml-ld = ">=1.1.5"
+yaml-ld = ">=1.1.6"
 reasonable = ">=0.2.6"
 oxrdflib = ">=0.4.0"
 loguru = ">=0.7.3"
