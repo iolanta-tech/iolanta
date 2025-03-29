@@ -20,9 +20,11 @@ graph LR
     
     generate-roadmap("Generate this roadmap<br/>from LD") --> happiness
     
-    nanopub-blog-post("Blog post:<br/><strong>Nanopublishing with Iolanta</strong>") --> markdown-nanopub-blog-post("Blog post:<br/><strong>Quick & readable Nanopublications with Markdown-LD") --> happiness
+    nanopub-blog-post("Blog post:<br/><strong>Nanopublishing with Iolanta</strong>") --> markdown-nanopub-blog-post("Blog post:<br/><strong>Quick & readable Nanopublications<br/>with Markdown-LD") --> happiness
     
     nanopub-rs-graph("Publish an assertion from file<br/>@ <code>nanopub-rs</code>") --> nanopub-yaml-ld("Publish a YAML-LD assertion<br/>@ <code>nanopub-rs</code>") --> nanopub-blog-post
+    
+    plan-yaml-ld-to-pyld("Start moving stuff:<br/>Python <code>yaml-ld</code> → <code>pyld</code>") --> happiness
     
     subgraph "YAML-LD nanopublication on the front page"
         direction LR
@@ -47,8 +49,7 @@ graph LR
         rel-alternate("Spec does not show<br/>a rel=alternate link") --> spec-not-ld
         class rel-alternate bug
         
-        w3c-license("https://purl.org/NET/rdflicense/W3C1.0.ttl<br/>crashes python-yaml-ld") --> spec-not-ld
-        class w3c-license bug
+        switch-to-graph("Switch to Graph Triples view<br/>if no useful properties exist") --> spec-not-ld
         
         mismatch("Browsing <code>spec/data/spec.yaml</code><br/>≠ browsing the spec on the web") --> spec-not-ld
         class mismatch bug

@@ -4267,13 +4267,13 @@ dev = ["black (>=19.3b0)", "pytest (>=4.6.2)"]
 
 [[package]]
 name = "yaml-ld"
-version = "1.1.5"
+version = "1.1.6"
 description = "YAML-LD for Python"
 optional = false
 python-versions = "<4.0,>=3.10"
 files = [
-    {file = "yaml_ld-1.1.5-py3-none-any.whl", hash = "sha256:c3a3437e7daa9a82bf1dbda8d4640348f6bfdd702131e904fac09cb4788dee63"},
-    {file = "yaml_ld-1.1.5.tar.gz", hash = "sha256:e49fb2b6fda65a19da9482993b36f543a81052948ae9959d88c2aeb046bb7fd8"},
+    {file = "yaml_ld-1.1.6-py3-none-any.whl", hash = "sha256:3667cc6dabadf1ea1b05b6452a739f4a496aef8093dca412cfcc490cafc2da11"},
+    {file = "yaml_ld-1.1.6.tar.gz", hash = "sha256:225f085586fd0e708ff6d0b4e4bc86c27bdad296e71d4653a79f2b31fe109228"},
 ]
 
 [package.dependencies]
@@ -4404,4 +4404,4 @@ all = ["iolanta-tables"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<4.0"
-content-hash = "0863255c1ad9e9995952850ddca56d290245df2e02370900d94e41322917f76d"
+content-hash = "2da16d9b3fa9a132c0c23448b28b5e54578a6b273c9704a918de5458b06b3ac3"
