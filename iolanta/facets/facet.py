@@ -6,8 +6,8 @@ from typing import Any, Generic, Iterable, Optional, TypeVar, Union
 
 from rdflib.term import BNode, Literal, Node, URIRef
 
-from iolanta.ldflex import LDFlex, QueryResult, SPARQLQueryArgument
 from iolanta.models import NotLiteralNode, Triple, TripleTemplate
+from iolanta.query_result import QueryResult, SPARQLQueryArgument
 
 FacetOutput = TypeVar('FacetOutput')
 
@@ -25,11 +25,6 @@ class Facet(Generic[FacetOutput]):
         """Construct directory for stored queries for this facet."""
         return Path(inspect.getfile(self.__class__)).parent / 'sparql'
 
-    @property
-    def ldflex(self) -> LDFlex:
-        """Extract LDFLex instance."""
-        return self.iolanta.ldflex
-
     @cached_property
     def uriref(self) -> NotLiteralNode:
         """Format as URIRef."""
@@ -44,7 +39,7 @@ class Facet(Generic[FacetOutput]):
         **kwargs: SPARQLQueryArgument,
     ) -> QueryResult:
         """SPARQL query."""
-        return self.ldflex.query(
+        return self.iolanta.query(
             query_text=query_text,
             **kwargs,
         )
