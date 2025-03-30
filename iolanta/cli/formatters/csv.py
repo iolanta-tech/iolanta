@@ -4,7 +4,7 @@ import sys
 from classes import typeclass
 from rdflib import Graph
 
-from ldflex.ldflex import QueryResult, SelectResult
+from iolanta.query_result import QueryResult, SelectResult
 
 
 @typeclass

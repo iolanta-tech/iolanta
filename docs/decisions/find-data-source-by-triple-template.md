@@ -16,5 +16,5 @@ A function that determines the location of new data must know full triple templa
 
 ## Consequences
 
-* Analyse `ldflex` package as a possible alternative
+* Analyse `…` package as a possible alternative
 * Implement `.find_triple()` method for a `Facet`.

@@ -1,5 +1,4 @@
 import itertools
-from datetime import date
 from typing import Union
 
 from classes import typeclass
@@ -10,7 +9,7 @@ from rich.table import Table
 
 from iolanta.cli.pretty_print import render_literal_value
 from iolanta.models import ComputedQName
-from ldflex.ldflex import QueryResult, SelectResult
+from iolanta.query_result import QueryResult, SelectResult
 
 
 @typeclass
