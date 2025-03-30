@@ -84,7 +84,7 @@ graph LR
     click markdown-ld "https://github.com/iolanta-tech/iolanta/issues/261"
     markdown-ld --> happiness
         
-    classDef bug fill:#f96,color:#f00,stroke:#f00,stroke-width:1px;
+    classDef bug fill:#700,stroke:#f00,stroke-width:1px;
 ```
 
 !!! success "Or, maybe you want to help achieve happiness with code?"
