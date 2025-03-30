@@ -18,8 +18,10 @@ from typing import (  # noqa: WPS235
 import funcy
 import loguru
 import yaml_ld
-from rdflib import ConjunctiveGraph, Literal, Namespace, URIRef
+from pyparsing import ParseException
+from rdflib import ConjunctiveGraph, Graph, Literal, Namespace, URIRef
 from rdflib.namespace import NamespaceManager
+from rdflib.plugins.sparql.processor import SPARQLResult
 from rdflib.term import Node
 from yaml_ld.document_loaders.content_types import ParserNotFound
 from yaml_ld.errors import YAMLLDError
@@ -31,7 +33,6 @@ from iolanta.errors import UnresolvedIRI
 from iolanta.facets.errors import FacetError
 from iolanta.facets.facet import Facet
 from iolanta.facets.locator import FacetFinder
-from iolanta.ldflex import LDFlex
 from iolanta.loaders.base import SourceType
 from iolanta.loaders.local_directory import merge_contexts
 from iolanta.models import (
@@ -45,6 +46,12 @@ from iolanta.node_to_qname import node_to_qname
 from iolanta.parse_quads import parse_quads
 from iolanta.parsers.yaml import YAML
 from iolanta.plugin import Plugin
+from iolanta.query_result import (
+    QueryResult,
+    SPARQLParseException,
+    SPARQLQueryArgument,
+    format_query_bindings,
+)
 from iolanta.resolvers.python_import import PythonImportResolver
 
 
@@ -124,14 +131,56 @@ class Iolanta:   # noqa: WPS214
             for plugin_class in self.plugin_classes
         ]
 
-    @property
-    def ldflex(self) -> LDFlex:
+    def query(
+        self,
+        query_text: str,
+        **kwargs: SPARQLQueryArgument,
+    ) -> QueryResult:
         """
-        Create ldflex instance.
+        Run a SPARQL `SELECT`, `CONSTRUCT`, or `ASK` query.
 
-        FIXME: Get rid of it.
+        Args:
+            query_text: The SPARQL text;
+            **kwargs: bind variables in the query to values if necessary. For
+                example:
+
+                ```python
+                iolanta.query(
+                    'SELECT ?title WHERE { ?page rdfs:label ?title }',
+                    ?page=page_iri,
+                )
+                ```
+
+        Returns:
+            Results of the query:
+
+            - a graph for `CONSTRUCT`,
+            - a list of dicts for `SELECT`,
+            - or a boolean for `ASK`.
         """
-        return LDFlex(self.graph)
+        try:
+            sparql_result: SPARQLResult = self.graph.query(
+                query_text,
+                processor='cyberspace',
+                initBindings=kwargs,
+            )
+        except ParseException as err:
+            raise SPARQLParseException(
+                error=err,
+                query=query_text,
+            ) from err
+
+        if sparql_result.askAnswer is not None:
+            return sparql_result.askAnswer
+
+        if sparql_result.graph is not None:
+            graph: Graph = sparql_result.graph
+            for prefix, namespace in self.graph.namespaces():
+                graph.bind(prefix, namespace)
+
+            return graph
+
+        return format_query_bindings(sparql_result.bindings)
 
     @functools.cached_property
     def namespaces_to_bind(self) -> Dict[str, Namespace]:
@@ -252,12 +301,6 @@ class Iolanta:   # noqa: WPS214
         self.graph.bind(prefix='np', namespace=namespaces.NP)
         self.graph.bind(prefix='dcterms', namespace=namespaces.DCTERMS)
         self.graph.bind(prefix='rdfg', namespace=namespaces.RDFG)
-
-    @property
-    def query(self):
-        """Make a SPARQL query."""
-        self.maybe_infer()
-        return self.ldflex.query
 
     @functools.cached_property
     def context_paths(self) -> Iterable[Path]:
