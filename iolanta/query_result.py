@@ -29,7 +29,7 @@ QueryResult = Union[
 ]
 
 
-def _format_query_bindings(
+def format_query_bindings(
     bindings: List[Dict[Variable, Identifier]],
 ) -> SelectResult:
     """
@@ -40,7 +40,7 @@ def _format_query_bindings(
     return SelectResult([
         frozendict({
             str(variable_name): rdf_value
-            for variable_name, rdf_value
+            for variable_name, rdf_value   # noqa: WPS361
             in row.items()
         })
         for row in bindings
@@ -62,7 +62,7 @@ class SPARQLParseException(DocumentedError):
     ```sparql hl_lines="{self.highlight_code}"
     {self.query}
     ```
-    """
+    """  # noqa: D412
 
     error: ParseException
     query: str
