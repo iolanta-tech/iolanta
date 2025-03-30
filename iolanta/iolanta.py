@@ -45,7 +45,6 @@ from iolanta.parse_quads import parse_quads
 from iolanta.parsers.yaml import YAML
 from iolanta.plugin import Plugin
 from iolanta.resolvers.python_import import PythonImportResolver
-from iolanta.stack import Stack
 from ldflex import LDFlex
 
 
@@ -318,7 +317,7 @@ class Iolanta:   # noqa: WPS214
         self,
         node: Node,
         as_datatype: NotLiteralNode,
-    ) -> Tuple[Any, Stack]:
+    ) -> Any:
         """Find an Iolanta facet for a node and render it."""
         node = normalize_term(node)
 
@@ -345,7 +344,7 @@ class Iolanta:   # noqa: WPS214
         )
 
         try:
-            return facet.show(), facet.stack
+            return facet.show()
 
         except Exception as err:
             raise FacetError(
