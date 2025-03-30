@@ -7,7 +7,6 @@ from typing import Any, Generic, Iterable, List, Optional, TypeVar, Union
 from rdflib.term import BNode, Literal, Node, URIRef
 
 from iolanta.models import NotLiteralNode, Triple, TripleTemplate
-from iolanta.stack import Stack
 from ldflex import LDFlex
 from ldflex.ldflex import QueryResult, SPARQLQueryArgument
 
@@ -21,7 +20,6 @@ class Facet(Generic[FacetOutput]):
     iri: NotLiteralNode
     iolanta: 'iolanta.Iolanta' = field(repr=False)
     as_datatype: Optional[NotLiteralNode] = None
-    stack_children: List[Stack] = field(default_factory=list, repr=False)
 
     @property
     def stored_queries_path(self) -> Path:
@@ -58,14 +56,10 @@ class Facet(Generic[FacetOutput]):
         as_datatype: NotLiteralNode,
     ) -> Any:
         """Shortcut to render something via iolanta."""
-        rendered, stack = self.iolanta.render(
+        return self.iolanta.render(
             node=node,
             as_datatype=as_datatype,
         )
-
-        self.stack_children.append(stack)
-
-        return rendered
 
     def render_all(
         self,
@@ -91,19 +85,6 @@ class Facet(Generic[FacetOutput]):
     def language(self) -> Literal:
         """Preferred language for Iolanta output."""
         return self.iolanta.language
-
-    @property
-    def stack(self):
-        """
-        Return stack.
-
-        FIXME: I have no idea. Maybe delete this nonsense.
-        """
-        return Stack(
-            node=self.iri,
-            facet=self,
-            children=self.stack_children,
-        )
 
     def find_triple(
         self,

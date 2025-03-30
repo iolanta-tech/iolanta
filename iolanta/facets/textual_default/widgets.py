@@ -60,7 +60,7 @@ class PropertyName(Widget, can_focus=True, inherit_bindings=False):
 
     def render_title(self):
         """Render title in a separate thread."""
-        return self.app.iolanta.render(self.iri, DATATYPES.title)[0]
+        return self.app.iolanta.render(self.iri, DATATYPES.title)
 
     def render(self) -> RenderResult:
         """Render node title."""
@@ -202,7 +202,7 @@ class PropertiesContainer(Vertical):
             widget.renderable = self.app.iolanta.render(
                 widget.iri,
                 as_datatype=DATATYPES.title,
-            )[0]
+            )
 
     def on_mount(self):
         """Initiate rendering in the background."""

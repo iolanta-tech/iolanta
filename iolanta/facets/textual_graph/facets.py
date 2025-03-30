@@ -22,7 +22,7 @@ class GraphFacet(Facet[Widget]):
         triples_view = self.iolanta.render(
             self.iri,
             as_datatype=DATATYPES['textual-graph-triples'],
-        )[0]
+        )
 
         return VerticalScroll(
             PageTitle(self.iri, extra=f'({triple_count} triples)'),

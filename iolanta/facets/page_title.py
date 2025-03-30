@@ -29,7 +29,7 @@ class PageTitle(IolantaWidgetMixin, Static):
         return self.iolanta.render(
             self.iri,
             as_datatype=DATATYPES.title,
-        )[0]
+        )
 
     def on_mount(self):
         """Initialize rendering of a title."""

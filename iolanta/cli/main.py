@@ -111,7 +111,7 @@ def render_command(   # noqa: WPS231, WPS238, WPS210, C901
         )
 
     try:
-        renderable, stack = iolanta.render(
+        renderable = iolanta.render(
             node=URIRef(node),
             as_datatype=URIRef(as_datatype),
         )

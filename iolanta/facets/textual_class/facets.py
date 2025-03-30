@@ -103,7 +103,7 @@ class InstancesList(ListView):   # noqa: WPS214
                 self.app.iolanta.render(
                     instance_item.node,
                     as_datatype=DATATYPES.title,
-                )[0],
+                ),
             )
 
     def stream_instance_items_chunk(
