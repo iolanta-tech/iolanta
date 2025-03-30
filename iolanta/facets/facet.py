@@ -2,13 +2,12 @@ import inspect
 from dataclasses import dataclass, field
 from functools import cached_property
 from pathlib import Path
-from typing import Any, Generic, Iterable, List, Optional, TypeVar, Union
+from typing import Any, Generic, Iterable, Optional, TypeVar, Union
 
 from rdflib.term import BNode, Literal, Node, URIRef
 
+from iolanta.ldflex import LDFlex, QueryResult, SPARQLQueryArgument
 from iolanta.models import NotLiteralNode, Triple, TripleTemplate
-from ldflex import LDFlex
-from ldflex.ldflex import QueryResult, SPARQLQueryArgument
 
 FacetOutput = TypeVar('FacetOutput')
 

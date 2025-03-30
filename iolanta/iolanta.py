@@ -31,6 +31,7 @@ from iolanta.errors import UnresolvedIRI
 from iolanta.facets.errors import FacetError
 from iolanta.facets.facet import Facet
 from iolanta.facets.locator import FacetFinder
+from iolanta.ldflex import LDFlex
 from iolanta.loaders.base import SourceType
 from iolanta.loaders.local_directory import merge_contexts
 from iolanta.models import (
@@ -45,7 +46,6 @@ from iolanta.parse_quads import parse_quads
 from iolanta.parsers.yaml import YAML
 from iolanta.plugin import Plugin
 from iolanta.resolvers.python_import import PythonImportResolver
-from ldflex import LDFlex
 
 
 class LoggerProtocol(Protocol):
