@@ -1404,21 +1404,6 @@ files = [
 ]
 
 [[package]]
-name = "iolanta-tables"
-version = "0.1.7"
-description = "Linked Data as tables"
-optional = true
-python-versions = ">=3.10,<4.0"
-files = [
-    {file = "iolanta_tables-0.1.7-py3-none-any.whl", hash = "sha256:43940134bcca71b52e0ad3d98302c7c3f035da6e3029359a20fc3295492e969d"},
-    {file = "iolanta_tables-0.1.7.tar.gz", hash = "sha256:1b4b65ca886e3a2d0f57e9eda9a0b6db5c8aa4c0768329c2d61ffa78f0a32199"},
-]
-
-[package.dependencies]
-dominate = ">=2.7.0,<3.0.0"
-iolanta = ">=1.0.11,<2.0.0"
-
-[[package]]
 name = "ipython"
 version = "8.33.0"
 description = "IPython: Productive Interactive Computing"
@@ -4404,4 +4389,4 @@ all = ["iolanta-tables"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<4.0"
-content-hash = "e10df99fe98fee5f4821fce6e5ed4f2e2630f399687f9fffb69f794d3c2877fd"
+content-hash = "c2c436de73cd8c31fe6c7a54f76d431ac08a6dff207185b347e4b980bbe81e23"
