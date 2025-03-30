@@ -26,6 +26,15 @@ graph LR
     
     plan-yaml-ld-to-pyld("Start moving stuff:<br/>Python <code>yaml-ld</code> → <code>pyld</code>") --> happiness
     
+    shacl("Choose facets<br/>based on SHACL shapes") --> happiness
+    publish-with-mkdocs("Publish LD<br/>@ <code>mkdocs-iolanta</code>") --> happiness
+    
+    tex("Embed an Iolanta visualization into a LaTeX document") --> happiness
+    tractatus("Tractatus Logico-Philosophicus → LD") --> happiness
+    
+    starts-from-console("Iolanta starts with a blank console") --> happiness
+    class starts-from-console bug
+    
     subgraph "YAML-LD nanopublication on the front page"
         direction LR
         nanopublication-is-not-satisfactory("Nanopublication on front page<br/>is not satisfactory")
@@ -35,8 +44,9 @@ graph LR
         click literal-clickable "https://github.com/iolanta-tech/iolanta/issues/260"
         class literal-clickable bug
         
-        fip-term-messy("<strong>Knowledge representation language</strong><br/>display is messy") --> nanopublication-is-not-satisfactory
+        fip-term-messy("<strong>Knowledge representation language</strong><br/>not displayed as a Nanopub") --> fip-term-instances("<strong>Knowledge Representation Language</strong><br/>does not show all its instances") --> nanopublication-is-not-satisfactory
         class fip-term-messy bug
+        class fip-term-instances bug
         
         spec("YAML-LD spec is a URL<br/>not title") --> nanopublication-is-not-satisfactory
         class spec bug
@@ -72,6 +82,7 @@ graph LR
     
     python-yaml-ld-markdown-ld("➕ Markdown-LD parser<br/>@ <code>python-yaml-ld</code>") --> markdown-ld("Edit a Markdown-LD document") --> markdown-nanopub-blog-post
     click markdown-ld "https://github.com/iolanta-tech/iolanta/issues/261"
+    markdown-ld --> happiness
         
     classDef bug fill:#f96,color:#f00,stroke:#f00,stroke-width:1px;
 ```
