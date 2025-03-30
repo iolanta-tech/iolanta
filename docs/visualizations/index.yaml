@@ -1,10 +1,11 @@
 "@context":
   "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
-  rdfs: "https://www.w3.org/2000/01/rdf-schema#"
+  rdfs: https://www.w3.org/2000/01/rdf-schema#
+  dcterms: http://purl.org/dc/terms/
   iolanta: https://iolanta.tech/
   "@base": https://iolanta.tech/visualizations/
   →:
-    "@id": iolanta:visualized-with
+    "@id": dcterms:isReferencedBy
     "@type": "@id"
 
 $id: https://iolanta.tech/visualizations/index.yaml
