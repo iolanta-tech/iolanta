@@ -6,11 +6,6 @@ authors = ["Anatoly Scherbakov <altaisoft@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 
-packages = [
-  { include = "ldflex" },
-  { include = "iolanta" },
-]
-
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
 rdflib = "<8.0"
