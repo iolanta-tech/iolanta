@@ -8,8 +8,8 @@ from rich.console import Console
 from rich.table import Table
 
 from iolanta.cli.pretty_print import render_literal_value
-from iolanta.ldflex import QueryResult, SelectResult
 from iolanta.models import ComputedQName
+from iolanta.query_result import QueryResult, SelectResult
 
 
 @typeclass
