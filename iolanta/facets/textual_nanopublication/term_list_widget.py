@@ -36,4 +36,4 @@ class TermList(IolantaWidgetMixin, Horizontal):
             child.renderable = self.iolanta.render(
                 child.uri,
                 as_datatype=child.as_datatype,
-            )[0]
+            )

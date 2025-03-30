@@ -121,7 +121,7 @@ class TriplesView(IolantaWidgetMixin, Vertical):
                 term_view.renderable = self.iolanta.render(
                     term_view.uri,
                     as_datatype=term_view.as_datatype,
-                )[0]
+                )
 
 
 class GraphTriplesFacet(Facet[Widget]):

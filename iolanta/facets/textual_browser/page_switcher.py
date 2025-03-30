@@ -131,7 +131,7 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
                     self.iolanta.render,
                     facet,
                     as_datatype=DATATYPES.title,
-                )[0],
+                ),
             )
             for facet in other_facets
         ]

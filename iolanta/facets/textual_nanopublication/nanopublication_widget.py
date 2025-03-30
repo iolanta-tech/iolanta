@@ -61,7 +61,7 @@ class NanopublicationScreen(IolantaWidgetMixin, VerticalScroll):
         yield self.iolanta.render(
             row['assertion'],
             as_datatype=DATATYPES['textual-graph-triples'],
-        )[0]
+        )
 
         provenance = []
         if row.get('author'):
