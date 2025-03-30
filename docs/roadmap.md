@@ -15,7 +15,7 @@ Roadmap of Iolanta development shows known yet unsolved bugs and to-do items. So
 ```mermaid
 graph LR
     happiness("🚀 Happiness!")
-    classDef happiness fill:#6f6,color:#080,stroke:#080,stroke-width:1px;
+    classDef happiness fill:#080,stroke:#080,stroke-width:1px,font-weight:bold;
     class happiness happiness
     
     generate-roadmap("Generate this roadmap<br/>from LD") --> happiness
