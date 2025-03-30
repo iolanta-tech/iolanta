@@ -465,9 +465,9 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
         ))
 
     def _follow_is_visualized_with_links(self, uri: URIRef):
-        """Follow `iolanta:is-visualized-with` links."""
+        """Follow `dcterms:isReferencedBy` links."""
         self.logger.info(f'Following links for {uri}…')
-        triples = self.graph.triples((uri, IOLANTA['visualized-with'], None))
+        triples = self.graph.triples((uri, DCTERMS.isReferencedBy, None))
         for _, _, visualization in triples:
             if isinstance(visualization, URIRef):
                 self.load(visualization)
