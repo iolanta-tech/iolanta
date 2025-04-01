@@ -47,17 +47,11 @@ graph LR
         fip-term-messy("<strong>Knowledge representation language</strong><br/>not displayed as a Nanopub") --> fip-term-instances("<strong>Knowledge Representation Language</strong><br/>does not show all its instances") --> nanopublication-is-not-satisfactory
         class fip-term-messy bug
         class fip-term-instances bug
-        
-        spec("YAML-LD spec is a URL<br/>not title") --> nanopublication-is-not-satisfactory
-        class spec bug
     end
     
     subgraph "YAML-LD spec"
-        spec-not-ld("Spec does not expose LD") --> spec
+        spec-not-ld("Spec exposes too little LD") --> happiness
         class spec-not-ld bug
-
-        rel-alternate("Spec does not show<br/>a rel=alternate link") --> spec-not-ld
-        class rel-alternate bug
         
         switch-to-graph("Switch to Graph Triples view<br/>if no useful properties exist") --> spec-not-ld
         
@@ -74,8 +68,6 @@ graph LR
         class spec-toc bug
         
         more("Invent more things<br/>to add to the YAML-LD representation<br/>of the spec") --> spec-not-ld
-        
-        prefixes("Source recommended prefixes<br/>for vocabs from somewhere") --> spec-not-ld
     end
     
     nanopublication-is-not-satisfactory --> nanopub-blog-post
