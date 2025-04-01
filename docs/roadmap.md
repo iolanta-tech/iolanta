@@ -49,8 +49,12 @@ graph LR
         class fip-term-instances bug
     end
     
+    spec-not-ld --> happiness
+    
     subgraph "YAML-LD spec"
-        spec-not-ld("Spec exposes too little LD") --> happiness
+        prefixes-table("Render prefixes as a table") --> spec-not-ld
+    
+        spec-not-ld("Spec exposes too little LD")
         class spec-not-ld bug
         
         switch-to-graph("Switch to Graph Triples view<br/>if no useful properties exist") --> spec-not-ld
