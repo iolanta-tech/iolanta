@@ -21,6 +21,11 @@ class Facet(Generic[FacetOutput]):
     as_datatype: Optional[NotLiteralNode] = None
 
     @property
+    def this(self) -> NotLiteralNode:
+        """This node."""
+        return self.iri
+
+    @property
     def stored_queries_path(self) -> Path:
         """Construct directory for stored queries for this facet."""
         return Path(inspect.getfile(self.__class__)).parent / 'sparql'

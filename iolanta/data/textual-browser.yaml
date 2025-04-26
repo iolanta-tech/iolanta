@@ -10,6 +10,11 @@
   dcterms: https://purl.org/dc/terms/
   xsd: https://www.w3.org/2001/XMLSchema#
 
+  iolanta:outputs:
+    "@type": "@id"
+
+  $: rdfs:label
+
 "@included":
   - $id: iolanta:icon
     rdfs:label: Icon
@@ -107,3 +112,7 @@
   - $id: https://iolanta.tech/qname
     iolanta:hasDefaultFacet:
       $id: python://iolanta.facets.qname.QNameFacet
+
+  - $id: python://iolanta.facets.textual_property_pairs_table.TextualPropertyPairsTableFacet
+    iolanta:outputs: https://iolanta.tech/cli/textual
+    $: Subjects → Objects

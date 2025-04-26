@@ -111,7 +111,7 @@ def _extract_from_mapping(  # noqa: WPS213
     algebra: Mapping[str, Any],
 ) -> Iterable[URIRef | Variable]:
     match algebra.name:
-        case 'SelectQuery' | 'Project' | 'Distinct':
+        case 'SelectQuery' | 'AskQuery' | 'Project' | 'Distinct':
             yield from extract_mentioned_urls(algebra['p'])
 
         case 'BGP':
@@ -260,7 +260,7 @@ def _extract_nanopublication_uris(
 ) -> Iterable[URIRef]:
     """Extract nanopublications to get retracting information for."""
     match algebra.name:
-        case 'SelectQuery' | 'Project' | 'Distinct' | 'Graph':
+        case 'SelectQuery' | 'AskQuery' | 'Project' | 'Distinct' | 'Graph':
             yield from _extract_nanopublication_uris(algebra['p'])
 
         case 'BGP':
@@ -429,7 +429,12 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
 
             query_result = evalQuery(self.graph, query, initBindings, base)
 
-            bindings = list(query_result['bindings'])
+            try:
+                bindings = list(query_result['bindings'])
+            except KeyError:
+                # This was probably an ASK query
+                return query_result
+
             for row in bindings:
                 for _, maybe_iri in row.items():
                     if (

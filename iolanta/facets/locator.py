@@ -15,7 +15,7 @@ class FoundRow(TypedDict):
     """Facet and datatype to render an IRI."""
 
     facet: NotLiteralNode
-    as_datatype: NotLiteralNode
+    output_datatype: NotLiteralNode
 
 
 def reorder_rows_by_facet_preferences(   # noqa: WPS214, WPS210
@@ -102,6 +102,29 @@ class FacetFinder:   # noqa: WPS214
             rows,
             key=self.row_sorter_by_output_datatype,
         )
+
+    def by_sparql(self) -> Iterable[FoundRow]:
+        """Determine facet by SHACL shape of the data."""
+        if not isinstance(self.node, URIRef):
+            return
+
+        if self.as_datatype != URIRef('https://iolanta.tech/cli/textual'):
+            return
+
+        # TODO: Retrieve queries from the graph
+        # TODO: Verify datatype for which we are visualizing $this
+        query_to_facet = {
+            'ASK WHERE { ?subject $this ?object }': URIRef(
+                'python://iolanta.facets.textual_property_pairs_table'
+                '.TextualPropertyPairsTableFacet',
+            ),
+        }
+
+        for query, facet in query_to_facet.items():
+            # TODO: Verify that `query` is an ASK query
+            is_matching = self.iolanta.query(query, this=self.node)
+            if is_matching:
+                yield FoundRow(facet=facet, output_datatype=self.as_datatype)
 
     def by_prefix(self) -> Iterable[FoundRow]:
         """Determine facet by URL prefix.
@@ -254,6 +277,7 @@ class FacetFinder:   # noqa: WPS214
 
     def _found_facets(self) -> Iterable[FoundRow]:
         """Compose a stream of all possible facet choices."""
+        yield from self.by_sparql()
         yield from self.by_prefix()
         yield from self.by_datatype()
         yield from self.by_facet()

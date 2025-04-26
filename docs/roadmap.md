@@ -18,7 +18,19 @@ graph LR
     classDef happiness fill:#080,stroke:#080,stroke-width:1px,font-weight:bold;
     class happiness happiness
     
-    generate-roadmap("Generate this roadmap<br/>from LD") --> happiness
+    ipfs("Render LD from IPFS") --> happiness
+    
+    wasm("First WASM based facet") --> generate-roadmap("Generate this roadmap<br/>from LD") --> roadmap3d("Implement a 3D view<br/>for the roadmap") --> happiness
+    
+    cli-construct("CLI to construct a graph") --> happiness
+    
+    wasm --> 3d("Render LD graph in 3D") --> happiness
+    
+    jeeves-sh("jeeves.sh does not expose LD") --> happiness
+    class jeeves-sh bug
+    
+    yeti-sh("yeti.sh does not expose LD") --> happiness
+    class yeti-sh bug
     
     nanopub-blog-post("Blog post:<br/><strong>Nanopublishing with Iolanta</strong>") --> markdown-nanopub-blog-post("Blog post:<br/><strong>Quick & readable Nanopublications<br/>with Markdown-LD") --> happiness
     
@@ -26,8 +38,9 @@ graph LR
     
     plan-yaml-ld-to-pyld("Start moving stuff:<br/>Python <code>yaml-ld</code> → <code>pyld</code>") --> happiness
     
-    shacl("Choose facets<br/>based on SHACL shapes") --> happiness
+    foaf-title("FOAF Title facet<br/>only reacts on <code>foaf:Person</code> class") --> happiness
     publish-with-mkdocs("Publish LD<br/>@ <code>mkdocs-iolanta</code>") --> happiness
+    class foaf-title bug
     
     tex("Embed an Iolanta visualization into a LaTeX document") --> happiness
     tractatus("Tractatus Logico-Philosophicus → LD") --> happiness
@@ -51,9 +64,10 @@ graph LR
     
     spec-not-ld --> happiness
     
-    subgraph "YAML-LD spec"
-        prefixes-table("Render prefixes as a table") --> spec-not-ld
+    ld-with-facet("LD should accompany facet?") --> facet-and-widget("Merge Facet → Widget?") --> happiness
+    register-widgets("Register Python widgets<br/>for safety") --> happiness
     
+    subgraph "YAML-LD spec"
         spec-not-ld("Spec exposes too little LD")
         class spec-not-ld bug
         
