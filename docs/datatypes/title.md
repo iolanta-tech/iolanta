@@ -27,7 +27,7 @@
             "@id": "python://iolanta.facets.foaf_person_title.FOAFPersonTitle",    
             "iolanta:outputs": {
               "@id": "https://iolanta.tech/datatypes/title"    
-            }    
+            }
         }
     }
 }
