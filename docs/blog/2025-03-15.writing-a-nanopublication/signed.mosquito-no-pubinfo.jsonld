@@ -1,0 +1,47 @@
+PREFIX this: <https://w3id.org/np/RASfCSrQn20SBsDXqg6kLHNKxmmvgl6FzsXvrWfw2WlLo>
+PREFIX sub: <https://w3id.org/np/RASfCSrQn20SBsDXqg6kLHNKxmmvgl6FzsXvrWfw2WlLo#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX np: <http://www.nanopub.org/nschema#>
+PREFIX npx: <http://purl.org/nanopub/x/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX pav: <http://purl.org/pav/>
+PREFIX schema: <https://schema.org/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX orcid: <https://orcid.org/>
+PREFIX biolink: <https://w3id.org/biolink/vocab/>
+PREFIX infores: <https://w3id.org/biolink/infores/>
+
+GRAPH sub:Head {
+  <https://w3id.org/np/RASfCSrQn20SBsDXqg6kLHNKxmmvgl6FzsXvrWfw2WlLo> a np:Nanopublication;
+    np:hasAssertion sub:assertion;
+    np:hasProvenance sub:provenance;
+    np:hasPublicationInfo sub:pubinfo.
+}
+
+GRAPH sub:assertion {
+  <http://example.org/mosquito>
+    <http://example.org/transmits> <http://example.org/malaria>.
+}
+
+GRAPH sub:provenance {
+  sub:assertion
+    prov:hadPrimarySource <http://dx.doi.org/10.3233/ISU-2010-0613>.
+}
+
+GRAPH sub:pubinfo {
+  <https://w3id.org/np/RASfCSrQn20SBsDXqg6kLHNKxmmvgl6FzsXvrWfw2WlLo> a npx:ExampleNanopub;
+    dcterms:created "2025-04-12T08:02:28.041Z"^^xsd:dateTime;
+    dcterms:creator orcid:0009-0001-8740-4213.
+
+  sub:sig
+    npx:hasAlgorithm "RSA";
+    npx:hasPublicKey "AAAAB3NzaC1yc2EAAAADAQABAAACAQCn6rJWI3NmhXLeWDIE+uuqZu2tPbDJ9ARhL5DFPmQahm7aFQ2hCtduWhucML5gBj4bQl/+PsG4bcjz2cFQEgEqCiV7WoK6d7zlm+ru3UbOK+8J1Nbd84zvSjtg/SCo4VOxiu2tgMZR1Ys7S+sm/9GB5jBuZUy2GQxQpKiuK+TDfa4vCZyUt7P6FlyTE7ELNsgeJe4Be+V1lFSjEsmArE166zUOYPMdbpar/r23bHRGr98UbfKUsqHJCVc9YWWzuFwL3Nbuj9f9fZi1DjFJsJb0euEb47AMfA3sadWgnDPgaQ18JDMHLVLuwB9isrTNUn+XXGa2kI4papVPdnmntRuJiZ2ijV8V6b50Wd8uqu7Evy6lx97cEDVQPmuf69AhuBxi7jzczNHRy06xnN8uUb2wPxua9vzlfpBAsE+qLfzlMdbaoqUTJRf+WrsSi8/tReCymVgKhkd66Zd5e43oYNmXvtEK7ITFnERh/bOOb9flTa0F+HsfNGHQj25TJ/GGinDvhToYZ+LHHzG1sTAfVfMDoVM8y/a6sU+ELZeoWh3HxXuhn4y2FAD63i10L+94gbZEwOqvqgvr8q60WLa8U1c+hMSpurFCappp31qjAp2blTzJFPpaL5v4E+ZkTu6CTeC4Vo4rErlQBj6zEwbRuB9w+7tFLvsRGs2tXc6StHJIRQ==";
+    npx:hasSignature "Gzyr+ep+HpYjWxq4s6t9fSxuiSLgAu1GfmXUUFPnW54Q7+o7lYjAZDwwPNI1G32w1nA1uvWrVBYkYNG5jPzCuvLkXXY3VAZCsS4lhXitbEZermKxaFd9RR3238nBQly7xymEvFtRAAYWMoJKsQdzXbKGyTQMFVuQpkx8OuAu/RreMyP4UU0til+uSb7rVBtTORj9M/422vWoyUes4WYR5kD+CCSZKl8U6rYNh8u/kbq7Mx5MExUZD0VDPQhhwW2u23dmQUWDAOtF3VvQS589uOIMmOrPZ/TOJswdXKzzcB8oF7Hh25DgODbYU/PswNk/luGkVePn7TFfqUUIIwwDgt9MtXpBuezbVl+zSTu4rL/Scg6tJDlBypxxG9m4VWKT7keh3jsAbNpf5I9WevcCIUeioCpVXzXsx2gQH8uTD3VE9u959+owxuo23go6lztF3rROMCE9gWf7voDvSwZ4bnme1EpG2Fjvi0xP8USQMdTISj0J1FhZ4nUWLkcm075qxxoi0PqSlBdr+ioO8BG04udKDnGYumYBd5FziazhZKV8uX3aiE8e0CH/+2JQBCOG6r7HDPT8KD7E0/SjFO0dSzGMeKOTC6SzmC7EU5JH9uHkzUdph10LQaclKYY4jbFWRD1adqLWv/oHLDkKuzMiwjOwnDqw52mSXb1gfFtu+hU=";
+    npx:hasSignatureTarget <https://w3id.org/np/RASfCSrQn20SBsDXqg6kLHNKxmmvgl6FzsXvrWfw2WlLo>.
+}
