@@ -14,6 +14,9 @@
     "@type": "@id"
 
   $: rdfs:label
+  →:
+    "@type": "@id"
+    "@id": iolanta:outputs
 
 "@included":
   - $id: iolanta:icon
@@ -95,12 +98,10 @@
       iolanta:is-preferred-over:
         - $id: python://iolanta.facets.textual_default.TextualDefaultFacet
 
-  - $id: iolanta:Graph
-    iolanta:hasInstanceFacet:
-      $id: python://iolanta.facets.textual_graph.GraphFacet
-      rdfs:label: Graph Triples
-      iolanta:outputs:
-        $id: https://iolanta.tech/cli/textual
+  - $id: python://iolanta.facets.textual_graph.GraphFacet
+    $: Graph Triples
+    →: https://iolanta.tech/cli/textual
+    iolanta:matches: ASK WHERE { GRAPH $this { ?s ?p ?o } }
 
   - $id: https://iolanta.tech/datatypes/textual-graph-triples
     rdfs:label: Graph Triples
