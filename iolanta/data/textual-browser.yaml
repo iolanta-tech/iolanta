@@ -14,56 +14,71 @@
     "@type": "@id"
 
   $: rdfs:label
+  →:
+    "@type": "@id"
+    "@id": iolanta:outputs
+
+  ⊆:
+    "@type": "@id"
+    "@id": rdfs:subClassOf
+
+  ⪯:
+    "@type": "@id"
+    "@id": iolanta:is-preferred-over
+
+  ↦: iolanta:matches
 
 "@included":
   - $id: iolanta:icon
-    rdfs:label: Icon
-    rdfs:subClassOf:
-      $id: xsd:string
+    $: Icon
+    ⊆: xsd:string
 
   - $id: dcterms:creator
     iolanta:icon: ©️
 
   - $id: https://iolanta.tech/datatypes/icon
-    rdfs:label: Icon
+    $: Icon
     iolanta:hasDefaultFacet:
       $id: python://iolanta.facets.icon.IconFacet
-      iolanta:outputs:
-        $id: https://iolanta.tech/datatypes/icon
+      →: https://iolanta.tech/datatypes/icon
 
   - $id: np:Nanopublication
-    rdfs:label: Nanopublication
+    $: Nanopublication
     iolanta:hasInstanceFacet:
       $id: python://iolanta.facets.textual_nanopublication.NanopublicationFacet
-      rdfs:label: Nanopublication
-      iolanta:outputs:
-        $id: https://iolanta.tech/cli/textual
-      iolanta:is-preferred-over:
-        $id: python://iolanta.facets.textual_default.TextualDefaultFacet
+      $: Nanopublication
+      →: https://iolanta.tech/cli/textual
+      ⪯:
+        - python://iolanta.facets.textual_default.TextualDefaultFacet
+        - python://iolanta.facets.textual_graph.GraphFacet
 
   - $id: https://iolanta.tech/cli/interactive
     iolanta:hasDefaultFacet:
       $id: python://iolanta.facets.textual_browser.TextualBrowserFacet
 
-  - $id: https://iolanta.tech/cli/textual
-    iolanta:hasDefaultFacet:
-      $id: python://iolanta.facets.textual_default.TextualDefaultFacet
-      rdfs:label: Properties
-      iolanta:is-preferred-over:
-        $id: python://iolanta.facets.textual_default.InverseProperties
+  - $id: python://iolanta.facets.textual_default.TextualDefaultFacet
+    $: Properties
+    ⪯: python://iolanta.facets.textual_default.InverseProperties
+    →: https://iolanta.tech/cli/textual
+    ↦: |
+      ASK WHERE {
+        GRAPH ?graph { $this ?property ?value }
+        FILTER (?graph != <iolanta://_meta>)
+      }
 
-  - $id: https://iolanta.tech/cli/textual
-    iolanta:hasDefaultFacet:
-      $id: python://iolanta.facets.textual_default.InverseProperties
-      rdfs:label: Inverse Properties
-      iolanta:is-preferred-over:
-        $id: python://iolanta.facets.textual_graph.GraphFacet
+  - $id: python://iolanta.facets.textual_default.InverseProperties
+    $: Inverse Properties
+    →: https://iolanta.tech/cli/textual
+    ↦: |
+      ASK WHERE {
+        GRAPH ?graph { ?something ?property $this }
+        FILTER (?graph != <iolanta://_meta>)
+      }
 
   - $id: "urn:"
     iolanta:hasFacetByPrefix:
       $id: python://iolanta.facets.textual_provenance.TextualProvenanceFacet
-      iolanta:outputs:
-        $id: https://iolanta.tech/cli/textual
+      →: https://iolanta.tech/cli/textual
 
   - $id: https://iolanta.tech/cli/link
     iolanta:hasDefaultFacet:
@@ -72,47 +87,36 @@
   - $id: https://wikiba.se/ontology#Statement
     iolanta:hasInstanceFacet:
       $id: python://iolanta.facets.wikibase_statement_title.WikibaseStatementTitle
-      rdfs:label: Title
-      iolanta:outputs:
-        $id: https://iolanta.tech/datatypes/title
+      $: Title
+      →: https://iolanta.tech/datatypes/title
 
   - $id: rdfs:Class
     iolanta:hasInstanceFacet:
       $id: python://iolanta.facets.textual_class.Class
-      rdfs:label: Instances
-      iolanta:outputs:
-        $id: https://iolanta.tech/cli/textual
-      iolanta:is-preferred-over:
-        - $id: python://iolanta.facets.textual_browser.TextualBrowserFacet
-        - $id: python://iolanta.facets.textual_default.InverseProperties
+      $: Instances
+      →: https://iolanta.tech/cli/textual
+      ⪯:
+        - python://iolanta.facets.textual_browser.TextualBrowserFacet
+        - python://iolanta.facets.textual_default.InverseProperties
 
   - $id: owl:Ontology
     iolanta:hasInstanceFacet:
       $id: python://iolanta.facets.textual_ontology.OntologyFacet
-      rdfs:label: Ontology
-      iolanta:outputs:
-        $id: https://iolanta.tech/cli/textual
-      iolanta:is-preferred-over:
-        - $id: python://iolanta.facets.textual_default.TextualDefaultFacet
-
-  - $id: iolanta:Graph
-    iolanta:hasInstanceFacet:
-      $id: python://iolanta.facets.textual_graph.GraphFacet
-      rdfs:label: Graph Triples
-      iolanta:outputs:
-        $id: https://iolanta.tech/cli/textual
+      $: Ontology
+      →: https://iolanta.tech/cli/textual
+      ⪯: python://iolanta.facets.textual_default.TextualDefaultFacet
 
   - $id: https://iolanta.tech/datatypes/textual-graph-triples
-    rdfs:label: Graph Triples
+    $: Graph Triples
     iolanta:hasDefaultFacet:
       $id: python://iolanta.facets.textual_graph_triples.GraphTriplesFacet
-      iolanta:outputs:
-        $id: https://iolanta.tech/datatypes/textual-graph-triples
+      →: https://iolanta.tech/datatypes/textual-graph-triples
 
   - $id: https://iolanta.tech/qname
     iolanta:hasDefaultFacet:
       $id: python://iolanta.facets.qname.QNameFacet
 
   - $id: python://iolanta.facets.textual_property_pairs_table.TextualPropertyPairsTableFacet
-    iolanta:outputs: https://iolanta.tech/cli/textual
     $: Subjects → Objects
+    →: https://iolanta.tech/cli/textual
+    ↦: ASK WHERE { ?subject $this ?object }

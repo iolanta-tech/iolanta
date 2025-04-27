@@ -1,0 +1,6 @@
+"@context": context.yaml
+$id: python://iolanta.facets.textual_graph.GraphFacet
+$: Graph Triples
+→: https://iolanta.tech/cli/textual
+⪯: python://iolanta.facets.textual_default.InverseProperties
+↦: ASK WHERE { GRAPH $this { ?s ?p ?o } }

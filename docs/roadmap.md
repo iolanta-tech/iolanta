@@ -71,14 +71,9 @@ graph LR
         spec-not-ld("Spec exposes too little LD")
         class spec-not-ld bug
         
-        switch-to-graph("Switch to Graph Triples view<br/>if no useful properties exist") --> spec-not-ld
-        
         mismatch("Browsing <code>spec/data/spec.yaml</code><br/>≠ browsing the spec on the web") --> spec-not-ld
         class mismatch bug
 
-        gig("Graph view shows <code>iolanta:Graph</code><br/>Should be in meta") --> spec-not-ld
-        class gig bug
-        
         last-loaded-time("<code>iolanta:last-loaded-time</code><br/>is not rendered") --> spec-not-ld
         class last-loaded-time bug
         

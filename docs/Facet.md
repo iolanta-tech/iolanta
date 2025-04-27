@@ -1,6 +1,6 @@
 ---
 title: Facet
-hide: [toc, navigation]
+hide: [toc]
 ---
 
 # 🎨 `Facet`

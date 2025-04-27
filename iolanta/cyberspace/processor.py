@@ -545,20 +545,8 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             self.graph.add((
                 source_uri,
                 RDF.type,
-                IOLANTA.Graph,
-            ))
-
-            self.graph.add((
-                source_uri,
-                RDF.type,
                 IOLANTA['not-found'],
                 source_uri,
-            ))
-
-            self.graph.add((
-                IOLANTA.Graph,
-                RDF.type,
-                RDFS.Class,
             ))
 
             self._mark_as_loaded(source_uri)
@@ -567,26 +555,12 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
 
         except Exception as err:
             self.logger.info(f'{source} | Failed: {err}')
-
-            self.graph.add((
-                source_uri,
-                RDF.type,
-                IOLANTA.Graph,
-            ))
-
             self.graph.add((
                 URIRef(source),
                 RDF.type,
                 IOLANTA['failed'],
                 source_uri,
             ))
-
-            self.graph.add((
-                IOLANTA.Graph,
-                RDF.type,
-                RDFS.Class,
-            ))
-
             self._mark_as_loaded(source_uri)
 
             return Loaded()
@@ -600,18 +574,6 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
                     _resolved_source_uri_ref,
                 ))
                 source = _resolved_source
-
-        self.graph.add((
-            source_uri,
-            RDF.type,
-            IOLANTA.Graph,
-        ))
-
-        self.graph.add((
-            IOLANTA.Graph,
-            RDF.type,
-            RDFS.Class,
-        ))
 
         self._mark_as_loaded(source_uri)
 
@@ -648,12 +610,6 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
 
         if not quads:
             self.logger.warning('{source} | No data found', source=source)
-            self.graph.addN([(
-                source_uri,
-                RDF.type,
-                IOLANTA.Graph,
-                source_uri,
-            )])
             return Loaded()
 
         quad_tuples = [

@@ -73,13 +73,6 @@ def parse_quads(
                 graph,
             )
 
-        yield Quad(
-            graph_name,
-            RDF.type,
-            IOLANTA.Graph,
-            IOLANTA.meta,
-        )
-
         for quad in quads:
             try:
                 yield Quad(

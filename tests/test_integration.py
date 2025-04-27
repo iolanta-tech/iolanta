@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 
+import pytest
 import sh
 from yarl import URL
 
@@ -76,3 +77,20 @@ def test_yaml_ld_nanopublication():
         ),
     )
     assert 'YAML-LD' in svg
+
+
+@pytest.fixture(scope='session')
+def yaml_ld_spec_url() -> URL:
+    return URL('https://json-ld.github.io/yaml-ld/spec')
+
+
+def test_yaml_ld_spec(yaml_ld_spec_url: URL):
+    svg = generate_screenshot(yaml_ld_spec_url)
+    assert 'YAML-LD' in svg
+
+
+def test_yaml_ld_spec_namespace_prefixes(yaml_ld_spec_url: URL):
+    svg = generate_screenshot(
+        yaml_ld_spec_url / 'data/namespace-prefixes.yamlld',
+    )
+    assert 'Prefix' in svg

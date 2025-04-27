@@ -1,6 +1,6 @@
 ---
 title: iolanta:is-preferred-over
-hide: [navigation, toc]
+hide: [toc]
 ---
 
 # ≼ `iolanta:is-preferred-over`
