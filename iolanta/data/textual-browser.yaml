@@ -48,7 +48,9 @@
       $id: python://iolanta.facets.textual_nanopublication.NanopublicationFacet
       $: Nanopublication
       →: https://iolanta.tech/cli/textual
-      ⪯: python://iolanta.facets.textual_default.TextualDefaultFacet
+      ⪯:
+        - python://iolanta.facets.textual_default.TextualDefaultFacet
+        - python://iolanta.facets.textual_graph.GraphFacet
 
   - $id: https://iolanta.tech/cli/interactive
     iolanta:hasDefaultFacet:
