@@ -114,5 +114,6 @@
       $id: python://iolanta.facets.qname.QNameFacet
 
   - $id: python://iolanta.facets.textual_property_pairs_table.TextualPropertyPairsTableFacet
-    iolanta:outputs: https://iolanta.tech/cli/textual
     $: Subjects → Objects
+    iolanta:outputs: https://iolanta.tech/cli/textual
+    iolanta:matches: ASK WHERE { ?subject $this ?object }

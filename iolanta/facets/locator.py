@@ -18,6 +18,15 @@ class FoundRow(TypedDict):
     output_datatype: NotLiteralNode
 
 
+GET_QUERY_TO_FACET = """
+SELECT ?facet ?match WHERE {
+    ?facet
+        iolanta:matches ?match ;
+        iolanta:outputs $as_datatype .
+}
+"""
+
+
 def reorder_rows_by_facet_preferences(   # noqa: WPS214, WPS210
     rows: list[FoundRow],
     ordering: set[tuple[URIRef, URIRef]],
@@ -108,16 +117,14 @@ class FacetFinder:   # noqa: WPS214
         if not isinstance(self.node, URIRef):
             return
 
-        if self.as_datatype != URIRef('https://iolanta.tech/cli/textual'):
-            return
+        rows = self.iolanta.query(
+            GET_QUERY_TO_FACET,
+            as_datatype=self.as_datatype,
+        )
 
-        # TODO: Retrieve queries from the graph
-        # TODO: Verify datatype for which we are visualizing $this
         query_to_facet = {
-            'ASK WHERE { ?subject $this ?object }': URIRef(
-                'python://iolanta.facets.textual_property_pairs_table'
-                '.TextualPropertyPairsTableFacet',
-            ),
+            row['match']: row['facet']
+            for row in rows
         }
 
         for query, facet in query_to_facet.items():
