@@ -26,6 +26,8 @@
     "@type": "@id"
     "@id": iolanta:is-preferred-over
 
+  ↦: iolanta:matches
+
 "@included":
   - $id: iolanta:icon
     $: Icon
@@ -52,17 +54,24 @@
     iolanta:hasDefaultFacet:
       $id: python://iolanta.facets.textual_browser.TextualBrowserFacet
 
-  - $id: https://iolanta.tech/cli/textual
-    iolanta:hasDefaultFacet:
-      $id: python://iolanta.facets.textual_default.TextualDefaultFacet
-      $: Properties
-      ⪯: python://iolanta.facets.textual_default.InverseProperties
+  - $id: python://iolanta.facets.textual_default.TextualDefaultFacet
+    $: Properties
+    ⪯: python://iolanta.facets.textual_default.InverseProperties
+    →: https://iolanta.tech/cli/textual
+    ↦: |
+      ASK WHERE {
+        GRAPH ?graph { $this ?property ?value }
+        FILTER (?graph != <iolanta://_meta>)
+      }
 
-  - $id: https://iolanta.tech/cli/textual
-    iolanta:hasDefaultFacet:
-      $id: python://iolanta.facets.textual_default.InverseProperties
-      $: Inverse Properties
-      ⪯: python://iolanta.facets.textual_graph.GraphFacet
+  - $id: python://iolanta.facets.textual_default.InverseProperties
+    $: Inverse Properties
+    →: https://iolanta.tech/cli/textual
+    ↦: |
+      ASK WHERE {
+        GRAPH ?graph { ?something ?property $this }
+        FILTER (?graph != <iolanta://_meta>)
+      }
 
   - $id: "urn:"
     iolanta:hasFacetByPrefix:
@@ -98,14 +107,14 @@
   - $id: python://iolanta.facets.textual_graph.GraphFacet
     $: Graph Triples
     →: https://iolanta.tech/cli/textual
-    iolanta:matches: ASK WHERE { GRAPH $this { ?s ?p ?o } }
+    ⪯: python://iolanta.facets.textual_default.InverseProperties
+    ↦: ASK WHERE { GRAPH $this { ?s ?p ?o } }
 
   - $id: https://iolanta.tech/datatypes/textual-graph-triples
-    rdfs:label: Graph Triples
+    $: Graph Triples
     iolanta:hasDefaultFacet:
       $id: python://iolanta.facets.textual_graph_triples.GraphTriplesFacet
-      iolanta:outputs:
-        $id: https://iolanta.tech/datatypes/textual-graph-triples
+      →: https://iolanta.tech/datatypes/textual-graph-triples
 
   - $id: https://iolanta.tech/qname
     iolanta:hasDefaultFacet:
@@ -114,4 +123,4 @@
   - $id: python://iolanta.facets.textual_property_pairs_table.TextualPropertyPairsTableFacet
     $: Subjects → Objects
     →: https://iolanta.tech/cli/textual
-    iolanta:matches: ASK WHERE { ?subject $this ?object }
+    ↦: ASK WHERE { ?subject $this ?object }
