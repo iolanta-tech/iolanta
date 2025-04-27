@@ -59,3 +59,18 @@
 
   rdf:type:
     "@type": "@id"
+
+  $: rdfs:label
+  →:
+    "@type": "@id"
+    "@id": iolanta:outputs
+
+  ⊆:
+    "@type": "@id"
+    "@id": rdfs:subClassOf
+
+  ⪯:
+    "@type": "@id"
+    "@id": iolanta:is-preferred-over
+
+  ↦: iolanta:matches
