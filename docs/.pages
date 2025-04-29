@@ -2,8 +2,10 @@ nav:
   - Home: index.md
   - Reference:
       - Reference: reference/
-      - "iolanta:Facet": Facet.md
-      - "iolanta:matches": matches.md
-      - "iolanta:is-preferred-over": is-preferred-over.md
+      - Facet.md
+      - matches.md
+      - is-preferred-over.md
+      - outputs.md
+      - datatypes
   - blog
   - roadmap.md

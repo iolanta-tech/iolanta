@@ -1,5 +1,4 @@
 ---
-title: iolanta:matches
 rdfs:domain: iolanta:Facet
 schema:rangeIncludes:
   - rdfs:Literal

@@ -1,4 +1,4 @@
-# :material-format-title: Title
+# :material-format-title: Title (fallback)
 
 <script type="application/ld+json">
   {

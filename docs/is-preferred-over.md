@@ -1,31 +1,27 @@
 ---
-title: iolanta:is-preferred-over
 hide: [toc]
 ---
 
 # ≼ `iolanta:is-preferred-over`
 
-<table>
-    <tr>
-        <th>Domain</th>
-        <td><a href="/Facet">Facet</a></td>
-    </tr>
-    <tr>
-        <th>Range</th>
-        <td><a href="/Facet">Facet</a></td>
-    </tr>
-</table>
 
-## By Example
+<div class="grid cards annotate" markdown>
+-   :material-arrow-expand-right:{ .lg .middle } __Domain__
 
-```turtle
-<python://iolanta.facets.textual_default.TextualDefaultFacet>
-  iolanta:is-preferred-over
-  <python://iolanta.facets.textual_default.InverseProperties> .
-```
+    ---
 
-…means that `TextualDefaultFacet` is more preferable than `InverseProperties`.
+    [`iolanta:Facet`](/Facet/)<br/>
+    <small>Iolanta visualization</small>
 
-When Iolanta is looking for a <a href="/Facet">Facet</a> to visualize a particular IRI it might find multiple suitable facets. Console based Iolanta user interface will present all of these as options. However, different facets might not be equally representative or useful.
+-   :material-target-variant:{ .lg .middle } __Range__
 
-This property helps define preferences among facets. Regardless of the IRI in question, or the output datatype, the property defines a partial ordering on available facets.
+    ---
+
+    [`iolanta:Facet`](/Facet/)<br/>
+    <small>Not as cool Iolanta visualization</small>
+
+</div>
+
+Sometimes, and for some contexts, one facet is more preferable than the other. For instance, if the user opens a [Nanopublication](/reference/np/Nanopublication), it is rather more efficient to present it with the dedicated facet by default rather than the default Properties view. That is what this relation helps to achieve.
+
+Essentially, it defines a Partial Order on the set of Facets.

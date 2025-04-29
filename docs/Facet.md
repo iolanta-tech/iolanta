@@ -1,47 +1,106 @@
 ---
-title: Facet
 hide: [toc]
 ---
 
-# 🎨 `Facet`
+# :material-eye-check-outline: `Facet`
 
-<table>
-    <tr>
-        <th>∈ Is</th>
-        <td><code>rdfs:Class</code></td>
-    </tr>
-</table>
+*Facet* is a visualization. It is a piece of program code that processes a given RDF node and its context, the whole graph, and draws a visualization of a certain type.
 
-## In RDF
+![](/assets/facet.png)
 
-In RDF, a `Facet` is represented as an IRI, like this:
 
-```
-python://iolanta.facets.textual_default.InverseProperties
-```
+In RDF, a facet is referenced by an IRI: this way, Linked Data can tell Iolanta how it can be visualized.
 
-You can use properties like [`iolanta:hasInstanceFacet`](/hasInstanceFacet/) to attach a facet, by its IRI, to various IRIs — and thus influence how Iolanta renders these IRIs.
+| Facet Type                                | In RDF                            | In Code                                             |
+|-------------------------------------------|-----------------------------------|-----------------------------------------------------|
+| Python based facet                        | `python://some_module.FacetClass` | Python class, inherited from `iolanta.facets.Facet` |
 
-## Python class facets
+More types are [planned](/roadmap) (1).
+{ .annotate }
 
-The Facet IRI above actually points to a Python class which should be importable to Iolanta as follows:
+1.  In particular, WASM based facets downloadable from the Web and executed in a sandbox.
 
-```python
-from iolanta.facets.textual_default import InverseProperties
-from iolanta.facets.facet import Facet
+## Facets
 
-assert issubclass(InverseProperties, Facet)    # ⇒ True    # noqa: S101
-```
+For now, the only facets that Iolanta supports are bundled with it.
 
-Check out [:material-github: the source code](https://github.com/iolanta-tech/iolanta/blob/master/iolanta/facets/textual_default/facets.py#L142) of this class: it defines `show()` method which Iolanta will call to render inverse properties for an IRI on screen.
+<div class="grid cards" markdown>
 
-### Where to get Python facets from?
+-   :octicons-eye-24: __[`TitleFacet`](https://github.com/iolanta-tech/iolanta/blob/master/iolanta/facets/title/facets.py)__
+    
+    ---
+    
+    Render a human readable title for a node.
 
-* A number of facets are bundled with Iolanta;
-* More facets can be installed with Iolanta plugins from [PyPI](https://pypi.org/);
-* and, you can write your own — it is enough for Iolanta to be able to import them.
+    * URI: `python://iolanta.facets.title.TitleFacet`
+    * Outputs: [string](/reference/xsd/string/)
 
-## More facet types
 
-!!! "info" "TBD"
-    WASM powered plugins are on the Iolanta roadmap. They will enable users to run visualizations downloading them dynamically from the Web, and do so safely.
+- :octicons-eye-24: __[`Class`](https://github.com/iolanta-tech/iolanta/blob/master/iolanta/facets/textual_class/facets.py)__
+    
+    ---
+    
+    For an RDFS or OWL `Class`, render a list of its instances that we know about.
+
+    * URI: `python://iolanta.facets.textual_class.ClassFacet` 
+    * Outputs: [Textual widget](/cli/textual/)
+
+  
+- :octicons-eye-24: __[`TextualDefaultFacet`](https://github.com/iolanta-tech/iolanta/blob/master/iolanta/facets/textual_default/facets.py)__
+    
+    ---
+    
+    All RDF properties and their values for a given node in interactive textual UI. *(Not best naming though.)*
+
+    * URI: `python://iolanta.facets.textual_default.TextualDefaultFacet`
+    * Outputs: [Textual widget](/cli/textual/)
+
+
+  
+- :octicons-eye-24: __[`GraphFacet`](https://github.com/iolanta-tech/iolanta/blob/master/iolanta/facets/textual_graph/facets.py)__
+    
+    ---
+    
+    For an RDF graph, list triples that it contains.
+
+    * URI: `python://iolanta.facets.textual_graph.GraphFacet`
+    * Outputs: [Textual widget](/cli/textual/)
+
+  
+- :octicons-eye-24: __[`NanopublicationFacet`](https://github.com/iolanta-tech/iolanta/blob/master/iolanta/facets/textual_nanopublication/facet.py)__
+    
+    ---
+    
+    Display contents of a [Nanopublication](/reference/np/Nanopublication/).
+
+    * URI: `python://iolanta.facets.textual_nanopublication.NanopublicationFacet`
+    * Outputs: [Textual widget](/cli/textual/)
+
+ 
+- :octicons-eye-24: __[`OntologyFacet`](https://github.com/iolanta-tech/iolanta/blob/master/iolanta/facets/textual_ontology/facets.py)__
+    
+    ---
+    
+    Display terms of an [Ontology](/reference/owl/ontology/).
+
+    * URI: `python://iolanta.facets.textual_ontology.OntologyFacet`
+    * Outputs: [Textual widget](/cli/textual/)
+
+ 
+- :octicons-eye-24: __[`TextualPropertyPairsTableFacet`](https://github.com/iolanta-tech/iolanta/blob/master/iolanta/facets/textual_property_pairs_table.py)__
+    
+    ---
+    
+    Display Subject → Object pairs for an RDF [Property](/reference/rdf/property/).
+
+    * URI: `python://iolanta.facets.textual_property_pairs_table.TextualPropertyPairsTableFacet`
+    * Outputs: [Textual widget](/cli/textual/)
+ 
+ 
+- :material-github: __[Ideas for more?](https://github.com/iolanta-tech/iolanta/issues/)__
+    
+    ---
+    
+    Feel free to ➕ add an issue!
+
+</div>

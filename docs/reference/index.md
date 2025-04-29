@@ -26,4 +26,11 @@ hide: [toc, navigation]
     
     Specify that one Facet is cooler than the other.
 
+
+-   → __[`iolanta:outputs`](/outputs/)__
+    
+    ---
+    
+    Specify the [datatype](/reference/rdf/datatype) of the visualization a given Facet produces.
+
 </div>

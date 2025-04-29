@@ -88,6 +88,9 @@ graph LR
     python-yaml-ld-markdown-ld("➕ Markdown-LD parser<br/>@ <code>python-yaml-ld</code>") --> markdown-ld("Edit a Markdown-LD document") --> markdown-nanopub-blog-post
     click markdown-ld "https://github.com/iolanta-tech/iolanta/issues/261"
     markdown-ld --> happiness
+    
+    generate-facets-list("Generate Facets list") --> happiness
+    click generate-facets-list "http://localhost:6451/Facet/"
         
     classDef bug fill:#700,stroke:#f00,stroke-width:1px;
 ```
