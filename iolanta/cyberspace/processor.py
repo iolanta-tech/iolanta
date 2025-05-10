@@ -23,6 +23,7 @@ from rdflib.plugins.sparql.parserutils import CompValue
 from rdflib.plugins.sparql.sparql import Query
 from rdflib.query import Processor
 from rdflib.term import BNode, Literal, Node
+from requests import HTTPError
 from requests.exceptions import ConnectionError
 from yaml_ld.document_loaders.content_types import ParserNotFound
 from yaml_ld.errors import NotFound, YAMLLDError
@@ -97,12 +98,15 @@ def find_retractions_for(nanopublication: URIRef) -> set[URIRef]:
     )
     client.grlc_urls = [use_server]
 
-    retractions = client.find_retractions_of(
-        str(nanopublication).replace(
-            'https://',
-            'http://',
-        ),
+    http_url = str(nanopublication).replace(
+        'https://',
+        'http://',
     )
+
+    try:
+        retractions = client.find_retractions_of(http_url)
+    except HTTPError:
+        return set()
 
     return {URIRef(retraction) for retraction in retractions}
 
@@ -609,7 +613,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             )
 
         if not quads:
-            self.logger.warning('{source} | No data found', source=source)
+            self.logger.info('{source} | No data found', source=source)
             return Loaded()
 
         quad_tuples = [
