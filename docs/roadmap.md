@@ -109,6 +109,14 @@ graph LR
 
     class comunica-anything bug
     class comunica-np bug
+    
+    sparqlspace-cli("<code>sparqlspace</code> CLI") --> happiness
+    sparqlspace-query-plugin("Query-based") --> sparqlspace-cli
+    sparqlspace-results-plugin("Result-based") --> sparqlspace-cli
+    sparqlspace-disk("<code>sparqlspace</code><br/>loads files from disk") --> sparqlspace-cli
+    sparqlspace-protect-meta("<code>sparqlspace</code><br/>protects <code>_meta<code></br>graph") --> sparqlspace-cli
+    
+    facet-with-data("Register a facet class<br/>together with its associated LD") --> happiness
         
     classDef bug fill:#700,stroke:#f00,stroke-width:1px;
 ```
