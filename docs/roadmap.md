@@ -34,7 +34,7 @@ graph LR
     
     nanopub-blog-post("Blog post:<br/><strong>Nanopublishing with Iolanta</strong>") --> markdown-nanopub-blog-post("Blog post:<br/><strong>Quick & readable Nanopublications<br/>with Markdown-LD") --> happiness
     
-    nanopub-rs-graph("Publish an assertion from file<br/>@ <code>nanopub-rs</code>") --> nanopub-yaml-ld("Publish a YAML-LD assertion<br/>@ <code>nanopub-rs</code>") --> nanopub-blog-post
+    nanopub-rs-graph("Publish an assertion from file<br/>@ <code>nanopub-rs</code>") --> nanopub-yaml-ld("Publish a YAML-LD assertion<br/>@ <code>nanopub-rs</code>") --> nanopub-rs
     
     plan-yaml-ld-to-pyld("Start moving stuff:<br/>Python <code>yaml-ld</code> → <code>pyld</code>") --> happiness
     
@@ -57,7 +57,7 @@ graph LR
         click literal-clickable "https://github.com/iolanta-tech/iolanta/issues/260"
         class literal-clickable bug
         
-        fip-term-messy("<strong>Knowledge representation language</strong><br/>not displayed as a Nanopub") --> fip-term-instances("<strong>Knowledge Representation Language</strong><br/>does not show all its instances") --> nanopublication-is-not-satisfactory
+        fip-term-instances("<strong>Knowledge Representation Language</strong><br/>does not show all its instances") --> nanopublication-is-not-satisfactory
         class fip-term-messy bug
         class fip-term-instances bug
     end
@@ -87,10 +87,28 @@ graph LR
     
     python-yaml-ld-markdown-ld("➕ Markdown-LD parser<br/>@ <code>python-yaml-ld</code>") --> markdown-ld("Edit a Markdown-LD document") --> markdown-nanopub-blog-post
     click markdown-ld "https://github.com/iolanta-tech/iolanta/issues/261"
-    markdown-ld --> happiness
+    markdown-ld --> no-data("iolanta.tech/is-preferred-over<br/>no data found") --> nanopub-blog-post
+    class no-data bug
     
     generate-facets-list("Generate Facets list") --> happiness
-    click generate-facets-list "http://localhost:6451/Facet/"
+    click generate-facets-list "/Facet/"
+    
+    comunica-anything("I cannot make<br/><code>comunica-sparql-link-traversal</code> work") --> comunica-np("<code>comunica-sparql-link-traversal</code><br/>cannot retrieve properties<br/>about a nanopub") -->  use-comunica("Replace <code>CyberspaceSPARQLProcessor</code><br/>→ <code>comunica-sparql-link-traversal</code>") --> happiness
+    
+    subgraph nanopub-tool["Publish nanopubs with"]
+        direction TB
+        nanopub-rs["nanopub-rs"]
+        nanopub-py["nanopub-py"]
+    end
+    
+    nanopub-tool --> nanopub-blog-post
+    
+    rdflib-yaml-ld("<code>rdflib-yaml-ld</code>") --> publish-yaml-ld-with-nanopub-py("Publish a YAML-LD assertion<br/>with <code>nanopub-py</code>") --> nanopub-py
+    
+    np-create("Get <code>np create</code><br/>released") --> publish-yaml-ld-with-nanopub-py
+
+    class comunica-anything bug
+    class comunica-np bug
         
     classDef bug fill:#700,stroke:#f00,stroke-width:1px;
 ```
