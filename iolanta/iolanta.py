@@ -259,7 +259,7 @@ class Iolanta:   # noqa: WPS214
                 )
 
             if not quads:
-                self.logger.warning(f'{source_file} | No data found')
+                self.logger.info(f'{source_file} | No data found')
                 continue
 
             quad_tuples = [
