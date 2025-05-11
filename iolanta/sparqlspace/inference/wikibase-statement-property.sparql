@@ -1,0 +1,9 @@
+INSERT {
+  GRAPH <local:inference-wikibase-statement-property> {
+    ?statement <https://schema.org/name> ?name .
+  }
+}
+WHERE {
+  ?prop <https://wikiba.se/ontology#statementProperty> ?statement .
+  ?prop <https://schema.org/name> ?name .
+}

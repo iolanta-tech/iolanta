@@ -1,0 +1,9 @@
+INSERT {
+  GRAPH <local:inference-wikibase-claim> {
+    ?prop <https://schema.org/name> ?name .
+  }
+}
+WHERE {
+  ?entity <https://wikiba.se/ontology#claim> ?prop .
+  ?entity <https://schema.org/name> ?name .
+}
