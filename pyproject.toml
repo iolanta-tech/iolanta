@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iolanta"
-version = "2.0.3"
+version = "2.0.5"
 description = "Semantic Web browser"
 authors = ["Anatoly Scherbakov <altaisoft@gmail.com>"]
 license = "MIT"
@@ -33,13 +33,13 @@ watchfiles = "^1.0.4"
 
 [tool.poetry.scripts]
 iolanta = "iolanta.cli:app"
-
+sparqlspace = "iolanta.sparqlspace.cli:app"
 
 [tool.poetry.plugins."iolanta.plugins"]
 base = "iolanta:IolantaBase"
 
 [tool.poetry.plugins."rdf.plugins.queryprocessor"]
-cyberspace = "iolanta.cyberspace.processor:GlobalSPARQLProcessor"
+sparqlspace = "iolanta.sparqlspace.processor:GlobalSPARQLProcessor"
 
 [tool.poetry.group.dev.dependencies]
 jeeves-yeti-pyproject = ">=0.2.44"

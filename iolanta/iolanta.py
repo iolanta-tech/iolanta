@@ -28,7 +28,6 @@ from yaml_ld.errors import YAMLLDError
 
 from iolanta import entry_points, namespaces
 from iolanta.conversions import path_to_iri
-from iolanta.cyberspace.processor import normalize_term
 from iolanta.errors import UnresolvedIRI
 from iolanta.facets.errors import FacetError
 from iolanta.facets.facet import Facet
@@ -53,6 +52,7 @@ from iolanta.query_result import (
     format_query_bindings,
 )
 from iolanta.resolvers.python_import import PythonImportResolver
+from iolanta.sparqlspace.processor import normalize_term
 
 
 class LoggerProtocol(Protocol):
@@ -161,7 +161,7 @@ class Iolanta:   # noqa: WPS214
         try:
             sparql_result: SPARQLResult = self.graph.query(
                 query_text,
-                processor='cyberspace',
+                processor='sparqlspace',
                 initBindings=kwargs,
             )
         except ParseException as err:

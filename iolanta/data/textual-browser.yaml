@@ -120,3 +120,8 @@
     $: Subjects → Objects
     →: https://iolanta.tech/cli/textual
     ↦: ASK WHERE { ?subject $this ?object }
+
+  - $id: python://iolanta.facets.textual_class.Class
+    ↦:
+      - ASK WHERE { ?instance a $this }
+      - ASK WHERE { $this rdfs:subClassOf ?superclass }

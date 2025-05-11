@@ -56,10 +56,6 @@ graph LR
         literal-clickable("YAML-LD literal is clickable") --> nanopublication-is-not-satisfactory
         click literal-clickable "https://github.com/iolanta-tech/iolanta/issues/260"
         class literal-clickable bug
-        
-        fip-term-instances("<strong>Knowledge Representation Language</strong><br/>does not show all its instances") --> nanopublication-is-not-satisfactory
-        class fip-term-messy bug
-        class fip-term-instances bug
     end
     
     spec-not-ld --> happiness

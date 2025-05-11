@@ -1,6 +1,5 @@
 import dataclasses
 import datetime
-import itertools
 import re
 import time
 from pathlib import Path
@@ -13,9 +12,11 @@ import funcy
 import loguru
 import platformdirs
 import reasonable
+import requests
 import yaml_ld
 from nanopub import NanopubClient
-from rdflib import ConjunctiveGraph, Namespace, URIRef, Variable
+from rdflib import ConjunctiveGraph, Dataset, Namespace, URIRef, Variable
+from rdflib.namespace import RDF as original_RDF
 from rdflib.plugins.sparql.algebra import translateQuery
 from rdflib.plugins.sparql.evaluate import evalQuery
 from rdflib.plugins.sparql.parser import parseQuery
@@ -297,6 +298,79 @@ def apply_redirect(source: URIRef) -> URIRef:
     return source
 
 
+def extract_triples(algebra: CompValue) -> Iterable[tuple[Node, Node, Node]]:
+    """Extract triples from a SPARQL query algebra instance."""
+    if isinstance(algebra, CompValue):
+        for key, value in algebra.items():  # noqa: WPS110
+            if key == 'triples':
+                yield from value
+
+            else:
+                yield from extract_triples(value)
+
+
+@dataclasses.dataclass(frozen=True)
+class NanopubQueryPlugin:
+    """Import additional information from Nanopublications Registry."""
+
+    graph: Dataset
+
+    def __call__(self, query: Query, bindings: dict[str, Any]):
+        """Get stuff from Nanopub Registry, if it makes sense."""
+        class_uris = resolve_variables(
+            set(self._find_classes(query.algebra)),
+            bindings,
+        )
+        for class_uri in class_uris:
+            if self._is_from_nanopubs(class_uri):
+                self._load_instances(class_uri)
+
+    def _find_classes(self, algebra: CompValue) -> Iterable[URIRef]:
+        triples = extract_triples(algebra)
+        for _subject, potential_type, potential_class in triples:
+            if potential_type == original_RDF.type:
+                yield potential_class
+
+    @funcy.retry(errors=HTTPError, tries=3, timeout=3)
+    def _load_instances(self, class_uri: URIRef):
+        """
+        Load instances from Nanopub Registry.
+
+        FIXME: Can we cache this?
+        """
+        response = requests.post(   # noqa: S113
+            'https://query.knowledgepixels.com/repo/full',
+            data={
+                'query': 'CONSTRUCT WHERE { ?instance a <%s> }' % class_uri,
+            },
+            headers={
+                'Accept': 'application/ld+json',
+            },
+        )
+
+        response.raise_for_status()
+
+        self.graph.get_context(BNode()).parse(
+            data=response.text,
+            format='json-ld',
+        )
+
+    def _is_from_nanopubs(self, class_uri: URIRef) -> bool:
+        if not isinstance(class_uri, URIRef):
+            raise ValueError(f'Not a URIRef: {class_uri}')
+
+        return self.graph.query(   # noqa: WPS462
+            """
+            ASK WHERE {
+                ?_whatever <https://purl.org/nanopub/x/introduces> $class
+            }
+            """,
+            initBindings={
+                'class': class_uri,
+            },
+        ).askAnswer
+
+
 @dataclasses.dataclass(frozen=True)
 class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
     """
@@ -405,25 +479,27 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             parse_tree = parseQuery(strOrQuery)
             query = translateQuery(parse_tree, base, initNs)
 
-            self.load_retracting_nanopublications_by_query(
-                query=query,
-                bindings=initBindings,
-                base=base,
-                namespaces=initNs,
-            )
+        self.load_retracting_nanopublications_by_query(
+            query=query,
+            bindings=initBindings,
+            base=base,
+            namespaces=initNs,
+        )
 
-            query, urls = extract_mentioned_urls_from_query(
-                query=query,
-                bindings=initBindings,
-                base=base,
-                namespaces=initNs,
-            )
+        query, urls = extract_mentioned_urls_from_query(
+            query=query,
+            bindings=initBindings,
+            base=base,
+            namespaces=initNs,
+        )
 
-            for url in urls:
-                try:
-                    self.load(url)
-                except Exception as err:
-                    self.logger.error(f'Failed to load {url}: {err}', url, err)
+        for url in urls:
+            try:
+                self.load(url)
+            except Exception as err:
+                self.logger.error(f'Failed to load {url}: {err}', url, err)
+
+        NanopubQueryPlugin(graph=self.graph)(query, bindings=initBindings)
 
         self.maybe_apply_inference()
 

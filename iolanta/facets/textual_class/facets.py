@@ -6,7 +6,7 @@ import funcy
 from rich.console import RenderResult
 from rich.text import Text
 from textual.binding import Binding, BindingType
-from textual.containers import Vertical
+from textual.containers import Vertical  # removed unused VerticalScroll (F401)
 from textual.reactive import Reactive
 from textual.widget import Widget
 from textual.widgets import Label, ListItem, ListView
@@ -70,10 +70,8 @@ class InstancesList(ListView):   # noqa: WPS214
 
     DEFAULT_CSS = """
     InstancesList {
-        height: auto;
-        
+        height: 1fr;
         layout: vertical;
-        overflow-x: hidden;
         overflow-y: auto;
     }
     """
@@ -121,31 +119,6 @@ class InstancesList(ListView):   # noqa: WPS214
                 parent_class=self.parent_class,
             )
 
-    def on_list_view_highlighted(self):
-        """
-        Find out whether the last item of the list is highlighted.
-
-        If yes then add more elements.
-        """
-        if not self._nodes or (self.index >= len(self._nodes) - 1):
-            new_instance_items = list(self.stream_instance_items_chunk())
-            self.run_worker(
-                functools.partial(
-                    self.render_newly_added_instances,
-                    new_instance_items,
-                ),
-                thread=True,
-            )
-
-            # #126 `extend()` here will lead to freeze in some situations
-            for new_item in new_instance_items:
-                self.append(new_item)
-
-    def on_list_item__child_clicked(self) -> None:   # noqa: WPS116
-        """Navigate on click."""
-        # FIXME if we call `action_goto()` here we'll navigate to the item that
-        #   was selected _prior_ to this click.
-
     def action_goto(self):
         """Navigate."""
         self.app.action_goto(self.highlighted_child.node)
@@ -158,6 +131,32 @@ class InstancesList(ListView):   # noqa: WPS214
                 predicate=RDF.type,
                 object_=self.parent_class,
             ),
+        )
+
+    def compose(self):
+        """Fill in the instances."""
+        for instance in self.instances:   # noqa: WPS526
+            yield InstanceItem(
+                node=instance,
+                parent_class=self.parent_class,
+            )
+
+    def render_instances(self):
+        """Render all instances."""
+        for instance_item in self.children:
+            self.app.call_from_thread(
+                instance_item.update,
+                self.app.iolanta.render(
+                    instance_item.node,
+                    as_datatype=DATATYPES.title,
+                ),
+            )
+
+    def on_mount(self):
+        """Render the first chunk of instances."""
+        self.run_worker(
+            self.render_instances,
+            thread=True,
         )
 
 
@@ -198,29 +197,19 @@ class Class(Facet[Widget]):
         We have to stop if a subsequent attempt returns no results. That's why
         we can't use `funcy.distinct()` or something similar.
         """
-        known_instances: set[NotLiteralNode] = set()
-        while True:
-            instances = set(
-                funcy.pluck(
-                    'instance',
-                    self.stored_query('instances.sparql', iri=self.iri),
-                ),
-            ).difference(known_instances)
-
-            if not instances:
-                return
-
-            yield from instances
-
-            known_instances.update(instances)
+        return set(
+            funcy.pluck(
+                'instance',
+                self.stored_query('instances.sparql', iri=self.iri),
+            ),
+        )
 
     def show(self) -> Widget:
         """Render the instances list."""
         return InstancesBody(
             PageTitle(self.iri),
             InstancesList(
-                instances=self.stream_instances(),
+                instances=list(self.stream_instances()),
                 parent_class=self.iri,
             ),
-            Bottom('Select the last element to try loading more instances.'),
         )
