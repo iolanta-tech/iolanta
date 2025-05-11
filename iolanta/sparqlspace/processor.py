@@ -405,25 +405,25 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             parse_tree = parseQuery(strOrQuery)
             query = translateQuery(parse_tree, base, initNs)
 
-            self.load_retracting_nanopublications_by_query(
-                query=query,
-                bindings=initBindings,
-                base=base,
-                namespaces=initNs,
-            )
+        self.load_retracting_nanopublications_by_query(
+            query=query,
+            bindings=initBindings,
+            base=base,
+            namespaces=initNs,
+        )
 
-            query, urls = extract_mentioned_urls_from_query(
-                query=query,
-                bindings=initBindings,
-                base=base,
-                namespaces=initNs,
-            )
+        query, urls = extract_mentioned_urls_from_query(
+            query=query,
+            bindings=initBindings,
+            base=base,
+            namespaces=initNs,
+        )
 
-            for url in urls:
-                try:
-                    self.load(url)
-                except Exception as err:
-                    self.logger.error(f'Failed to load {url}: {err}', url, err)
+        for url in urls:
+            try:
+                self.load(url)
+            except Exception as err:
+                self.logger.error(f'Failed to load {url}: {err}', url, err)
 
         self.maybe_apply_inference()
 
