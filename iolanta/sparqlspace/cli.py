@@ -5,7 +5,7 @@ import rich
 from rdflib import Node
 from rdflib.query import Result
 from rich.table import Table
-from typer import Typer, Option
+from typer import Option, Typer
 
 from iolanta.sparqlspace.sparqlspace import SPARQLSpace
 
@@ -13,28 +13,34 @@ app = Typer()
 
 
 class OutputFormat(StrEnum):
-    CSV = 'csv'
-    JSON = 'json'
-    TABLE = 'table'
+    """Output formats for the query command."""
+
+    CSV = 'csv'      # noqa: WPS115
+    JSON = 'json'    # noqa: WPS115
+    TABLE = 'table'  # noqa: WPS115
 
 
 def _format_node(node: Node):
     return node
 
 
-def _format_result(result: Result, output_format: OutputFormat):
+def _format_result(query_result: Result, output_format: OutputFormat):
     match output_format:
         case OutputFormat.CSV:
-            return result.serialize(format='csv').decode()
+            return query_result.serialize(format='csv').decode()
+
         case OutputFormat.JSON:
-            return result.serialize(format='json').decode()
+            return query_result.serialize(format='json').decode()
+
         case OutputFormat.TABLE:
-            table = Table(*result.vars)
-            for row in result:
-                table.add_row(*[
-                    _format_node(node)
-                    for node in row
-                ])
+            table = Table(*query_result.vars)
+            for row in query_result:
+                table.add_row(
+                    *[
+                        _format_node(node)
+                        for node in row
+                    ],
+                )
             return table
 
     raise NotImplementedError(f'Output format {output_format} not implemented.')
@@ -49,10 +55,10 @@ def query_command(
     ] = OutputFormat.TABLE,
 ):
     """Execute a SPARQL query."""
-    result = SPARQLSpace().query(query)
+    query_result = SPARQLSpace().query(query)
     rich.print(
         _format_result(
-            result=result,
+            query_result=query_result,
             output_format=output_format,
         ),
     )
