@@ -331,6 +331,7 @@ class NanopubQueryPlugin:
             if potential_type == original_RDF.type:
                 yield potential_class
 
+    @funcy.retry(errors=HTTPError, tries=3, timeout=3)
     def _load_instances(self, class_uri: URIRef):
         """
         Load instances from Nanopub Registry.
