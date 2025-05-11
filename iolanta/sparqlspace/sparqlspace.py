@@ -12,10 +12,15 @@ from rdflib.query import Result
 class SPARQLSpace:
     """SPARQL interface to the Web of Data."""
 
-    graph: rdflib.Dataset = field(default_factory=functools.partial(rdflib.Dataset, default_union=True))
+    graph: rdflib.Dataset = field(
+        default_factory=functools.partial(
+            rdflib.Dataset,
+            default_union=True,
+        ),
+    )
     path: Annotated[
         Path | None,
-        'Local directory to load into the graph.'
+        'Local directory to load into the graph.',
     ] = None
 
     def query(self, query: str | Query, **bindings) -> Result:
