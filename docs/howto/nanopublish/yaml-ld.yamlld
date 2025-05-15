@@ -1,0 +1,12 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  dc: http://purl.org/dc/terms/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  fip: https://w3id.org/fair/fip/terms/
+
+$id: https://json-ld.github.io/yaml-ld/spec/
+$type: fip:Knowledge-representation-language
+dc:description: |
+  A set of conventions built on top of YAML, which outlines how to serialize
+  Linked Data as YAML based on JSON-LD syntax, semantics, and APIs.
+rdfs:label: YAML-LD
