@@ -113,6 +113,9 @@ graph LR
     sparqlspace-protect-meta("<code>sparqlspace</code><br/>protects <code>_meta<code></br>graph") --> sparqlspace-cli
     
     facet-with-data("Register a facet class<br/>together with its associated LD") --> happiness
+    
+    sparqlspace-integration-tests("<code>sparqlspace</code>has no<br/>integration tests") --> happiness
+    class sparqlspace-integration-tests bug
         
     classDef bug fill:#700,stroke:#f00,stroke-width:1px;
 ```
