@@ -94,7 +94,7 @@ def render_command(   # noqa: WPS231, WPS238, WPS210, C901
     )
 
     node_url = URL(url)
-    if node_url.scheme:
+    if node_url.scheme and node_url.scheme != 'file':
         node = URIRef(url)
 
         iolanta: Iolanta = Iolanta(
@@ -102,7 +102,7 @@ def render_command(   # noqa: WPS231, WPS238, WPS210, C901
             logger=logger,
         )
     else:
-        path = Path(url).absolute()
+        path = Path(node_url.path).absolute()
         node = URIRef(f'file://{path}')
         iolanta: Iolanta = Iolanta(
             language=Literal(language),
