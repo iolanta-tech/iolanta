@@ -240,6 +240,22 @@ class FacetFinder:   # noqa: WPS214
             for row in rows
         ]
 
+    def by_facet_not_found(self) -> Iterable[FoundRow]:
+        """What facet to show if no facets are found?"""
+        rows = self.iolanta.query(  # noqa: WPS462
+            """
+            SELECT ?facet ?output_datatype WHERE {
+              $output_datatype iolanta:when-no-facet-found ?facet .
+            }
+            """,
+            output_datatype=self.as_datatype,
+        )
+
+        return [
+            FoundRow(facet=row['facet'], output_datatype=row['output_datatype'])
+            for row in rows
+        ]
+
     def retrieve_facets_preference_ordering(self) -> set[tuple[URIRef, URIRef]]:
         """
         Construct partial ordering on the set of facets.
@@ -262,6 +278,9 @@ class FacetFinder:   # noqa: WPS214
     def choices(self) -> list[FoundRow]:
         """Return all suitable facets."""
         rows = list(self._found_facets())
+
+        if not rows:
+            rows = self.by_facet_not_found()
 
         if len(rows) == 1:
             # Nothing to order.
