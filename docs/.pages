@@ -7,6 +7,7 @@ nav:
       - matches.md
       - is-preferred-over.md
       - outputs.md
+      - when-no-facet-found.md
       - datatypes
   - blog
   - roadmap.md
