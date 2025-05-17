@@ -1,3 +1,4 @@
+import operator
 import os
 from pathlib import Path
 
@@ -10,16 +11,25 @@ SCREENSHOTS = Path(__file__).parent.parent / 'docs/screenshots'
 SCREENSHOT_TIMEOUT = 50
 
 
-def generate_screenshot(url: URL) -> str:
+def generate_screenshot(url: URL | Path) -> str:
     """Generate a screenshot of a given URL and test it."""
-    path = url.path.strip('/').replace('/', '.').lower()
-    file_name = f'{url.host}.{path}.svg'
+    match url:
+        case URL():
+            path = url.path.strip('/').replace('/', '.').lower()
+            screenshot_file_name = f'{url.host}.{path}.svg'
+
+        case Path() as path:
+            project_root = Path(__file__).parent.parent
+            file_path = str(
+                path.relative_to(project_root),
+            ).replace('/', '.')
+            screenshot_file_name = f'{file_path}.svg'
 
     sh.textual.run.bake(
         '-c',
         screenshot=SCREENSHOT_TIMEOUT,
         screenshot_path=SCREENSHOTS,
-        screenshot_filename=file_name,
+        screenshot_filename=screenshot_file_name,
     ).iolanta(
         str(url),
         _env={
@@ -29,7 +39,7 @@ def generate_screenshot(url: URL) -> str:
         },
     )
 
-    file_path = SCREENSHOTS / file_name
+    file_path = SCREENSHOTS / screenshot_file_name
 
     assert file_path.exists(), 'Screenshot was not generated'
 
@@ -94,3 +104,16 @@ def test_yaml_ld_spec_namespace_prefixes(yaml_ld_spec_url: URL):
         yaml_ld_spec_url / 'data/namespace-prefixes.yamlld',
     )
     assert 'Prefix' in svg
+
+
+NANOPUBLISH_DIRECTORY = Path(__file__).parent.parent / 'docs/howto/nanopublish'
+
+
+@pytest.mark.parametrize(
+    'nanopublishing_file',
+    NANOPUBLISH_DIRECTORY.glob('*.yamlld'),
+    ids=operator.attrgetter('stem'),
+)
+def test_nanopublishing(nanopublishing_file: Path):
+    svg = generate_screenshot(nanopublishing_file)
+    assert 'svg' in svg
