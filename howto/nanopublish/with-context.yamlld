@@ -1,0 +1,4 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+
+$id: https://json-ld.github.io/yaml-ld/spec/
