@@ -33,4 +33,11 @@ hide: [toc, navigation]
     
     Specify the [datatype](/reference/rdf/datatype) of the visualization a given Facet produces.
 
+
+-   📛 __[`iolanta:when-no-facet-found`](/when-no-facet-found/)__
+    
+    ---
+    
+    What if no facet is found to visualize this node for a given [datatype](/reference/rdf/datatype)? Specify an emergency facet to use in such cases.
+
 </div>

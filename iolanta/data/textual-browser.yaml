@@ -13,6 +13,9 @@
   iolanta:outputs:
     "@type": "@id"
 
+  iolanta:when-no-facet-found:
+    "@type": "@id"
+
   $: rdfs:label
   →:
     "@type": "@id"
@@ -125,3 +128,6 @@
     ↦:
       - ASK WHERE { ?instance a $this }
       - ASK WHERE { $this rdfs:subClassOf ?superclass }
+
+  - $id: https://iolanta.tech/cli/textual
+    iolanta:when-no-facet-found: python://iolanta.facets.textual_no_facet_found.TextualNoFacetFound

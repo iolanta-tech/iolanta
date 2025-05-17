@@ -50,7 +50,15 @@ It does not concern us very much what these are. In your case, you might wish to
 
 All of these statements can be drawn as graphs similar to the above. Let's do so.
 
-## :material-typewriter: Write the statement
+## Install prerequisites
+
+In a Python environment, run:
+
+```shell
+pip install iolanta
+```
+
+## :material-typewriter: Write an Assertion
 
 Create a new file, called `yaml-ld.yamlld`, and run, in a separate terminal:
 
@@ -59,24 +67,126 @@ iolanta yaml-ld.yamlld
 ```
 
 <div class="grid" markdown>
+<div markdown>
 ```shell title="yaml-ld.yamlld"
 --8<-- "docs/howto/nanopublish/0.yamlld"
 ```
 
-TODO: Render 0.yamlld here
+As you can see on the right, Iolanta has certain difficulties visualizing this document. Well, that's because there is nothing to visualize. The line starting from `#` is a comment in YAML, it is only written for a human reader; computer ignores it entirely.
 </div>
 
-{# TODO: Make the process step-wise, we are TEACHING how to write the nanopub; owl approach won't work. #}
+![](/screenshots/docs.howto.nanopublish.0.yamlld.svg)
+</div>
 
----
+### Step :material-roman-numeral-1:
 
-Drawing the owl here... :owl:
+<div class="grid" markdown>
+<div markdown>
+We are going to write something about YAML-LD; let's refer to it properly: as a URL. We can use the address of current YAML-LD [specification draft](https://json-ld.github.io/yaml-ld/spec/).
 
----
+```shell title="yaml-ld.yamlld"
+--8<-- "docs/howto/nanopublish/with-id.yamlld"
+```
 
-```yaml title="yaml-ld.yamlld"
+Here, `$id` is a keyword that *`id`entifies* the thing we are going to talk about. However... Iolanta still cannot visualize this document, why is this?
+</div>
+
+![](/screenshots/docs.howto.nanopublish.with-id.yamlld.svg)
+</div>
+
+### Step :material-roman-numeral-2:
+
+<div class="grid" markdown>
+<div markdown>
+We need to add some more magic words to make something visible.
+
+```yaml title="yaml-ld.yamlld" hl_lines="1 2"
+--8<-- "docs/howto/nanopublish/with-context.yamlld"
+```
+
+`@context` part of the document defines how the rest of the document will be understood. Note that this word is in quotes, that's obligatory because of how YAML treats the symbol `@`. Every keyword inside `@context` must use `@` and be quoted.
+
+The `dollar-convenience.jsonld` context that we import here defines `$id`. Dollar sign does not need to be quoted, which will make our next additions less verbose.
+
+But... it still does not work, what's wrong with all this stuff?!
+</div>
+
+![](/screenshots/docs.howto.nanopublish.with-context.yamlld.svg)
+</div>
+
+### Step :material-roman-numeral-3:
+
+<div class="grid" markdown>
+<div markdown>
+Ahem. Yes, indeed, I am sorry. The problem now is that the graph we have described only has one node, but no edges.
+
+```mermaid
+graph TD
+    yaml-ld("https://json-ld.github.io/yaml-ld/spec/")
+    
+    click yaml-ld https://json-ld.github.io/yaml-ld/spec/
+```
+
+This degenerated form is not really a graph and is not quite supported by Iolanta, unfortunately. We need to *say something about* the thing that we had stated. Otherwise there's no semantics to talk about, no knowledge to express. Let's do that.
+
+```yaml title="yaml-ld.yamlld" hl_lines="3 6"
+--8<-- "docs/howto/nanopublish/with-label.yamlld"
+```
+
+And it works! What is `rdfs`, though?
+</div>
+
+![](/screenshots/docs.howto.nanopublish.with-label.yamlld.svg)
+</div>
+
+RDFS stands for RDF Schema, where RDF is Resource Description Framework. But most importantly, this declaration
+
+```yaml
+rdfs: http://www.w3.org/2000/01/rdf-schema#
+```
+
+defines `rdfs:` as a **shortcut**. This means that, if the body of the document says
+
+```yaml
+rdfs:label: YAML-LD
+```
+
+then it actually is expanded to:
+
+```yaml
+"http://www.w3.org/2000/01/rdf-schema#label": YAML-LD
+```
+
+which is actually a URL that is normally used to specify a human readable, short label for something. That's what we used it for here.
+
+### What is this good for?
+
+<div class="grid" markdown>
+<div markdown>
+Now that it works, you can click the YAML-LD block.
+</div>
+
+![](/screenshots/json-ld.github.io.yaml-ld.spec.svg)
+</div>
+
+
+
+
+### Step :material-roman-numeral-4:
+
+...
+
+
+# :material-owl: Draw the owl!
+
+<div class="grid" markdown>
+```shell title="yaml-ld.yamlld"
 --8<-- "docs/howto/nanopublish/yaml-ld.yamlld"
 ```
+
+![](/screenshots/docs.howto.nanopublish.yaml-ld.yamlld.svg)
+</div>
+
 
 ## :eye_in_speech_bubble: Preview
 
