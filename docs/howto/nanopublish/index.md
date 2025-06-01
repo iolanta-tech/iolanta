@@ -88,33 +88,18 @@ We are going to write something about YAML-LD; let's refer to it properly: as a 
 --8<-- "docs/howto/nanopublish/with-id.yamlld"
 ```
 
-Here, `$id` is a keyword that *`id`entifies* the thing we are going to talk about. However... Iolanta still cannot visualize this document, why is this?
+Here, `@id` is a keyword that *`id`entifies* the thing we are going to talk about.
+
+!!! info
+    `"@id"` has to be in quotes, this is because `@` is a reserved character in YAML. More on that later.
+
+However... Iolanta still cannot visualize this document, why is this?
 </div>
 
 ![](/screenshots/docs.howto.nanopublish.with-id.yamlld.svg)
 </div>
 
 ### Step :material-roman-numeral-2:
-
-<div class="grid" markdown>
-<div markdown>
-We need to add some more magic words to make something visible.
-
-```yaml title="yaml-ld.yamlld" hl_lines="1 2"
---8<-- "docs/howto/nanopublish/with-context.yamlld"
-```
-
-`@context` part of the document defines how the rest of the document will be understood. Note that this word is in quotes, that's obligatory because of how YAML treats the symbol `@`. Every keyword inside `@context` must use `@` and be quoted.
-
-The `dollar-convenience.jsonld` context that we import here defines `$id`. Dollar sign does not need to be quoted, which will make our next additions less verbose.
-
-But... it still does not work, what's wrong with all this stuff?!
-</div>
-
-![](/screenshots/docs.howto.nanopublish.with-context.yamlld.svg)
-</div>
-
-### Step :material-roman-numeral-3:
 
 <div class="grid" markdown>
 <div markdown>
@@ -133,31 +118,60 @@ This degenerated form is not really a graph and is not quite supported by Iolant
 --8<-- "docs/howto/nanopublish/with-label.yamlld"
 ```
 
-And it works! What is `rdfs`, though?
+And it works!
 </div>
 
 ![](/screenshots/docs.howto.nanopublish.with-label.yamlld.svg)
 </div>
 
-RDFS stands for RDF Schema, where RDF is Resource Description Framework. But most importantly, this declaration
 
-```yaml
-rdfs: http://www.w3.org/2000/01/rdf-schema#
+### Step :material-roman-numeral-3:
+
+<div class="grid" markdown>
+<div markdown>
+You will rightfully exclaim:
+
+> Are you saying I will have to remember
+> ```
+> http://www.w3.org/2000/01/rdf-schema#label
+> ```
+> by heart and type this in?
+
+No, not really. Let's define a *context*.
+
+```yaml title="yaml-ld.yamlld" hl_lines="2 5"
+--8<-- "docs/howto/nanopublish/with-context.yamlld"
 ```
 
-defines `rdfs:` as a **shortcut**. This means that, if the body of the document says
+Context is the part of the document where we describe how to interpret this document as a Knowledge Graph. In this example, we introduce a shortcut, `rdfs`, which stands for RDFS ontology. In the body of the document we can refer to that ontology using that shorthand.
 
-```yaml
-rdfs:label: YAML-LD
+| Short form (CURIE) | Full Form                                      |
+|--------------------|------------------------------------------------|
+| `rdfs:label`       | `http://www.w3.org/2000/01/rdf-schema#label`   |
+| `rdfs:seeAlso`     | `http://www.w3.org/2000/01/rdf-schema#seeAlso` |
+| `rdfs:Class`       | `http://www.w3.org/2000/01/rdf-schema#Class`   |
+
+</div>
+
+![](/screenshots/docs.howto.nanopublish.with-context.yamlld.svg)
+</div>
+
+### Step :material-roman-numeral-4:
+
+<div class="grid" markdown>
+<div markdown>
+Let's reduce our typing effort a bit more.
+
+```yaml title="yaml-ld.yamlld" hl_lines="2 5"
+--8<-- "docs/howto/nanopublish/with-convenience-context.yamlld"
 ```
+We import a context which remaps `@id` to `$id`, which does not have to be quoted. Cool, right?!
+</div>
 
-then it actually is expanded to:
+![](/screenshots/docs.howto.nanopublish.with-convenience-context.yamlld.svg)
+</div>
 
-```yaml
-"http://www.w3.org/2000/01/rdf-schema#label": YAML-LD
-```
 
-which is actually a URL that is normally used to specify a human readable, short label for something. That's what we used it for here.
 
 ### What is this good for?
 
@@ -171,16 +185,10 @@ Now that it works, you can click the YAML-LD block.
 
 
 
-
-### Step :material-roman-numeral-4:
-
-...
-
-
 # :material-owl: Draw the owl!
 
 <div class="grid" markdown>
-```shell title="yaml-ld.yamlld"
+```yaml title="yaml-ld.yamlld"
 --8<-- "docs/howto/nanopublish/yaml-ld.yamlld"
 ```
 

@@ -34,6 +34,12 @@ graph LR
     
     nanopub-blog-post("Blog post:<br/><strong>Nanopublishing with Iolanta</strong>") --> markdown-nanopub-blog-post("Blog post:<br/><strong>Quick & readable Nanopublications<br/>with Markdown-LD") --> happiness
     
+    in-cloud("Run Iolanta in cloud") --> nanopub-blog-post
+    
+    np-fork-out-of-date("<code>iolanta-tech/nanopub-py</code> out of date") --> np-fork-not-installed("<code>nanopub</code> fork<br/> not installed") --> nanopub-blog-post
+    click np-fork-out-of-date "https://github.com/iolanta-tech/nanopub-py"
+    class np-fork-out-of-date bug
+    
     nanopub-rs-graph("Publish an assertion from file<br/>@ <code>nanopub-rs</code>") --> nanopub-yaml-ld("Publish a YAML-LD assertion<br/>@ <code>nanopub-rs</code>") --> nanopub-rs
     
     plan-yaml-ld-to-pyld("Start moving stuff:<br/>Python <code>yaml-ld</code> → <code>pyld</code>") --> happiness
@@ -89,7 +95,7 @@ graph LR
     generate-facets-list("Generate Facets list") --> happiness
     click generate-facets-list "/Facet/"
     
-    comunica-anything("I cannot make<br/><code>comunica-sparql-link-traversal</code> work") --> comunica-np("<code>comunica-sparql-link-traversal</code><br/>cannot retrieve properties<br/>about a nanopub") -->  use-comunica("Replace <code>CyberspaceSPARQLProcessor</code><br/>→ <code>comunica-sparql-link-traversal</code>") --> happiness
+    comunica-np("<code>comunica-sparql-link-traversal</code><br/>cannot retrieve properties<br/>about a nanopub") -->  use-comunica("Replace <code>CyberspaceSPARQLProcessor</code><br/>→ <code>comunica-sparql-link-traversal</code>") --> happiness
     
     subgraph nanopub-tool["Publish nanopubs with"]
         direction TB
@@ -114,8 +120,12 @@ graph LR
     
     facet-with-data("Register a facet class<br/>together with its associated LD") --> happiness
     
+    tables("Render tables<br/>from multiple LD files") --> happiness
+    
     sparqlspace-integration-tests("<code>sparqlspace</code>has no<br/>integration tests") --> happiness
     class sparqlspace-integration-tests bug
+    
+    mermaid("Generate Mermaid graph") --> happiness
         
     classDef bug fill:#700,stroke:#f00,stroke-width:1px;
 ```
