@@ -82,7 +82,7 @@ As you can see on the right, Iolanta has certain difficulties visualizing this d
 
 <div class="grid" markdown>
 <div markdown>
-We are going to write something about YAML-LD; let's refer to it properly: as a URL. We can use the address of current YAML-LD [specification draft](https://json-ld.github.io/yaml-ld/spec/).
+We are going to write something about YAML-LD; let's refer to it properly: as a URL. We can use the address of the current YAML-LD [specification draft](https://json-ld.github.io/yaml-ld/spec/).
 
 ```shell title="yaml-ld.yamlld"
 --8<-- "docs/howto/nanopublish/with-id.yamlld"
