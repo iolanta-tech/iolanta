@@ -89,6 +89,16 @@ def test_yaml_ld_nanopublication():
     assert 'YAML-LD' in svg
 
 
+def test_rdfs_label():
+    """Test a red things nanopublication."""
+    svg = generate_screenshot(
+        URL(
+            'http://www.w3.org/2000/01/rdf-schema#label',
+        ),
+    )
+    assert 'label' in svg
+
+
 @pytest.fixture(scope='session')
 def yaml_ld_spec_url() -> URL:
     return URL('https://json-ld.github.io/yaml-ld/spec')
