@@ -36,7 +36,7 @@ graph LR
     
     in-cloud("Run Iolanta in cloud") --> nanopub-blog-post
     
-    np-fork-out-of-date("<code>iolanta-tech/nanopub-py</code> out of date") --> np-fork-not-installed("<code>nanopub</code> fork<br/> not installed") --> nanopub-blog-post
+    nanopub-blog-post
     click np-fork-out-of-date "https://github.com/iolanta-tech/nanopub-py"
     class np-fork-out-of-date bug
     
