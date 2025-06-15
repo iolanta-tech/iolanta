@@ -52,10 +52,10 @@ All of these statements can be drawn as graphs similar to the above. Let's do so
 
 ## Install prerequisites
 
-In a Python environment, run:
+In a Python 3.10+ environment, run:
 
 ```shell
-pip install iolanta
+pip install iolanta git+https://github.com/iolanta-tech/nanopub-py.git
 ```
 
 ## :material-typewriter: Write an Assertion
@@ -125,17 +125,49 @@ And it works!
 </div>
 
 
+This display shows what is called a **triple**. Here,
+
+* YAML-LD (red) is the _subject_,
+* `label` is the _predicate_,
+* and `YAML-LD` (black) is the _object_.
+
+Subject and Predicate here are clickable, since they are URLs. Object is a string, or a Literal, and is therefore not clickable.
+
+
+<div class="grid" markdown>
+<div markdown>
+![](/screenshots/json-ld.github.io.yaml-ld.spec.svg)
+
+<figcaption markdown>
+[YAML-LD](https://www.w3.org/2000/01/rdf-schema#label) subject
+</figcaption>
+</div>
+
+<div markdown>
+![](/screenshots/www.w3.org.2000.01.rdf-schema.svg)
+
+<figcaption markdown>
+[Label](https://www.w3.org/2000/01/rdf-schema#label) predicate
+</figcaption>
+</div>
+</div>
+
+As you can see, quite a bit of information is available about each. That's because files accessible via each of those URLs contain information about the concepts the URLs stand for.
+
+That's called _Linked Data_.
+
 ### Step :material-roman-numeral-3:
 
 <div class="grid" markdown>
 <div markdown>
 You will rightfully exclaim:
 
-> Are you saying I will have to remember
-> ```
-> http://www.w3.org/2000/01/rdf-schema#label
-> ```
-> by heart and type this in?
+!!! warning "Exclamation © you"
+    Are you saying I will have to type
+    ```
+    http://www.w3.org/2000/01/rdf-schema#label
+    ```
+    each time I want to specify a human readable label of something?
 
 No, not really. Let's define a *context*.
 
@@ -172,40 +204,28 @@ We import a context which remaps `@id` to `$id`, which does not have to be quote
 </div>
 
 
-
-### What is this good for?
-
-<div class="grid" markdown>
-<div markdown>
-Now that it works, you can click the YAML-LD block.
-</div>
-
-![](/screenshots/json-ld.github.io.yaml-ld.spec.svg)
-</div>
-
-
-
 # :material-owl: Draw the owl!
 
 <div class="grid" markdown>
+<div markdown>
+With the examples we've looked through, you will easily read the following YAML-LD statement.
+
 ```yaml title="yaml-ld.yamlld"
 --8<-- "docs/howto/nanopublish/yaml-ld.yamlld"
 ```
+
+At any rate, Iolanta is always ready to help by visualizing it. Each of the links is clickable,
+leading you to further information about the concepts involved.
+</div>
 
 ![](/screenshots/docs.howto.nanopublish.yaml-ld.yamlld.svg)
 </div>
 
 
-## :eye_in_speech_bubble: Preview
-
-{# TODO: Visualize this graph with Iolanta. #}
-
 ## :fontawesome-solid-stamp: Make it a valid Nanopublication
 
-{# TODO: Describe how to install the `np` command #}
-
 ```shell
-pyld expand yaml-ld.yamlld | np create from-assertion > np.yaml-ld.trig
+pyld expand yaml-ld.yamlld | np create --output-format json-ld from-assertion --input-format json-ld > np.yaml-ld.jsonld
 ```
 
 ## :material-rocket-launch: Publish!
