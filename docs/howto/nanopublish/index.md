@@ -222,16 +222,10 @@ leading you to further information about the concepts involved.
 </div>
 
 
-## :eye_in_speech_bubble: Preview
-
-{# TODO: Visualize this graph with Iolanta. #}
-
 ## :fontawesome-solid-stamp: Make it a valid Nanopublication
 
-{# TODO: Describe how to install the `np` command #}
-
 ```shell
-pyld expand yaml-ld.yamlld | np create from-assertion > np.yaml-ld.trig
+pyld expand yaml-ld.yamlld | np create --output-format json-ld from-assertion --input-format json-ld > np.yaml-ld.jsonld
 ```
 
 ## :material-rocket-launch: Publish!
