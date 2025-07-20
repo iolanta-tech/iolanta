@@ -85,13 +85,6 @@ class Facet(Generic[FacetOutput]):
         """Preferred language for Iolanta output."""
         return self.iolanta.language
 
-    def find_triple(
-        self,
-        triple: TripleTemplate,
-    ) -> Triple | None:
-        """Lightweight procedure to find a triple by template."""
-        return self.iolanta.find_triple(triple_template=triple)
-
     @cached_property
     def logger(self):
         """Logger."""
