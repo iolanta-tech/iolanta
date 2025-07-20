@@ -4,22 +4,19 @@ from pathlib import Path
 from typing import (  # noqa: WPS235
     Annotated,
     Any,
-    Dict,
     Iterable,
     List,
     Mapping,
     Optional,
     Protocol,
     Set,
-    Tuple,
     Type,
 )
 
-import funcy
 import loguru
 import yaml_ld
 from pyparsing import ParseException
-from rdflib import ConjunctiveGraph, Graph, Literal, Namespace, URIRef
+from rdflib import ConjunctiveGraph, Graph, Literal, URIRef
 from rdflib.namespace import NamespaceManager
 from rdflib.plugins.sparql.processor import SPARQLResult
 from rdflib.term import Node
@@ -32,18 +29,9 @@ from iolanta.errors import UnresolvedIRI
 from iolanta.facets.errors import FacetError
 from iolanta.facets.facet import Facet
 from iolanta.facets.locator import FacetFinder
-from iolanta.loaders.base import SourceType
-from iolanta.loaders.local_directory import merge_contexts
-from iolanta.models import (
-    ComputedQName,
-    LDContext,
-    NotLiteralNode,
-    Triple,
-    TripleTemplate,
-)
+from iolanta.models import ComputedQName, LDContext, NotLiteralNode
 from iolanta.node_to_qname import node_to_qname
 from iolanta.parse_quads import parse_quads
-from iolanta.parsers.yaml import YAML
 from iolanta.plugin import Plugin
 from iolanta.query_result import (
     QueryResult,
@@ -102,12 +90,6 @@ class Iolanta:   # noqa: WPS214
     )
 
     logger: LoggerProtocol = loguru.logger
-
-    sources_added_not_yet_inferred: list[SourceType] = field(
-        default_factory=list,
-        init=False,
-        repr=False,
-    )
 
     could_not_retrieve_nodes: Set[Node] = field(
         default_factory=set,
@@ -182,23 +164,6 @@ class Iolanta:   # noqa: WPS214
 
         return format_query_bindings(sparql_result.bindings)
 
-    @functools.cached_property
-    def namespaces_to_bind(self) -> Dict[str, Namespace]:
-        """
-        Namespaces globally specified for the graph.
-
-        FIXME: Probably get rid of this, I do not know.
-        """
-        return {
-            key: Namespace(value)
-            for key, value in self.default_context['@context'].items()  # noqa
-            if (
-                isinstance(value, str)
-                and not value.startswith('@')   # noqa: W503
-                and not key.startswith('@')   # noqa: W503
-            )
-        }
-
     def reset(self):
         """Reset Iolanta graph."""
         self.graph = _create_default_graph()   # noqa: WPS601
@@ -212,7 +177,6 @@ class Iolanta:   # noqa: WPS214
     ) -> 'Iolanta':
         """Parse & load information from given URL into the graph."""
         self.logger.info(f'Adding to graph: {source}')
-        self.sources_added_not_yet_inferred.append(source)
 
         if not isinstance(source, Path):
             source = Path(source)
@@ -317,20 +281,6 @@ class Iolanta:   # noqa: WPS214
             if path := plugin.context_path:
                 yield path
 
-    @functools.cached_property
-    def default_context(self) -> LDContext:
-        """Construct default context from plugins."""
-        context_documents = [
-            YAML().as_jsonld_document(path.open('r'))
-            for path in self.context_paths
-        ]
-
-        for context in context_documents:
-            if isinstance(context, list):
-                raise ValueError('Context cannot be a list: %s', context)
-
-        return merge_contexts(*context_documents)   # type: ignore
-
     def add_files_from_plugins(self):
         """
         Load files from plugins.
@@ -433,44 +383,6 @@ class Iolanta:   # noqa: WPS214
                     facet_iri=None,
                     error=err,
                 ) from err
-
-    def retrieve_triple(self, triple_template: TripleTemplate) -> Triple:
-        """Retrieve remote data to project directory."""
-        for plugin in self.plugins:
-            # FIXME Parallelization?
-            plugin.retrieve_triple(triple_template)
-
-        if not downloaded_files:
-            self.could_not_retrieve_nodes.add(node)
-
-        for path in downloaded_files:
-            self.add(path)
-
-        return self
-
-    def maybe_infer(self):
-        """
-        Apply inference lazily.
-
-        Only run inference if there are new files added after last inference.
-        """
-        if self.sources_added_not_yet_inferred:
-            self.infer()
-
-    def find_triple(
-        self,
-        triple_template: TripleTemplate,
-    ) -> Triple | None:
-        """Lightweight procedure to find a triple by template."""
-        triples = self.graph.triples(
-            (triple_template.subject, triple_template.predicate, triple_template.object),
-        )
-
-        raw_triple = funcy.first(triples)
-        if raw_triple:
-            return Triple(*raw_triple)
-
-        return self.retrieve_triple(triple_template)
 
     def node_as_qname(self, node: Node):
         """
