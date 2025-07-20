@@ -2,6 +2,32 @@
   {
     "@graph": [
       {
+        "@id": "http://purl.org/nanopub/temp/np/",
+        "@type": [
+          "http://www.nanopub.org/nschema#Nanopublication"
+        ],
+        "http://www.nanopub.org/nschema#hasAssertion": [
+          {
+            "@id": "http://purl.org/nanopub/temp/np/assertion"
+          }
+        ],
+        "http://www.nanopub.org/nschema#hasProvenance": [
+          {
+            "@id": "http://purl.org/nanopub/temp/np/provenance"
+          }
+        ],
+        "http://www.nanopub.org/nschema#hasPublicationInfo": [
+          {
+            "@id": "http://purl.org/nanopub/temp/np/pubinfo"
+          }
+        ]
+      }
+    ],
+    "@id": "http://purl.org/nanopub/temp/np/Head"
+  },
+  {
+    "@graph": [
+      {
         "@id": "https://json-ld.github.io/yaml-ld/spec/",
         "@type": [
           "https://w3id.org/fair/fip/terms/Knowledge-representation-language"
@@ -27,7 +53,7 @@
         "http://www.w3.org/ns/prov#generatedAtTime": [
           {
             "@type": "http://www.w3.org/2001/XMLSchema#dateTime",
-            "@value": "2025-06-16T00:05:47.616861"
+            "@value": "2025-07-20T00:17:44.147520"
           }
         ],
         "http://www.w3.org/ns/prov#wasAttributedTo": [
@@ -42,27 +68,15 @@
   {
     "@graph": [
       {
-        "@id": "http://purl.org/nanopub/temp/np/",
-        "@type": [
-          "http://www.nanopub.org/nschema#Nanopublication"
-        ],
-        "http://www.nanopub.org/nschema#hasAssertion": [
+        "@id": "http://purl.org/nanopub/temp/np/assertion",
+        "http://www.w3.org/ns/prov#generatedAtTime": [
           {
-            "@id": "http://purl.org/nanopub/temp/np/assertion"
-          }
-        ],
-        "http://www.nanopub.org/nschema#hasProvenance": [
-          {
-            "@id": "http://purl.org/nanopub/temp/np/provenance"
-          }
-        ],
-        "http://www.nanopub.org/nschema#hasPublicationInfo": [
-          {
-            "@id": "http://purl.org/nanopub/temp/np/pubinfo"
+            "@type": "http://www.w3.org/2001/XMLSchema#dateTime",
+            "@value": "2025-07-20T00:17:44.147520"
           }
         ]
       }
     ],
-    "@id": "http://purl.org/nanopub/temp/np/Head"
+    "@id": "http://purl.org/nanopub/temp/np/provenance"
   }
 ]
