@@ -89,6 +89,16 @@ def test_yaml_ld_nanopublication():
     assert 'YAML-LD' in svg
 
 
+def test_nanopub_py_nanopublication():
+    """Test a red things nanopublication."""
+    svg = generate_screenshot(
+        URL(
+            'https://w3id.org/np/RAAnO3U0Lc56gbYHz5MZD440460c88Qfiz8cTfP58nvvs',
+        ),
+    )
+    assert 'YAML-LD' in svg
+
+
 def test_rdfs_label():
     """Test a red things nanopublication."""
     svg = generate_screenshot(
@@ -121,7 +131,10 @@ NANOPUBLISH_DIRECTORY = Path(__file__).parent.parent / 'docs/howto/nanopublish'
 
 @pytest.mark.parametrize(
     'nanopublishing_file',
-    NANOPUBLISH_DIRECTORY.glob('*.yamlld'),
+    [
+        *NANOPUBLISH_DIRECTORY.glob('*.yamlld'),
+        *NANOPUBLISH_DIRECTORY.glob('*.jsonld'),
+    ],
     ids=operator.attrgetter('stem'),
 )
 def test_nanopublishing(nanopublishing_file: Path):

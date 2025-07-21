@@ -225,11 +225,47 @@ leading you to further information about the concepts involved.
 ## :fontawesome-solid-stamp: Make it a valid Nanopublication
 
 ```shell
-pyld expand yaml-ld.yamlld | np create --output-format json-ld from-assertion --input-format json-ld > np.yaml-ld.jsonld
+pyld expand yaml-ld.yamlld \
+    | np create --output-format json-ld from-assertion --input-format json-ld \
+    > np.yaml-ld.jsonld
 ```
+
+<div class="grid" markdown>
+<div markdown>
+Let's preview the nanopublication.
+
+```json title="np.yaml-ld.jsonld"
+--8<-- "docs/howto/nanopublish/np.yaml-ld.jsonld::10"
+```
+
+Check it out.
+</div>
+
+![](/screenshots/docs.howto.nanopublish.np.yaml-ld.jsonld.svg)
+</div>
 
 ## :material-rocket-launch: Publish!
 
 ```shell
-np publish np.yaml-ld.trig
+np publish --test np.yaml-ld.jsonld
 ```
+⇒
+
+```shell
+ 🧪 Publishing to the test server
+ 📬️ Nanopub published at https://w3id.org/np/RAAnO3U0Lc56gbYHz5MZD440460c88Qfiz8cTfP58nvvs
+```
+
+You can see your nanopub [published](https://w3id.org/np/RAAnO3U0Lc56gbYHz5MZD440460c88Qfiz8cTfP58nvvs) now!
+
+[![](published.png)](https://w3id.org/np/RAAnO3U0Lc56gbYHz5MZD440460c88Qfiz8cTfP58nvvs)
+
+You can also view it with Iolanta.
+
+```shell
+https://w3id.org/np/RAAnO3U0Lc56gbYHz5MZD440460c88Qfiz8cTfP58nvvs
+```
+
+⇒
+
+![](/screenshots/w3id.org.np.raano3u0lc56gbyhz5mzd440460c88qfiz8ctfp58nvvs.svg)

@@ -1,14 +1,14 @@
 import dataclasses
 import hashlib
-from typing import Iterable
+from typing import Iterable, Optional
 
+from documented import DocumentedError
 from rdflib import BNode, Literal, URIRef
 from rdflib.term import Node
 
 from iolanta.errors import UnresolvedIRI
 from iolanta.models import Quad
-from iolanta.namespaces import IOLANTA, RDF
-from iolanta.parsers.errors import SpaceInProperty
+from iolanta.namespaces import IOLANTA, META
 
 
 def parse_term(   # noqa: C901
@@ -70,7 +70,7 @@ def parse_quads(
                 graph,
                 IOLANTA['has-sub-graph'],
                 graph_name,
-                graph,
+                META,
             )
 
         for quad in quads:
@@ -102,3 +102,19 @@ def raise_if_term_is_qname(term_value: str):
         iri=term_value,
         prefix=prefix,
     )
+
+
+@dataclasses.dataclass
+class SpaceInProperty(DocumentedError):
+    """
+    Space in property.
+
+    That impedes JSON-LD parsing.
+
+    Please do not use spaces in property names in JSON or YAML data; use `title`
+    or other methods instead.
+
+    Document IRI: {self.iri}
+    """
+
+    iri: Optional[URIRef] = None

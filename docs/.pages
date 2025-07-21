@@ -8,6 +8,7 @@ nav:
       - is-preferred-over.md
       - outputs.md
       - when-no-facet-found.md
+      - has-sub-graph.md
       - datatypes
   - blog
   - roadmap.md

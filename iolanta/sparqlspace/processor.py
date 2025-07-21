@@ -36,6 +36,7 @@ from iolanta.namespaces import (  # noqa: WPS235
     DCTERMS,
     FOAF,
     IOLANTA,
+    META,
     OWL,
     PROV,
     RDF,
@@ -537,7 +538,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
                 uri,
                 IOLANTA['last-loaded-time'],
                 None,
-                URIRef('iolanta://_meta'),
+                META,
             )),
         ) is not None
 
@@ -546,7 +547,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             uri,
             IOLANTA['last-loaded-time'],
             Literal(datetime.datetime.now()),
-            URIRef('iolanta://_meta'),
+            META,
         ))
 
     def _follow_is_visualized_with_links(self, uri: URIRef):

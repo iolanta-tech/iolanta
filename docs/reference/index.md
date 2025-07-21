@@ -20,6 +20,13 @@ hide: [toc, navigation]
     
     Describe what kind of nodes a given Facet can visualize.
 
+
+-   :material-filter-check: __[`iolanta:has-sub-graph`](/has-sub-graph/)__
+    
+    ---
+    
+    Links an RDF Graph representing a document to each other RDF Graph that was parsed from said document.
+
 -   ≼ __[`iolanta:is-preferred-over`](/is-preferred-over/)__
     
     ---

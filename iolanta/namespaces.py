@@ -8,6 +8,8 @@ NP = rdflib.Namespace('https://www.nanopub.org/nschema#')
 RDFG = rdflib.Namespace('https://www.w3.org/2004/03/trix/rdfg-1/')
 SDO = rdflib.SDO
 
+META = rdflib.URIRef('iolanta://_meta')
+
 
 class DC(rdflib.DC):
     _NS = rdflib.Namespace('https://purl.org/dc/elements/1.1/')
