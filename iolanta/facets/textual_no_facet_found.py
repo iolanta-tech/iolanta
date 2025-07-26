@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import funcy
 from rich.markdown import Markdown
 from textual.containers import Vertical
 from yarl import URL
@@ -15,6 +16,7 @@ TEXT = """
 * Or, no edges might exist which involve it;
 * Or maybe Iolanta does not know of such edges.
 {content}
+{subgraphs}
 **What can you do?**
 
 * If you feel this might indicate a bug 🐛, please do let us know at GitHub
@@ -27,6 +29,12 @@ CONTENT_TEMPLATE = """
 ```{type}
 {content}
 ```
+"""
+
+SUBGRAPHS_TEMPLATE = """
+**Subgraphs**
+
+{formatted_subgraphs}
 """
 
 
@@ -55,14 +63,38 @@ class TextualNoFacetFound(Facet):
             content=file_content,
             type={
                 '.yamlld': 'yaml',
+                '.jsonld': 'json',
             }.get(path.suffix, ''),
         )
+
+    @property
+    def subgraphs_description(self) -> str:
+        """Return a formatted description of subgraphs, if any exist."""
+        rows = self.query(
+            'SELECT ?subgraph WHERE { $this iolanta:has-sub-graph ?subgraph }',
+            this=self.this,
+        )
+        subgraphs = funcy.lpluck('subgraph', rows)
+        if subgraphs:
+            return SUBGRAPHS_TEMPLATE.format(
+                formatted_subgraphs='\n'.join([
+                    f'- {subgraph}'
+                    for subgraph in subgraphs
+                ]),
+            )
+
+        return ''
 
     def show(self):
         """Compose the page."""
         return Vertical(
             PageTitle(self.this),
             Description(
-                Markdown(TEXT.format(content=self.raw_content or '')),
+                Markdown(
+                    TEXT.format(
+                        content=self.raw_content or '',
+                        subgraphs=self.subgraphs_description or '',
+                    ),
+                ),
             ),
         )

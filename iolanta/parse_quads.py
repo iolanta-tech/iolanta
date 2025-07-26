@@ -1,5 +1,6 @@
 import dataclasses
 import hashlib
+from types import MappingProxyType
 from typing import Iterable, Optional
 
 from documented import DocumentedError
@@ -9,6 +10,11 @@ from rdflib.term import Node
 from iolanta.errors import UnresolvedIRI
 from iolanta.models import Quad
 from iolanta.namespaces import IOLANTA, META
+
+NORMALIZE_TERMS_MAP = MappingProxyType({
+    URIRef(_url := 'https://www.w3.org/2002/07/owl'): URIRef(f'{_url}#'),
+    URIRef(_url := 'https://www.w3.org/2000/01/rdf-schema'): URIRef(f'{_url}#'),
+})
 
 
 def parse_term(   # noqa: C901
@@ -48,6 +54,40 @@ def parse_term(   # noqa: C901
     raise ValueError(f'Unknown term: {term}')
 
 
+def construct_subgraph_name(subgraph_name: str, graph: URIRef) -> URIRef:
+    """
+    Construct a proper subgraph name URI from a base name and graph.
+
+    If the subgraph name already starts with the graph URI, return it as is.
+    Otherwise, append the name as a fragment to the graph URI.
+    """
+    if subgraph_name.startswith(str(graph)):
+        return URIRef(subgraph_name)
+
+    return URIRef(f'{graph}#{subgraph_name}')
+
+
+def _parse_quads_per_subgraph(
+    raw_quads,
+    blank_node_prefix: str,
+    graph: URIRef,
+    subgraph: URIRef,
+) -> Iterable[Quad]:
+    for quad in raw_quads:
+        try:
+            yield Quad(
+                subject=parse_term(quad['subject'], blank_node_prefix),
+                predicate=parse_term(quad['predicate'], blank_node_prefix),
+                object=parse_term(quad['object'], blank_node_prefix),
+                graph=subgraph,
+            )
+        except SpaceInProperty as err:
+            raise dataclasses.replace(
+                err,
+                iri=graph,
+            )
+
+
 def parse_quads(
     quads_document,
     graph: URIRef,
@@ -59,33 +99,44 @@ def parse_quads(
     ).hexdigest()
     blank_node_prefix = f'_:{blank_node_prefix}'
 
-    for graph_name, quads in quads_document.items():
-        if graph_name == '@default':
-            graph_name = graph   # noqa: WPS440
+    subgraph_names = {
+        URIRef(subgraph_name): construct_subgraph_name(
+            subgraph_name,
+            graph=graph,
+        )
+        for subgraph_name in quads_document.keys()
+        if subgraph_name != '@default'
+    }
+    subgraph_names[graph] = graph
+
+    for subgraph, quads in quads_document.items():
+        if subgraph == '@default':
+            subgraph = graph   # noqa: WPS440
 
         else:
-            graph_name = URIRef(graph_name)
+            subgraph = URIRef(subgraph)
 
             yield Quad(
                 graph,
                 IOLANTA['has-sub-graph'],
-                graph_name,
+                subgraph_names[subgraph],
                 META,
             )
 
-        for quad in quads:
-            try:
-                yield Quad(
-                    subject=parse_term(quad['subject'], blank_node_prefix),
-                    predicate=parse_term(quad['predicate'], blank_node_prefix),
-                    object=parse_term(quad['object'], blank_node_prefix),
-                    graph=graph_name,
-                )
-            except SpaceInProperty as err:
-                raise dataclasses.replace(
-                    err,
-                    iri=graph,
-                )
+        quads = _parse_quads_per_subgraph(
+            quads,
+            blank_node_prefix=blank_node_prefix,
+            graph=subgraph,
+            subgraph=subgraph_names[subgraph],
+        )
+
+        for quad in quads:   # noqa: WPS526
+            yield quad.replace(
+                subgraph_names | NORMALIZE_TERMS_MAP | {
+                    # To enable nanopub rendering
+                    URIRef('http://purl.org/nanopub/temp/np/'): graph,
+                },
+            ).normalize()
 
 
 def raise_if_term_is_qname(term_value: str):

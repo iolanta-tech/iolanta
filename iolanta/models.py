@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+import re
 from enum import Enum
 from typing import Any, Dict, List, NamedTuple, Union
 
@@ -82,8 +82,14 @@ class TripleTemplate(NamedTuple):
     object: Node | None
 
 
-@dataclass
-class Quad:
+def _normalize_term(term: Node):
+    if isinstance(term, URIRef) and term.startswith('http://'):
+        return URIRef(re.sub('^http', 'https', term))
+
+    return term
+
+
+class Quad(NamedTuple):
     """Triple assigned to a named graph."""
 
     subject: Node
@@ -107,6 +113,19 @@ class Quad:
             f'{rendered_graph})'  # noqa: WPS326
         )
 
-    def as_tuple(self):
-        """Represent quad as a tuple which `Graph.addN()` would understand."""
-        return self.subject, self.predicate, self.object, self.graph
+    def replace(self, mapping: dict[Node, URIRef]):
+        """Replace variables in the quad."""
+        terms = [
+            mapping.get(term, term)
+            for term in self
+        ]
+
+        return Quad(*terms)
+
+    def normalize(self) -> 'Quad':
+        """Normalize the quad by applying normalization to all its terms."""
+        terms = [
+            _normalize_term(term)
+            for term in self
+        ]
+        return Quad(*terms)

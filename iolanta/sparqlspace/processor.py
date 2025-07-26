@@ -24,8 +24,7 @@ from rdflib.plugins.sparql.parserutils import CompValue
 from rdflib.plugins.sparql.sparql import Query
 from rdflib.query import Processor
 from rdflib.term import BNode, Literal, Node
-from requests import HTTPError
-from requests.exceptions import ConnectionError
+from requests.exceptions import ConnectionError, InvalidSchema
 from yaml_ld.document_loaders.content_types import ParserNotFound
 from yaml_ld.errors import NotFound, YAMLLDError
 from yarl import URL
@@ -43,13 +42,7 @@ from iolanta.namespaces import (  # noqa: WPS235
     RDFS,
     VANN,
 )
-from iolanta.parse_quads import parse_quads
-
-NORMALIZE_TERMS_MAP = MappingProxyType({
-    URIRef(_url := 'https://www.w3.org/2002/07/owl'): URIRef(f'{_url}#'),
-    URIRef(_url := 'https://www.w3.org/2000/01/rdf-schema'): URIRef(f'{_url}#'),
-})
-
+from iolanta.parse_quads import NORMALIZE_TERMS_MAP, parse_quads
 
 REASONING_ENABLED = True
 OWL_REASONING_ENABLED = False
@@ -95,9 +88,7 @@ def find_retractions_for(nanopublication: URIRef) -> set[URIRef]:
     # context of this dirty hack.
     use_server = 'http://grlc.nanopubs.lod.labs.vu.nl/api/local/local/'
 
-    client = NanopubClient(
-        use_server=use_server,
-    )
+    client = NanopubClient(use_server=use_server)
     client.grlc_urls = [use_server]
 
     http_url = str(nanopublication).replace(
@@ -107,7 +98,7 @@ def find_retractions_for(nanopublication: URIRef) -> set[URIRef]:
 
     try:
         retractions = client.find_retractions_of(http_url)
-    except HTTPError:
+    except (requests.HTTPError, InvalidSchema):
         return set()
 
     return {URIRef(retraction) for retraction in retractions}
@@ -332,7 +323,7 @@ class NanopubQueryPlugin:
             if potential_type == original_RDF.type:
                 yield potential_class
 
-    @funcy.retry(errors=HTTPError, tries=3, timeout=3)
+    @funcy.retry(errors=requests.HTTPError, tries=3, timeout=3)
     def _load_instances(self, class_uri: URIRef):
         """
         Load instances from Nanopub Registry.
@@ -693,14 +684,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             self.logger.info('{source} | No data found', source=source)
             return Loaded()
 
-        quad_tuples = [
-            tuple([
-                normalize_term(term) for term in quad.as_tuple()
-            ])
-            for quad in quads
-        ]
-
-        self.graph.addN(quad_tuples)
+        self.graph.addN(quads)
         self.graph.last_not_inferred_source = source
 
         into_graphs = ', '.join({

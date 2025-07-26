@@ -226,17 +226,7 @@ class Iolanta:   # noqa: WPS214
                 self.logger.info(f'{source_file} | No data found')
                 continue
 
-            quad_tuples = [
-                tuple([
-                    normalize_term(term) for term in replace(
-                        quad,
-                        graph=graph,
-                    ).as_tuple()
-                ])
-                for quad in quads
-            ]
-
-            self.graph.addN(quad_tuples)
+            self.graph.addN(quads)
 
         return self
 
