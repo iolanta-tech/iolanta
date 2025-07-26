@@ -34,6 +34,14 @@ graph LR
     
     nanopub-blog-post("Blog post:<br/><strong>Nanopublishing with Iolanta</strong>") --> markdown-nanopub-blog-post("Blog post:<br/><strong>Quick & readable Nanopublications<br/>with Markdown-LD") --> happiness
     
+    cbor-ld-nanopub("Nanopublish <code>CBOR-LD</code><br/>with manual LLM cycle") --> lots-of-pubs("Publish lots of nanopublications!") --> nanopub-blog-post
+    
+    cbor-ld-nanopub --> auto-llm-cycle("Automate LLM feedback cycle")
+    discover("Discover LD notions about a free language statement") --> auto-llm-cycle --> extension("Can this be an editor extension?")
+    auto-llm-cycle --> iolanta-mcp("Iolanta MCP describes a nanopub")
+    auto-llm-cycle --> discovery-mcp("Discovery MCP discovers LD based on free form text")
+    click cbor-ld-nanopub "https://github.com/iolanta-tech/iolanta/issues/309"
+    
     in-cloud("Run Iolanta in cloud") --> nanopub-blog-post
     
     nanopub-blog-post
