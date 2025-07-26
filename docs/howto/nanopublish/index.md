@@ -238,11 +238,17 @@ Let's preview the nanopublication.
 --8<-- "docs/howto/nanopublish/np.yaml-ld.jsonld::10"
 ```
 
-Check it out.
+Check it out as:
+
+```shell
+iolanta np.yaml-ld.jsonld
+```
 </div>
 
 ![](/screenshots/docs.howto.nanopublish.np.yaml-ld.jsonld.svg)
 </div>
+
+Shall we consider this nanopublication fit for the world? I guess so.
 
 ## :material-rocket-launch: Publish!
 
@@ -260,12 +266,18 @@ You can see your nanopub [published](https://w3id.org/np/RAAnO3U0Lc56gbYHz5MZD44
 
 [![](published.png)](https://w3id.org/np/RAAnO3U0Lc56gbYHz5MZD440460c88Qfiz8cTfP58nvvs)
 
+<div class="grid" markdown>
+<div markdown>
 You can also view it with Iolanta.
 
 ```shell
 https://w3id.org/np/RAAnO3U0Lc56gbYHz5MZD440460c88Qfiz8cTfP58nvvs
 ```
+</div>
 
-⇒
-
+<div markdown>
 ![](/screenshots/w3id.org.np.raano3u0lc56gbyhz5mzd440460c88qfiz8ctfp58nvvs.svg)
+</div>
+</div>
+
+So? Shall we make more publications?
