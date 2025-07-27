@@ -1,0 +1,14 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  dc:    http://purl.org/dc/terms/
+  rdfs:  http://www.w3.org/2000/01/rdf-schema#
+  fip:   https://w3id.org/fair/fip/terms/
+
+$id: https://json-ld.github.io/cbor-ld-spec/
+$type: fip:Knowledge-representation-language
+
+dc:description: |
+  A CBOR-based serialization format for Linked Data, designed to leverage the JSON-LD
+  ecosystem for compact, efficient binary encoding in constrained environments.
+
+rdfs:label: CBOR-LD
