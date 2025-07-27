@@ -16,12 +16,14 @@ I have been working on a thing called YAML-LD, and I want to tell the world what
 
 ```mermaid
 graph LR
-    yaml-ld("YAML-LD") --- rdf-type(("is a")) ---> knowledge-representation-language("Knowledge Representation Language")
+    yaml-ld("YAML-LD")
+        --- rdf-type(("is a ∈"))
+        ---> knowledge-representation-language("Knowledge Representation Language")
     click yaml-ld "https://json-ld.github.io/yaml-ld/spec/"
     click knowledge-representation-language "https://w3id.org/fair/fip/terms/Knowledge-representation-language"
     click rdf-type "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
     
-    yaml-ld --- rdfs-label(("label")) ---> label[["YAML-LD"]]
+    yaml-ld --- rdfs-label(("🏷️ label")) ---> label[["YAML-LD"]]
     click rdfs-label "http://www.w3.org/2000/01/rdf-schema#"
     
     classDef predicate fill:none,stroke:none,stroke-width:0px;
