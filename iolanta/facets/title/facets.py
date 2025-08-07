@@ -9,6 +9,7 @@ PRIORITIES = [   # noqa: WPS407
     'schema_name',
     'rdfs_label',
     'foaf_name',
+    'literal_form',
 ]
 
 
