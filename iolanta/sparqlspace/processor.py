@@ -72,6 +72,10 @@ REDIRECTS = MappingProxyType({
         'https://nanopub.net/nschema#',
     ),
     URIRef(PROV): URIRef('https://www.w3.org/ns/prov-o'),
+
+    # Convert lexvo.org/id URLs to lexvo.org/data URLs
+    r'https://lexvo\.org/id/(.+)': r'http://lexvo.org/data/\1',
+    r'https://www\.lexinfo\.net/(.+)': r'http://www.lexinfo.net/\1',
 })
 
 
@@ -281,11 +285,30 @@ def _extract_nanopublication_uris(
             )
 
 
-def apply_redirect(source: URIRef) -> URIRef:
-    """Rewrite the URL."""
+def apply_redirect(source: URIRef) -> URIRef:   # noqa: WPS210
+    """
+    Rewrite the URL using regex patterns and group substitutions.
+
+    For each pattern in REDIRECTS:
+    - If the pattern matches the source URI
+    - Replace the source with the destination, substituting any regex groups
+    """
+    source_str = str(source)
+
     for pattern, destination in REDIRECTS.items():
-        if source.startswith(pattern):
-            return destination
+        pattern_str = str(pattern)
+        destination_str = str(destination)
+
+        match = re.match(pattern_str, source_str)
+        if match:
+            # Replace any group references in the destination
+            # (like \1, \2, etc.)
+            redirected_uri = re.sub(
+                pattern_str,
+                destination_str,
+                source_str,
+            )
+            return URIRef(redirected_uri)
 
     return source
 

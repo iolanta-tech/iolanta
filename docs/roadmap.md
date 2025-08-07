@@ -134,6 +134,9 @@ graph LR
     class sparqlspace-integration-tests bug
     
     mermaid("Generate Mermaid graph") --> happiness
+    
+    pyld-fails-on-lexinfo("<code>pyld</code> fails on <a href='http://www.lexinfo.net/ontology/2.0/lexinfo#'>lexinfo</a>") --> armenian-pronouns("Armenian pronouns<br/>nanopub") --> happiness
+    class pyld-fails-on-lexinfo bug
         
     classDef bug fill:#700,stroke:#f00,stroke-width:1px;
 ```
