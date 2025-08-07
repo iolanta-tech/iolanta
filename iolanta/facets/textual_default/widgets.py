@@ -291,7 +291,7 @@ class LiteralPropertyValue(Widget, can_focus=True, inherit_bindings=False):
         self.property_iri = property_iri
         super().__init__()
         self.renderable = Text(   # noqa: WPS601
-            str(property_value.value),
+            str(property_value),
             style='#696969',
         )
 
