@@ -2,6 +2,7 @@ import dataclasses
 import hashlib
 from types import MappingProxyType
 from typing import Iterable, Optional
+from urllib.parse import unquote
 
 from documented import DocumentedError
 from rdflib import BNode, Literal, URIRef
@@ -29,7 +30,7 @@ def parse_term(   # noqa: C901
     term_value = term['value']
 
     if term_type == 'IRI':
-        return URIRef(term_value)
+        return URIRef(unquote(term_value))
 
     if term_type == 'literal':
         language = term.get('language')
