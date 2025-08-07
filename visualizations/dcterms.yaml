@@ -1,0 +1,24 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  vann: https://purl.org/vocab/vann/
+  foaf: https://xmlns.com/foaf/0.1/
+  owl: https://www.w3.org/2002/07/owl#
+  iolanta: https://iolanta.tech/
+  rdfs: "https://www.w3.org/2000/01/rdf-schema#"
+  rdf: https://www.w3.org/1999/02/22-rdf-syntax-ns#
+  dcterms: https://purl.org/dc/terms/
+  dcam: https://purl.org/dc/dcam/
+
+$id: "dcterms:"
+$type: owl:Ontology
+vann:termGroup:
+  - rdfs:label: Agent
+    $reverse:
+      rdf:type:
+        - $id: dcterms:Agent
+        - $id: dcterms:AgentClass
+
+  - $id: rdfs:Datatype
+  - $id: rdfs:Class
+  - $id: dcam:VocabularyEncodingScheme
+  - $id: rdf:Property

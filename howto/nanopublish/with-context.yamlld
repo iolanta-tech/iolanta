@@ -1,0 +1,5 @@
+"@context":
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+
+"@id": https://json-ld.github.io/yaml-ld/spec/
+rdfs:label: YAML-LD
