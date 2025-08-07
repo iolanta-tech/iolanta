@@ -23,4 +23,9 @@ SELECT * WHERE {
         $iri <https://xmlns.com/foaf/0.1/name> ?foaf_name .
         FILTER (!lang(?foaf_name) || lang(?foaf_name) = $language)
     }
+
+    OPTIONAL {
+        $iri <https://www.w3.org/2008/05/skos-xl#literalForm> ?literal_form .
+        FILTER (!lang(?literal_form) || lang(?literal_form) = $language)
+    }
 }
