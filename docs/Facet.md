@@ -13,7 +13,7 @@ In RDF, a facet is referenced by an IRI: this way, Linked Data can tell Iolanta 
 
 | Facet Type                                | In RDF                            | In Code                                             |
 |-------------------------------------------|-----------------------------------|-----------------------------------------------------|
-| Python based facet                        | `python://some_module.FacetClass` | Python class, inherited from `iolanta.facets.Facet` |
+| Python based facet                        | `pkg:pypi/some-pypi-package#facet-name` | Python class, inherited from `iolanta.facets.Facet` |
 
 More types are [planned](/roadmap) (1).
 { .annotate }
@@ -32,7 +32,7 @@ For now, the only facets that Iolanta supports are bundled with it.
     
     Render a human readable title for a node.
 
-    * URI: `python://iolanta.facets.title.TitleFacet`
+    * URI: `pkg:pypi/iolanta#title`
     * Outputs: [string](/reference/xsd/string/)
 
 
@@ -42,7 +42,7 @@ For now, the only facets that Iolanta supports are bundled with it.
     
     For an RDFS or OWL `Class`, render a list of its instances that we know about.
 
-    * URI: `python://iolanta.facets.textual_class.ClassFacet` 
+    * URI: `pkg:pypi/iolanta#textual-classFacet` 
     * Outputs: [Textual widget](/cli/textual/)
 
   
@@ -52,7 +52,7 @@ For now, the only facets that Iolanta supports are bundled with it.
     
     All RDF properties and their values for a given node in interactive textual UI. *(Not best naming though.)*
 
-    * URI: `python://iolanta.facets.textual_default.TextualDefaultFacet`
+    * URI: `pkg:pypi/iolanta#textual-properties`
     * Outputs: [Textual widget](/cli/textual/)
 
 
@@ -63,7 +63,7 @@ For now, the only facets that Iolanta supports are bundled with it.
     
     For an RDF graph, list triples that it contains.
 
-    * URI: `python://iolanta.facets.textual_graph.GraphFacet`
+    * URI: `pkg:pypi/iolanta#textual-graph`
     * Outputs: [Textual widget](/cli/textual/)
 
   
@@ -73,7 +73,7 @@ For now, the only facets that Iolanta supports are bundled with it.
     
     Display contents of a [Nanopublication](/reference/np/Nanopublication/).
 
-    * URI: `python://iolanta.facets.textual_nanopublication.NanopublicationFacet`
+    * URI: `pkg:pypi/iolanta#textual-nanopublication`
     * Outputs: [Textual widget](/cli/textual/)
 
  
@@ -83,7 +83,7 @@ For now, the only facets that Iolanta supports are bundled with it.
     
     Display terms of an [Ontology](/reference/owl/ontology/).
 
-    * URI: `python://iolanta.facets.textual_ontology.OntologyFacet`
+    * URI: `pkg:pypi/iolanta#textual-ontology`
     * Outputs: [Textual widget](/cli/textual/)
 
  
@@ -93,7 +93,7 @@ For now, the only facets that Iolanta supports are bundled with it.
     
     Display Subject → Object pairs for an RDF [Property](/reference/rdf/property/).
 
-    * URI: `python://iolanta.facets.textual_property_pairs_table.TextualPropertyPairsTableFacet`
+    * URI: `pkg:pypi/iolanta#textual-property-pairs`
     * Outputs: [Textual widget](/cli/textual/)
  
  

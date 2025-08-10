@@ -20,11 +20,11 @@
     "rdfs:description": "A short string naming something. Used in links, lists, page titles, property tables, and many other cases.",
     "rdfs:subClassOf": "xsd:string",
     "@type": "rdfs:Datatype",
-    "iolanta:hasDefaultFacet": "python://iolanta.facets.title.TitleFacet",
+    "iolanta:hasDefaultFacet": "pkg:pypi/iolanta#title",
     "@included": {
         "@id": "foaf:Person",
         "iolanta:hasInstanceFacet": {
-            "@id": "python://iolanta.facets.foaf_person_title.FOAFPersonTitle",    
+            "@id": "pkg:pypi/iolanta#title-foaf-person",    
             "iolanta:outputs": {
               "@id": "https://iolanta.tech/datatypes/title"    
             }
@@ -46,4 +46,4 @@ A short string naming something. Used in links, lists, page titles, property tab
 
 | Class         | Facet                                                       | Description                                            |
 |---------------|-------------------------------------------------------------|--------------------------------------------------------|
-| `foaf:Person` | `python://iolanta.facets.foaf_person_title.FOAFPersonTitle` | Render name of a person from their first and last name | 
+| `foaf:Person` | `pkg:pypi/iolanta#title-foaf-person` | Render name of a person from their first and last name | 

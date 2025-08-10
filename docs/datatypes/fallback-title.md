@@ -19,7 +19,7 @@
     "rdfs:description": "A short string naming something. Used in links, lists, page titles, property tables, and many other cases. Should be used as fallback in case more fine-tuned implementations using https://iolanta.tech/datatypes/title do not work.",
     "rdfs:subClassOf": "xsd:string",
     "@type": "rdfs:Datatype",
-    "iolanta:hasDefaultFacet": "python://iolanta.facets.title.TitleFacet"
+    "iolanta:hasDefaultFacet": "pkg:pypi/iolanta#title"
   }
 </script>
 

@@ -12,7 +12,7 @@ I need to be able to call `PropertyPairsFacet` for each node which appears in a 
 === ":white_check_mark: Decision: Use SPARQL"
 
     ```yaml
-    $id: python://iolanta.facets.PropertyPairsFacet
+    $id: pkg:pypi/iolanta#textual-property-pairs
     iolanta:outputs: datatypes:textual
     iolanta:pattern: ASK { ?subject $this ?object }
     ```
