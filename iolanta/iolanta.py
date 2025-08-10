@@ -39,6 +39,9 @@ from iolanta.query_result import (
     SPARQLQueryArgument,
     format_query_bindings,
 )
+from iolanta.resolvers.base import Resolver
+from iolanta.resolvers.dispatch import SchemeDispatchResolver
+from iolanta.resolvers.pypi import PyPIResolver
 from iolanta.resolvers.python_import import PythonImportResolver
 from iolanta.sparqlspace.processor import normalize_term
 
@@ -85,8 +88,12 @@ class Iolanta:   # noqa: WPS214
     graph: ConjunctiveGraph = field(default_factory=_create_default_graph)
     force_plugins: List[Type[Plugin]] = field(default_factory=list)
 
-    facet_resolver: Mapping[URIRef, Type[Facet]] = field(
-        default_factory=PythonImportResolver,
+    facet_resolver: Resolver = field(
+        default_factory=functools.partial(
+            SchemeDispatchResolver,
+            python=PythonImportResolver,
+            pkg=PyPIResolver,
+        ),
     )
 
     logger: LoggerProtocol = loguru.logger
@@ -318,7 +325,7 @@ class Iolanta:   # noqa: WPS214
             as_datatype=as_datatype,
         ).facet_and_output_datatype
 
-        facet_class = self.facet_resolver[found['facet']]
+        facet_class = self.facet_resolver.resolve(found['facet'])
 
         facet = facet_class(
             iri=node,
