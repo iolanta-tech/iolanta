@@ -30,6 +30,8 @@
     "@id": iolanta:is-preferred-over
 
   ↦: iolanta:matches
+  iolanta:hasDefaultFacet:
+    "@type": "@id"
 
 "@included":
   - $id: iolanta:icon
@@ -42,26 +44,25 @@
   - $id: https://iolanta.tech/datatypes/icon
     $: Icon
     iolanta:hasDefaultFacet:
-      $id: python://iolanta.facets.icon.IconFacet
+      $id: pkg:pypi/iolanta#icon
       →: https://iolanta.tech/datatypes/icon
 
   - $id: np:Nanopublication
     $: Nanopublication
     iolanta:hasInstanceFacet:
-      $id: python://iolanta.facets.textual_nanopublication.NanopublicationFacet
+      $id: pkg:pypi/iolanta#textual-nanopublication
       $: Nanopublication
       →: https://iolanta.tech/cli/textual
       ⪯:
-        - python://iolanta.facets.textual_default.TextualDefaultFacet
-        - python://iolanta.facets.textual_graph.GraphFacet
+        - pkg:pypi/iolanta#textual-properties
+        - pkg:pypi/iolanta#textual-graph
 
   - $id: https://iolanta.tech/cli/interactive
-    iolanta:hasDefaultFacet:
-      $id: python://iolanta.facets.textual_browser.TextualBrowserFacet
+    iolanta:hasDefaultFacet: pkg:pypi/iolanta#textual-browser
 
-  - $id: python://iolanta.facets.textual_default.TextualDefaultFacet
+  - $id: pkg:pypi/iolanta#textual-properties
     $: Properties
-    ⪯: python://iolanta.facets.textual_default.InverseProperties
+    ⪯: pkg:pypi/iolanta#textual-inverse-properties
     →: https://iolanta.tech/cli/textual
     ↦: |
       ASK WHERE {
@@ -69,7 +70,7 @@
         FILTER (?graph != <iolanta://_meta>)
       }
 
-  - $id: python://iolanta.facets.textual_default.InverseProperties
+  - $id: pkg:pypi/iolanta#textual-inverse-properties
     $: Inverse Properties
     →: https://iolanta.tech/cli/textual
     ↦: |
@@ -80,54 +81,54 @@
 
   - $id: "urn:"
     iolanta:hasFacetByPrefix:
-      $id: python://iolanta.facets.textual_provenance.TextualProvenanceFacet
+      $id: pkg:pypi/iolanta#textual-provenance
       →: https://iolanta.tech/cli/textual
 
   - $id: https://iolanta.tech/cli/link
     iolanta:hasDefaultFacet:
-      $id: python://iolanta.facets.textual_link.TextualLinkFacet
+      $id: pkg:pypi/iolanta#textual-link
 
   - $id: https://wikiba.se/ontology#Statement
     iolanta:hasInstanceFacet:
-      $id: python://iolanta.facets.wikibase_statement_title.WikibaseStatementTitle
+      $id: pkg:pypi/iolanta#wikibase-statement-title
       $: Title
       →: https://iolanta.tech/datatypes/title
 
   - $id: rdfs:Class
     iolanta:hasInstanceFacet:
-      $id: python://iolanta.facets.textual_class.Class
+      $id: pkg:pypi/iolanta#textual-class
       $: Instances
       →: https://iolanta.tech/cli/textual
       ⪯:
-        - python://iolanta.facets.textual_browser.TextualBrowserFacet
-        - python://iolanta.facets.textual_default.InverseProperties
+        - pkg:pypi/iolanta#textual-browser
+        - pkg:pypi/iolanta#textual-inverse-properties
 
   - $id: owl:Ontology
     iolanta:hasInstanceFacet:
-      $id: python://iolanta.facets.textual_ontology.OntologyFacet
+      $id: pkg:pypi/iolanta#textual-ontology
       $: Ontology
       →: https://iolanta.tech/cli/textual
-      ⪯: python://iolanta.facets.textual_default.TextualDefaultFacet
+      ⪯: pkg:pypi/iolanta#textual-properties
 
   - $id: https://iolanta.tech/datatypes/textual-graph-triples
     $: Graph Triples
     iolanta:hasDefaultFacet:
-      $id: python://iolanta.facets.textual_graph_triples.GraphTriplesFacet
+      $id: pkg:pypi/iolanta#textual-graph-triples
       →: https://iolanta.tech/datatypes/textual-graph-triples
 
   - $id: https://iolanta.tech/qname
     iolanta:hasDefaultFacet:
-      $id: python://iolanta.facets.qname.QNameFacet
+      $id: pkg:pypi/iolanta#qname
 
-  - $id: python://iolanta.facets.textual_property_pairs_table.TextualPropertyPairsTableFacet
+  - $id: pkg:pypi/iolanta#textual-property-pairs
     $: Subjects → Objects
     →: https://iolanta.tech/cli/textual
     ↦: ASK WHERE { ?subject $this ?object }
 
-  - $id: python://iolanta.facets.textual_class.Class
+  - $id: pkg:pypi/iolanta#textual-class
     ↦:
       - ASK WHERE { ?instance a $this }
       - ASK WHERE { $this rdfs:subClassOf ?superclass }
 
   - $id: https://iolanta.tech/cli/textual
-    iolanta:when-no-facet-found: python://iolanta.facets.textual_no_facet_found.TextualNoFacetFound
+    iolanta:when-no-facet-found: pkg:pypi/iolanta#textual-no-facet-found
