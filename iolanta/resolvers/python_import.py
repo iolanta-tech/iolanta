@@ -1,40 +1,17 @@
-import pydoc
-from typing import Type, cast
+from typing import Type
 
 from rdflib import URIRef
 
-from iolanta.facets.errors import FacetNotCallable
 from iolanta.facets.facet import Facet
 from iolanta.resolvers.base import Resolver
 
 
 class PythonImportResolver(Resolver):
-    def __getitem__(self, item: URIRef) -> Type[Facet]:
-        url = str(item)
+    """Resolve facet IRIs into classes by importing Python modules."""
 
-        if not url.startswith('python://'):
-            raise Exception(
-                'Iolanta only supports facets which are importable Python '
-                'callables. The URLs of such facets must start with '
-                '`python://`, '
-                'which {url} does not comply to.'.format(
-                    url=url,
-                ),
-            )
-
-        # It is impossible to use `yarl` for this operation because it (or,
-        # rather, one of upper classes from `urllib` that `yarl` depends
-        # upon)
-        # will lowercase the URL when parsing it - which means, irreversibly. We
-        # have to resort to plain string manipulation.
-        import_path = url.replace('python://', '').strip('/')
-
-        facet = cast(Type['iolanta.Facet'], pydoc.locate(import_path))
-
-        if not callable(facet):
-            raise FacetNotCallable(
-                path=import_path,
-                facet=facet,
-            )
-
-        return facet
+    def resolve(self, uri: URIRef) -> Type[Facet]:
+        """Find a resolver by IRI in python:<module>.<class> format."""
+        raise NotImplementedError(
+            f'{uri} URL for facet import is unsupported anymore '
+            f'due to security reasons.',
+        )
