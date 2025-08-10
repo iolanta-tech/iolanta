@@ -136,7 +136,7 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
             for facet in other_facets
         ]
 
-        facet_class = iolanta.facet_resolver[facet_iri]
+        facet_class = iolanta.facet_resolver.resolve(facet_iri)
 
         facet = facet_class(
             iri=self.iri,

@@ -3,7 +3,7 @@ import rdflib
 LOCAL = rdflib.Namespace('local:')
 IOLANTA = rdflib.Namespace('https://iolanta.tech/')
 DATATYPES = rdflib.Namespace('https://iolanta.tech/datatypes/')
-PYTHON = rdflib.Namespace('python://')
+IOLANTA_FACETS = rdflib.Namespace('pkg:pypi/iolanta#')
 NP = rdflib.Namespace('https://www.nanopub.org/nschema#')
 RDFG = rdflib.Namespace('https://www.w3.org/2004/03/trix/rdfg-1/')
 SDO = rdflib.SDO

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iolanta"
-version = "2.0.8"
+version = "2.1.0"
 description = "Semantic Web browser"
 authors = ["Anatoly Scherbakov <altaisoft@gmail.com>"]
 license = "MIT"
@@ -29,7 +29,8 @@ oxrdflib = ">=0.4.0"
 loguru = ">=0.7.3"
 nanopub = ">=2.0.1"
 diskcache = ">=5.6.3"
-watchfiles = "^1.0.4"
+watchfiles = ">=1.0.4"
+packageurl-python = ">=0.17.5"
 
 [tool.poetry.scripts]
 iolanta = "iolanta.cli:app"
@@ -37,6 +38,27 @@ sparqlspace = "iolanta.sparqlspace.cli:app"
 
 [tool.poetry.plugins."iolanta.plugins"]
 base = "iolanta:IolantaBase"
+
+[tool.poetry.plugins."iolanta.facets"]
+textual-browser = "iolanta.facets.textual_browser:TextualBrowserFacet"
+textual-inverse-properties = "iolanta.facets.textual_default:InverseProperties"
+icon = "iolanta.facets.icon:IconFacet"
+textual-graph = "iolanta.facets.textual_graph:GraphFacet"
+textual-properties = "iolanta.facets.textual_default:TextualDefaultFacet"
+textual-graph-triples = "iolanta.facets.textual_graph_triples:GraphTriplesFacet"
+qname = "iolanta.facets.qname:QNameFacet"
+textual-property-pairs = "iolanta.facets.textual_property_pairs_table:TextualPropertyPairsTableFacet"
+textual-class = "iolanta.facets.textual_class:Class"
+textual-no-facet-found = "iolanta.facets.textual_no_facet_found:TextualNoFacetFound"
+textual-nanopublication = "iolanta.facets.textual_nanopublication:NanopublicationFacet"
+textual-provenance = "iolanta.facets.textual_provenance:TextualProvenanceFacet"
+textual-link = "iolanta.facets.textual_link:TextualLinkFacet"
+wikibase-statement-title = "iolanta.facets.wikibase_statement_title:WikibaseStatementTitle"
+textual-ontology = "iolanta.facets.textual_ontology:OntologyFacet"
+title = "iolanta.facets.title:TitleFacet"
+boolean = "iolanta.facets.generic:BoolLiteral"
+title-foaf-person = "iolanta.facets.foaf_person_title:FOAFPersonTitle"
+
 
 [tool.poetry.plugins."rdf.plugins.queryprocessor"]
 sparqlspace = "iolanta.sparqlspace.processor:GlobalSPARQLProcessor"
