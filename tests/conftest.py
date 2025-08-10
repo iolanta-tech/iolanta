@@ -17,7 +17,7 @@ class FooFacet(Facet[str]):
 
 @pytest.fixture()
 def facet_iri() -> str:
-    return URIRef('python://FooFacet')
+    return URIRef('pkg:pypi/iolanta#foo')
 
 
 @pytest.fixture()
@@ -32,9 +32,4 @@ def as_datatype(request):
 
 @pytest.fixture()
 def iolanta(facet_iri: URIRef) -> Iolanta:
-    return Iolanta(
-        facet_resolver={
-            facet_iri: FooFacet,
-            URIRef('python://iolanta.facets.html.Default'): Default,
-        },
-    )
+    return Iolanta()
