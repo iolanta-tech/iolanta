@@ -1,0 +1,3 @@
+SELECT ?subgraph WHERE {
+    $this iolanta:has-sub-graph ?subgraph .
+}
