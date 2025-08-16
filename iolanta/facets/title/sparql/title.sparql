@@ -28,4 +28,9 @@ SELECT * WHERE {
         $iri <https://www.w3.org/2008/05/skos-xl#literalForm> ?literal_form .
         FILTER (!lang(?literal_form) || lang(?literal_form) = $language)
     }
+
+    OPTIONAL {
+        $iri <https://www.w3.org/2004/02/skos/core#prefLabel> ?preferred_label .
+        FILTER (!lang(?preferred_label) || lang(?preferred_label) = $language)
+    }
 }
