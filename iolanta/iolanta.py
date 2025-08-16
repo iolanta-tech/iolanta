@@ -47,18 +47,9 @@ from iolanta.sparqlspace.processor import normalize_term
 
 
 class LoggerProtocol(Protocol):
-    """
-    Abstract Logger interface.
+    """Abstract Logger interface that unites `loguru` & standard `logging`."""
 
-    Unites `loguru` & standard `logging`.
-    """
-
-    def info(   # noqa: WPS110
-        self,
-        message: str,
-        *args: Any,
-        **kwargs: Any,
-    ) -> None:
+    def info(self, message: str, *args: Any, **kwargs: Any) -> None:
         """Log an INFO message."""
 
     def error(self, message: str, *args: Any, **kwargs: Any) -> None:
@@ -110,11 +101,7 @@ class Iolanta:   # noqa: WPS214
 
     @functools.cached_property
     def plugins(self) -> List[Plugin]:
-        """
-        Construct a list of installed plugin instances.
-
-        # FIXME: Get rid of those.
-        """
+        """Construct a list of installed plugin instances."""
         return [
             plugin_class(iolanta=self)
             for plugin_class in self.plugin_classes
@@ -125,28 +112,7 @@ class Iolanta:   # noqa: WPS214
         query_text: str,
         **kwargs: SPARQLQueryArgument,
     ) -> QueryResult:
-        """
-        Run a SPARQL `SELECT`, `CONSTRUCT`, or `ASK` query.
-
-        Args:
-            query_text: The SPARQL text;
-            **kwargs: bind variables in the query to values if necessary. For
-                example:
-
-                ```python
-                iolanta.query(
-                    'SELECT ?title WHERE { ?page rdfs:label ?title }',
-                    ?page=page_iri,
-                )
-                ```
-
-        Returns:
-            Results of the query:
-
-            - a graph for `CONSTRUCT`,
-            - a list of dicts for `SELECT`,
-            - or a boolean for `ASK`.
-        """
+        """Run a SPARQL `SELECT`, `CONSTRUCT`, or `ASK` query."""
         try:
             sparql_result: SPARQLResult = self.graph.query(
                 query_text,
@@ -238,11 +204,7 @@ class Iolanta:   # noqa: WPS214
         return self
 
     def infer(self, closure_class=None) -> 'Iolanta':
-        """
-        Apply inference.
-
-        TODO Remove this. Or use `reasonable`. Not sure.
-        """
+        """Apply inference."""
         return self
 
     def bind_namespaces(self):
@@ -265,11 +227,7 @@ class Iolanta:   # noqa: WPS214
 
     @functools.cached_property
     def context_paths(self) -> Iterable[Path]:
-        """
-        Compile list of context files.
-
-        FIXME: Get rid of those.
-        """
+        """Compile list of context files."""
         directory = Path(__file__).parent / 'data'
 
         yield directory / 'context.yaml'
@@ -279,11 +237,7 @@ class Iolanta:   # noqa: WPS214
                 yield path
 
     def add_files_from_plugins(self):
-        """
-        Load files from plugins.
-
-        FIXME: Get rid of plugins.
-        """
+        """Load files from plugins."""
         for plugin in self.plugins:
             try:
                 self.add(plugin.data_files)
@@ -292,14 +246,24 @@ class Iolanta:   # noqa: WPS214
                     f'Cannot load {plugin} plugin data files: {error}',
                 )
 
-    def __post_init__(self):
-        """
-        Load stuff from plugins.
+    @property
+    def facet_classes(self):
+        """Get all registered facet classes."""
+        return entry_points.plugins('iolanta.facets')
 
-        FIXME: Get rid of plugins.
-        """
+    def add_files_from_facets(self):
+        """Add files from all registered facets to the graph."""
+        for facet_class in self.facet_classes:
+            try:
+                self.add(facet_class.META)
+            except AttributeError:
+                pass
+
+    def __post_init__(self):
+        """Initialize after instance creation."""
         self.bind_namespaces()
         self.add_files_from_plugins()
+        self.add_files_from_facets()
         if self.project_root:
             self.add(self.project_root)
 
@@ -382,11 +346,7 @@ class Iolanta:   # noqa: WPS214
                 ) from err
 
     def node_as_qname(self, node: Node):
-        """
-        Render node as a QName if possible.
-
-        Return the node as is, if it is not.
-        """
+        """Render node as a QName if possible."""
         qname = node_to_qname(node, self.graph)
         return f'{qname.namespace_name}:{qname.term}' if isinstance(
             qname,
