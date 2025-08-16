@@ -133,10 +133,34 @@ graph LR
     sparqlspace-integration-tests("<code>sparqlspace</code>has no<br/>integration tests") --> happiness
     class sparqlspace-integration-tests bug
     
-    mermaid("Generate Mermaid graph") --> happiness
+    mermaid-facet("➕ Mermaid facet")
+      --> mermaid("Generate Mermaid graph")
+      --> mermaid-howto("Update mermaid @<br/>nanopublish howto")
+      --> mkdocs-iolanta-mermaid("<code>mkdocs-iolanta</code> + Mermaid facet")
+      --> happiness
+    
+    mermaid-facet
+      --> iolanta-mermaid("➕ <code>iolanta-mermaid</code><br/>plugin")
+      --> happiness
+
+    facet-ld("Bundle LD with a facet") --> iolanta-mermaid
+    
+    declension-nanopubs("➕ Declension nanopub(s)")
+      --> declension-facet("➕ Declension facet")
+      --> iolanta-declension("➕ <code>iolanta-declension</code><br/>plugin") --> happiness
     
     pyld-fails-on-lexinfo("<code>pyld</code> fails on <a href='http://www.lexinfo.net/ontology/2.0/lexinfo#'>lexinfo</a>") --> armenian-pronouns("Armenian pronouns<br/>nanopub") --> happiness
     class pyld-fails-on-lexinfo bug
+    
+    facet-context("➕ Facet Context") --> happiness
+    title-facet-dynamic-query("<code>TitleFacet</code> should compose query dynamically") --> happiness
+    as-mermaid("<code>--as mermaid</code> does not work") --> happiness
+    class as-mermaid bug
+    
+    mermaid-page("iolanta.tech/datatypes/mermaid missing") --> happiness
+    class mermaid-page bug
+    
+    blog-howto("Maybe make Howto just a tag in Blog?") --> happiness
         
     classDef bug fill:#700,stroke:#f00,stroke-width:1px;
 ```
