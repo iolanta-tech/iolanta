@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iolanta"
-version = "2.1.0"
+version = "2.1.1"
 description = "Semantic Web browser"
 authors = ["Anatoly Scherbakov <altaisoft@gmail.com>"]
 license = "MIT"
@@ -58,6 +58,7 @@ textual-ontology = "iolanta.facets.textual_ontology:OntologyFacet"
 title = "iolanta.facets.title:TitleFacet"
 boolean = "iolanta.facets.generic:BoolLiteral"
 title-foaf-person = "iolanta.facets.foaf_person_title:FOAFPersonTitle"
+mermaid-graph = "iolanta.mermaid.facet:Mermaid"
 
 
 [tool.poetry.plugins."rdf.plugins.queryprocessor"]

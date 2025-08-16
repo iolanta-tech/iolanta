@@ -15,20 +15,7 @@ I have been working on a thing called YAML-LD, and I want to tell the world what
 {# TODO: Generate this diagram from YAML-LD file. #}
 
 ```mermaid
-graph LR
-    yaml-ld("YAML-LD")
-        --- rdf-type(("is a ∈"))
-        ---> knowledge-representation-language("Knowledge Representation Language")
-    click yaml-ld "https://json-ld.github.io/yaml-ld/spec/"
-    click knowledge-representation-language "https://w3id.org/fair/fip/terms/Knowledge-representation-language"
-    click rdf-type "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
-    
-    yaml-ld --- rdfs-label(("🏷️ label")) ---> label[["YAML-LD"]]
-    click rdfs-label "http://www.w3.org/2000/01/rdf-schema#"
-    
-    classDef predicate fill:none,stroke:none,stroke-width:0px;
-    class rdfs-label predicate
-    class rdf-type predicate
+{{ (docs / 'howto/nanopublish/yaml-ld.yamlld') | as('mermaid') }}
 ```
 
 This graph obviously says that:
@@ -109,12 +96,11 @@ Ahem. Yes, indeed, I am sorry. The problem now is that the graph we have describ
 
 ```mermaid
 graph TD
-    yaml-ld("https://json-ld.github.io/yaml-ld/spec/")
-    
-    click yaml-ld https://json-ld.github.io/yaml-ld/spec/
+  yaml_ld["json-ld.github.io/yaml-ld/spec/"]
+  click yaml_ld "https://json-ld.github.io/yaml-ld/spec/"
 ```
 
-This degenerated form is not really a graph and is not quite supported by Iolanta, unfortunately. We need to *say something about* the thing that we had stated. Otherwise there's no semantics to talk about, no knowledge to express. Let's do that.
+This degenerated form is not really a graph and is not quite supported by Iolanta. We need to *say something about* the thing that we had stated. Otherwise there's no semantics to talk about, no knowledge to express. Let's do that.
 
 ```yaml title="yaml-ld.yamlld" hl_lines="3 6"
 --8<-- "docs/howto/nanopublish/with-label.yamlld"
@@ -282,4 +268,6 @@ https://w3id.org/np/RAAnO3U0Lc56gbYHz5MZD440460c88Qfiz8cTfP58nvvs
 </div>
 </div>
 
-So? Shall we make more publications?
+## So?
+
+Shall we make more?

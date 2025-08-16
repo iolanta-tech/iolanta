@@ -10,6 +10,7 @@ PRIORITIES = [   # noqa: WPS407
     'rdfs_label',
     'foaf_name',
     'literal_form',
+    'preferred_label',
 ]
 
 
@@ -20,7 +21,7 @@ class TitleFacet(Facet[str]):
         """Render title of a thing."""
         choices = self.stored_query(
             'title.sparql',
-            iri=self.iri,
+            iri=self.this,
             language=self.iolanta.language,
         )
 
