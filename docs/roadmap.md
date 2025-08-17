@@ -32,7 +32,7 @@ graph LR
     yeti-sh("yeti.sh does not expose LD") --> happiness
     class yeti-sh bug
     
-    nanopub-blog-post("Blog post:<br/><strong>Nanopublishing with Iolanta</strong>") --> markdown-nanopub-blog-post("Blog post:<br/><strong>Quick & readable Nanopublications<br/>with Markdown-LD") --> happiness
+    np-create-yaml-ld("Support YAML-LD @ <code>np create</code>?") --> nanopub-blog-post("Blog post:<br/><strong>Nanopublishing with Iolanta</strong>") --> markdown-nanopub-blog-post("Blog post:<br/><strong>Quick & readable Nanopublications<br/>with Markdown-LD") --> happiness
     
     cbor-ld-nanopub("Nanopublish <code>CBOR-LD</code><br/>with manual LLM cycle") --> lots-of-pubs("Publish lots of nanopublications!") --> nanopub-blog-post
     
@@ -47,8 +47,6 @@ graph LR
     nanopub-blog-post
     click np-fork-out-of-date "https://github.com/iolanta-tech/nanopub-py"
     class np-fork-out-of-date bug
-    
-    nanopub-rs-graph("Publish an assertion from file<br/>@ <code>nanopub-rs</code>") --> nanopub-yaml-ld("Publish a YAML-LD assertion<br/>@ <code>nanopub-rs</code>") --> nanopub-rs
     
     plan-yaml-ld-to-pyld("Start moving stuff:<br/>Python <code>yaml-ld</code> → <code>pyld</code>") --> happiness
     
@@ -74,8 +72,7 @@ graph LR
     
     spec-not-ld --> happiness
     
-    ld-with-facet("LD should accompany facet?") --> facet-and-widget("Merge Facet → Widget?") --> happiness
-    register-widgets("Register Python widgets<br/>for safety") --> happiness
+    facet-and-widget("Merge Facet → Widget?") --> happiness
     
     subgraph "YAML-LD spec"
         spec-not-ld("Spec exposes too little LD")
@@ -105,17 +102,7 @@ graph LR
     
     comunica-np("<code>comunica-sparql-link-traversal</code><br/>cannot retrieve properties<br/>about a nanopub") -->  use-comunica("Replace <code>CyberspaceSPARQLProcessor</code><br/>→ <code>comunica-sparql-link-traversal</code>") --> happiness
     
-    subgraph nanopub-tool["Publish nanopubs with"]
-        direction TB
-        nanopub-rs["nanopub-rs"]
-        nanopub-py["nanopub-py"]
-    end
-    
-    nanopub-tool --> nanopub-blog-post
-    
-    rdflib-yaml-ld("<code>rdflib-yaml-ld</code>") --> publish-yaml-ld-with-nanopub-py("Publish a YAML-LD assertion<br/>with <code>nanopub-py</code>") --> nanopub-py
-    
-    np-create("Get <code>np create</code><br/>released") --> publish-yaml-ld-with-nanopub-py
+    np-create("Get <code>np create</code><br/>released") --> happiness
 
     class comunica-anything bug
     class comunica-np bug
@@ -132,18 +119,6 @@ graph LR
     
     sparqlspace-integration-tests("<code>sparqlspace</code>has no<br/>integration tests") --> happiness
     class sparqlspace-integration-tests bug
-    
-    mermaid-facet("➕ Mermaid facet")
-      --> mermaid("Generate Mermaid graph")
-      --> mermaid-howto("Update mermaid @<br/>nanopublish howto")
-      --> mkdocs-iolanta-mermaid("<code>mkdocs-iolanta</code> + Mermaid facet")
-      --> happiness
-    
-    mermaid-facet
-      --> iolanta-mermaid("➕ <code>iolanta-mermaid</code><br/>plugin")
-      --> happiness
-
-    facet-ld("Bundle LD with a facet") --> iolanta-mermaid
     
     declension-nanopubs("➕ Declension nanopub(s)")
       --> declension-facet("➕ Declension facet")
