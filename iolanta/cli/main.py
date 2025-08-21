@@ -136,4 +136,4 @@ def render_command(   # noqa: WPS231, WPS238, WPS210, C901
         raise Exit(1)
 
     else:
-        Console().print(renderable)
+        print(renderable)
