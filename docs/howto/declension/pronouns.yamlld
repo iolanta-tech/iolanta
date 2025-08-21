@@ -1,0 +1,62 @@
+"@context":
+  - https://json-ld.org/contexts/dollar-convenience.jsonld
+  - lvont: "http://lexvo.org/ontology#"
+    lexinfo: "http://www.lexinfo.net/ontology/2.0/lexinfo#"
+    skosxl: "http://www.w3.org/2008/05/skos-xl#"
+    # Treat these as object properties whose values are IRIs (not literals)
+    lexinfo:person:
+      "@type": "@id"
+    lexinfo:number:
+      "@type": "@id"
+    lexinfo:formVariant:
+      "@type": "@id"
+
+$id: http://lexvo.org/id/term/hy/ես
+$type: lexinfo:pronoun
+skosxl:literalForm: ես
+lvont:pronunciation: jɛs
+lexinfo:person: lexinfo:firstPerson
+lexinfo:number: lexinfo:singular
+# Use ONE relation to point from "ես" to every other personal pronoun form
+lexinfo:formVariant:
+  - http://lexvo.org/id/term/hy/մենք
+  - http://lexvo.org/id/term/hy/դու
+  - http://lexvo.org/id/term/hy/դուք
+  - http://lexvo.org/id/term/hy/նա
+  - http://lexvo.org/id/term/hy/նրանք
+
+# Classify each target with person/number (and give Armenian script + IPA)
+- $id: http://lexvo.org/id/term/hy/մենք
+  $type: lexinfo:pronoun
+  skosxl:literalForm: մենք
+  lvont:pronunciation: mɛŋkʰ
+  lexinfo:person: lexinfo:firstPerson
+  lexinfo:number: lexinfo:plural
+
+- $id: http://lexvo.org/id/term/hy/դու
+  $type: lexinfo:pronoun
+  skosxl:literalForm: դու
+  lvont:pronunciation: du
+  lexinfo:person: lexinfo:secondPerson
+  lexinfo:number: lexinfo:singular
+
+- $id: http://lexvo.org/id/term/hy/դուք
+  $type: lexinfo:pronoun
+  skosxl:literalForm: դուք
+  lvont:pronunciation: dukʰ
+  lexinfo:person: lexinfo:secondPerson
+  lexinfo:number: lexinfo:plural
+
+- $id: http://lexvo.org/id/term/hy/նա
+  $type: lexinfo:pronoun
+  skosxl:literalForm: նա
+  lvont:pronunciation: nɑ
+  lexinfo:person: lexinfo:thirdPerson
+  lexinfo:number: lexinfo:singular
+
+- $id: http://lexvo.org/id/term/hy/նրանք
+  $type: lexinfo:pronoun
+  skosxl:literalForm: նրանք
+  lvont:pronunciation: nəˈrɑŋkʰ
+  lexinfo:person: lexinfo:thirdPerson
+  lexinfo:number: lexinfo:plural
