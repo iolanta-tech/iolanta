@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from typing import Any
 
 import watchfiles
-from rdflib import BNode, URIRef
+from rdflib import BNode, Node, URIRef
 from textual.widgets import ContentSwitcher, RichLog
 from textual.worker import Worker, WorkerState
 
@@ -74,7 +74,7 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
 
     def on_mount(self):
         """Navigate to the initial page."""
-        self.action_goto(self.app.iri)
+        self.action_goto(self.app.this)
         if self.iolanta.project_root:
             self.run_worker(
                 self._watch_files,
@@ -94,24 +94,24 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
 
     def render_iri(   # noqa: WPS210
         self,
-        destination: NotLiteralNode,
+        this: NotLiteralNode,
         facet_iri: URIRef | None,
         is_reload: bool,
     ) -> RenderResult:
         """Render an IRI in a thread."""
-        self.iri = destination
+        self.this = this
         iolanta: Iolanta = self.iolanta
 
         as_datatype = URIRef('https://iolanta.tech/cli/textual')
         choices = FacetFinder(
             iolanta=self.iolanta,
-            node=destination,
+            node=this,
             as_datatype=as_datatype,
         ).choices()
 
         if not choices:
             raise FacetNotFound(
-                node=self.iri,
+                node=self.this,
                 as_datatype=as_datatype,
                 node_types=[],
             )
@@ -139,7 +139,7 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
         facet_class = iolanta.facet_resolver.resolve(facet_iri)
 
         facet = facet_class(
-            iri=self.iri,
+            this=self.this,
             iolanta=iolanta,
             as_datatype=URIRef('https://iolanta.tech/cli/textual'),
         )
@@ -149,13 +149,13 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
 
         except Exception as err:
             raise FacetError(
-                node=self.iri,
+                node=self.this,
                 facet_iri=facet_iri,
                 error=err,
             ) from err
 
         return RenderResult(
-            iri=destination,
+            iri=this,
             renderable=renderable,
             flip_options=flip_options,
             facet_iri=facet_iri,
@@ -222,7 +222,7 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
         self.run_worker(
             functools.partial(
                 self.render_iri,
-                destination=self.history.current.url,
+                this=self.history.current.url,
                 facet_iri=self.history.current.facet_iri,
                 is_reload=True,
             ),
@@ -267,19 +267,14 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
 
     def action_goto(
         self,
-        destination: str,
+        this: Node,
         facet_iri: str | None = None,
     ):
         """Go to an IRI."""
-        if destination.startswith('_:'):
-            iri = BNode(destination)
-        else:
-            iri = URIRef(destination)
-
         self.run_worker(
             functools.partial(
                 self.render_iri,
-                destination=iri,
+                this=this,
                 facet_iri=facet_iri and URIRef(facet_iri),
                 is_reload=False,
             ),

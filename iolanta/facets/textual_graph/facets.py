@@ -14,17 +14,17 @@ class GraphFacet(Facet[Widget]):
         """Show the widget."""
         triples = [
             Triple(triple['subject'], triple['predicate'], triple['object'])
-            for triple in self.stored_query('triples.sparql', graph=self.iri)
+            for triple in self.stored_query('triples.sparql', graph=self.this)
         ]
 
         triple_count = len(triples)
 
         triples_view = self.iolanta.render(
-            self.iri,
+            self.this,
             as_datatype=DATATYPES['textual-graph-triples'],
         )
 
         return VerticalScroll(
-            PageTitle(self.iri, extra=f'({triple_count} triples)'),
+            PageTitle(self.this, extra=f'({triple_count} triples)'),
             triples_view,
         )

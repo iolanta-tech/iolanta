@@ -9,11 +9,11 @@ class QNameFacet(Facet[str]):
     def show(self) -> str:
         """Return a qname."""
         qname: ComputedQName | NotLiteralNode = node_to_qname(
-            self.iri,
+            self.this,
             self.iolanta.graph,
         )
 
         if isinstance(qname, ComputedQName):
             return f'{qname.namespace_name}:{qname.term}'
 
-        return str(self.iri)
+        return str(self.this)

@@ -9,9 +9,9 @@ class BoolLiteral(Facet):
 
     def show(self):
         """Render as icon."""
-        if not isinstance(self.iri, Literal):
+        if not isinstance(self.this, Literal):
             raise NotALiteral(
-                node=self.iri,
+                node=self.this,
             )
 
-        return '✔️' if self.iri.value else '❌'
+        return '✔️' if self.this.value else '❌'

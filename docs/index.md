@@ -115,9 +115,6 @@ hide:
     ```shell
     pip install iolanta
     ```
-
--   :octicons-comment-24: __Any feedback?__
-
     ---
 
     Feel free to [➕ create an issue](https://github.com/iolanta-tech/iolanta/issues/new)!

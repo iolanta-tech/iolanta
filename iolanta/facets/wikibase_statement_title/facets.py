@@ -12,14 +12,14 @@ class WikibaseStatementTitle(Facet[str]):
         """Render the title."""
         rows = self.stored_query(
             'statement-title.sparql',
-            statement=self.iri,
+            statement=self.this,
             language=self.language,
         )
 
         row = funcy.first(rows)
         if not row:
             return self.render(
-                self.iri,
+                self.this,
                 as_datatype=URIRef('https://iolanta.tech/qname'),
             )
 

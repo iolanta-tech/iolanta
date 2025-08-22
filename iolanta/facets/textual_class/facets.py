@@ -200,16 +200,16 @@ class Class(Facet[Widget]):
         return set(
             funcy.pluck(
                 'instance',
-                self.stored_query('instances.sparql', iri=self.iri),
+                self.stored_query('instances.sparql', this=self.this),
             ),
         )
 
     def show(self) -> Widget:
         """Render the instances list."""
         return InstancesBody(
-            PageTitle(self.iri),
+            PageTitle(self.this),
             InstancesList(
                 instances=list(self.stream_instances()),
-                parent_class=self.iri,
+                parent_class=self.this,
             ),
         )

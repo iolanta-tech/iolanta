@@ -9,12 +9,12 @@ class FOAFPersonTitle(Facet[str]):
 
     def show(self) -> str:
         """Render full name of a person."""
-        row = funcy.first(self.stored_query('names.sparql', person=self.iri))
+        row = funcy.first(self.stored_query('names.sparql', person=self.this))
 
         if row is None:
             # Render default title.
             return self.render(
-                self.iri,
+                self.this,
                 as_datatype=DATATYPES['fallback-title'],
             )
 

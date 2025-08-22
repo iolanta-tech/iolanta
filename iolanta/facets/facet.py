@@ -16,27 +16,14 @@ FacetOutput = TypeVar('FacetOutput')
 class Facet(Generic[FacetOutput]):
     """Base facet class."""
 
-    iri: NotLiteralNode
+    this: Node
     iolanta: 'iolanta.Iolanta' = field(repr=False)
     as_datatype: Optional[NotLiteralNode] = None
-
-    @property
-    def this(self) -> NotLiteralNode:
-        """This node."""
-        return self.iri
 
     @property
     def stored_queries_path(self) -> Path:
         """Construct directory for stored queries for this facet."""
         return Path(inspect.getfile(self.__class__)).parent / 'sparql'
-
-    @cached_property
-    def uriref(self) -> NotLiteralNode:
-        """Format as URIRef."""
-        if isinstance(self.iri, BNode):
-            return self.iri
-
-        return URIRef(self.iri)
 
     def query(
         self,
@@ -59,14 +46,6 @@ class Facet(Generic[FacetOutput]):
             node=node,
             as_datatype=as_datatype,
         )
-
-    def render_all(
-        self,
-        node: Node,
-        as_datatype: NotLiteralNode,
-    ) -> Iterable[Any]:
-        """Render all we can."""
-        return self.iolanta.render_all(node=node, as_datatype=as_datatype)
 
     def stored_query(self, file_name: str, **kwargs: SPARQLQueryArgument):
         """Execute a stored SPARQL query."""

@@ -11,4 +11,4 @@ class NanopublicationFacet(Facet[Widget]):
 
     def show(self) -> Widget:
         """Render a nanopublication."""
-        return NanopublicationScreen(uri=self.iri)
+        return NanopublicationScreen(uri=self.this)

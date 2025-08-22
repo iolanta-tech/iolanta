@@ -11,7 +11,7 @@ class DateLiteral(Facet):
 
     def show(self):
         """Render date or datetime as a date."""
-        literal = cast(Literal, self.iri)
+        literal = cast(Literal, self.this)
 
         date_value = literal.value
 

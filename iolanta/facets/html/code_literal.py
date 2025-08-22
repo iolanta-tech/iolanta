@@ -9,9 +9,9 @@ class CodeLiteral(Facet):
 
     def show(self):
         """Render as icon."""
-        if not isinstance(self.iri, Literal):
+        if not isinstance(self.this, Literal):
             raise NotALiteral(
-                node=self.iri,
+                node=self.this,
             )
 
-        return f'<code>{self.iri.value}</code>'
+        return f'<code>{self.this.value}</code>'

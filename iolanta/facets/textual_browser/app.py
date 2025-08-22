@@ -45,10 +45,10 @@ def _log_message_to_dev_console(app: App):
 class IolantaBrowser(App):  # noqa: WPS214, WPS230
     """Browse Linked Data."""
 
-    def __init__(self, iolanta: Iolanta, iri: Node):
+    def __init__(self, iolanta: Iolanta, this: Node):
         """Set up parameters for the browser."""
         self.iolanta = iolanta
-        self.iri = iri
+        self.this = this
         self.renderers = ThreadPoolExecutor()
         super().__init__()
 

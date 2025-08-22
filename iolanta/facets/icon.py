@@ -15,7 +15,7 @@ class IconFacet(Facet[str]):
                     $iri iolanta:icon ?icon .
                 }
                 """,
-                iri=self.iri,
+                iri=self.this,
             ),
         )
 

@@ -32,6 +32,6 @@ class TitleFacet(Facet[str]):
                     return str(label)
 
         return self.render(
-            self.iri,
+            self.this,
             as_datatype=URIRef('https://iolanta.tech/qname'),
         )
