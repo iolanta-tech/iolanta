@@ -136,6 +136,26 @@ graph LR
     class mermaid-page bug
     
     blog-howto("Maybe make Howto just a tag in Blog?") --> happiness
+    
+    blank-node-failing("Blank node does not render")
+      --> declension-facet
+
+    class blank-node-failing bug
+    
+    declension-facet("Implement <code>declension</code> facet")
+      --> iolanta-declension
+      
+    main-topic-of-assertion("Specify main topic of assertion")
+      --> howto-facet
+    
+    jyp-outdated("<code>jeeves-yeti-pyproject</code><br/>outdated")
+      --> iolanta-declension("<code>pip install iolanta-declension</code>")
+      --> howto-facet("HOWTO <strong>Make your own facet</strong>")
+      --> happiness
+      
+    class jyp-outdated bug
+    
+    nanopub-with-llm-cycle-through-mermaid("Nanopublish with an LLM cycle through Mermaid") --> happiness
         
     classDef bug fill:#700,stroke:#f00,stroke-width:1px;
 ```

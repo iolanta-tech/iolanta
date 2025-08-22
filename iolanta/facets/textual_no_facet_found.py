@@ -12,6 +12,7 @@ from iolanta.widgets.description import Description
 TEXT = """
 **😕 Iolanta is unable to visualize this resource**
 
+* The reference type ({reference_type}) might be incorrect;
 * The URI might be incorrect;
 * Or, no edges might exist which involve it;
 * Or maybe Iolanta does not know of such edges.
@@ -44,7 +45,7 @@ class TextualNoFacetFound(Facet):
     @property
     def raw_content(self):
         """Content of the file, if applicable."""
-        url = URL(self.uriref)
+        url = URL(self.this)
         if url.scheme != 'file':
             return None
 
@@ -94,6 +95,7 @@ class TextualNoFacetFound(Facet):
                     TEXT.format(
                         content=self.raw_content or '',
                         subgraphs=self.subgraphs_description or '',
+                        reference_type=type(self.this).__name__,
                     ),
                 ),
             ),

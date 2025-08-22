@@ -138,7 +138,7 @@ class GraphTriplesFacet(Facet[Widget]):
             }
             ORDER BY ?subject ?predicate ?object
             """,
-            graph=self.iri,
+            graph=self.this,
         )
 
         triples = [

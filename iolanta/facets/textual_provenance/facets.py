@@ -109,7 +109,7 @@ class TextualProvenanceFacet(Facet[Widget]):
 
     def show(self) -> Widget:
         """Obtain & render provenance info."""
-        uri = TripleURIRef(self.iri)
+        uri = TripleURIRef(self.this)
         triple = uri.as_triple()
 
         graphs = funcy.lpluck(

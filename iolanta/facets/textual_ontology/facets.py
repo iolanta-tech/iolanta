@@ -48,7 +48,7 @@ class OntologyFacet(Facet[Widget]):
     @cached_property
     def grouped_terms(self) -> dict[NotLiteralNode | None, list[TermAndStatus]]:
         """Group terms by VANN categories."""
-        rows = self.stored_query('terms.sparql', iri=self.iri)
+        rows = self.stored_query('terms.sparql', iri=self.this)
         grouped = [
             (
                 row.get('group'),
@@ -80,7 +80,7 @@ class OntologyFacet(Facet[Widget]):
 
         vocabs = funcy.lpluck(
             'vocab',
-            self.stored_query('visualization-vocab.sparql', iri=self.iri),
+            self.stored_query('visualization-vocab.sparql', iri=self.this),
         )
 
         for vocab in vocabs:
@@ -94,7 +94,7 @@ class OntologyFacet(Facet[Widget]):
             )
 
         return Vertical(
-            PageTitle(self.iri),
+            PageTitle(self.this),
             TermsContent(
                 Static(
                     Columns(

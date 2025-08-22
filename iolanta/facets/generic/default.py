@@ -27,7 +27,7 @@ class DefaultMixin(Facet[FacetOutput]):
     def description(self) -> Description:
         return Description(
             **funcy.first(
-                self.stored_query('default.sparql', iri=self.iri),
+                self.stored_query('default.sparql', iri=self.this),
             ),
         )
 
@@ -59,7 +59,7 @@ class DefaultMixin(Facet[FacetOutput]):
         return label
 
     def render_fallback(self) -> str:
-        string_iri = str(self.iri)
+        string_iri = str(self.this)
 
         if string_iri.startswith('local:'):
             string_iri = string_iri.removeprefix(

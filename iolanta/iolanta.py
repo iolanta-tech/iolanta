@@ -292,7 +292,7 @@ class Iolanta:   # noqa: WPS214
         facet_class = self.facet_resolver.resolve(found['facet'])
 
         facet = facet_class(
-            iri=node,
+            this=node,
             iolanta=self,
             as_datatype=found['output_datatype'],
         )
@@ -328,7 +328,7 @@ class Iolanta:   # noqa: WPS214
 
         facet_instances = [
             facet_class(
-                iri=node,
+                this=node,
                 iolanta=self,
                 as_datatype=output_datatype,
             )

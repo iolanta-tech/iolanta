@@ -11,13 +11,13 @@ class TextualLinkFacet(Facet[str | Text]):
 
     def show(self) -> str | Text:
         """Render the link, or literal text, whatever."""
-        if isinstance(self.iri, Literal):
-            return f'[b grey37]{self.iri}[/b grey37]'
+        if isinstance(self.this, Literal):
+            return f'[b grey37]{self.this}[/b grey37]'
 
         label = self.render(
-            self.iri,
+            self.this,
             as_datatype=DATATYPES.title,
         )
 
-        invocation = f"app.goto('{self.iri}')"
+        invocation = f"app.goto('{self.this}')"
         return f'[@click="{invocation}"]{label}[/]'

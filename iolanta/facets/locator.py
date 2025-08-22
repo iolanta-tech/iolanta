@@ -114,9 +114,6 @@ class FacetFinder:   # noqa: WPS214
 
     def by_sparql(self) -> Iterable[FoundRow]:
         """Determine facet by SHACL shape of the data."""
-        if not isinstance(self.node, URIRef):
-            return
-
         rows = self.iolanta.query(
             GET_QUERY_TO_FACET,
             as_datatype=self.as_datatype,

@@ -30,7 +30,6 @@ markdown_extensions:
 plugins:
   - search
   - awesome-pages
-  - iolanta
   - blogging:
       dirs:
         - blog

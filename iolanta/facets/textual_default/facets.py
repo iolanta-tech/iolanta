@@ -32,7 +32,7 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
         """Properties of current node & their values."""
         property_rows = self.stored_query(
             self.query_file_name,
-            iri=self.iri,
+            iri=self.this,
         )
 
         property_pairs = [
@@ -64,11 +64,11 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
             property_values = [
                 LiteralPropertyValue(
                     property_value=property_value,
-                    subject=self.iri,
+                    subject=self.this,
                     property_iri=property_iri,
                 ) if isinstance(property_value, Literal) else PropertyValue(
                     property_value=property_value,
-                    subject=self.iri,
+                    subject=self.this,
                     property_iri=property_iri,
                     property_qname=self.iolanta.node_as_qname(property_iri),
                 )
@@ -135,7 +135,7 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
     def show(self) -> Widget:
         """Render the content."""
         return VerticalScroll(
-            PageTitle(self.iri),
+            PageTitle(self.this),
             Static(self.description or ''),
             self.properties,
         )
@@ -149,7 +149,7 @@ class InverseProperties(TextualDefaultFacet):
     def show(self) -> Widget:
         """Render the content."""
         return VerticalScroll(
-            PageTitle(self.iri, extra='[i]& its inverse RDF properties[/i]'),
+            PageTitle(self.this, extra='[i]& its inverse RDF properties[/i]'),
             Static(self.description or ''),
             self.properties,
         )

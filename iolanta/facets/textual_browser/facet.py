@@ -20,7 +20,7 @@ class TextualBrowserFacet(Facet[ReturnType | None]):
 
         app = IolantaBrowser(
             iolanta=self.iolanta,
-            iri=self.iri,
+            this=self.this,
         )
         try:
             app.run()
