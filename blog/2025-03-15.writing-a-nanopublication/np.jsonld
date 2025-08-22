@@ -1,0 +1,68 @@
+{
+  "@id": "#Head",
+  "@graph": {
+    "@type": "np:Nanopublication",
+    "@id": "#",
+    "np:hasAssertion": {
+      "@id": "#assertion",
+      "@context": {
+        "owl": "http://www.w3.org/2002/07/owl#",
+        "dc": "http://purl.org/dc/terms/",
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+        "fip": "https://w3id.org/fair/fip/terms/",
+        "rdfs:seeAlso": {
+          "@type": "@id"
+        }
+      },
+      "@graph": [
+        {
+          "@id": "https://json-ld.github.io/yaml-ld/spec/",
+          "@type": [
+            "owl:NamedIndividual",
+            "fip:Knowledge-representation-language"
+          ],
+          "dc:description": "A set of conventions built on top of YAML, which outlines how to serialize Linked Data as YAML based on JSON-LD syntax, semantics, and APIs.",
+          "rdfs:label": "YAML-LD"
+        }
+      ]
+    },
+    "np:hasProvenance": {
+      "@id": "#provenance",
+      "@graph": [
+        {
+          "@id": "#assertion",
+          "prov:hadPrimarySource": {
+            "@id": "https://json-ld.github.io/yaml-ld/spec/"
+          }
+        }
+      ]
+    },
+    "np:hasPublicationInfo": {
+      "@id": "#pubinfo",
+      "@graph": [
+        {
+          "@id": "#",
+          "prov:wasAttributedTo": "orcid:0009-0001-8740-4213"
+        }
+      ]
+    }
+  },
+  "@context": {
+    "@base": "http://purl.org/nanopub/temp/mynanopub#",
+    "np": "http://www.nanopub.org/nschema#",
+    "npx": "http://purl.org/nanopub/x/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "foaf": "http://xmlns.com/foaf/0.1/",
+    "dct": "http://purl.org/dc/terms/",
+    "prov": "http://www.w3.org/ns/prov#",
+    "pav": "http://purl.org/pav/",
+    "orcid": "https://orcid.org/",
+    "schema": "https://schema.org/",
+
+    "prov:wasAttributedTo": {
+      "@type": "@id"
+    }
+  }
+}
