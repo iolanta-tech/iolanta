@@ -59,6 +59,7 @@ title = "iolanta.facets.title:TitleFacet"
 boolean = "iolanta.facets.generic:BoolLiteral"
 title-foaf-person = "iolanta.facets.foaf_person_title:FOAFPersonTitle"
 mermaid-graph = "iolanta.mermaid.facet:Mermaid"
+rich-declension-table = "iolanta.declension.facet:RichDeclensionTable"
 
 
 [tool.poetry.plugins."rdf.plugins.queryprocessor"]
