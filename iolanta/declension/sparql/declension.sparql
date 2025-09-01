@@ -1,0 +1,8 @@
+PREFIX lexinfo: <https://www.lexinfo.net/ontology/2.0/lexinfo#>
+
+SELECT * WHERE {
+    ?declension
+      rdf:type $this ;
+      lexinfo:person ?person ;
+      lexinfo:number ?number .
+}
