@@ -1,0 +1,70 @@
+@prefix np: <http://www.nanopub.org/nschema#> .
+@prefix npx: <http://purl.org/nanopub/x/> .
+@prefix ns1: <http://www.lexinfo.net/ontology/2.0/lexinfo#> .
+@prefix ns2: <http://www.w3.org/ns/lemon/ontolex#> .
+@prefix orcid: <https://orcid.org/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sub: <https://w3id.org/np/RADhFtYNpiGS1RoJZF8n53eMdvifxrlkl1qtpRvkks0IQ/> .
+@prefix this: <https://w3id.org/np/RADhFtYNpiGS1RoJZF8n53eMdvifxrlkl1qtpRvkks0IQ> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sub:assertion {
+    <http://lexvo.org/id/term/hye/դու> a sub:EasternArmenianPersonalPronoun ;
+        ns1:number ns1:singular ;
+        ns1:person ns1:secondPerson ;
+        ns2:phoneticRep "du" .
+
+    <http://lexvo.org/id/term/hye/դուք> a sub:EasternArmenianPersonalPronoun ;
+        ns1:number ns1:plural ;
+        ns1:person ns1:secondPerson ;
+        ns2:phoneticRep "dukʰ" .
+
+    <http://lexvo.org/id/term/hye/ես> a sub:EasternArmenianPersonalPronoun ;
+        ns1:number ns1:singular ;
+        ns1:person ns1:firstPerson ;
+        ns2:phoneticRep "jɛs" .
+
+    <http://lexvo.org/id/term/hye/մենք> a sub:EasternArmenianPersonalPronoun ;
+        ns1:number ns1:plural ;
+        ns1:person ns1:firstPerson ;
+        ns2:phoneticRep "mɛŋkʰ" .
+
+    <http://lexvo.org/id/term/hye/նա> a sub:EasternArmenianPersonalPronoun ;
+        ns1:number ns1:singular ;
+        ns1:person ns1:thirdPerson ;
+        ns2:phoneticRep "na" .
+
+    <http://lexvo.org/id/term/hye/նրանք> a sub:EasternArmenianPersonalPronoun ;
+        ns1:number ns1:plural ;
+        ns1:person ns1:thirdPerson ;
+        ns2:phoneticRep "nəˈɾɑŋkʰ" .
+
+    ns1:Pronoun rdfs:label "Pronoun" .
+
+    sub:EasternArmenianPersonalPronoun rdfs:label "Eastern Armenian Personal Pronoun" ;
+        rdfs:subClassOf ns1:Pronoun .
+}
+
+sub:Head {
+    this: a np:Nanopublication ;
+        np:hasAssertion sub:assertion ;
+        np:hasProvenance sub:provenance ;
+        np:hasPublicationInfo sub:pubinfo .
+}
+
+sub:provenance {
+    sub:assertion prov:generatedAtTime "2025-08-22T23:19:36.478198"^^xsd:dateTime .
+}
+
+sub:pubinfo {
+    sub:sig npx:hasAlgorithm "RSA" ;
+        npx:hasPublicKey "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA79G1aksiLFmT7Lco5+qLImUeO0Dfli7k1R76QYoVtuMV0w4fQdv9oLXGGpLZ7U25pH7j2UHKk2R/4LSwoZCeMvIdbSfLpxTOSjD9scUiJWjwPHLH7/e946ENlhi52GANdYMGa+FxEQGR9HiHIoYn99AYUcYqkJ7qeOgXMJdkL6vZACdzeepAGajgC/jiscJuxmBtWCoqqi0GnG0AIXq14E9VgscSMLZ63i30mKDWwSZF1FFBLUHDSV+CLaFKBfjsGzVVU85jlYSWJ2E0FJ+w0cRnNB3B2bmPI7miy7okzQIqagEHop4bbaPmbgG5uMX2lMgb6RX0oU5hqU4B8FwHUwIDAQAB" ;
+        npx:hasSignature "Ug7ueC/tIJi4sr3h3LbCR+WLy4VGkFn593qY3RgfIQl2v7oFZpjDHh+GF2OF6f01bPLuFfZVyYzzy+MuSIOREbSXa24IYr4CfuTLIX23Ah8NnHSK+6JFhO2evhSqFpLOqwTkJTIdJJ7JgHyAJV1BhIIibU3xv/mne9raV/c366+j9Oz6jYsFtuGKEjjXfx0+9MLYv0Dz2XhuZxu0Qmt/xrnCqG91FcP08CqhwAHcr1MnXZVvAIHxMhFuPh7TOhzqRke/2iTpCdr/316XJGHfIw+evjV5dU4omG7jE7MZE8/7pcwmQs4XN5R9kbP7lH2uu1JXmbfaQKfZvn4KufJ1pA==" ;
+        npx:hasSignatureTarget this: ;
+        npx:signedBy orcid:0009-0001-8740-4213 .
+
+    this: prov:generatedAtTime "2025-08-22T23:19:36.478198"^^xsd:dateTime ;
+        prov:wasAttributedTo orcid:0009-0001-8740-4213 .
+}
+
