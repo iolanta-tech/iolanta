@@ -9,6 +9,7 @@ from documented import DocumentedError
 from rdflib import Literal, URIRef
 from rich.console import Console
 from rich.markdown import Markdown
+from rich.table import Table
 from typer import Argument, Exit, Option, Typer
 from yarl import URL
 
@@ -55,6 +56,13 @@ def string_to_node(name: str) -> NotLiteralNode:
 
     path = Path(name).absolute()
     return URIRef(f'file://{path}')
+
+
+def decode_datatype(datatype: str) -> URIRef:
+    if datatype.startswith('http'):
+        return URIRef(datatype)
+
+    return URIRef(f'https://iolanta.tech/datatypes/{datatype}')
 
 
 @app.command(name='browse')
@@ -113,11 +121,11 @@ def render_command(   # noqa: WPS231, WPS238, WPS210, C901
     try:
         renderable = iolanta.render(
             node=URIRef(node),
-            as_datatype=URIRef(as_datatype),
+            as_datatype=decode_datatype(as_datatype),
         )
 
     except DocumentedError as documented_error:
-        if iolanta.logger.level in {logging.DEBUG, logging.INFO}:
+        if level in {logging.DEBUG, logging.INFO}:
             raise
 
         console.print(
@@ -129,11 +137,17 @@ def render_command(   # noqa: WPS231, WPS238, WPS210, C901
         raise Exit(1)
 
     except Exception as err:
-        if level in {logging.DEBUG, logging.INFO}:
+        if iolanta.logger.level in {logging.DEBUG, logging.INFO}:
             raise
 
         console.print(str(err))
         raise Exit(1)
 
     else:
-        print(renderable)
+        # FIXME: An intermediary Literal can be used to dispatch rendering.
+        match renderable:
+            case Table() as table:
+                console.print(table)
+
+            case unknown:
+                print(unknown)
