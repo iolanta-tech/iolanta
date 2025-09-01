@@ -135,7 +135,7 @@ class FacetFinder:   # noqa: WPS214
 
         TODO fix this to allow arbitrary prefixes.
         """
-        scheme = URL(self.node).scheme
+        scheme = URL(str(self.node)).scheme
         if scheme != 'urn':
             return []
 
