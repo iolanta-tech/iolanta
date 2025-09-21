@@ -1,0 +1,59 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix np: <http://www.nanopub.org/nschema#> .
+@prefix orcid: <https://orcid.org/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <https://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://purl.org/nanopub/temp/np/Head> {
+    <http://purl.org/nanopub/temp/np/> a np:Nanopublication ;
+        np:hasAssertion <http://purl.org/nanopub/temp/np/assertion> ;
+        np:hasProvenance <http://purl.org/nanopub/temp/np/provenance> ;
+        np:hasPublicationInfo <http://purl.org/nanopub/temp/np/pubinfo> .
+}
+
+<http://purl.org/nanopub/temp/np/pubinfo> {
+    <http://purl.org/nanopub/temp/np/> prov:generatedAtTime "2025-09-16T11:26:28.057586"^^xsd:dateTime ;
+        prov:wasAttributedTo orcid:0009-0001-8740-4213 .
+}
+
+<http://purl.org/nanopub/temp/np/assertion> {
+    <https://pypi.org/project/yaml-ld/> a schema:SoftwareApplication ;
+        rdfs:label "yaml-ld" ;
+        dcterms:subject "JSON-LD",
+            "Linked Data",
+            "Python",
+            "Semantic Web",
+            "YAML-LD" ;
+        rdfs:comment "yaml-ld is a Python package that provides functionality for working with YAML-LD documents, which are YAML representations of JSON-LD data. It serves as a convenient wrapper around the digitalbazaar/pyld library, enabling developers to work with Linked Data in YAML format while maintaining compatibility with the JSON-LD specification." ;
+        schema:applicationCategory schema:Tool ;
+        schema:applicationSubCategory "Command-line tool" ;
+        schema:author orcid:0009-0001-8740-4213 ;
+        schema:codeRepository <https://github.com/iolanta-tech/python-yaml-ld> ;
+        schema:description "A Python implementation for handling YAML-LD documents, serving as a wrapper on top of digitalbazaar/pyld library for JSON-LD processing." ;
+        schema:downloadUrl <https://pypi.org/project/yaml-ld/> ;
+        schema:featureList "JSON-LD compaction functionality",
+            "JSON-LD expansion functionality",
+            "JSON-LD flattening functionality",
+            "JSON-LD framing functionality",
+            "RDF serialization and deserialization",
+            "Wrapper around digitalbazaar/pyld library",
+            "YAML-LD document parsing and transformation" ;
+        schema:issueTracker <https://github.com/iolanta-tech/python-yaml-ld/issues> ;
+        schema:license <https://opensource.org/licenses/MIT> ;
+        schema:mainEntity _:Nd02d83ade833455f8fe7f6826d1c1d7b ;
+        schema:name "yaml-ld" ;
+        schema:operatingSystem "OS Independent" ;
+        schema:programmingLanguage <https://www.wikidata.org/entity/Q28865> .
+
+    _:Nd02d83ade833455f8fe7f6826d1c1d7b a schema:Thing ;
+        schema:description "Core functionality for processing YAML-LD documents and converting them to/from JSON-LD and RDF formats" ;
+        schema:name "YAML-LD Processing" .
+}
+
+<http://purl.org/nanopub/temp/np/provenance> {
+    <http://purl.org/nanopub/temp/np/assertion> prov:generatedAtTime "2025-09-16T11:26:28.057586"^^xsd:dateTime .
+}
+
+
