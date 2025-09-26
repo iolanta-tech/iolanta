@@ -1,49 +1,33 @@
 "@context":
-  - https://json-ld.org/contexts/dollar-convenience.jsonld
-  - schema: "https://schema.org/"
-  - rdfs: "http://www.w3.org/2000/01/rdf-schema#"
-  - rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-  - dcterms: "http://purl.org/dc/terms/"
-  - foaf: "http://xmlns.com/foaf/0.1/"
-  - dbpedia: "http://dbpedia.org/resource/"
-  - wd: "https://www.wikidata.org/entity/"
-  - namedAfter:
-      "@id": "http://purl.org/vocab/relationship/namedAfter"
-      "@type": "@id"
-    author:
-      "@id": "https://schema.org/author"
-      "@type": "@id"
-    location:
-      "@id": "https://schema.org/location"
-      "@type": "@id"
+  # Permit $keywords in document body (not in context, unfortunately)
+  "@import": "https://json-ld.org/contexts/dollar-convenience.jsonld"
 
-$id: https://www.wikidata.org/entity/Q7331234
-$type: schema:Place
+  # Namespaces
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  dcterms: "http://purl.org/dc/terms/"
+  foaf: "http://xmlns.com/foaf/0.1/"
+  dbpedia: "http://dbpedia.org/resource/"
+  wd: "https://www.wikidata.org/entity/"
+  schema: https://schema.org/
 
-schema:name: Rhysling
-rdfs:label: Rhysling
+  author:
+    "@id": https://schema.org/author
+    "@type": "@id"
 
-schema:description: A lunar crater located in the Hadley-Apennine region of the Moon, named after the fictional character Rhysling from Robert A. Heinlein's short story "The Green Hills of Earth."
+  named-after:
+    "@id": http://www.wikidata.org/entity/P138
+    "@type": "@id"
 
-location: https://dbpedia.org/resource/Moon
-schema:geo:
-  $type: schema:GeoCoordinates
-  schema:latitude: 26.1
-  schema:longitude: 3.0
+  is-character-of:
+    "@reverse": schema:character
+    "@type": "@id"
 
-namedAfter: https://www.wikidata.org/entity/Q7758961
+$id: https://dbpedia.org/resource/Rhysling_(crater)
 
-dcterms:subject:
-  - Lunar crater
-  - Apollo 15 landing site
-  - Science fiction naming
-
-rdfs:comment: The crater Rhysling on the Moon is named after the fictional character in Heinlein's story "The Green Hills of Earth." The name was given by Apollo 15 astronauts during their 1971 mission and officially adopted by the International Astronomical Union in 1973.
-
-schema:mainEntity:
-  $type: schema:Thing
-  schema:name: Naming relationship
-  schema:description: The relationship between the lunar crater Rhysling and the fictional character from Heinlein's story
-  schema:about:
-    - https://www.wikidata.org/entity/Q7331234
-    - https://www.wikidata.org/entity/Q7758961
+named-after:
+  $type: schema:Person
+  schema:name: Rhysling
+  schema:alternateName: Noisy
+  schema:description: Fictional character from Robert A. Heinlein's short story "The Green Hills of Earth"
+  is-character-of: https://dbpedia.org/resource/The_Green_Hills_of_Earth
