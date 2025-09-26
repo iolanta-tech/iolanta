@@ -1,6 +1,5 @@
 "@context":
   "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
-  iolanta: https://iolanta.tech/
   vann: https://purl.org/vocab/vann/
   foaf: https://xmlns.com/foaf/0.1/
   owl: https://www.w3.org/2002/07/owl#
@@ -40,4 +39,4 @@ $: Labeled Triple Set
   $: Labeled Triple Set
 ↦:
   - ASK WHERE { GRAPH $this { ?s ?p ?o } }
-  - ASK WHERE { $this iolanta:has-sub-graph ?subgraph }
+  - ASK WHERE { $this <https://iolanta.tech/has-sub-graph> ?subgraph }
