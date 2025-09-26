@@ -1,17 +1,21 @@
-from typing import Literal as TypingLiteral
 from pathlib import Path
-from typing import Iterable, Annotated
+from typing import Annotated, Iterable
+from typing import Literal as TypingLiteral
 
 from pydantic import (
-    AnyUrl, BaseModel, Field, validator, field_validator,
+    AnyUrl,
+    BaseModel,
+    Field,
     TypeAdapter,
+    field_serializer,
+    field_validator,
+    validator,
 )
 from rdflib import BNode, Literal, Node, URIRef
 
 from iolanta import Facet
 from iolanta.models import NotLiteralNode
 from iolanta.namespaces import DATATYPES
-from pydantic import field_serializer
 
 
 class WithFeedback(BaseModel):
@@ -72,6 +76,12 @@ def construct_literal_feedback(literal, label):
         yield (
             'This RDF literal seems to be actually a URL. Good chance is '
             'that it should not be a literal.'
+        )
+    
+    elif ':' in label[:5]:
+        yield (
+            'This RDF literal seems to be actually a QName (prefixed URI). '
+            'Good chance is that it should not be a literal.'
         )
 
 
