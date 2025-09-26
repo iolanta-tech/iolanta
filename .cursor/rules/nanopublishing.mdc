@@ -44,3 +44,9 @@ alwaysApply: true
 **R19.** Use standard vocabularies: schema.org, RDFS, RDF, DCTerms, FOAF, and CodeMeta when appropriate.
 
 **R20.** Validate nanopublications using `iolanta file.yamlld --as labeled-triple-set` to check for URL-as-literal issues and proper IRI handling.
+
+**R21.** Do not add `rdfs:label` to external URIs that are expected to return Linked Data. If a URI does not exist or cannot be resolved, do not mask this fact by adding labels. Instead, use a different, existing URI or document the issue with a comment.
+
+**R22.** Define URI coercion in the context using `"@type": "@id"` rather than using `$id` wrappers in the document body. This keeps the document body clean and readable while ensuring proper URI handling.
+
+**R23.** When defining local shortcuts for URIs in the context, use dashed-case (e.g., `appears-in`, `named-after`) instead of camelCase (e.g., `appearsIn`, `namedAfter`). This improves readability and follows common YAML conventions.
