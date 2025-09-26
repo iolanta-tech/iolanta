@@ -79,7 +79,11 @@ class IolantaBrowser(App):  # noqa: WPS214, WPS230
         )
 
         # Disable stderr logging, to not break the TUI.
-        self.iolanta.logger.remove(0)
+        # Remove only the stderr handler, keep file handler
+        for handler_id in list(self.iolanta.logger._core.handlers.keys()):
+            handler = self.iolanta.logger._core.handlers[handler_id]
+            if hasattr(handler, 'sink') and str(handler.sink) == '<stderr>':
+                self.iolanta.logger.remove(handler_id)
 
         # Log to the dev console.
         self.iolanta.logger.add(
