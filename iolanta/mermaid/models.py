@@ -4,6 +4,12 @@ import re
 import textwrap
 import urllib.parse
 
+
+def escape_label(label: str) -> str:
+    """Escape a label to prevent Mermaid from interpreting URLs as markdown links."""
+    # Remove https://, http://, and www. prefixes to prevent markdown link parsing
+    return label.replace('https://', '').replace('http://', '').replace('www.', '')
+
 from documented import Documented
 from pydantic import AnyUrl, BaseModel
 from rdflib import BNode, Literal, URIRef
@@ -32,8 +38,9 @@ class MermaidURINode(Documented, BaseModel, arbitrary_types_allowed=True, frozen
     def maybe_title(self):
         if not self.title:
             return ''
-        # Quote the title to handle special characters like parentheses
-        return f'("{self.title}")'
+        # Escape URLs to prevent Mermaid from interpreting them as markdown links
+        safe_title = escape_label(self.title)
+        return f'("{safe_title}")'
 
     @property
     def id(self):
@@ -74,7 +81,7 @@ class MermaidBlankNode(Documented, BaseModel, arbitrary_types_allowed=True):
 
 class MermaidEdge(Documented, BaseModel, arbitrary_types_allowed=True):
     """
-    {self.source.id} --- {self.id}(["{self.title}"])--> {self.target.id}
+    {self.source.id} --- {self.id}(["{self.escaped_title}"])--> {self.target.id}
     click {self.id} "{self.predicate}"
     class {self.id} predicate
     """
@@ -91,6 +98,11 @@ class MermaidEdge(Documented, BaseModel, arbitrary_types_allowed=True):
     @property
     def nodes(self):
         return [self.source, self.target]
+    
+    @property
+    def escaped_title(self) -> str:
+        # Escape URLs to prevent Mermaid from interpreting them as markdown links
+        return escape_label(self.title)
 
 
 MermaidScalar = MermaidLiteral | MermaidBlankNode | MermaidURINode | MermaidEdge
@@ -98,7 +110,7 @@ MermaidScalar = MermaidLiteral | MermaidBlankNode | MermaidURINode | MermaidEdge
 
 class MermaidSubgraph(Documented, BaseModel, arbitrary_types_allowed=True, frozen=True):
     """
-    subgraph {self.id}["{self.title}"]
+    subgraph {self.id}["{self.escaped_title}"]
       direction {self.direction}
       {self.formatted_body}
     end
@@ -112,6 +124,11 @@ class MermaidSubgraph(Documented, BaseModel, arbitrary_types_allowed=True, froze
     def id(self):
         uri_hash = hashlib.md5(str(self.uri).encode()).hexdigest()
         return f'subgraph_{uri_hash}'
+    
+    @property
+    def escaped_title(self) -> str:
+        """Escape the subgraph title to prevent markdown link parsing."""
+        return escape_label(self.title)
 
     @property
     def formatted_body(self):
