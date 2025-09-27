@@ -24,7 +24,7 @@ from rdflib.plugins.sparql.parserutils import CompValue
 from rdflib.plugins.sparql.sparql import Query
 from rdflib.query import Processor
 from rdflib.term import BNode, Literal, Node
-from requests.exceptions import ConnectionError, InvalidSchema
+from requests.exceptions import ConnectionError, HTTPError, InvalidSchema
 from yaml_ld.document_loaders.content_types import ParserNotFound
 from yaml_ld.errors import NotFound, YAMLLDError
 from yarl import URL
@@ -686,6 +686,9 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             return Loaded()
         except YAMLLDError as yaml_ld_error:
             self.logger.error(f'{source} | {yaml_ld_error}')
+            return Loaded()
+        except HTTPError as http_error:
+            self.logger.warning(f'{source} | HTTP error: {http_error}')
             return Loaded()
 
         try:
