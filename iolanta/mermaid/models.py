@@ -1,5 +1,6 @@
 import enum
 import hashlib
+import re
 import textwrap
 import urllib.parse
 
@@ -29,21 +30,26 @@ class MermaidURINode(Documented, BaseModel, arbitrary_types_allowed=True, frozen
 
     @property
     def maybe_title(self):
-        return self.title and f'({self.title})'
+        if not self.title:
+            return ''
+        # Quote the title to handle special characters like parentheses
+        return f'("{self.title}")'
 
     @property
     def id(self):
-        return urllib.parse.unquote(str(self.url)).strip('/').replace(':', '_').replace('/', '_').replace('.', '_').replace('#', '_')
+        return re.sub(r'[:\/\.#()]', '_', urllib.parse.unquote(str(self.url)).strip('/'))
 
 
 class MermaidLiteral(Documented, BaseModel, arbitrary_types_allowed=True, frozen=True):
-    """{self.id}[[{self.title}]]"""
+    """{self.id}[["{self.title}"]]"""
 
     literal: Literal
 
     @property
     def title(self) -> str:
-        return str(self.literal) or 'EMPTY'
+        raw_title = str(self.literal) or 'EMPTY'
+        # Replace quotes with safer characters for Mermaid
+        return raw_title.replace('"', '"').replace("'", "'")
 
     @property
     def id(self) -> str:
@@ -52,7 +58,7 @@ class MermaidLiteral(Documented, BaseModel, arbitrary_types_allowed=True, frozen
 
 
 class MermaidBlankNode(Documented, BaseModel, arbitrary_types_allowed=True):
-    """{self.id}({self.title})"""
+    """{self.id}({self.escaped_title})"""
 
     node: BNode
     title: str
@@ -60,6 +66,10 @@ class MermaidBlankNode(Documented, BaseModel, arbitrary_types_allowed=True):
     @property
     def id(self) -> str:
         return self.node.replace('_:', '')
+    
+    @property
+    def escaped_title(self) -> str:
+        return self.title
 
 
 class MermaidEdge(Documented, BaseModel, arbitrary_types_allowed=True):

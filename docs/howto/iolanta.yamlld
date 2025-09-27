@@ -1,0 +1,30 @@
+"@context":
+  - https://json-ld.org/contexts/dollar-convenience.jsonld
+  -
+    doap: http://usefulinc.com/ns/doap#
+    rdfs: http://www.w3.org/2000/01/rdf-schema#
+
+    doap:homepage:
+      "@type": "@id"
+    doap:download-page:
+      "@type": "@id"
+    doap:programming-language:
+      "@type": "@id"
+    doap:implements:
+      "@type": "@id"
+
+$id: https://iolanta.tech/
+$type: doap:Project
+
+rdfs:label: Iolanta
+doap:description: A terminal-based Linked Data browser and visualizer that renders RDF resources into human-readable views.
+
+doap:homepage: https://iolanta.tech/
+doap:download-page: https://pypi.org/project/iolanta/
+doap:programming-language: https://www.wikidata.org/entity/Q28865
+doap:implements: https://www.w3.org/TR/rdf11-concepts/
+
+doap:repository:
+  $id: https://github.com/iolanta-tech/iolanta
+  $type: doap:GitRepository
+  rdfs:label: Iolanta Git repository

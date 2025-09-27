@@ -138,7 +138,7 @@ class PropertyValue(Widget, can_focus=True, inherit_bindings=False):
         self.property_iri = property_iri
         super().__init__()
         self.renderable = Text(  # noqa: WPS601
-            f'⏳ {property_qname}',
+            f'⏳ {property_value}',
             style='#696969',
         )
 

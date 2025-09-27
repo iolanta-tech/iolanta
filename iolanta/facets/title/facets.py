@@ -31,7 +31,4 @@ class TitleFacet(Facet[str]):
                 if label := row.get(alternative):
                     return str(label)
 
-        return self.render(
-            self.this,
-            as_datatype=URIRef('https://iolanta.tech/qname'),
-        )
+        return str(self.this)

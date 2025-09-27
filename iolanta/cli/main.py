@@ -1,5 +1,6 @@
 import locale
 import logging
+import sys
 from pathlib import Path
 from typing import Annotated
 
@@ -23,23 +24,9 @@ DEFAULT_LANGUAGE = locale.getlocale()[0].split('_')[0]
 console = Console()
 
 
-def construct_app() -> Typer:
-    """
-    Construct Typer app.
-
-    FIXME: Remove this function, just create the app on module level.
-    """
-    iolanta = Iolanta()
-
-    return Typer(
-        no_args_is_help=True,
-        context_settings={
-            'obj': iolanta,
-        },
-    )
-
-
-app = construct_app()
+app = Typer(
+    no_args_is_help=True,
+)
 
 
 def string_to_node(name: str) -> NotLiteralNode:
@@ -93,14 +80,32 @@ def render_command(   # noqa: WPS231, WPS238, WPS210, C901
         ensure_exists=True,
     ) / 'iolanta.log'
 
-    logger = loguru.logger
-    logger.add(
+    # Get the level name first
+    level_name = {
+        logging.DEBUG: 'DEBUG',
+        logging.INFO: 'INFO', 
+        logging.WARNING: 'WARNING',
+        logging.ERROR: 'ERROR',
+    }[level]
+    
+    # Configure global loguru logger BEFORE creating Iolanta instance
+    loguru.logger.remove()
+    loguru.logger.add(
         log_file_path,
-        level=level,
+        level=level_name,
         format='{time} {level} {message}',
         enqueue=True,
     )
-
+    loguru.logger.add(
+        sys.stderr,
+        level=level_name,
+        format='{time} | {level:<8} | {name}:{function}:{line} - {message}',
+    )
+    loguru.logger.level(level_name)
+    
+    # Use the global logger
+    logger = loguru.logger
+    
     node_url = URL(url)
     if node_url.scheme and node_url.scheme != 'file':
         node = URIRef(url)
@@ -109,6 +114,7 @@ def render_command(   # noqa: WPS231, WPS238, WPS210, C901
             language=Literal(language),
             logger=logger,
         )
+        
     else:
         path = Path(node_url.path).absolute()
         node = URIRef(f'file://{path}')

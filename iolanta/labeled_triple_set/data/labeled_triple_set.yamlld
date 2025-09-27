@@ -1,0 +1,42 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  vann: https://purl.org/vocab/vann/
+  foaf: https://xmlns.com/foaf/0.1/
+  owl: https://www.w3.org/2002/07/owl#
+  iolanta: https://iolanta.tech/
+  rdfs: "https://www.w3.org/2000/01/rdf-schema#"
+  rdf: https://www.w3.org/1999/02/22-rdf-syntax-ns#
+  dcterms: https://purl.org/dc/terms/
+  dcam: https://purl.org/dc/dcam/
+
+  iolanta:outputs:
+    "@type": "@id"
+
+  iolanta:when-no-facet-found:
+    "@type": "@id"
+
+  $: rdfs:label
+  →:
+    "@type": "@id"
+    "@id": iolanta:outputs
+
+  ⊆:
+    "@type": "@id"
+    "@id": rdfs:subClassOf
+
+  ⪯:
+    "@type": "@id"
+    "@id": iolanta:is-preferred-over
+
+  ↦: iolanta:matches
+  iolanta:hasDefaultFacet:
+    "@type": "@id"
+
+$id: pkg:pypi/iolanta#labeled-triple-set
+$: Labeled Triple Set
+→:
+  $id: https://iolanta.tech/datatypes/labeled-triple-set
+  $: Labeled Triple Set
+↦:
+  - ASK WHERE { GRAPH $this { ?s ?p ?o } }
+  - ASK WHERE { $this <https://iolanta.tech/has-sub-graph> ?subgraph }
