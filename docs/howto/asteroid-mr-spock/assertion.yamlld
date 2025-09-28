@@ -1,0 +1,19 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  schema: https://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  wd: https://www.wikidata.org/entity/
+  named-after:
+    "@id": wd:P138
+    "@type": "@id"
+  is-character-of:
+    "@reverse": schema:character
+    "@type": "@id"
+
+$id: https://dbpedia.org/resource/2309_Mr._Spock
+$type: schema:Thing
+
+rdfs:label: "2309 Mr. Spock"
+schema:description: "Asteroid 2309, named after Mr. Spock from Star Trek"
+
+named-after: https://dbpedia.org/resource/Spock

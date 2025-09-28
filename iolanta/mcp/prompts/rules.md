@@ -1,13 +1,16 @@
----
-description: Guidelines for creating nanopublications
-alwaysApply: true
----
+# How to author Linked Data with Iolanta
 
-# Nanopublication Rules
+**R00.** Follow this YAML-LD authoring workflow:
+- Draft YAML-LD from user text
+- Use the Iolanta MCP `render_uri` tool with `as_format: labeled-triple-set` to validate and get feedback
+- Address the feedback, correct the YAML-LD document appropriately
 
-**R01.** Write only the assertion graph of the nanopublication. Do not include provenance or pubinfo graphs as these will be added later by the user.
+**R01.** Acceptance Criteria:
 
-**R02.** Use YAML-LD format, which is JSON-LD in YAML syntax, for writing nanopublications.
+- The document fits the original statement the user wanted to express;
+- No negative feedback is received.
+
+**R02.** Use YAML-LD format, which is JSON-LD in YAML syntax, for writing Linked Data.
 
 **R03.** Always quote the @ character in YAML since it's reserved. Use `"@id":` instead of `@id:`.
 
@@ -21,7 +24,7 @@ alwaysApply: true
 
 **R08.** Use URIs that convey meaning and are renderable with Linked Data visualization tools. Search for appropriate URIs from sources like DBPedia or Wikidata.
 
-**R09.** Do not use `"@graph"`/`$graph` keyword in assertions. Assertions are graphs themselves and cannot contain other graphs.
+**R09.** Use the Iolanta MCP `render_uri` tool with `as_format: mermaid` to generate Mermaid graph visualizations of Linked Data. If the user asks, you can save them to `.mmd` files for preview and documentation purposes.
 
 **R10.** For language tags, use YAML-LD syntax: `rdfs:label: { $value: "text", $language: "lang" }` instead of Turtle syntax `"text"@lang`.
 
@@ -43,7 +46,7 @@ alwaysApply: true
 
 **R19.** Use standard vocabularies: schema.org, RDFS, RDF, DCTerms, FOAF, and CodeMeta when appropriate.
 
-**R20.** Validate nanopublications using `iolanta file.yamlld --as labeled-triple-set` to check for URL-as-literal issues and proper IRI handling.
+**R20.** Validate Linked Data using the Iolanta MCP `render_uri` tool with `as_format: labeled-triple-set` to check for URL-as-literal issues and proper IRI handling.
 
 **R21.** Do not add `rdfs:label` to external URIs that are expected to return Linked Data. If a URI does not exist or cannot be resolved, do not mask this fact by adding labels. Instead, use a different, existing URI or document the issue with a comment.
 
