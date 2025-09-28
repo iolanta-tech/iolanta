@@ -11,7 +11,7 @@ from rdflib import Literal, URIRef
 from rich.console import Console
 from rich.markdown import Markdown
 from rich.table import Table
-from typer import Argument, Exit, Option, Typer
+from typer import Argument, Exit, Option, Typer, Context
 from yarl import URL
 
 from iolanta.cli.models import LogLevel
@@ -24,9 +24,7 @@ DEFAULT_LANGUAGE = locale.getlocale()[0].split('_')[0]
 console = Console()
 
 
-app = Typer(
-    no_args_is_help=True,
-)
+app = Typer(no_args_is_help=True)
 
 
 def string_to_node(name: str) -> NotLiteralNode:
@@ -52,19 +50,10 @@ def decode_datatype(datatype: str) -> URIRef:
     return URIRef(f'https://iolanta.tech/datatypes/{datatype}')
 
 
-@app.command(name='browse')
-def render_command(   # noqa: WPS231, WPS238, WPS210, C901
-    url: Annotated[str, Argument()],
-    as_datatype: Annotated[
-        str, Option(
-            '--as',
-        ),
-    ] = 'https://iolanta.tech/cli/interactive',
-    language: Annotated[
-        str, Option(
-            help='Data language to prefer.',
-        ),
-    ] = DEFAULT_LANGUAGE,
+def render_and_return(
+    url: str,
+    as_datatype: str,
+    language: str = DEFAULT_LANGUAGE,
     log_level: LogLevel = LogLevel.ERROR,
 ):
     """Render a given URL."""
@@ -124,13 +113,38 @@ def render_command(   # noqa: WPS231, WPS238, WPS210, C901
             project_root=path,
         )
 
-    try:
-        renderable = iolanta.render(
-            node=URIRef(node),
-            as_datatype=decode_datatype(as_datatype),
-        )
+    return iolanta.render(
+        node=URIRef(node),
+        as_datatype=decode_datatype(as_datatype),
+    )
 
+
+@app.command(name='render')
+def render_command(   # noqa: WPS231, WPS238, WPS210, C901
+    url: Annotated[str, Argument()],
+    as_datatype: Annotated[
+        str, Option(
+            '--as',
+        ),
+    ] = 'https://iolanta.tech/cli/interactive',
+    language: Annotated[
+        str, Option(
+            help='Data language to prefer.',
+        ),
+    ] = DEFAULT_LANGUAGE,
+    log_level: LogLevel = LogLevel.ERROR,
+):
+    """Render a given URL."""
+    try:
+        renderable = render_and_return(url, as_datatype, language, log_level)
     except DocumentedError as documented_error:
+        level = {
+            LogLevel.DEBUG: logging.DEBUG,
+            LogLevel.INFO: logging.INFO,
+            LogLevel.WARNING: logging.WARNING,
+            LogLevel.ERROR: logging.ERROR,
+        }[log_level]
+        
         if level in {logging.DEBUG, logging.INFO}:
             raise
 
@@ -143,12 +157,18 @@ def render_command(   # noqa: WPS231, WPS238, WPS210, C901
         raise Exit(1)
 
     except Exception as err:
-        if iolanta.logger.level in {logging.DEBUG, logging.INFO}:
+        level = {
+            LogLevel.DEBUG: logging.DEBUG,
+            LogLevel.INFO: logging.INFO,
+            LogLevel.WARNING: logging.WARNING,
+            LogLevel.ERROR: logging.ERROR,
+        }[log_level]
+        
+        if level in {logging.DEBUG, logging.INFO}:
             raise
 
         console.print(str(err))
         raise Exit(1)
-
     else:
         # FIXME: An intermediary Literal can be used to dispatch rendering.
         match renderable:
