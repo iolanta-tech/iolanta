@@ -1,0 +1,23 @@
+[
+  {
+    "@id": "https://dbpedia.org/resource/2309_Mr._Spock",
+    "@type": [
+      "https://schema.org/Thing"
+    ],
+    "https://www.wikidata.org/entity/P138": [
+      {
+        "@id": "https://dbpedia.org/resource/Spock"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "2309 Mr. Spock"
+      }
+    ],
+    "https://schema.org/description": [
+      {
+        "@value": "Asteroid 2309, named after Mr. Spock from Star Trek"
+      }
+    ]
+  }
+]

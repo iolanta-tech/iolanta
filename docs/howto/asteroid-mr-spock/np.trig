@@ -1,0 +1,33 @@
+@prefix np: <http://www.nanopub.org/nschema#> .
+@prefix ns1: <https://www.wikidata.org/entity/> .
+@prefix orcid: <https://orcid.org/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <https://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://purl.org/nanopub/temp/np/provenance> {
+    <http://purl.org/nanopub/temp/np/assertion> prov:generatedAtTime "2025-09-28T16:29:16.227055"^^xsd:dateTime ;
+        prov:wasDerivedFrom <https://dbpedia.org/resource/2309_Mr._Spock> .
+}
+
+<http://purl.org/nanopub/temp/np/Head> {
+    <http://purl.org/nanopub/temp/np/> a np:Nanopublication ;
+        np:hasAssertion <http://purl.org/nanopub/temp/np/assertion> ;
+        np:hasProvenance <http://purl.org/nanopub/temp/np/provenance> ;
+        np:hasPublicationInfo <http://purl.org/nanopub/temp/np/pubinfo> .
+}
+
+<http://purl.org/nanopub/temp/np/pubinfo> {
+    <http://purl.org/nanopub/temp/np/> prov:generatedAtTime "2025-09-28T16:29:16.227055"^^xsd:dateTime ;
+        prov:wasAttributedTo orcid:0009-0001-8740-4213 .
+}
+
+<http://purl.org/nanopub/temp/np/assertion> {
+    <https://dbpedia.org/resource/2309_Mr._Spock> a schema:Thing ;
+        rdfs:label "2309 Mr. Spock" ;
+        schema:description "Asteroid 2309, named after Mr. Spock from Star Trek" ;
+        ns1:P138 <https://dbpedia.org/resource/Spock> .
+}
+
+
