@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iolanta"
-version = "2.1.4"
+version = "2.1.5"
 description = "Semantic Web browser"
 authors = ["Anatoly Scherbakov <altaisoft@gmail.com>"]
 license = "MIT"
@@ -23,16 +23,19 @@ rich = ">=13.3.1"
 textual = ">=0.83.0"
 yarl = ">=1.9.4"
 boltons = ">=24.0.0"
-yaml-ld = ">=1.1.12"
+yaml-ld = "^1.1.13"
 reasonable = ">=0.2.6"
 oxrdflib = ">=0.4.0"
 loguru = ">=0.7.3"
 diskcache = ">=5.6.3"
 watchfiles = ">=1.0.4"
 packageurl-python = ">=0.17.5"
+fastmcp = "^2.12.4"
 
 [tool.poetry.scripts]
 iolanta = "iolanta.cli:app"
+iolanta-mcp = "iolanta.mcp.cli:app"
+
 sparqlspace = "iolanta.sparqlspace.cli:app"
 
 [tool.poetry.plugins."iolanta.plugins"]
