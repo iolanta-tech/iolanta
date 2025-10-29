@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from functools import cached_property
 from graphlib import TopologicalSorter
+from pathlib import Path
 from typing import Iterable, List, TypedDict
 
 import funcy
@@ -18,13 +19,9 @@ class FoundRow(TypedDict):
     output_datatype: NotLiteralNode
 
 
-GET_QUERY_TO_FACET = """
-SELECT ?facet ?match WHERE {
-    ?facet
-        iolanta:matches ?match ;
-        iolanta:outputs $as_datatype .
-}
-"""
+GET_QUERY_TO_FACET = (
+    Path(__file__).parent / 'locator' / 'sparql' / 'get-query-to-facet.sparql'
+).read_text()
 
 
 def reorder_rows_by_facet_preferences(   # noqa: WPS214, WPS210
