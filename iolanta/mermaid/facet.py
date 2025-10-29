@@ -122,6 +122,3 @@ class Mermaid(Facet[str]):
         direct_children = self.construct_mermaid_for_graph(self.this)
         subgraphs = self.construct_mermaid_subgraphs()
         return str(Diagram(children=[*direct_children, *subgraphs]))
-
-
-
