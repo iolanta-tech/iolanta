@@ -512,7 +512,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             try:
                 self.load(url)
             except Exception as err:
-                self.logger.error(f'Failed to load {url}: {err}', url, err)
+                self.logger.exception(f'Failed to load {url}: {err}', url, err)
 
         NanopubQueryPlugin(graph=self.graph)(query, bindings=initBindings)
 
