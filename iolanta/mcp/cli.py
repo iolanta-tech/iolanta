@@ -24,6 +24,13 @@ def ld_authoring_rules() -> str:
     return rules_path.read_text()
 
 
+@mcp.prompt(description="How to author nanopublication assertions with Iolanta")
+def nanopublication_assertion_authoring_rules() -> str:
+    """How to author nanopublication assertions with Iolanta."""
+    rules_path = Path(__file__).parent / 'prompts' / 'nanopublication_assertion_authoring_rules.md'
+    return rules_path.read_text()
+
+
 def app():
     mcp.run()
 
