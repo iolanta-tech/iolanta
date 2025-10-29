@@ -4,6 +4,7 @@
 - Draft YAML-LD from user text
 - Use the Iolanta MCP `render_uri` tool with `as_format: labeled-triple-set` to validate and get feedback
 - Address the feedback, correct the YAML-LD document appropriately
+- **After each change to the YAML-LD file, re-run the validation to check for new feedback**
 
 **R01.** Acceptance Criteria:
 
@@ -16,7 +17,31 @@
 
 **R04.** Prefer YAML-LD Convenience Context which maps @-keywords to $-keywords that don't need quoting: `"@type"` → `$type`, `"@id"` → `$id`, `"@graph"` → `$graph`.
 
-**R05.** Use the dollar-convenience context: `"@context": [https://json-ld.org/contexts/dollar-convenience.jsonld, ...]`
+**R05.** Use the dollar-convenience context with `@import` syntax instead of array syntax. This provides cleaner, more readable YAML-LD documents.
+
+Example:
+```yaml
+"@context":
+  "@import": "https://json-ld.org/contexts/dollar-convenience.jsonld"
+  
+  schema: "https://schema.org/"
+  wd: "https://www.wikidata.org/entity/"
+  
+  author:
+    "@id": "https://schema.org/author"
+    "@type": "@id"
+```
+
+Instead of:
+```yaml
+"@context":
+  - "https://json-ld.org/contexts/dollar-convenience.jsonld"
+  - schema: "https://schema.org/"
+  - wd: "https://www.wikidata.org/entity/"
+  - author:
+      "@id": "https://schema.org/author"
+      "@type": "@id"
+```
 
 **R06.** Reduce quoting when not required by YAML syntax rules.
 
@@ -53,3 +78,6 @@
 **R22.** Define URI coercion in the context using `"@type": "@id"` rather than using `$id` wrappers in the document body. This keeps the document body clean and readable while ensuring proper URI handling.
 
 **R23.** When defining local shortcuts for URIs in the context, use dashed-case (e.g., `appears-in`, `named-after`) instead of camelCase (e.g., `appearsIn`, `namedAfter`). This improves readability and follows common YAML conventions.
+
+**R24.** Do not rely upon `owl:sameAs` or `schema:sameAs` to express identity relationships. This necessitates OWL inference at the side of the reader, which is performance-taxing and tends to create conflicts. Instead, use direct URIs for entities without relying on sameAs statements for identity.
+

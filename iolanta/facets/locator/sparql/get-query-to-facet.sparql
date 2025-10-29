@@ -1,0 +1,5 @@
+SELECT ?facet ?match WHERE {
+    ?facet
+        iolanta:matches ?match ;
+        iolanta:outputs $as_datatype .
+}

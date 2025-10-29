@@ -60,7 +60,9 @@ class MermaidLiteral(Documented, BaseModel, arbitrary_types_allowed=True, frozen
 
     @property
     def id(self) -> str:
-        value_hash = hashlib.md5(str(self.literal.value).encode()).hexdigest()
+        # Use the lexical form of the literal, not rdflib's .value (which may be empty for typed literals),
+        # to ensure different texts get distinct node IDs in Mermaid.
+        value_hash = hashlib.md5(str(self.literal).encode()).hexdigest()
         return f'Literal-{value_hash}'
 
 
@@ -142,7 +144,7 @@ class Diagram(Documented, BaseModel):
     """
     graph {self.direction}
     {self.formatted_body}
-      classDef predicate fill:none,stroke:none,stroke-width:0px;
+      classDef predicate fill:transparent,stroke:transparent,stroke-width:0px;
     """
 
     children: list[MermaidScalar | MermaidSubgraph]

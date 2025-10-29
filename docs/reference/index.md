@@ -14,6 +14,18 @@ hide: [toc, navigation]
     
     RDFS class for Iolanta Facets — the magic things which visualize pieces of Linked Data in Iolanta.
 
+-   :material-format-list-bulleted: __[`iolanta:OutputDatatype`](/reference/iolanta/OutputDatatype/)__
+    
+    ---
+    
+    Output format where visualization applications render their results.
+
+-   :material-code-braces: __[`iolanta:SPARQLText`](/reference/iolanta/SPARQLText/)__
+    
+    ---
+    
+    A datatype for representing SPARQL query text.
+
 -   :material-filter-check: __[`iolanta:matches`](/matches/)__
     
     ---

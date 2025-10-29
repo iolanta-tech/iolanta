@@ -3,11 +3,9 @@
   schema: https://schema.org/
   rdfs: http://www.w3.org/2000/01/rdf-schema#
   wd: https://www.wikidata.org/entity/
+
   named-after:
     "@id": wd:P138
-    "@type": "@id"
-  is-character-of:
-    "@reverse": schema:character
     "@type": "@id"
 
 $id: https://dbpedia.org/resource/2309_Mr._Spock

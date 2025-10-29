@@ -1,0 +1,33 @@
+"@context":
+  # Use $keywords instead of @keywords in the ontology & data files.
+  # This will allow to avoid extra quotes.
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+
+  # Make well known ontologies usable
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  owl: http://www.w3.org/2002/07/owl#
+  foaf: http://xmlns.com/foaf/0.1/
+  schema: https://schema.org/
+  vann: http://purl.org/vocab/vann/
+
+  $: rdfs:label
+
+  # I have a weakness for Unicode symbols and YAML-LD permits me an indulgence ☺
+  ⊆:
+    "@type": "@id"
+    "@id": rdfs:subClassOf
+
+  domain:
+    "@id": rdfs:domain
+    "@type": "@id"
+
+  range:
+    "@id": rdfs:range
+    "@type": "@id"
+
+  →:
+    "@id": iolanta:outputs
+    "@type": "@id"
+
+  ↦:
+    "@id": iolanta:matches
