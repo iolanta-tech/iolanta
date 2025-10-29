@@ -1,0 +1,12 @@
+"@context": context.yamlld
+
+$id: iolanta:Facet
+$type: owl:Class
+
+$: Facet
+
+rdfs:comment: |
+  A Facet is a visualization component that transforms RDF nodes into human-readable formats.
+  Facets are the core mechanism by which Iolanta makes Linked Data accessible to users.
+  Each facet is designed to handle specific types of RDF nodes and render them appropriately
+  for different output formats (terminal, web, etc.).

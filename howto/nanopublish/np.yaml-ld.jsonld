@@ -1,0 +1,82 @@
+[
+  {
+    "@graph": [
+      {
+        "@id": "http://purl.org/nanopub/temp/np/",
+        "@type": [
+          "http://www.nanopub.org/nschema#Nanopublication"
+        ],
+        "http://www.nanopub.org/nschema#hasAssertion": [
+          {
+            "@id": "http://purl.org/nanopub/temp/np/assertion"
+          }
+        ],
+        "http://www.nanopub.org/nschema#hasProvenance": [
+          {
+            "@id": "http://purl.org/nanopub/temp/np/provenance"
+          }
+        ],
+        "http://www.nanopub.org/nschema#hasPublicationInfo": [
+          {
+            "@id": "http://purl.org/nanopub/temp/np/pubinfo"
+          }
+        ]
+      }
+    ],
+    "@id": "http://purl.org/nanopub/temp/np/Head"
+  },
+  {
+    "@graph": [
+      {
+        "@id": "https://json-ld.github.io/yaml-ld/spec/",
+        "@type": [
+          "https://w3id.org/fair/fip/terms/Knowledge-representation-language"
+        ],
+        "http://purl.org/dc/terms/description": [
+          {
+            "@value": "A set of conventions built on top of YAML, which outlines how to serialize\nLinked Data as YAML based on JSON-LD syntax, semantics, and APIs.\n"
+          }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@value": "YAML-LD"
+          }
+        ]
+      }
+    ],
+    "@id": "http://purl.org/nanopub/temp/np/assertion"
+  },
+  {
+    "@graph": [
+      {
+        "@id": "http://purl.org/nanopub/temp/np/",
+        "http://www.w3.org/ns/prov#generatedAtTime": [
+          {
+            "@type": "http://www.w3.org/2001/XMLSchema#dateTime",
+            "@value": "2025-07-20T00:17:44.147520"
+          }
+        ],
+        "http://www.w3.org/ns/prov#wasAttributedTo": [
+          {
+            "@id": "https://orcid.org/0009-0001-8740-4213"
+          }
+        ]
+      }
+    ],
+    "@id": "http://purl.org/nanopub/temp/np/pubinfo"
+  },
+  {
+    "@graph": [
+      {
+        "@id": "http://purl.org/nanopub/temp/np/assertion",
+        "http://www.w3.org/ns/prov#generatedAtTime": [
+          {
+            "@type": "http://www.w3.org/2001/XMLSchema#dateTime",
+            "@value": "2025-07-20T00:17:44.147520"
+          }
+        ]
+      }
+    ],
+    "@id": "http://purl.org/nanopub/temp/np/provenance"
+  }
+]
