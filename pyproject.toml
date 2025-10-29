@@ -31,6 +31,7 @@ diskcache = ">=5.6.3"
 watchfiles = ">=1.0.4"
 packageurl-python = ">=0.17.5"
 fastmcp = "^2.12.4"
+nanopub = "^2.1.0"
 
 [tool.poetry.scripts]
 iolanta = "iolanta.cli:app"
