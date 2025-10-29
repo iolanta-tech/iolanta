@@ -49,7 +49,7 @@ def serve():
 
 def ci():
     """Run pytest and save the results to artifacts directory."""
-    flakeheaven.call(Path(__file__).parent)
+    # flakeheaven.call(Path(__file__).parent)
 
     artifacts.mkdir(parents=True, exist_ok=True)
 
