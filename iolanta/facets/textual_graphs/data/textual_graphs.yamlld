@@ -1,0 +1,23 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  iolanta: https://iolanta.tech/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  rdfg: http://www.w3.org/2009/rdfg#
+
+  $: rdfs:label
+  iolanta:is-preferred-over:
+    "@type": "@id"
+  
+  iolanta:outputs:
+    "@type": "@id"
+
+$id: rdfg:Graph
+iolanta:facet:
+  $id: pkg:pypi/iolanta#textual-graphs
+  $: Named Graphs
+
+  iolanta:outputs: https://iolanta.tech/cli/textual
+
+  iolanta:is-preferred-over:
+    - pkg:pypi/iolanta#textual-properties
+    - pkg:pypi/iolanta#textual-graph-triples
