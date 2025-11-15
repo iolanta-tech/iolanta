@@ -323,7 +323,7 @@ class DevConsole(RichLog):
 
     def __init__(self):
         """Set default props for console."""
-        super().__init__(highlight=True, markup=True, id='console')
+        super().__init__(highlight=False, markup=False, id='console')
 
     def action_close(self):
         """Close the dev console."""

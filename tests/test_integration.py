@@ -109,6 +109,22 @@ def test_rdfs_label():
     assert 'label' in svg
 
 
+def test_rdfg_graph():
+    """Test the RDFG Graph class."""
+    svg = generate_screenshot(
+        URL('http://www.w3.org/2009/rdfg#Graph'),
+    )
+    assert 'Graph' in svg
+
+
+def test_meta():
+    """Test the RDFG Graph class."""
+    svg = generate_screenshot(
+        URL('iolanta://_meta'),
+    )
+    assert 'time' in svg
+
+
 @pytest.fixture(scope='session')
 def yaml_ld_spec_url() -> URL:
     return URL('https://json-ld.github.io/yaml-ld/spec')
