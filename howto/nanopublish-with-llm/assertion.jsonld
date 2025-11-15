@@ -1,0 +1,130 @@
+[
+  {
+    "@id": "https://pypi.org/project/yaml-ld/",
+    "@type": [
+      "https://schema.org/SoftwareApplication"
+    ],
+    "https://schema.org/applicationCategory": [
+      {
+        "@id": "https://schema.org/Tool"
+      }
+    ],
+    "https://schema.org/author": [
+      {
+        "@id": "https://orcid.org/0009-0001-8740-4213"
+      }
+    ],
+    "https://schema.org/codeRepository": [
+      {
+        "@id": "https://github.com/iolanta-tech/python-yaml-ld"
+      }
+    ],
+    "http://purl.org/dc/terms/subject": [
+      {
+        "@value": "YAML-LD"
+      },
+      {
+        "@value": "JSON-LD"
+      },
+      {
+        "@value": "Linked Data"
+      },
+      {
+        "@value": "Python"
+      },
+      {
+        "@value": "Semantic Web"
+      }
+    ],
+    "https://schema.org/downloadUrl": [
+      {
+        "@id": "https://pypi.org/project/yaml-ld/"
+      }
+    ],
+    "https://schema.org/issueTracker": [
+      {
+        "@id": "https://github.com/iolanta-tech/python-yaml-ld/issues"
+      }
+    ],
+    "https://schema.org/license": [
+      {
+        "@id": "https://opensource.org/licenses/MIT"
+      }
+    ],
+    "https://schema.org/programmingLanguage": [
+      {
+        "@id": "https://www.wikidata.org/entity/Q28865"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "yaml-ld is a Python package that provides functionality for working with YAML-LD documents, which are YAML representations of JSON-LD data. It serves as a convenient wrapper around the digitalbazaar/pyld library, enabling developers to work with Linked Data in YAML format while maintaining compatibility with the JSON-LD specification."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "yaml-ld"
+      }
+    ],
+    "https://schema.org/applicationSubCategory": [
+      {
+        "@value": "Command-line tool"
+      }
+    ],
+    "https://schema.org/description": [
+      {
+        "@value": "A Python implementation for handling YAML-LD documents, serving as a wrapper on top of digitalbazaar/pyld library for JSON-LD processing."
+      }
+    ],
+    "https://schema.org/featureList": [
+      {
+        "@value": "YAML-LD document parsing and transformation"
+      },
+      {
+        "@value": "JSON-LD expansion functionality"
+      },
+      {
+        "@value": "JSON-LD compaction functionality"
+      },
+      {
+        "@value": "JSON-LD flattening functionality"
+      },
+      {
+        "@value": "JSON-LD framing functionality"
+      },
+      {
+        "@value": "RDF serialization and deserialization"
+      },
+      {
+        "@value": "Wrapper around digitalbazaar/pyld library"
+      }
+    ],
+    "https://schema.org/mainEntity": [
+      {
+        "@type": [
+          "https://schema.org/Thing"
+        ],
+        "https://schema.org/description": [
+          {
+            "@value": "Core functionality for processing YAML-LD documents and converting them to/from JSON-LD and RDF formats"
+          }
+        ],
+        "https://schema.org/name": [
+          {
+            "@value": "YAML-LD Processing"
+          }
+        ]
+      }
+    ],
+    "https://schema.org/name": [
+      {
+        "@value": "yaml-ld"
+      }
+    ],
+    "https://schema.org/operatingSystem": [
+      {
+        "@value": "OS Independent"
+      }
+    ]
+  }
+]

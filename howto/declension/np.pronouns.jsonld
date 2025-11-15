@@ -1,0 +1,213 @@
+[
+  {
+    "@graph": [
+      {
+        "@id": "http://purl.org/nanopub/temp/np/assertion",
+        "http://www.w3.org/ns/prov#generatedAtTime": [
+          {
+            "@type": "http://www.w3.org/2001/XMLSchema#dateTime",
+            "@value": "2025-08-22T23:22:26.585431"
+          }
+        ]
+      }
+    ],
+    "@id": "http://purl.org/nanopub/temp/np/provenance"
+  },
+  {
+    "@graph": [
+      {
+        "@id": "http://www.lexinfo.net/ontology/2.0/lexinfo#Pronoun",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@value": "Pronoun"
+          }
+        ]
+      },
+      {
+        "@id": "http://lexvo.org/id/term/hye/դու",
+        "@type": [
+          "http://purl.org/nanopub/temp/np/EasternArmenianPersonalPronoun"
+        ],
+        "http://www.lexinfo.net/ontology/2.0/lexinfo#number": [
+          {
+            "@id": "http://www.lexinfo.net/ontology/2.0/lexinfo#singular"
+          }
+        ],
+        "http://www.lexinfo.net/ontology/2.0/lexinfo#person": [
+          {
+            "@id": "http://www.lexinfo.net/ontology/2.0/lexinfo#secondPerson"
+          }
+        ],
+        "http://www.w3.org/ns/lemon/ontolex#phoneticRep": [
+          {
+            "@value": "du"
+          }
+        ]
+      },
+      {
+        "@id": "http://lexvo.org/id/term/hye/ես",
+        "@type": [
+          "http://purl.org/nanopub/temp/np/EasternArmenianPersonalPronoun"
+        ],
+        "http://www.lexinfo.net/ontology/2.0/lexinfo#number": [
+          {
+            "@id": "http://www.lexinfo.net/ontology/2.0/lexinfo#singular"
+          }
+        ],
+        "http://www.lexinfo.net/ontology/2.0/lexinfo#person": [
+          {
+            "@id": "http://www.lexinfo.net/ontology/2.0/lexinfo#firstPerson"
+          }
+        ],
+        "http://www.w3.org/ns/lemon/ontolex#phoneticRep": [
+          {
+            "@value": "jɛs"
+          }
+        ]
+      },
+      {
+        "@id": "http://lexvo.org/id/term/hye/դուք",
+        "@type": [
+          "http://purl.org/nanopub/temp/np/EasternArmenianPersonalPronoun"
+        ],
+        "http://www.lexinfo.net/ontology/2.0/lexinfo#number": [
+          {
+            "@id": "http://www.lexinfo.net/ontology/2.0/lexinfo#plural"
+          }
+        ],
+        "http://www.lexinfo.net/ontology/2.0/lexinfo#person": [
+          {
+            "@id": "http://www.lexinfo.net/ontology/2.0/lexinfo#secondPerson"
+          }
+        ],
+        "http://www.w3.org/ns/lemon/ontolex#phoneticRep": [
+          {
+            "@value": "dukʰ"
+          }
+        ]
+      },
+      {
+        "@id": "http://lexvo.org/id/term/hye/մենք",
+        "@type": [
+          "http://purl.org/nanopub/temp/np/EasternArmenianPersonalPronoun"
+        ],
+        "http://www.lexinfo.net/ontology/2.0/lexinfo#number": [
+          {
+            "@id": "http://www.lexinfo.net/ontology/2.0/lexinfo#plural"
+          }
+        ],
+        "http://www.lexinfo.net/ontology/2.0/lexinfo#person": [
+          {
+            "@id": "http://www.lexinfo.net/ontology/2.0/lexinfo#firstPerson"
+          }
+        ],
+        "http://www.w3.org/ns/lemon/ontolex#phoneticRep": [
+          {
+            "@value": "mɛŋkʰ"
+          }
+        ]
+      },
+      {
+        "@id": "http://purl.org/nanopub/temp/np/EasternArmenianPersonalPronoun",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@value": "Eastern Armenian Personal Pronoun"
+          }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+          {
+            "@id": "http://www.lexinfo.net/ontology/2.0/lexinfo#Pronoun"
+          }
+        ]
+      },
+      {
+        "@id": "http://lexvo.org/id/term/hye/նրանք",
+        "@type": [
+          "http://purl.org/nanopub/temp/np/EasternArmenianPersonalPronoun"
+        ],
+        "http://www.lexinfo.net/ontology/2.0/lexinfo#number": [
+          {
+            "@id": "http://www.lexinfo.net/ontology/2.0/lexinfo#plural"
+          }
+        ],
+        "http://www.lexinfo.net/ontology/2.0/lexinfo#person": [
+          {
+            "@id": "http://www.lexinfo.net/ontology/2.0/lexinfo#thirdPerson"
+          }
+        ],
+        "http://www.w3.org/ns/lemon/ontolex#phoneticRep": [
+          {
+            "@value": "nəˈɾɑŋkʰ"
+          }
+        ]
+      },
+      {
+        "@id": "http://lexvo.org/id/term/hye/նա",
+        "@type": [
+          "http://purl.org/nanopub/temp/np/EasternArmenianPersonalPronoun"
+        ],
+        "http://www.lexinfo.net/ontology/2.0/lexinfo#number": [
+          {
+            "@id": "http://www.lexinfo.net/ontology/2.0/lexinfo#singular"
+          }
+        ],
+        "http://www.lexinfo.net/ontology/2.0/lexinfo#person": [
+          {
+            "@id": "http://www.lexinfo.net/ontology/2.0/lexinfo#thirdPerson"
+          }
+        ],
+        "http://www.w3.org/ns/lemon/ontolex#phoneticRep": [
+          {
+            "@value": "na"
+          }
+        ]
+      }
+    ],
+    "@id": "http://purl.org/nanopub/temp/np/assertion"
+  },
+  {
+    "@graph": [
+      {
+        "@id": "http://purl.org/nanopub/temp/np/",
+        "http://www.w3.org/ns/prov#generatedAtTime": [
+          {
+            "@type": "http://www.w3.org/2001/XMLSchema#dateTime",
+            "@value": "2025-08-22T23:22:26.585431"
+          }
+        ],
+        "http://www.w3.org/ns/prov#wasAttributedTo": [
+          {
+            "@id": "https://orcid.org/0009-0001-8740-4213"
+          }
+        ]
+      }
+    ],
+    "@id": "http://purl.org/nanopub/temp/np/pubinfo"
+  },
+  {
+    "@graph": [
+      {
+        "@id": "http://purl.org/nanopub/temp/np/",
+        "@type": [
+          "http://www.nanopub.org/nschema#Nanopublication"
+        ],
+        "http://www.nanopub.org/nschema#hasAssertion": [
+          {
+            "@id": "http://purl.org/nanopub/temp/np/assertion"
+          }
+        ],
+        "http://www.nanopub.org/nschema#hasProvenance": [
+          {
+            "@id": "http://purl.org/nanopub/temp/np/provenance"
+          }
+        ],
+        "http://www.nanopub.org/nschema#hasPublicationInfo": [
+          {
+            "@id": "http://purl.org/nanopub/temp/np/pubinfo"
+          }
+        ]
+      }
+    ],
+    "@id": "http://purl.org/nanopub/temp/np/Head"
+  }
+]

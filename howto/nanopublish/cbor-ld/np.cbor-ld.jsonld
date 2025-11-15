@@ -1,0 +1,82 @@
+[
+  {
+    "@graph": [
+      {
+        "@id": "http://purl.org/nanopub/temp/np/assertion",
+        "http://www.w3.org/ns/prov#generatedAtTime": [
+          {
+            "@type": "http://www.w3.org/2001/XMLSchema#dateTime",
+            "@value": "2025-07-27T01:57:11.238552"
+          }
+        ]
+      }
+    ],
+    "@id": "http://purl.org/nanopub/temp/np/provenance"
+  },
+  {
+    "@graph": [
+      {
+        "@id": "http://purl.org/nanopub/temp/np/",
+        "@type": [
+          "http://www.nanopub.org/nschema#Nanopublication"
+        ],
+        "http://www.nanopub.org/nschema#hasAssertion": [
+          {
+            "@id": "http://purl.org/nanopub/temp/np/assertion"
+          }
+        ],
+        "http://www.nanopub.org/nschema#hasProvenance": [
+          {
+            "@id": "http://purl.org/nanopub/temp/np/provenance"
+          }
+        ],
+        "http://www.nanopub.org/nschema#hasPublicationInfo": [
+          {
+            "@id": "http://purl.org/nanopub/temp/np/pubinfo"
+          }
+        ]
+      }
+    ],
+    "@id": "http://purl.org/nanopub/temp/np/Head"
+  },
+  {
+    "@graph": [
+      {
+        "@id": "http://purl.org/nanopub/temp/np/",
+        "http://www.w3.org/ns/prov#generatedAtTime": [
+          {
+            "@type": "http://www.w3.org/2001/XMLSchema#dateTime",
+            "@value": "2025-07-27T01:57:11.238552"
+          }
+        ],
+        "http://www.w3.org/ns/prov#wasAttributedTo": [
+          {
+            "@id": "https://orcid.org/0009-0001-8740-4213"
+          }
+        ]
+      }
+    ],
+    "@id": "http://purl.org/nanopub/temp/np/pubinfo"
+  },
+  {
+    "@graph": [
+      {
+        "@id": "https://json-ld.github.io/cbor-ld-spec/",
+        "@type": [
+          "https://w3id.org/fair/fip/terms/Knowledge-representation-language"
+        ],
+        "http://purl.org/dc/terms/description": [
+          {
+            "@value": "A CBOR-based serialization format for Linked Data, designed to leverage the JSON-LD\necosystem for compact, efficient binary encoding in constrained environments.\n"
+          }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@value": "CBOR-LD"
+          }
+        ]
+      }
+    ],
+    "@id": "http://purl.org/nanopub/temp/np/assertion"
+  }
+]
