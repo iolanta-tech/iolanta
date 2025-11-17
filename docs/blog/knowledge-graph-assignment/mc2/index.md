@@ -62,6 +62,28 @@ iolanta iolanta://_meta
 
 The triples in this graph record times when each of the other Named Graphs was loaded. This is important because Iolanta has a capability to auto reload a file in the project directory when that file is edited. This metadata store helps keep track of whether each Named Graph is in sync with its source on disk.
 
+The `iolanta:last-loaded-time` property is used to record these timestamps:
+
+<div class="grid" markdown>
+<div markdown>
+
+```yaml title="last-updated-time.yamlld"
+--8<-- "docs/blog/knowledge-graph-assignment/mc2/last-updated-time.yamlld"
+```
+
+</div>
+
+<div markdown>
+
+```shell
+iolanta last-updated-time.yamlld
+```
+
+[![](/screenshots/docs.blog.knowledge-graph-assignment.mc2.last-updated-time.yamlld.svg)](/screenshots/docs.blog.knowledge-graph-assignment.mc2.last-updated-time.yamlld.svg)
+
+</div>
+</div>
+
 ### Space
 
 Iolanta does not provide any special treatment to space-describing ontologies at this moment, but that can be implemented in specialized facets.
@@ -70,7 +92,41 @@ For instance, based on a pair of WGS84 coordinates, an Iolanta facet could gener
 
 ## :material-numeric-3-box: Groups of Entities
 
-...
+Enforcement of OWL rules, such as
+
+* `owl:oneOf`,
+* or `owl:Restriction`,
+
+requires the support of OWL reasoning. Iolanta is designed so that it does not require any inference at all.
+
+We can, however, use Iolanta to visualize these properties themselves. Why not?
+
+<div class="grid" markdown>
+<div markdown>
+
+:material-link-variant: [`owl:oneOf`](http://www.w3.org/2002/07/owl#oneOf)
+
+```shell
+iolanta http://www.w3.org/2002/07/owl#oneOf
+```
+
+[![](/screenshots/www.w3.org.2002.07.owl.oneof.svg)](/screenshots/www.w3.org.2002.07.owl.oneof.svg)
+
+</div>
+
+<div markdown>
+
+:material-link-variant: [`owl:Restriction`](http://www.w3.org/2002/07/owl#Restriction)
+
+```shell
+iolanta http://www.w3.org/2002/07/owl#Restriction
+```
+
+[![](/screenshots/www.w3.org.2002.07.owl.restriction.svg)](/screenshots/www.w3.org.2002.07.owl.restriction.svg)
+
+</div>
+</div>
+
 
 ## :material-numeric-4-box: Graph Queries
 
