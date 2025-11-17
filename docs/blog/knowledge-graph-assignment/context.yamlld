@@ -9,6 +9,8 @@
   foaf: http://xmlns.com/foaf/0.1/
   schema: https://schema.org/
   vann: http://purl.org/vocab/vann/
+  rdfg: http://www.w3.org/2009/rdfg#
+  xsd: http://www.w3.org/2001/XMLSchema#
 
   $: rdfs:label
 
