@@ -1,0 +1,133 @@
+Speed Presentation (24 Points) [MC-2]
+Keith Corbett
+•
+Nov 4 (Edited Nov 11)
+Assignment
+•
+24 points
+Due Nov 19, 8:59 PM
+Speed Presentation (24 Points) [MC-2]
+
+✅ For this Speed Presentation, you will create and/or extend a knowledge graph design using new constructs and techniques. Your presentation should demonstrate your understanding and application of the constructs and techniques described in the materials for MC-2 “Build with Confidence”.
+
+The knowledge graph design you use for this presentation should either:
+
+🟨 Extend the novel knowledge graph design you presented in MC-1 "Bricks to Building KGs", or
+🟨 Create a new knowledge graph design, using either 1) your own domain or scenario or 2) one of the “choose your own adventure” designs shown in the MC-2 materials. (Fictional Cast of Characters, Document Tagging, HR and Payroll)
+
+📌 Your presentation should address the following points:
+
+1-Modularizing a KG: Briefly describe how you might create separable and composable modules for your knowledge graph. Consider some or all of the capabilities presented:
+RDFS dataset model for default and named graphs
+Import capabilities for ontologies and schemas
+Upper-level, foundational, and domain ontologies
+2-Time and Space: Describe a use case for your knowledge graph and explain how and why you would adapt your knowledge graph design to handle one or more of these issues.
+Representing time and/or space
+Handling data event streams
+3-Groups of Entities: Describe a technical scenario or use case for your knowledge graph design where you might want or need to represent groups of entities. Describe how you might use graph capabilities such as:
+Enumerations
+Cardinality restrictions
+4-Graph Queries: Using a graph query language(s) available to you, demonstrate what you have learned in MC-2 for your application requirements for inserts, updates, visualization, and analysis. Show at least three queries with result sets.
+
+5-RDF vs LPGs: How do the topics in MC-2 affect your choices for design and graph representation? Does the graph representation enhance or constrain the ability of your knowledge graph to handle these technical scenarios and use cases?
+
+📌 Remember that this is a "speed presentation", so focus on the most important aspects and justifications.
+
+🟩 Your presentation can be either a video recording while sharing your screen, or a Google Slides presentation, or a document with text and images. 
+
+🟨 Review the rubric before turning in the assignment. 
+
+🟥 You need at least 18 of 24 possible points to succeed with this assignment.
+
+When you are ready to "turn in" or submit your assignment:
+Click the "Add or create" button (or similar) to attach your completed work.
+Choose the file you want to submit from your computer or Google Drive.
+Once you have added your work, look for the "Turn in" button and click it to finalize your submission.
+Google Classroom will notify you if an instructor returns your submission with feedback. At the instructor's discretion, you may have an opportunity to revise your submission and resubmit it for evaluation.
+
+
+/24
+/4
+The knowledge graph presentation addressed all components of the assignment, including separable and composable modules, events and locations, groups of entities, graph queries, and implications of RPG vs LPGs.
+Excellent
+4 pts
+Fully meets the criterion as required.
+Good
+3 pts
+Mostly meets the criterion; minor aspects need improvement.
+Needs Improvement
+2 pts
+Partially meets the criterion; key elements missing or incomplete.
+Not Satisfactory
+1 pt
+Does not meet the criterion.
+/4
+The knowledge graph design addresses modularity and blending with separable and composable modules, named graphs, imports, and/or upper-level, foundational, and domain ontologies.
+Excellent
+4 pts
+Fully meets the criterion as required.
+Good
+3 pts
+Mostly meets the criterion; minor aspects need improvement.
+Needs Improvement
+2 pts
+Partially meets the criterion; key elements missing or incomplete.
+Not Satisfactory
+1 pt
+Does not meet the criterion.
+/4
+The knowledge graph design handles data event streams or representing time and/or space
+Excellent
+4 pts
+Fully meets the criterion as required.
+Good
+3 pts
+Mostly meets the criterion; minor aspects need improvement.
+Needs Improvement
+2 pts
+Partially meets the criterion; key elements missing or incomplete.
+Not Satisfactory
+1 pt
+Does not meet the criterion.
+/4
+The knowledge graph presentation addressed scenarios or use cases for groups of entities, such as enumerations or cardinality restrictions.
+Excellent
+4 pts
+Fully meets the criterion as required.
+Good
+3 pts
+Mostly meets the criterion; minor aspects need improvement.
+Needs Improvement
+2 pts
+Partially meets the criterion; key elements missing or incomplete.
+Not Satisfactory
+1 pt
+Does not meet the criterion.
+/4
+Presented at least three queries with corresponding result sets.
+Excellent
+4 pts
+Fully meets the criterion as required.
+Good
+3 pts
+Mostly meets the criterion; minor aspects need improvement.
+Needs Improvement
+2 pts
+Partially meets the criterion; key elements missing or incomplete.
+Not Satisfactory
+1 pt
+Does not meet the criterion.
+/4
+The knowledge graph presentation addressed considerations for choice of design and graph representation, specifically, the use of RDF and/or LPGs.
+Excellent
+4 pts
+Fully meets the criterion as required.
+Good
+3 pts
+Mostly meets the criterion; minor aspects need improvement.
+Needs Improvement
+2 pts
+Partially meets the criterion; key elements missing or incomplete.
+Not Satisfactory
+1 pt
+Does not meet the criterion.

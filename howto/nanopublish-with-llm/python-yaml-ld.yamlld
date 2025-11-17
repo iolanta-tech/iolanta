@@ -1,0 +1,73 @@
+"@context":
+  - https://json-ld.org/contexts/dollar-convenience.jsonld
+  - schema: "https://schema.org/"
+  - codemeta: "https://w3id.org/codemeta/"
+  - rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  - rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  - dcterms: "http://purl.org/dc/terms/"
+  - foaf: "http://xmlns.com/foaf/0.1/"
+  - license:
+      "@id": "https://schema.org/license"
+      "@type": "@id"
+    downloadUrl:
+      "@id": "https://schema.org/downloadUrl"
+      "@type": "@id"
+    codeRepository:
+      "@id": "https://schema.org/codeRepository"
+      "@type": "@id"
+    issueTracker:
+      "@id": "https://schema.org/issueTracker"
+      "@type": "@id"
+    applicationCategory:
+      "@id": "https://schema.org/applicationCategory"
+      "@type": "@id"
+    programmingLanguage:
+      "@id": "https://schema.org/programmingLanguage"
+      "@type": "@id"
+    author:
+      "@id": "https://schema.org/author"
+      "@type": "@id"
+
+$id: https://pypi.org/project/yaml-ld/
+$type: schema:SoftwareApplication
+
+schema:name: yaml-ld
+rdfs:label: yaml-ld
+
+schema:description: A Python implementation for handling YAML-LD documents, serving as a wrapper on top of digitalbazaar/pyld library for JSON-LD processing.
+
+author: https://orcid.org/0009-0001-8740-4213
+
+license: https://opensource.org/licenses/MIT
+programmingLanguage: https://www.wikidata.org/entity/Q28865
+
+downloadUrl: https://pypi.org/project/yaml-ld/
+codeRepository: https://github.com/iolanta-tech/python-yaml-ld
+issueTracker: https://github.com/iolanta-tech/python-yaml-ld/issues
+
+dcterms:subject:
+  - YAML-LD
+  - JSON-LD
+  - Linked Data
+  - Python
+  - Semantic Web
+
+applicationCategory: https://schema.org/Tool
+schema:applicationSubCategory: Command-line tool
+schema:operatingSystem: "OS Independent"
+
+schema:featureList:
+  - YAML-LD document parsing and transformation
+  - JSON-LD expansion functionality
+  - JSON-LD compaction functionality
+  - JSON-LD flattening functionality
+  - JSON-LD framing functionality
+  - RDF serialization and deserialization
+  - Wrapper around digitalbazaar/pyld library
+
+rdfs:comment: yaml-ld is a Python package that provides functionality for working with YAML-LD documents, which are YAML representations of JSON-LD data. It serves as a convenient wrapper around the digitalbazaar/pyld library, enabling developers to work with Linked Data in YAML format while maintaining compatibility with the JSON-LD specification.
+
+schema:mainEntity:
+  $type: schema:Thing
+  schema:name: YAML-LD Processing
+  schema:description: Core functionality for processing YAML-LD documents and converting them to/from JSON-LD and RDF formats

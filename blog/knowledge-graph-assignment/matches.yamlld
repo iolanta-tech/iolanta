@@ -1,0 +1,15 @@
+"@context": context.yamlld
+
+$id: iolanta:matches
+$type: owl:DatatypeProperty
+
+$: matches
+domain: iolanta:Facet
+range: iolanta:SPARQLText
+
+comment: |
+  Maps a Facet instance to a SPARQL <code>ASK</code>
+  query pattern that can use <code>$this</code>
+  bound variable. If the query returns True,
+  this Facet can visualize the node denoted as
+  <code>$this</code> in the query.
