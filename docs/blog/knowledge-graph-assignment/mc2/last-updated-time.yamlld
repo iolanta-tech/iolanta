@@ -3,21 +3,14 @@
   # This will allow to avoid extra quotes.
   "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
 
-  # Make well known ontologies usable
   rdfs: http://www.w3.org/2000/01/rdf-schema#
   owl: http://www.w3.org/2002/07/owl#
-  foaf: http://xmlns.com/foaf/0.1/
   schema: https://schema.org/
-  vann: http://purl.org/vocab/vann/
   rdfg: http://www.w3.org/2009/rdfg#
   xsd: http://www.w3.org/2001/XMLSchema#
+  iolanta: https://iolanta.tech/
 
   $: rdfs:label
-
-  # I have a weakness for Unicode symbols and YAML-LD permits me an indulgence ☺
-  ⊆:
-    "@type": "@id"
-    "@id": rdfs:subClassOf
 
   domain:
     "@id": rdfs:domain
@@ -26,10 +19,22 @@
   range:
     "@id": rdfs:range
     "@type": "@id"
-
-  →:
-    "@id": iolanta:outputs
+  
+  rdfs:subPropertyOf:
     "@type": "@id"
 
-  ↦:
-    "@id": iolanta:matches
+$id: iolanta:last-loaded-time
+$type: owl:DatatypeProperty
+
+$: Last Loaded Time
+
+rdfs:subPropertyOf: schema:dateModified
+
+domain: rdfg:Graph
+range: xsd:dateTime
+
+comment: |
+  Records the timestamp when a Named Graph was last loaded into Iolanta's RDF Dataset.
+  This property is used in the `iolanta://_meta` graph to track when each source
+  of Linked Data was loaded, enabling auto-reload functionality for files in the
+  project directory.
