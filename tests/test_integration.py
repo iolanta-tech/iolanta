@@ -16,7 +16,11 @@ def generate_screenshot(url: URL | Path) -> str:
     match url:
         case URL():
             path = url.path.strip('/').replace('/', '.').lower()
-            screenshot_file_name = f'{url.host}.{path}.svg'
+            fragment = url.fragment.replace('#', '').lower() if url.fragment else ''
+            if fragment:
+                screenshot_file_name = f'{url.host}.{path}.{fragment}.svg'
+            else:
+                screenshot_file_name = f'{url.host}.{path}.svg'
 
         case Path() as path:
             project_root = Path(__file__).parent.parent
@@ -25,6 +29,16 @@ def generate_screenshot(url: URL | Path) -> str:
             ).replace('/', '.')
             screenshot_file_name = f'{file_path}.svg'
 
+    env = {
+        **os.environ,
+        'LINES': '34',     # Based on the YAML-LD nanopublication test
+        'COLUMNS': '113',  # For the sake of proportions
+    }
+    # Ensure color is enabled for screenshots
+    env.pop('NO_COLOR', None)
+    env.pop('FORCE_COLOR', None)
+    env['FORCE_COLOR'] = '1'
+
     sh.textual.run.bake(
         '-c',
         screenshot=SCREENSHOT_TIMEOUT,
@@ -32,11 +46,7 @@ def generate_screenshot(url: URL | Path) -> str:
         screenshot_filename=screenshot_file_name,
     ).iolanta(
         str(url),
-        _env={
-            **os.environ,
-            'LINES': '34',     # Based on the YAML-LD nanopublication test
-            'COLUMNS': '113',  # For the sake of proportions
-        },
+        _env=env,
     )
 
     file_path = SCREENSHOTS / screenshot_file_name
@@ -121,6 +131,30 @@ def test_meta():
     """Test the RDFG Graph class."""
     svg = generate_screenshot(
         URL('iolanta://_meta'),
+    )
+    assert 'time' in svg
+
+
+def test_owl_oneof():
+    """Test OWL oneOf property."""
+    svg = generate_screenshot(
+        URL('http://www.w3.org/2002/07/owl#oneOf'),
+    )
+    assert 'oneOf' in svg
+
+
+def test_owl_restriction():
+    """Test OWL Restriction class."""
+    svg = generate_screenshot(
+        URL('http://www.w3.org/2002/07/owl#Restriction'),
+    )
+    assert 'Restriction' in svg
+
+
+def test_iolanta_last_loaded_time():
+    """Test iolanta:last-loaded-time property."""
+    svg = generate_screenshot(
+        Path(__file__).parent.parent / 'docs/blog/knowledge-graph-assignment/mc2/last-updated-time.yamlld',
     )
     assert 'time' in svg
 
