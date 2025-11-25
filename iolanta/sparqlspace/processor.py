@@ -203,9 +203,6 @@ def normalize_term(term: Node) -> Node:
       * A dirty hack;
       * Based on hard code.
     """
-    if isinstance(term, URIRef) and term.startswith('http://'):
-        term = URIRef(re.sub('^http', 'https', term))
-
     return NORMALIZE_TERMS_MAP.get(term, term)
 
 
