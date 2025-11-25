@@ -13,8 +13,8 @@ from iolanta.models import Quad
 from iolanta.namespaces import IOLANTA, META
 
 NORMALIZE_TERMS_MAP = MappingProxyType({
-    URIRef(_url := 'https://www.w3.org/2002/07/owl'): URIRef(f'{_url}#'),
-    URIRef(_url := 'https://www.w3.org/2000/01/rdf-schema'): URIRef(f'{_url}#'),
+    URIRef(_url := 'http://www.w3.org/2002/07/owl'): URIRef(f'{_url}#'),
+    URIRef(_url := 'http://www.w3.org/2000/01/rdf-schema'): URIRef(f'{_url}#'),
 })
 
 
