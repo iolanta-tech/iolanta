@@ -50,7 +50,7 @@ hide:
 === "Ontology: RDF Schema"
 
     ```shell
-    iolanta https://www.w3.org/2000/01/rdf-schema#
+    iolanta http://www.w3.org/2000/01/rdf-schema#
     ```
     ![](screenshots/rdfs.svg)
 
