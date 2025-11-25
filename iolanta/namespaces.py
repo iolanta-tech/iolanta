@@ -20,7 +20,7 @@ class OWL(rdflib.OWL):
 
 
 class RDFS(rdflib.RDFS):
-    _NS = rdflib.Namespace('https://www.w3.org/2000/01/rdf-schema#')
+    _NS = rdflib.Namespace('http://www.w3.org/2000/01/rdf-schema#')
 
 
 class RDF(rdflib.RDF):

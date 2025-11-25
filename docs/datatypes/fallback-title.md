@@ -3,7 +3,7 @@
 <script type="application/ld+json">
   {
     "@context": {
-      "rdfs": "https://www.w3.org/2000/01/rdf-schema#",
+      "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
       "rdf": "https://www.w3.org/1999/02/22-rdf-syntax-ns#",
       "xsd": "https://www.w3.org/2001/XMLSchema#",
       "iolanta": "https://iolanta.tech/",

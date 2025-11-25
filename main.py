@@ -1,7 +1,9 @@
+import json
 from pathlib import Path
 
 from mkdocs_macros.plugin import MacrosPlugin
 from rdflib import URIRef
+import yaml_ld
 
 from iolanta.conversions import path_to_iri
 from iolanta.iolanta import Iolanta
@@ -55,6 +57,19 @@ def sparql_query_from_file(iolanta: Iolanta, sparql_file_path: Path, **kwargs) -
         table_lines.append("| " + " | ".join(values) + " |")
 
     return "\n".join(table_lines)
+
+def on_post_page_macros(env):
+    """
+    Actions to be done after macro interpretation,
+    when the macros have been rendered
+    This will add a (Markdown or HTML) footer -- produced by Python.
+    """
+
+    ld = yaml_ld.expand(env.page.file.abs_src_path)
+    serialized_ld = json.dumps(ld, indent=2, default=str)
+    snippet = f'<script type="application/ld+json">\n{serialized_ld}\n</script>'
+
+    env.markdown = f'{env.markdown}\n{snippet}'
 
 
 def define_env(env: MacrosPlugin):

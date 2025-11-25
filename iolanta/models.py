@@ -83,9 +83,6 @@ class TripleTemplate(NamedTuple):
 
 
 def _normalize_term(term: Node):
-    if isinstance(term, URIRef) and term.startswith('http://'):
-        return URIRef(re.sub('^http', 'https', term))
-
     return term
 
 

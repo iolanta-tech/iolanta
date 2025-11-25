@@ -316,7 +316,7 @@ These triples are formatted as Mermaid nodes and edges by the facet, producing t
     [![](/screenshots/www.w3.org.2000.01.rdf-schema.svg)](/screenshots/www.w3.org.2000.01.rdf-schema.svg)
 
     ```bash
-    iolanta https://www.w3.org/2000/01/rdf-schema#label
+    iolanta http://www.w3.org/2000/01/rdf-schema#label
     ```
 
 -   #### OWL vocabulary terms

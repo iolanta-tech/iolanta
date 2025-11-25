@@ -1,4 +1,17 @@
 ---
+"@context": context.yamlld
+
+$id: iolanta:outputs
+$type: owl:ObjectProperty
+$: outputs
+
+domain: iolanta:Facet
+range: iolanta:OutputDatatype
+
+comment: |
+  Links a facet to its supported output formats.
+  Examples: terminal, HTML, Mermaid.
+
 hide: [toc]
 ---
 

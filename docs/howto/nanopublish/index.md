@@ -155,7 +155,7 @@ Subject and Predicate here are clickable, since they are URLs. Object is a strin
 ![](/screenshots/json-ld.github.io.yaml-ld.spec.svg)
 
 <figcaption markdown>
-[YAML-LD](https://www.w3.org/2000/01/rdf-schema#label) subject
+[YAML-LD](http://www.w3.org/2000/01/rdf-schema#label) subject
 </figcaption>
 </div>
 
@@ -163,7 +163,7 @@ Subject and Predicate here are clickable, since they are URLs. Object is a strin
 ![](/screenshots/www.w3.org.2000.01.rdf-schema.svg)
 
 <figcaption markdown>
-[Label](https://www.w3.org/2000/01/rdf-schema#label) predicate
+[Label](http://www.w3.org/2000/01/rdf-schema#label) predicate
 </figcaption>
 </div>
 </div>
