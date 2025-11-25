@@ -4,7 +4,7 @@
   foaf: https://xmlns.com/foaf/0.1/
   owl: https://www.w3.org/2002/07/owl#
   iolanta: https://iolanta.tech/
-  rdfs: "https://www.w3.org/2000/01/rdf-schema#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
   rdf: https://www.w3.org/1999/02/22-rdf-syntax-ns#
   fip: https://w3id.org/fair/fip/terms/
 
