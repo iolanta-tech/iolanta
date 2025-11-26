@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from typing import Any
 
 from mkdocs_macros.plugin import MacrosPlugin
 from rdflib import URIRef
@@ -10,12 +11,16 @@ from iolanta.iolanta import Iolanta
 from iolanta.namespaces import DATATYPES
 
 
-def as_uri(uri: Path | str) -> URIRef:
-    """Convert a path or string to a URIRef."""
+def as_uri(uri: Any) -> URIRef:
+    """Convert a path, string, or URIRef to a URIRef."""
     match uri:
         case Path() as path:
             return path_to_iri(path)
-
+        case URIRef() as uriref:
+            return uriref
+        case str() as uri_string:
+            return URIRef(uri_string)
+        
     uri_type = type(uri)
     raise NotImplementedError(f'{uri} ({uri_type.__name__}) is unknown')
 
