@@ -1,0 +1,20 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  rdf: https://www.w3.org/1999/02/22-rdf-syntax-ns#
+  iolanta: https://iolanta.tech/
+
+  $: rdfs:label
+
+  →:
+    "@type": "@id"
+    "@id": iolanta:outputs
+
+  ↦: iolanta:matches
+
+$id: pkg:pypi/iolanta#mkdocs-material-insiders-markdown-datatype
+$: OutputDatatype (mkdocs-material-insiders-markdown)
+
+→: https://iolanta.tech/datatypes/mkdocs-material-insiders-markdown
+
+↦: ASK WHERE { $this a iolanta:OutputDatatype }
