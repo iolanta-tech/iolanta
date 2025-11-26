@@ -1,0 +1,77 @@
+MC-1 Fall 2025
+Bricks to Building KGs Micro-Certificate
+KGLP Open Classroom [Full]
+Maru Willson
+•
+Sep 23 (Edited Yesterday)
+Assignment
+•
+10 points
+Due Oct 30
+✅ Select a real-world domain or scenario (e.g., supply chain, healthcare, academic research, social network analysis, or extend the KGCMart e-commerce example) where building a knowledge graph would provide significant value.
+
+✅ For your speed presentation, analyze the chosen domain and propose a foundational knowledge graph design. Your presentation should demonstrate your understanding and application of the key concepts from “Bricks to Building KGs.”
+
+📌 Your presentation should address the following points:
+
+1-Problem & Use Cases: Briefly describe the chosen domain/scenario and identify at least two specific use cases that the knowledge graph is intended to support. How will the KG help answer questions or represent information needed for these use cases?
+
+2-Proposed Schema Elements: Outline the main classes and properties (both relationship and data properties) that would be necessary to represent the information required for your use cases.
+
+3-Identifier Strategy: Explain how you would assign unique identifiers to the entities in your knowledge graph. Discuss your choice of URI construction options and whether you would use Hash or Slash termination for namespaces, justifying your decision based on the trade-offs discussed in the course. If applicable, discuss how you might use UUIDs or other identifier strategies.
+
+4-Graph Representation Choice: Discuss whether RDF or Labeled Property Graph (LPG) is a more suitable representation for your knowledge graph and use cases. Explain the advantages and disadvantages of each for your specific scenario.
+
+If you chose Labeled Property Graph (LPG): Discuss which schema and/or constraint language(s) (e.g., RDFS, OWL, SHACL, SKOS) you would use to define the structure and potentially validate the data, Justify your choice, considering the use cases and capabilities of each language.
+
+5-Querying the KG: Query your knowledge graph to address one of your identified use cases, referencing the relevant query language(s) for your chosen representation (e.g., SPARQL for RDF, GQL/Cypher/Gremlin for LPG).
+
+📌 Remember that this is a "speed presentation", so focus on the most important aspects and justifications.
+
+🟩 Your presentation can be either a video recording while sharing your screen, or a google slides or documents with text and images. 🟨 Review the rubric before turning in the assignment. 🟥 You need 7 points or more to earn this micro-certificate.
+
+When you are ready to "turn in" or submit your assignment:
+1Click the "Add or create" button (or similar) to attach your completed work.
+2Choose the file you want to submit from your computer or Google Drive.
+3Once you've added your work, look for a "Turn in" button and click it to finalize your submission.
+/10
+/2
+Briefly describe the chosen domain/scenario and identify at least two specific use cases that the knowledge graph is intended to support.
+Full Points
+2 pts
+✅ Scenario/Industry ✅ Use Case 1 ✅ Use Case 2
+Partial Points
+1 pt
+1 of 3 ✅ missing
+/2
+Outline the main classes and properties (both relationship and data properties) that would be necessary to represent the information required for your use cases.
+Full Points
+2 pts
+✅ Classes ✅ Relationships ✅ Data Properties
+Partial Points
+1 pt
+1 of 3 ✅ missing
+/2
+Explain how you would assign unique identifiers to the entities in your knowledge graph. Discuss your choice of URI construction options and whether you would primarily use Hash or Slash termination for namespaces, justifying your decision based on the trade-offs discussed in the course. If applicable, discuss how you might use UUIDs or other identifier strategies.
+Full Points
+2 pts
+✅ Unique Identifiers ✅ Namespaces ✅ Justification
+Partial Points
+1 pt
+1 of 3 ✅ missing
+/2
+Discuss whether RDF or Labeled Property Graph (LPG) is a more suitable representation for your knowledge graph and use cases. Explain the advantages and disadvantages of each for your specific scenario.
+Full Points
+2 pts
+✅ Representation ✅ Advantages ✅ Disadvantages
+Partial Points
+1 pt
+1 of 3 ✅ missing
+/2
+Query your knowledge graph to address one of your identified use cases, referencing the relevant query language(s) for your chosen representation.
+Full Points
+2 pts
+✅ Language Choice ✅ Justification
+Partial Points
+1 pt
+1 of 2 ✅ missing

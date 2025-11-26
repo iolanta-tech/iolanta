@@ -1,0 +1,12 @@
+"@context": context.yamlld
+
+$id: iolanta:OutputDatatype
+$type: owl:Class
+
+$: Output Datatype
+
+⊆: rdfs:Datatype
+
+rdfs:comment: |
+  Output format where visualization applications render their results.
+  Examples: terminal text, HTML, Mermaid diagrams.

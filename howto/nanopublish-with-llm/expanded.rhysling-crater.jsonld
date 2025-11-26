@@ -1,0 +1,34 @@
+[
+  {
+    "@id": "https://dbpedia.org/resource/Rhysling_(crater)",
+    "http://www.wikidata.org/entity/P138": [
+      {
+        "@type": [
+          "https://schema.org/Person"
+        ],
+        "@reverse": {
+          "https://schema.org/character": [
+            {
+              "@id": "https://dbpedia.org/resource/The_Green_Hills_of_Earth"
+            }
+          ]
+        },
+        "https://schema.org/alternateName": [
+          {
+            "@value": "Noisy"
+          }
+        ],
+        "https://schema.org/description": [
+          {
+            "@value": "Fictional character from Robert A. Heinlein's short story \"The Green Hills of Earth\""
+          }
+        ],
+        "https://schema.org/name": [
+          {
+            "@value": "Rhysling"
+          }
+        ]
+      }
+    ]
+  }
+]
