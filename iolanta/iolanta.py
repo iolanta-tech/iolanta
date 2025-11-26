@@ -171,8 +171,9 @@ class Iolanta:   # noqa: WPS214
                 self.logger.error(f'{source} | {parser_not_found}')
                 continue
             except YAMLLDError as yaml_ld_error:
-                self.logger.error(f'{source} | {yaml_ld_error}')
-                continue
+                # .add() only processes local files, so errors should be raised
+                self.logger.error(f'{source_file} | {yaml_ld_error}')
+                raise
             except ValueError as value_error:
                 self.logger.error(f'{source} | {value_error}')
                 continue

@@ -24,7 +24,7 @@ class RDFS(rdflib.RDFS):
 
 
 class RDF(rdflib.RDF):
-    _NS = rdflib.Namespace('https://www.w3.org/1999/02/22-rdf-syntax-ns#')
+    _NS = rdflib.Namespace('http://www.w3.org/1999/02/22-rdf-syntax-ns#')
 
 
 class DCTERMS(rdflib.DCTERMS):
