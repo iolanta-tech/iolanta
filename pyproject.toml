@@ -58,6 +58,7 @@ textual-nanopublication = "iolanta.facets.textual_nanopublication:Nanopublicatio
 textual-provenance = "iolanta.facets.textual_provenance:TextualProvenanceFacet"
 textual-link = "iolanta.facets.textual_link:TextualLinkFacet"
 wikibase-statement-title = "iolanta.facets.wikibase_statement_title:WikibaseStatementTitle"
+mkdocs-material-insiders-markdown-datatype = "iolanta.facets.mkdocs_material_insiders_markdown:MkDocsMaterialInsidersMarkdownFacet"
 textual-ontology = "iolanta.facets.textual_ontology:OntologyFacet"
 title = "iolanta.facets.title:TitleFacet"
 boolean = "iolanta.facets.generic:BoolLiteral"
