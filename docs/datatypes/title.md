@@ -1,49 +1,27 @@
-# :material-format-title: Title
+---
+"@context":
+  - ../context.yamlld
+  - iolanta:hasDefaultFacet:
+      "@type": "@id"
+    iolanta:hasInstanceFacet:
+      "@type": "@id"
 
-<script type="application/ld+json">
-  {
-    "@context": {
-      "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-      "rdf": "https://www.w3.org/1999/02/22-rdf-syntax-ns#",
-      "xsd": "https://www.w3.org/2001/XMLSchema#",
-      "iolanta": "https://iolanta.tech/",
-      "iolanta:hasDefaultFacet": {
-        "@type": "@id"
-      },
-      "rdfs:subClassOf": {
-        "@type": "@id"
-      },
-      "foaf": "https://xmlns.com/foaf/0.1/"
-    },
-    "@id": "https://iolanta.tech/datatypes/title",
-    "rdfs:label": "Title",
-    "rdfs:description": "A short string naming something. Used in links, lists, page titles, property tables, and many other cases.",
-    "rdfs:subClassOf": "xsd:string",
-    "@type": "rdfs:Datatype",
-    "iolanta:hasDefaultFacet": "pkg:pypi/iolanta#title",
-    "@included": {
-        "@id": "foaf:Person",
-        "iolanta:hasInstanceFacet": {
-            "@id": "pkg:pypi/iolanta#title-foaf-person",    
-            "iolanta:outputs": {
-              "@id": "https://iolanta.tech/datatypes/title"    
-            }
-        }
-    }
-}
-</script>
+$id: https://iolanta.tech/datatypes/title
+$type: iolanta:OutputDatatype
+$: Title
 
-A short string naming something. Used in links, lists, page titles, property tables, and many other cases.
+rdfs:comment: >
+  A short string naming something. Used in links, lists, page titles, property tables, and many other cases.
 
-| Property           | Value                                                        |
-|-------------------|--------------------------------------------------------------|
-| ∈ Instance Of     | `rdfs:Datatype`                                              |
-| ⊊ Subclass Of     | `xsd:string`                                                 |
-| Has default facet | :material-language-python: `iolanta.facets.title.TitleFacet` | 
+⊆: xsd:string
 
+iolanta:hasDefaultFacet: pkg:pypi/iolanta#title
 
-## Specialized Facets
+"@included":
+  "@id": foaf:Person
+  iolanta:hasInstanceFacet:
+    "@id": pkg:pypi/iolanta#title-foaf-person
+    →: https://iolanta.tech/datatypes/title
+---
 
-| Class         | Facet                                                       | Description                                            |
-|---------------|-------------------------------------------------------------|--------------------------------------------------------|
-| `foaf:Person` | `pkg:pypi/iolanta#title-foaf-person` | Render name of a person from their first and last name | 
+{{ URIRef("https://iolanta.tech/datatypes/title") | as('mkdocs-material-insiders-markdown') }} 
