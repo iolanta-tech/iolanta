@@ -112,7 +112,7 @@ def _extract_from_mapping(  # noqa: WPS213
     algebra: Mapping[str, Any],
 ) -> Iterable[URIRef | Variable]:
     match algebra.name:
-        case 'SelectQuery' | 'AskQuery' | 'Project' | 'Distinct':
+        case 'SelectQuery' | 'AskQuery' | 'Project' | 'Distinct' | 'Slice':
             yield from extract_mentioned_urls(algebra['p'])
 
         case 'BGP':
@@ -259,6 +259,9 @@ def _extract_nanopublication_uris(
     """Extract nanopublications to get retracting information for."""
     match algebra.name:
         case 'SelectQuery' | 'AskQuery' | 'Project' | 'Distinct' | 'Graph':
+            yield from _extract_nanopublication_uris(algebra['p'])
+
+        case 'Slice':
             yield from _extract_nanopublication_uris(algebra['p'])
 
         case 'BGP':
