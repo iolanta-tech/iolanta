@@ -119,7 +119,7 @@ class Iolanta:   # noqa: WPS214
                 processor='sparqlspace',
                 initBindings=kwargs,
             )
-        except ParseException as err:
+        except SyntaxError as err:
             raise SPARQLParseException(
                 error=err,
                 query=query_text,
