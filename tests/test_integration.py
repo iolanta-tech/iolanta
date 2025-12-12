@@ -159,6 +159,38 @@ def test_iolanta_last_loaded_time():
     assert 'time' in svg
 
 
+def test_wikibase_statement():
+    """Test wikibase:Statement class."""
+    svg = generate_screenshot(
+        URL('http://wikiba.se/ontology#Statement'),
+    )
+    assert 'Statement' in svg
+
+
+def test_wikidata_cyberspace():
+    """Test Wikidata entity Q204606 (Cyberspace)."""
+    svg = generate_screenshot(
+        URL('http://www.wikidata.org/entity/Q204606'),
+    )
+    assert 'svg' in svg
+
+
+def test_wikidata_statement_instance():
+    """Test a specific Wikidata statement instance."""
+    svg = generate_screenshot(
+        URL('http://www.wikidata.org/entity/statement/Q204606-fd8d7c8a-431b-1444-80ef-bb3c0cb139a9'),
+    )
+    assert 'svg' in svg
+
+
+def test_wikidata_prop_p101():
+    """Test Wikidata property P101 (field of work)."""
+    svg = generate_screenshot(
+        URL('http://www.wikidata.org/prop/P101'),
+    )
+    assert 'svg' in svg
+
+
 @pytest.fixture(scope='session')
 def yaml_ld_spec_url() -> URL:
     return URL('https://json-ld.github.io/yaml-ld/spec')
