@@ -88,12 +88,6 @@
     iolanta:hasDefaultFacet:
       $id: pkg:pypi/iolanta#textual-link
 
-  - $id: https://wikiba.se/ontology#Statement
-    iolanta:hasInstanceFacet:
-      $id: pkg:pypi/iolanta#wikibase-statement-title
-      $: Title
-      →: https://iolanta.tech/datatypes/title
-
   - $id: rdfs:Class
     iolanta:hasInstanceFacet:
       $id: pkg:pypi/iolanta#textual-class

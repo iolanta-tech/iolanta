@@ -1,0 +1,10 @@
+PREFIX wikibase: <http://wikiba.se/ontology#>
+
+CONSTRUCT {
+  ?thing rdfs:label ?label .
+}
+WHERE {
+  ?entity
+    (wikibase:claim | wikibase:qualifier | wikibase:statementProperty | wikibase:statementValueNormalized) ?thing ;
+    rdfs:label ?label .
+}

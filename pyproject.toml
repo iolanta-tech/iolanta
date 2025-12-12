@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iolanta"
-version = "2.1.6"
+version = "2.1.7"
 description = "Semantic Web browser"
 authors = ["Anatoly Scherbakov <altaisoft@gmail.com>"]
 license = "MIT"
@@ -57,7 +57,6 @@ textual-no-facet-found = "iolanta.facets.textual_no_facet_found:TextualNoFacetFo
 textual-nanopublication = "iolanta.facets.textual_nanopublication:NanopublicationFacet"
 textual-provenance = "iolanta.facets.textual_provenance:TextualProvenanceFacet"
 textual-link = "iolanta.facets.textual_link:TextualLinkFacet"
-wikibase-statement-title = "iolanta.facets.wikibase_statement_title:WikibaseStatementTitle"
 mkdocs-material-insiders-markdown-datatype = "iolanta.facets.mkdocs_material_insiders_markdown:MkDocsMaterialInsidersMarkdownFacet"
 textual-ontology = "iolanta.facets.textual_ontology:OntologyFacet"
 title = "iolanta.facets.title:TitleFacet"
@@ -66,7 +65,6 @@ title-foaf-person = "iolanta.facets.foaf_person_title:FOAFPersonTitle"
 mermaid-graph = "iolanta.mermaid.facet:Mermaid"
 rich-declension-table = "iolanta.declension.facet:RichDeclensionTable"
 labeled-triple-set = "iolanta.labeled_triple_set.labeled_triple_set:LabeledTripleSet"
-
 
 [tool.poetry.plugins."rdf.plugins.queryprocessor"]
 sparqlspace = "iolanta.sparqlspace.processor:GlobalSPARQLProcessor"

@@ -1,0 +1,27 @@
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+
+CONSTRUCT {
+  ?statement rdfs:label ?label .
+}
+WHERE {
+  ?statement a wikibase:Statement .
+  
+  # Find predicates from statement to values (excluding metadata predicates)
+  ?statement ?statementProp ?value .
+  
+  FILTER(?statementProp != wikibase:rank)
+  FILTER(?statementProp != rdf:type)
+  FILTER(?statementProp != prov:wasDerivedFrom)
+  FILTER(?statementProp != iolanta:last-loaded-time)
+  
+  # Handle entity values: get their label
+  {
+    ?value rdfs:label ?label .
+  } UNION {
+    # Handle literal values: use the literal directly
+    ?statement ?statementProp ?label .
+    FILTER(isLiteral(?label))
+  }
+}
