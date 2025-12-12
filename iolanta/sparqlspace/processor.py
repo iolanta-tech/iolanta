@@ -35,6 +35,7 @@ from iolanta.namespaces import (  # noqa: WPS235
     DCTERMS,
     FOAF,
     IOLANTA,
+    LOCAL,
     META,
     OWL,
     PROV,
@@ -46,6 +47,8 @@ from iolanta.parse_quads import NORMALIZE_TERMS_MAP, parse_quads
 
 REASONING_ENABLED = True
 OWL_REASONING_ENABLED = False
+
+INFERENCE_DIR = Path(__file__).parent / 'inference'
 INDICES = [
     URIRef('https://iolanta.tech/visualizations/index.yaml'),
 ]
@@ -260,6 +263,9 @@ def _extract_nanopublication_uris(
     match algebra.name:
         case 'SelectQuery' | 'AskQuery' | 'Project' | 'Distinct' | 'Graph':
             yield from _extract_nanopublication_uris(algebra['p'])
+        case 'ConstructQuery':
+            # CONSTRUCT queries don't have nanopublication URIs in bindings
+            return
 
         case 'Slice':
             yield from _extract_nanopublication_uris(algebra['p'])
@@ -404,64 +410,6 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
         self.graph.last_not_inferred_source = None
         self.graph._indices_loaded = False
 
-    def _infer_with_sparql(self):
-        """
-        Infer triples with SPARQL rules.
-
-        FIXME:
-          * Code these rules into SHACL or some other RDF based syntax;
-          * Make them available at iolanta.tech/visualizations/ and indexed.
-        """
-        inference = Path(__file__).parent / 'inference'
-
-        file_names = {
-            'wikibase-claim.sparql': URIRef('local:inference-wikibase-claim'),
-            'wikibase-statement-property.sparql': URIRef(
-                'local:inference-statement-property',
-            ),
-        }
-
-        for file_name, graph_name in file_names.items():
-            start_time = time.time()
-            self.graph.update(
-                update_object=(inference / file_name).read_text(),
-            )
-            triple_count = len(self.graph.get_context(graph_name))
-            duration = datetime.timedelta(seconds=time.time() - start_time)
-            self.logger.info(
-                f'{file_name}: {triple_count} triple(s), '
-                f'inferred at {duration}',
-            )
-
-    def maybe_apply_inference(self):
-        """Apply global OWL RL inference if necessary."""
-        if not REASONING_ENABLED:
-            return
-
-        if self.graph.last_not_inferred_source is None:
-            return
-
-        with self.inference_lock:
-            self._infer_with_sparql()
-            self._infer_with_owl_rl()
-            self.logger.info('Inference @ cyberspace: complete.')
-
-            self.graph.last_not_inferred_source = None
-
-    def _infer_with_owl_rl(self):
-        if not OWL_REASONING_ENABLED:
-            return
-
-        reasoner = reasonable.PyReasoner()
-        reasoner.from_graph(self.graph)
-        inferred_triples = reasoner.reason()
-        inference_graph_name = BNode('_:inference')
-        inferred_quads = [
-            (*triple, inference_graph_name)
-            for triple in inferred_triples
-        ]
-        self.graph.addN(inferred_quads)
-
     def _maybe_load_indices(self):
         if not self.graph._indices_loaded:
             for index in INDICES:
@@ -486,7 +434,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
 
         initBindings = initBindings or {}
         initNs = initNs or {}
-
+        
         if isinstance(strOrQuery, Query):
             query = strOrQuery
 
@@ -494,12 +442,14 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             parse_tree = parseQuery(strOrQuery)
             query = translateQuery(parse_tree, base, initNs)
 
-        self.load_retracting_nanopublications_by_query(
-            query=query,
-            bindings=initBindings,
-            base=base,
-            namespaces=initNs,
-        )
+        # Only extract nanopublications from SELECT/ASK queries, not CONSTRUCT
+        if query.algebra.name != 'ConstructQuery':
+            self.load_retracting_nanopublications_by_query(
+                query=query,
+                bindings=initBindings,
+                base=base,
+                namespaces=initNs,
+            )
 
         query, urls = extract_mentioned_urls_from_query(
             query=query,
@@ -508,15 +458,24 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             namespaces=initNs,
         )
 
+        # Filter out inference graph names (they're not URLs to load)
+        urls = {url for url in urls if not str(url).startswith('inference:')}
+
         for url in urls:
             try:
                 self.load(url)
             except Exception as err:
                 self.logger.exception(f'Failed to load {url}: {err}', url, err)
 
-        NanopubQueryPlugin(graph=self.graph)(query, bindings=initBindings)
+        # Run inference if there's new data since last inference run
+        # (after URLs are loaded so inference can use the loaded data)
+        if self.graph.last_not_inferred_source is not None:
+            self.logger.debug(f'Running inference, last_not_inferred_source: {self.graph.last_not_inferred_source}')
+            self._run_inference()
+        else:
+            self.logger.debug('Skipping inference, last_not_inferred_source is None')
 
-        self.maybe_apply_inference()
+        NanopubQueryPlugin(graph=self.graph)(query, bindings=initBindings)
 
         is_anything_loaded = True
         while is_anything_loaded:
@@ -531,6 +490,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
                 return query_result
 
             for row in bindings:
+                break
                 for _, maybe_iri in row.items():
                     if (
                         isinstance(maybe_iri, URIRef)
@@ -566,12 +526,10 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
 
     def _follow_is_visualized_with_links(self, uri: URIRef):
         """Follow `dcterms:isReferencedBy` links."""
-        self.logger.info(f'Following links for {uri}…')
         triples = self.graph.triples((uri, DCTERMS.isReferencedBy, None))
         for _, _, visualization in triples:
             if isinstance(visualization, URIRef):
                 self.load(visualization)
-        self.logger.info('Links followed.')
 
     def load(   # noqa: C901, WPS210, WPS212, WPS213, WPS231
         self,
@@ -611,8 +569,6 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
         source_uri = normalize_term(source)
         if self._is_loaded(source_uri):
             return Skipped()
-        else:
-            self.logger.info(f'{source_uri} is not loaded yet')
 
         # FIXME This is definitely inefficient. However, python-yaml-ld caches
         #   the document, so the performance overhead is not super high.
@@ -718,8 +674,9 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             for quad in quads
         })
         self.logger.info(
-            f'{source} | loaded successfully into graphs: {into_graphs}',
+            f'{source} | loaded {len(quads)} triples into graphs: {into_graphs}',
         )
+
         return Loaded()
 
     def resolve_term(self, term: Node, bindings: dict[str, Node]):
@@ -731,6 +688,51 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             )
 
         return term
+
+    def _run_inference(self):  # noqa: WPS231
+        """
+        Run inference queries from the inference directory.
+
+        For each SPARQL file in the inference directory:
+        1. Truncate the named graph `local:inference-{filename}`
+        2. Execute the CONSTRUCT query
+        3. Insert the resulting triples into that graph
+        """
+        with self.inference_lock:
+            for inference_file in INFERENCE_DIR.glob('*.sparql'):
+                filename = inference_file.stem  # filename without .sparql extension
+                inference_graph = URIRef(f'inference:{filename}')
+
+                # Truncate the inference graph
+                context = self.graph.get_context(inference_graph)
+                context.remove((None, None, None))
+
+                # Read and execute the CONSTRUCT query
+                query_text = inference_file.read_text()
+                result = self.graph.query(query_text)
+
+                # CONSTRUCT queries return a SPARQLResult with a graph attribute
+                result_graph = result.get('graph') if isinstance(result, dict) else result.graph
+                self.logger.debug(f'Inference {filename}: result_graph is {result_graph}, type: {type(result_graph)}')
+                if result_graph is not None:
+                    inferred_quads = [
+                        (s, p, o, inference_graph)
+                        for s, p, o in result_graph
+                    ]
+                    self.logger.debug(f'Inference {filename}: generated {len(inferred_quads)} quads')
+
+                    if inferred_quads:
+                        self.graph.addN(inferred_quads)
+                        self.logger.info(
+                            'Inference {filename}: added {count} triples',
+                            filename=filename,
+                            count=len(inferred_quads),
+                        )
+                else:
+                    self.logger.debug(f'Inference {filename}: result_graph is None')
+        
+        # Clear the flag after running inference
+        self.graph.last_not_inferred_source = None
 
     def load_retracting_nanopublications_by_query(    # noqa: WPS231
         self,
