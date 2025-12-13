@@ -2,9 +2,9 @@ import json
 from pathlib import Path
 from typing import Any
 
+import yaml_ld
 from mkdocs_macros.plugin import MacrosPlugin
 from rdflib import URIRef
-import yaml_ld
 
 from iolanta.conversions import path_to_iri
 from iolanta.iolanta import Iolanta

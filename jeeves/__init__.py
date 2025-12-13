@@ -7,7 +7,10 @@ import sh
 from jeeves_yeti_pyproject import flakeheaven
 from jeeves_yeti_pyproject.mypy import construct_mypy_flags
 from rich.console import Console
-from jeeves.functionality_score import calculate_functionality_score_for_rare_predicates  # noqa
+
+from jeeves.functionality_score import (  # noqa
+    calculate_functionality_score_for_rare_predicates,
+)
 
 gh = sh.gh.bake(_env={**os.environ, 'NO_COLOR': '1'})
 

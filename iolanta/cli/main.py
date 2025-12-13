@@ -11,7 +11,7 @@ from rdflib import Literal, URIRef
 from rich.console import Console
 from rich.markdown import Markdown
 from rich.table import Table
-from typer import Argument, Exit, Option, Typer, Context
+from typer import Argument, Context, Exit, Option, Typer
 from yarl import URL
 
 from iolanta.cli.models import LogLevel
