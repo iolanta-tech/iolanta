@@ -1,0 +1,25 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  iolanta: https://iolanta.tech/
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+
+  $: rdfs:label
+  →:
+    "@type": "@id"
+    "@id": iolanta:outputs
+  ⪯:
+    "@type": "@id"
+    "@id": iolanta:is-preferred-over
+  ↦: iolanta:matches
+
+$id: pkg:pypi/iolanta#textual-class
+
+$: Instances
+→: https://iolanta.tech/cli/textual
+
+⪯:
+  - pkg:pypi/iolanta#textual-browser
+  - pkg:pypi/iolanta#textual-inverse-properties
+
+↦: ASK WHERE { ?instance a $this }
