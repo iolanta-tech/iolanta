@@ -217,6 +217,9 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
 
     def action_reload(self):
         """Reset Iolanta graph and re-render current view."""
+        if self.history.current is None:
+            return
+        
         self.iolanta.reset()
 
         self.run_worker(
@@ -271,6 +274,13 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
         facet_iri: str | None = None,
     ):
         """Go to an IRI."""
+        # Convert string to URIRef if needed.
+        # This happens when called via Textual action strings (from keyboard bindings
+        # in page.py line 24), which serialize URIRefs to strings in f-strings.
+        # Direct calls (like line 77) pass URIRef objects directly.
+        if isinstance(this, str):
+            this = URIRef(this)
+        
         self.run_worker(
             functools.partial(
                 self.render_iri,
