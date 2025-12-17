@@ -1,5 +1,6 @@
 import functools
 import itertools
+from pathlib import Path
 from typing import ClassVar, Iterable
 
 import funcy
@@ -185,6 +186,8 @@ class InstancesBody(Vertical):
 
 class Class(Facet[Widget]):
     """Render instances of a class."""
+
+    META = Path(__file__).parent / 'textual-class.yamlld'
 
     def stream_instances(self) -> Iterable[NotLiteralNode]:
         """

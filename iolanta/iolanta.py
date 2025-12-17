@@ -308,44 +308,6 @@ class Iolanta:   # noqa: WPS214
                 error=err,
             ) from err
 
-    def render_all(
-        self,
-        node: Node,
-        as_datatype: NotLiteralNode,
-    ) -> Iterable[Any]:
-        """Find all possible Iolanta facets for a node and render them."""
-        choices = list(
-            FacetFinder(
-                iolanta=self,
-                node=node,
-                as_datatype=as_datatype,
-            ).choices(),
-        )
-
-        pairs = [
-            (self.facet_resolver[row['facet']], row['output_datatype'])
-            for row in choices
-        ]
-
-        facet_instances = [
-            facet_class(
-                this=node,
-                iolanta=self,
-                as_datatype=output_datatype,
-            )
-            for facet_class, output_datatype in pairs
-        ]
-
-        for facet in facet_instances:
-            try:
-                yield facet.show()
-            except Exception as err:
-                raise FacetError(
-                    node=node,
-                    facet_iri=None,
-                    error=err,
-                ) from err
-
     def node_as_qname(self, node: Node):
         """Render node as a QName if possible."""
         qname = node_to_qname(node, self.graph)

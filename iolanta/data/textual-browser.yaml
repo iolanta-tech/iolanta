@@ -1,14 +1,14 @@
 "@context":
   "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
-  vann: https://purl.org/vocab/vann/
-  foaf: https://xmlns.com/foaf/0.1/
-  owl: https://www.w3.org/2002/07/owl#
+  vann: http://purl.org/vocab/vann/
+  foaf: http://xmlns.com/foaf/0.1/
+  owl: http://www.w3.org/2002/07/owl#
   iolanta: https://iolanta.tech/
   rdfs: "http://www.w3.org/2000/01/rdf-schema#"
-  rdf: https://www.w3.org/1999/02/22-rdf-syntax-ns#
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
   np: https://www.nanopub.org/nschema#
-  dcterms: https://purl.org/dc/terms/
-  xsd: https://www.w3.org/2001/XMLSchema#
+  dcterms: http://purl.org/dc/terms/
+  xsd: http://www.w3.org/2001/XMLSchema#
 
   iolanta:outputs:
     "@type": "@id"
@@ -88,15 +88,6 @@
     iolanta:hasDefaultFacet:
       $id: pkg:pypi/iolanta#textual-link
 
-  - $id: rdfs:Class
-    iolanta:hasInstanceFacet:
-      $id: pkg:pypi/iolanta#textual-class
-      $: Instances
-      →: https://iolanta.tech/cli/textual
-      ⪯:
-        - pkg:pypi/iolanta#textual-browser
-        - pkg:pypi/iolanta#textual-inverse-properties
-
   - $id: owl:Ontology
     iolanta:hasInstanceFacet:
       $id: pkg:pypi/iolanta#textual-ontology
@@ -118,11 +109,6 @@
     $: Subjects → Objects
     →: https://iolanta.tech/cli/textual
     ↦: ASK WHERE { ?subject $this ?object }
-
-  - $id: pkg:pypi/iolanta#textual-class
-    ↦:
-      - ASK WHERE { ?instance a $this }
-      - ASK WHERE { $this rdfs:subClassOf ?superclass }
 
   - $id: https://iolanta.tech/cli/textual
     iolanta:when-no-facet-found: pkg:pypi/iolanta#textual-no-facet-found

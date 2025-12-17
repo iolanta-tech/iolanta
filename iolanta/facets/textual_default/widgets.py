@@ -25,6 +25,7 @@ class PropertyName(Widget, can_focus=True, inherit_bindings=False):
         width: 15%;
         height: auto;
         margin-right: 1;
+        text-style: bold;
     }
 
     PropertyName:hover {
@@ -60,7 +61,8 @@ class PropertyName(Widget, can_focus=True, inherit_bindings=False):
 
     def render_title(self):
         """Render title in a separate thread."""
-        return self.app.iolanta.render(self.iri, DATATYPES.title)
+        title = self.app.iolanta.render(self.iri, DATATYPES.title)
+        return f'⤚{title}→'
 
     def render(self) -> RenderResult:
         """Render node title."""
@@ -147,6 +149,13 @@ class PropertyValue(Widget, can_focus=True, inherit_bindings=False):
         """Return the property IRI for compatibility."""
         return self.property_value
 
+    def render_title(self):
+        """Render title in a separate thread."""
+        return self.app.iolanta.render(
+            self.iri,
+            as_datatype=DATATYPES.title,
+        )
+
     def on_worker_state_changed(self, event: Worker.StateChanged):
         """Show the title after it has been rendered."""
         match event.state:
@@ -191,7 +200,9 @@ class PropertiesContainer(Vertical):
     DEFAULT_CSS = """
     PropertiesContainer {
         height: auto;
-    }"""
+        padding: 1;
+    }
+    """
 
     def render_all_properties(self):
         """Render all property names & values."""
@@ -199,10 +210,7 @@ class PropertiesContainer(Vertical):
 
         widget: PropertyName | PropertyValue
         for widget in widgets:
-            widget.renderable = self.app.iolanta.render(
-                widget.iri,
-                as_datatype=DATATYPES.title,
-            )
+            widget.renderable = widget.render_title()
 
     def on_mount(self):
         """Initiate rendering in the background."""

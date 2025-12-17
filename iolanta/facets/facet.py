@@ -20,6 +20,10 @@ class Facet(Generic[FacetOutput]):
     iolanta: 'iolanta.Iolanta' = field(repr=False)
     as_datatype: Optional[NotLiteralNode] = None
 
+    def __post_init__(self):
+        if type(self.this) == str:
+            raise ValueError(f'Facet {self.__class__.__name__} received a string as this: {self.this}')
+
     @property
     def stored_queries_path(self) -> Path:
         """Construct directory for stored queries for this facet."""

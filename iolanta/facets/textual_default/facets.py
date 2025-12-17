@@ -4,7 +4,7 @@ from xml.dom import minidom  # noqa: S408
 import funcy
 from rdflib.term import Literal, Node
 from rich.syntax import Syntax
-from textual.containers import VerticalScroll
+from textual.containers import Vertical, VerticalScroll
 from textual.widget import Widget
 from textual.widgets import Static
 
@@ -22,17 +22,28 @@ from iolanta.models import NotLiteralNode
 from iolanta.namespaces import DC, RDFS, SDO
 
 
+class Description(Static):
+    """Static widget with padding for descriptions."""
+
+    DEFAULT_CSS = """
+    Description {
+        padding: 1;
+    }
+    """
+
+
 class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
     """Default rendering engine."""
 
     query_file_name = 'properties.sparql'
+    properties_on_the_right = False
 
     @functools.cached_property
     def grouped_properties(self) -> dict[NotLiteralNode, list[Node]]:
         """Properties of current node & their values."""
         property_rows = self.stored_query(
             self.query_file_name,
-            iri=self.this,
+            this=self.this,
         )
 
         property_pairs = [
@@ -75,10 +86,18 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
                 for property_value in property_values
             ]
 
-            yield PropertyRow(
-                property_name,
-                PropertyValues(*property_values),
-            )
+            if self.properties_on_the_right:
+                # Property name on the right (last column), values on the left (first column)
+                yield PropertyRow(
+                    PropertyValues(*property_values),
+                    property_name,
+                )
+            else:
+                # Property name on the left (first column), values on the right (last column)
+                yield PropertyRow(
+                    property_name,
+                    PropertyValues(*property_values),
+                )
 
     @functools.cached_property
     def description(self) -> str | Syntax | None:
@@ -134,22 +153,38 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
 
     def show(self) -> Widget:
         """Render the content."""
-        return VerticalScroll(
-            PageTitle(self.this),
-            Static(self.description or ''),
-            self.properties,
-        )
 
+        widgets = [PageTitle(self.this)]
+
+        if self.description:
+            widgets.append(Description(self.description))
+        
+        widgets.append(self.properties)
+
+        return VerticalScroll(*widgets)
+
+
+class PageFooter(PageTitle):
+    """Page footer."""
+
+    DEFAULT_CSS = """
+    PageFooter {
+        dock: bottom;
+        background: darkmagenta;
+    }
+    """
 
 class InverseProperties(TextualDefaultFacet):
     """Inverse properties view."""
 
     query_file_name = 'inverse-properties.sparql'
+    properties_on_the_right = True
 
     def show(self) -> Widget:
         """Render the content."""
-        return VerticalScroll(
-            PageTitle(self.this, extra='[i]& its inverse RDF properties[/i]'),
-            Static(self.description or ''),
-            self.properties,
+        return Vertical(
+            VerticalScroll(
+                self.properties,
+            ),
+            PageFooter(self.this, extra='[i]& its inverse RDF properties[/i]'),
         )

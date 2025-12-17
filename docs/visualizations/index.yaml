@@ -15,19 +15,19 @@ $included:
   - $id: "rdfs:"
     →: rdfs.yaml
 
-  - $id: https://xmlns.com/foaf/0.1/
+  - $id: http://xmlns.com/foaf/0.1/
     →: foaf.yaml
 
-  - $id: "https://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  - $id: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     →: rdf.yaml
 
-  - $id: https://purl.org/dc/terms/
+  - $id: http://purl.org/dc/terms/
     →: dcterms.yaml
 
-  - $id: "https://www.w3.org/2002/07/owl#"
+  - $id: "http://www.w3.org/2002/07/owl#"
     →: owl.yaml
 
-  - $id: "https://w3id.org/fair/fip/terms/"
+  - $id: "http://w3id.org/fair/fip/terms/"
     →: fair-fip.yamlld
 
   - $id: https://www.nanopub.org/nschema#
