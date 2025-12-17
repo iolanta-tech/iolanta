@@ -7,9 +7,17 @@
   rdfs: "http://www.w3.org/2000/01/rdf-schema#"
   rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
 
+  owl:onProperty:
+    "@type": "@id"
+
 $included:
   - $id: iolanta:Facet
-    $type: rdfs:Class
+    $type: owl:Class
+    rdfs:subClassOf:
+      $type: owl:Restriction
+      owl:onProperty: iolanta:outputs
+      owl:minCardinality: 1
+
     label: Application capable to represent certain nodes of a semantic graph in a form suitable for certain user to interact with.
 
   - $id: iolanta:OutputDatatype
