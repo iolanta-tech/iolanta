@@ -1,0 +1,33 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  iolanta: https://iolanta.tech/
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  xsd: http://www.w3.org/2001/XMLSchema#
+
+  $: rdfs:label
+  →:
+    "@type": "@id"
+    "@id": iolanta:outputs
+  ⪯:
+    "@type": "@id"
+    "@id": iolanta:is-preferred-over
+  ⊆:
+    "@type": "@id"
+    "@id": rdfs:subClassOf
+  iolanta:hasDefaultFacet:
+    "@type": "@id"
+
+$id: pkg:pypi/iolanta#title
+
+$: Title
+→: https://iolanta.tech/datatypes/title
+
+"@included":
+  - $id: https://iolanta.tech/datatypes/title
+    $type: iolanta:OutputDatatype
+    $: Title
+    rdfs:comment: >
+      A short string naming something. Used in links, lists, page titles, property tables, and many other cases.
+    ⊆: xsd:string
+    iolanta:hasDefaultFacet: pkg:pypi/iolanta#title
