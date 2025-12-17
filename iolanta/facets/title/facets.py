@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import funcy
 from rdflib import URIRef
 
@@ -16,6 +18,8 @@ PRIORITIES = [   # noqa: WPS407
 
 class TitleFacet(Facet[str]):
     """Title of an object."""
+
+    META = Path(__file__).parent / 'title.yamlld'
 
     def show(self) -> str:
         """Render title of a thing."""
