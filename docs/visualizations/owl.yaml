@@ -5,7 +5,7 @@
   owl: https://www.w3.org/2002/07/owl#
   iolanta: https://iolanta.tech/
   rdfs: "http://www.w3.org/2000/01/rdf-schema#"
-  rdf: https://www.w3.org/1999/02/22-rdf-syntax-ns#
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
   dcterms: https://purl.org/dc/terms/
   dcam: https://purl.org/dc/dcam/
 
