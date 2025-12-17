@@ -1,0 +1,73 @@
+graph LR
+    happiness("🚀 Happiness!")
+    classDef usecase fill:#080,stroke:#080,stroke-width:1px,font-weight:bold;
+    class happiness usecase
+    
+    ipfs("Render LD from IPFS") --> happiness
+    
+    render-decision-matrix("Render a Decision Matrix with Iolanta") --> manage-adrs("Manage ADRs with Iolanta")
+    class render-decision-matrix usecase
+    manage-adrs --> manage-roadmaps("Build roadmaps & plans<br/>with Iolanta")
+    class manage-adrs usecase
+    class manage-roadmaps usecase
+    generate-roadmap("Generate this roadmap<br/>from LD") --> manage-roadmaps
+    manage-roadmaps --> roadmap3d("Implement a 3D view<br/>for the roadmap<br/><small>because should look cool</small>") --> happiness
+    manage-roadmaps --> happiness
+    
+    wasm("First WASM based facet") --> happiness
+    
+    discovery-mcp("Discovery MCP discovers LD based on free form text")
+    
+    subgraph unblock-nanopubs ["Unblock Nanopubs"]
+        direction LR
+        pr180-merged("PR 180: Nanopublication/nanopub-py<br/>is merged")
+        jeeves-nanopubs("Start <code>jeeves-nanopublications</code>")
+    end
+    click pr180-merged "https://github.com/Nanopublication/nanopub-py/pull/180"
+    unblock-nanopubs --> discovery-mcp
+    discovery-mcp --> write-nanopubs("Write nanopublications with Iolanta")
+    unblock-nanopubs --> armenian-pronouns
+    class write-nanopubs usecase
+    write-nanopubs --> happiness
+    
+    foaf-title("FOAF Title facet<br/>only reacts on <code>foaf:Person</code> class") --> happiness
+    class foaf-title bug
+    
+    tractatus("Tractatus Logico-Philosophicus → LD") --> happiness
+    class tractatus usecase
+    
+    starts-from-console("Iolanta starts with a blank console") --> happiness
+    class starts-from-console bug
+    
+    implement-yaml-ld-ontology("Implement YAML-LD Ontology") --> happiness
+    class implement-yaml-ld-ontology usecase
+    
+    generate-facets-list("Generate Facets list") --> happiness
+    click generate-facets-list "/Facet/"
+    
+    
+    sparqlspace-inference-bug("SPARQL inference handled by <code>sparqlspace</code>") --> happiness
+    class sparqlspace-inference-bug bug
+    
+    sparqlspace-integration-tests("<code>sparqlspace</code>has no<br/>integration tests") --> happiness
+    class sparqlspace-integration-tests bug
+
+    pyld-fails-on-lexinfo("<code>pyld</code> fails on <a href='http://www.lexinfo.net/ontology/2.0/lexinfo#'>lexinfo</a>") --> armenian-pronouns("Armenian pronouns<br/>nanopub") --> happiness
+    class pyld-fails-on-lexinfo bug
+
+      howto-facet("HOWTO <strong>Make your own facet</strong>")
+      --> happiness
+
+    class jyp-outdated bug
+    
+    subgraph legend ["Legend"]
+        direction TB
+        legend-task["Task<br/>A to-do item or feature"]
+        legend-bug["Bug<br/>A known issue (red)"]
+        legend-usecase["Usecase<br/>A high-level goal (green)"]
+        legend-arrow["Arrow: A → B means<br/>'A blocks B'"]
+    end
+    class legend-bug bug
+    class legend-usecase usecase
+    
+    classDef bug fill:#700,stroke:#f00,stroke-width:1px;
