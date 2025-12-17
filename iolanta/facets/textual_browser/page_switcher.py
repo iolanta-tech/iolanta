@@ -274,12 +274,17 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
         facet_iri: str | None = None,
     ):
         """Go to an IRI."""
-        # Convert string to URIRef if needed.
+        # Convert string to Node if needed.
         # This happens when called via Textual action strings (from keyboard bindings
-        # in page.py line 24), which serialize URIRefs to strings in f-strings.
-        # Direct calls (like line 77) pass URIRef objects directly.
+        # in page.py line 24), which serialize nodes to strings in f-strings.
+        # Direct calls (like line 77) pass Node objects directly.
         if isinstance(this, str):
-            this = URIRef(this)
+            # Check if string represents a blank node (starts with "_:")
+            if this.startswith('_:'):
+                # Create a BNode with the full string (including the "_:")
+                this = BNode(this)
+            else:
+                this = URIRef(this)
         
         self.run_worker(
             functools.partial(

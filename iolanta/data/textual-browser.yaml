@@ -70,15 +70,6 @@
         FILTER (?graph != <iolanta://_meta>)
       }
 
-  - $id: pkg:pypi/iolanta#textual-inverse-properties
-    $: Inverse Properties
-    →: https://iolanta.tech/cli/textual
-    ↦: |
-      ASK WHERE {
-        GRAPH ?graph { ?something ?property $this }
-        FILTER (?graph != <iolanta://_meta>)
-      }
-
   - $id: "urn:"
     iolanta:hasFacetByPrefix:
       $id: pkg:pypi/iolanta#textual-provenance

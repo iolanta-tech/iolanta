@@ -125,7 +125,7 @@ def _extract_from_mapping(  # noqa: WPS213
                 term
                 for triple in algebra['triples']
                 for term in triple
-                if not isinstance(term, Literal)
+                if isinstance(term, URIRef)
             ]
 
         case 'Filter' | 'UnaryNot' | 'OrderCondition':
@@ -542,6 +542,15 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
 
         TODO This function is too big, we have to refactor it.
         """
+        # Blank nodes cannot be loaded from URLs
+        if isinstance(source, BNode):
+            return Skipped()
+        
+        # Also check if URIRef represents a blank node (can happen if BNode
+        # was serialized to string and converted to URIRef)
+        if isinstance(source, URIRef) and str(source).startswith('_:'):
+            raise ValueError('This is actually a blank node but masked as a URIREF')
+        
         url = URL(source)
 
         if url.scheme in {'file', 'python', 'local', 'urn', 'doi'}:

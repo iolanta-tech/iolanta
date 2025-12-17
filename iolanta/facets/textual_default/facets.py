@@ -1,4 +1,5 @@
 import functools
+from pathlib import Path
 from xml.dom import minidom  # noqa: S408
 
 import funcy
@@ -177,6 +178,7 @@ class PageFooter(PageTitle):
 class InverseProperties(TextualDefaultFacet):
     """Inverse properties view."""
 
+    META = Path(__file__).parent / 'textual-inverse-properties.yamlld'
     query_file_name = 'inverse-properties.sparql'
     properties_on_the_right = True
 
