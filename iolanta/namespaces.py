@@ -32,11 +32,11 @@ class DCTERMS(rdflib.DCTERMS):
 
 
 class VANN(rdflib.VANN):
-    _NS = rdflib.Namespace('https://purl.org/vocab/vann/')
+    ...
 
 
 class FOAF(rdflib.FOAF):
-    _NS = rdflib.Namespace('https://xmlns.com/foaf/0.1/')
+    ...
 
 
 class XSD(rdflib.XSD):
