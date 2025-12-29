@@ -1,6 +1,6 @@
 from rdflib import URIRef
 
-from iolanta.sparqlspace.processor import apply_redirect
+from iolanta.sparqlspace.redirects import apply_redirect
 
 
 def test_apply_redirect():
