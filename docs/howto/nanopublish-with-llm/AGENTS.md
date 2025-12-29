@@ -70,29 +70,29 @@ Instead of:
       "@type": "@id"
 ```
 
-**R10.** Reduce quoting when not required by YAML syntax rules.
+**R10.** Reduce quoting when not required by YAML syntax rules. Do not quote simple strings without special characters. For example, use `rdfs:label: Rhysling` instead of `rdfs:label: "Rhysling"`. Quotes are only needed when the value contains special YAML characters (like `:`, `@`, `&`, `*`, `|`, `>`, `#`, etc.) or when the value starts with characters that YAML interprets specially.
 
 **R11.** For language tags, use YAML-LD syntax: `rdfs:label: { $value: "text", $language: "lang" }` instead of Turtle syntax `"text"@lang`.
 
-**R12.** Use `"@type": "@id"` in the context to coerce properties to IRIs instead of using `$id` wrappers in the document body.
+**R12.** Use `"@type": "@id"` in the context to coerce properties to IRIs instead of using `$id` wrappers in the document body. This keeps the document body clean and readable while ensuring proper URI handling.
 
-**R13.** Define URI coercion in the context using `"@type": "@id"` rather than using `$id` wrappers in the document body. This keeps the document body clean and readable while ensuring proper URI handling.
-
-**R14.** When defining local shortcuts for URIs in the context, use dashed-case (e.g., `appears-in`, `named-after`) instead of camelCase (e.g., `appearsIn`, `namedAfter`). This improves readability and follows common YAML conventions.
+**R13.** When defining local shortcuts for URIs in the context, use dashed-case (e.g., `appears-in`, `named-after`) instead of camelCase (e.g., `appearsIn`, `namedAfter`). This improves readability and follows common YAML conventions.
 
 ## URIs and Identifiers
 
-**R15.** Do not use mock URLs like `https://example.org`. Use resolvable URLs that preferably point to Linked Data.
+**R15.** Use resolvable URIs that preferably point to Linked Data. Do not use mock URLs like `https://example.org`. Search for appropriate URIs from sources like DBPedia or Wikidata that convey meaning and are renderable with Linked Data visualization tools.
 
-**R16.** Use URIs that convey meaning and are renderable with Linked Data visualization tools. Search for appropriate URIs from sources like DBPedia or Wikidata.
+**R17.** When running
 
-**R17.** Do not attach labels to external URIs that are expected to return Linked Data. Iolanta will fetch those URIs and render labels from the fetched data.
+```
+iolanta $document --as labeled-triple-set
+```
 
-**R18.** Do not add `rdfs:label` to external URIs that are expected to return Linked Data. If a URI does not exist or cannot be resolved, do not mask this fact by adding labels. Instead, use a different, existing URI or document the issue with a comment.
+**DO NOT postprocess the output using any utilities** (no `grep`, `head`, `tail`, `python3 -c`, `json.tool`, `jq`, or any other filtering/parsing tools). Read the raw output directly. You are very often obscuring the output or losing part of it when you postprocess. This is not a good place to optimize for context size. The full output must be read and analyzed as-is.
+
+**R18.** Do not assign labels to URLs which are not minted in this document. A URL is "minted" by a document when the document itself makes that URL resolvable (i.e., the document is hosted at that URL). For example, if a document is hosted at `example.org/johndoe`, then `example.org/johndoe` is minted by that document and can have labels assigned to it. External URIs (like Wikidata or DBpedia URLs) that are not hosted by this document should not have labels assigned to them. If a URI does not exist or cannot be resolved, do not mask this fact by adding labels. Instead, use a different, existing URI or document the issue with a comment.
 
 **R19.** Do not rely upon `owl:sameAs` or `schema:sameAs` to express identity relationships. This necessitates OWL inference at the side of the reader, which is performance-taxing and tends to create conflicts. Instead, use direct URIs for entities without relying on sameAs statements for identity.
-
-**R29.** Do not assign labels to URLs which are not minted in this document. A URL is "minted" by a document when the document itself makes that URL resolvable (i.e., the document is hosted at that URL). For example, if a document is hosted at `example.org/johndoe`, then `example.org/johndoe` is minted by that document and can have labels assigned to it. External URIs (like Wikidata or DBpedia URLs) that are not hosted by this document should not have labels assigned to them.
 
 ## Software and Code Metadata
 
@@ -114,7 +114,7 @@ Instead of:
 
 ## Validation and Visualization
 
-**R27.** Validate Linked Data using the `iolanta` CLI command with `--as labeled-triple-set` to check for URL-as-literal issues and proper IRI handling.
+**R27.** Do not use `schema:additionalType`, use `rdf:type` instead.
 
 **R28.** Use the `iolanta` CLI command with `--as mermaid` to generate Mermaid graph visualizations of Linked Data. If the user asks, you can save them to `.mmd` files for preview and documentation purposes.
 
@@ -139,7 +139,7 @@ Nanopublications are cryptographically signed and published in the decentralized
 
 **NP03.** The assertion should express a single, clear knowledge claim that can stand alone.
 
-**NP04.** Use proper Linked Data vocabularies and resolvable URIs for all entities and relationships.
+**NP04.** Use proper Linked Data vocabularies and resolvable URIs for all entities and relationships. Use canonical URIs from established knowledge bases (DBpedia, Wikidata, etc.) and standard vocabularies and well-established ontologies.
 
 **NP05.** After the assertion graph is ready, follow this workflow:
 
@@ -160,16 +160,6 @@ np publish nanopublication.trig
 
 **NP08.** The `np publish` command cryptographically signs and publishes the nanopublication to the registry.
 
-**NP09.** Use the `iolanta` CLI command to validate the assertion before proceeding with the workflow.
+**NP09.** Use the `iolanta` CLI command to validate the assertion before proceeding with the workflow. Save Mermaid visualizations of the assertion for documentation purposes.
 
-**NP10.** Save Mermaid visualizations of the assertion for documentation purposes.
-
-**NP11.** Keep assertions focused on a single, verifiable claim.
-
-**NP12.** Use canonical URIs from established knowledge bases (DBpedia, Wikidata, etc.).
-
-**NP13.** Include sufficient context and metadata to make the assertion meaningful.
-
-**NP14.** Ensure the assertion can be understood independently of external context.
-
-**NP15.** Use standard vocabularies and well-established ontologies for relationships.
+**NP10.** Keep assertions focused on a single, verifiable claim. Include sufficient context and metadata to make the assertion meaningful and ensure it can be understood independently of external context.
