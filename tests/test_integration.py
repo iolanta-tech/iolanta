@@ -4,7 +4,11 @@ from pathlib import Path
 
 import pytest
 import sh
+from rdflib import URIRef
 from yarl import URL
+
+from iolanta.iolanta import Iolanta
+from iolanta.namespaces import DATATYPES
 
 SCREENSHOTS = Path(__file__).parent.parent / 'docs/screenshots'
 
@@ -222,3 +226,5 @@ NANOPUBLISH_DIRECTORY = Path(__file__).parent.parent / 'docs/howto/nanopublish'
 def test_nanopublishing(nanopublishing_file: Path):
     svg = generate_screenshot(nanopublishing_file)
     assert 'svg' in svg
+
+
