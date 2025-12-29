@@ -1,0 +1,12 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.8, pytest-8.3.4, pluggy-1.5.0
+Using --randomly-seed=3156219557
+rootdir: /home/anatoly/projects/iolanta
+configfile: pyproject.toml
+plugins: cov-6.0.0, randomly-3.16.0, anyio-4.8.0
+collected 32 items
+
+tests/test_find_facet.py ..                                              [  6%]
+tests/test_python_import_resolver.py F                                   [  9%]
+tests/test_render_label.py .                                             [ 12%]
+tests/test_integration.py ....FF

@@ -1,3 +1,4 @@
+# noqa: WPS202
 import operator
 import os
 from pathlib import Path
@@ -11,9 +12,9 @@ SCREENSHOTS = Path(__file__).parent.parent / 'docs/screenshots'
 SCREENSHOT_TIMEOUT = 50
 
 
-def generate_screenshot(url: URL | Path) -> str:
+def generate_screenshot(url: URL | Path) -> str:  # noqa: WPS210
     """Generate a screenshot of a given URL and test it."""
-    match url:
+    match url: 
         case URL():
             path = url.path.strip('/').replace('/', '.').lower()
             fragment = url.fragment.replace('#', '').lower() if url.fragment else ''
@@ -78,7 +79,7 @@ def test_orcid_page():
 
 
 def test_red_things_nanopublication():
-    """Test a red things nanopublication."""
+    """Test a red things nanopublication."""  # noqa: WPS226
     svg = generate_screenshot(
         URL(
             'https://purl.org/np/RARv1-bZWsdvQs88TDH2trcwNoGF1g5AawE2sPKeh5K_0',
@@ -172,7 +173,7 @@ def test_wikidata_cyberspace():
     svg = generate_screenshot(
         URL('http://www.wikidata.org/entity/Q204606'),
     )
-    assert 'svg' in svg
+    assert 'svg' in svg  # noqa: WPS226
 
 
 def test_wikidata_statement_instance():
@@ -222,3 +223,5 @@ NANOPUBLISH_DIRECTORY = Path(__file__).parent.parent / 'docs/howto/nanopublish'
 def test_nanopublishing(nanopublishing_file: Path):
     svg = generate_screenshot(nanopublishing_file)
     assert 'svg' in svg
+
+

@@ -1,17 +1,14 @@
+# noqa: WPS201, WPS202, WPS402
 import dataclasses
 import datetime
-import re
-import time
 from pathlib import Path
 from threading import Lock
-from types import MappingProxyType
 from typing import Any, Iterable, Mapping
 
 import diskcache
 import funcy
 import loguru
 import platformdirs
-import reasonable
 import requests
 import yaml_ld
 from nanopub import NanopubClient
@@ -35,53 +32,22 @@ from iolanta.namespaces import (  # noqa: WPS235
     DCTERMS,
     FOAF,
     IOLANTA,
-    LOCAL,
     META,
     OWL,
-    PROV,
     RDF,
     RDFS,
     VANN,
 )
-from iolanta.parse_quads import NORMALIZE_TERMS_MAP, parse_quads
+from iolanta.parse_quads import parse_quads
+from iolanta.sparqlspace.redirects import apply_redirect
 
 REASONING_ENABLED = True
 OWL_REASONING_ENABLED = False
 
 INFERENCE_DIR = Path(__file__).parent / 'inference'
-INDICES = [
+INDICES = [  # noqa: WPS407
     URIRef('https://iolanta.tech/visualizations/index.yaml'),
 ]
-
-
-REDIRECTS = MappingProxyType({
-    # FIXME This is presently hardcoded; we need to
-    #   - either find a way to resolve these URLs automatically,
-    #   - or create a repository of those redirects online.
-    'http://purl.org/vocab/vann/': URIRef(
-        'https://vocab.org/vann/vann-vocab-20100607.rdf',
-    ),
-    URIRef(DC): URIRef(DCTERMS),
-    URIRef(RDF): URIRef(RDF),
-    URIRef(RDFS): URIRef(RDFS),
-    URIRef(OWL): URIRef(OWL),
-
-    # Redirect FOAF namespace to GitHub mirror
-    URIRef('https?://xmlns.com/foaf/0.1/.+'): URIRef(
-        'https://raw.githubusercontent.com/foaf/foaf/refs/heads/master/xmlns.com/htdocs/foaf/0.1/index.rdf',
-    ),
-    URIRef('https://www.nanopub.org/nschema'): URIRef(
-        'https://www.nanopub.net/nschema#',
-    ),
-    URIRef('https://nanopub.org/nschema'): URIRef(
-        'https://nanopub.net/nschema#',
-    ),
-    URIRef(PROV): URIRef('https://www.w3.org/ns/prov-o'),
-
-    # Convert lexvo.org/id URLs to lexvo.org/data URLs
-    r'https://lexvo\.org/id/(.+)': r'http://lexvo.org/data/\1',
-    r'https://www\.lexinfo\.net/(.+)': r'http://www.lexinfo.net/\1',
-})
 
 
 @diskcache.Cache(
@@ -116,20 +82,20 @@ def find_retractions_for(nanopublication: URIRef) -> set[URIRef]:
 def _extract_from_mapping(  # noqa: WPS213
     algebra: Mapping[str, Any],
 ) -> Iterable[URIRef | Variable]:
-    match algebra.name:
+    match algebra.name:  # noqa: WPS242
         case 'SelectQuery' | 'AskQuery' | 'Project' | 'Distinct' | 'Slice':
-            yield from extract_mentioned_urls(algebra['p'])
+            yield from extract_mentioned_urls(algebra['p'])  # noqa: WPS226
 
         case 'BGP':
             yield from [   # noqa: WPS353, WPS221
                 term
                 for triple in algebra['triples']
                 for term in triple
-                if isinstance(term, URIRef)
+                if isinstance(term, (URIRef, Variable))
             ]
 
         case 'Filter' | 'UnaryNot' | 'OrderCondition':
-            yield from extract_mentioned_urls(algebra['expr'])   # noqa: WPS204
+            yield from extract_mentioned_urls(algebra['expr'])  # noqa: WPS204, WPS226
 
         case built_in if built_in.startswith('Builtin_'):
             yield from extract_mentioned_urls(algebra['arg'])
@@ -208,7 +174,10 @@ def normalize_term(term: Node) -> Node:
       * A dirty hack;
       * Based on hard code.
     """
-    return NORMALIZE_TERMS_MAP.get(term, term)
+    if isinstance(term, URIRef):
+        return apply_redirect(term)
+    
+    return term
 
 
 def resolve_variables(
@@ -258,7 +227,7 @@ class Skipped:
 LoadResult = Loaded | Skipped
 
 
-def _extract_nanopublication_uris(
+def _extract_nanopublication_uris(  # noqa: WPS231
     algebra: CompValue,
 ) -> Iterable[URIRef]:
     """Extract nanopublications to get retracting information for."""
@@ -291,34 +260,6 @@ def _extract_nanopublication_uris(
                 f'Unknown algebra name: {unknown_name}, '
                 f'content: {algebra}',
             )
-
-
-def apply_redirect(source: URIRef) -> URIRef:   # noqa: WPS210
-    """
-    Rewrite the URL using regex patterns and group substitutions.
-
-    For each pattern in REDIRECTS:
-    - If the pattern matches the source URI
-    - Replace the source with the destination, substituting any regex groups
-    """
-    source_str = str(source)
-
-    for pattern, destination in REDIRECTS.items():
-        pattern_str = str(pattern)
-        destination_str = str(destination)
-
-        match = re.match(pattern_str, source_str)
-        if match:
-            # Replace any group references in the destination
-            # (like \1, \2, etc.)
-            redirected_uri = re.sub(
-                pattern_str,
-                destination_str,
-                source_str,
-            )
-            return URIRef(redirected_uri)
-
-    return source
 
 
 def extract_triples(algebra: CompValue) -> Iterable[tuple[Node, Node, Node]]:
@@ -419,7 +360,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
 
             self.graph._indices_loaded = True
 
-    def query(   # noqa: WPS211, WPS210, WPS231, C901
+    def query(   # noqa: WPS211, WPS210, WPS231, WPS213, C901
         self,
         strOrQuery,
         initBindings=None,
@@ -471,8 +412,9 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
 
         # Run inference if there's new data since last inference run
         # (after URLs are loaded so inference can use the loaded data)
-        if self.graph.last_not_inferred_source is not None:
-            self.logger.debug(f'Running inference, last_not_inferred_source: {self.graph.last_not_inferred_source}')
+        if self.graph.last_not_inferred_source is not None:  # noqa: WPS504
+            last_source = self.graph.last_not_inferred_source
+            self.logger.debug(f'Running inference, last_not_inferred_source: {last_source}')  # noqa: WPS237
             self._run_inference()
         else:
             self.logger.debug('Skipping inference, last_not_inferred_source is None')
@@ -493,7 +435,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
 
             for row in bindings:
                 break
-                for _, maybe_iri in row.items():
+                for _, maybe_iri in row.items():  # noqa: WPS427
                     if (
                         isinstance(maybe_iri, URIRef)
                         and isinstance(self.load(maybe_iri), Loaded)
@@ -584,7 +526,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
         # FIXME This is definitely inefficient. However, python-yaml-ld caches
         #   the document, so the performance overhead is not super high.
         try:
-            _resolved_source = yaml_ld.load_document(source)['documentUrl']
+            resolved_source = yaml_ld.load_document(source)['documentUrl']
         except NotFound as not_found:
             self.logger.info(f'{not_found.path} | 404 Not Found')
             namespaces = [RDF, RDFS, OWL, FOAF, DC, VANN]
@@ -627,15 +569,15 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
 
             return Loaded()
 
-        if _resolved_source:
-            _resolved_source_uri_ref = URIRef(_resolved_source)
-            if _resolved_source_uri_ref != URIRef(source):
+        if resolved_source:
+            resolved_source_uri_ref = URIRef(resolved_source)
+            if resolved_source_uri_ref != URIRef(source):
                 self.graph.add((
                     source_uri,
                     IOLANTA['redirects-to'],
-                    _resolved_source_uri_ref,
+                    resolved_source_uri_ref,
                 ))
-                source = _resolved_source
+                source = resolved_source
 
         self._mark_as_loaded(source_uri)
 
@@ -700,7 +642,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
 
         return term
 
-    def _run_inference(self):  # noqa: WPS231
+    def _run_inference(self):  # noqa: WPS231, WPS220, WPS210
         """
         Run inference queries from the inference directory.
 
@@ -720,21 +662,21 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
 
                 # Read and execute the CONSTRUCT query
                 query_text = inference_file.read_text()
-                result = self.graph.query(query_text)
+                query_result = self.graph.query(query_text)  # noqa: WPS110
 
                 # CONSTRUCT queries return a SPARQLResult with a graph attribute
-                result_graph = result.get('graph') if isinstance(result, dict) else result.graph
+                result_graph = query_result.get('graph') if isinstance(query_result, dict) else query_result.graph
                 self.logger.debug(f'Inference {filename}: result_graph is {result_graph}, type: {type(result_graph)}')
-                if result_graph is not None:
+                if result_graph is not None:  # noqa: WPS504
                     inferred_quads = [
-                        (s, p, o, inference_graph)
-                        for s, p, o in result_graph
+                        (s, p, o, inference_graph)  # noqa: WPS111
+                        for s, p, o in result_graph  # noqa: WPS111
                     ]
                     self.logger.debug(f'Inference {filename}: generated {len(inferred_quads)} quads')
 
                     if inferred_quads:
-                        self.graph.addN(inferred_quads)
-                        self.logger.info(
+                        self.graph.addN(inferred_quads)  # noqa: WPS220
+                        self.logger.info(  # noqa: WPS220
                             'Inference {filename}: added {count} triples',
                             filename=filename,
                             count=len(inferred_quads),

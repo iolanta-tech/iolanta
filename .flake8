@@ -1,0 +1,5 @@
+[flake8]
+per-file-ignores =
+    iolanta/sparqlspace/processor.py:WPS201,WPS202,WPS402
+    jeeves/__init__.py:WPS412,WPS400
+    tests/test_integration.py:WPS202
