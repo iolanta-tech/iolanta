@@ -13,8 +13,7 @@ def render_uri(
     as_format: Annotated[str, 'Format to render as. Examples: `labeled-triple-set`, `mermaid`'],
 ) -> str:
     """Render a URI."""
-    result = render_and_return(uri, as_format)
-    return str(result)
+    return str(render_and_return(uri, as_format))
 
 
 def app():
