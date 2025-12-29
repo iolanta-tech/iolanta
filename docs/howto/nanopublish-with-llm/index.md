@@ -70,3 +70,16 @@ Look for statements that:
 ```markdown
 --8<-- "docs/howto/nanopublish-with-llm/rhysling-crater-v0.md"
 ```
+
+Then, we are asking the editor in the chat:
+
+> Convert this into an LD document.
+
+After some thinking, the document changes to this:
+
+```markdown
+--8<-- "docs/howto/nanopublish-with-llm/rhysling-crater-v1.md"
+```
+
+!!! warning "Not working further"
+    We have a `pyld` bug which prevents this document from being renderable in Iolanta. We'll fix it.
