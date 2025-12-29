@@ -1,6 +1,5 @@
 import dataclasses
 import hashlib
-from types import MappingProxyType
 from typing import Iterable, Optional
 from urllib.parse import unquote
 
@@ -11,11 +10,7 @@ from rdflib.term import Node
 from iolanta.errors import UnresolvedIRI
 from iolanta.models import Quad
 from iolanta.namespaces import IOLANTA, META
-
-NORMALIZE_TERMS_MAP = MappingProxyType({
-    URIRef(_url := 'http://www.w3.org/2002/07/owl'): URIRef(f'{_url}#'),
-    URIRef(_url := 'http://www.w3.org/2000/01/rdf-schema'): URIRef(f'{_url}#'),
-})
+from iolanta.sparqlspace.redirects import apply_redirect
 
 
 def parse_term(   # noqa: C901
@@ -35,8 +30,8 @@ def parse_term(   # noqa: C901
     if term_type == 'literal':
         language = term.get('language')
 
-        if datatype := term.get('datatype'):
-            datatype = URIRef(datatype)
+        datatype_raw = term.get('datatype')
+        datatype = URIRef(datatype_raw) if datatype_raw else None
 
         if language and datatype:
             datatype = None
@@ -89,7 +84,7 @@ def _parse_quads_per_subgraph(
             )
 
 
-def parse_quads(
+def parse_quads(  # noqa: WPS210
     quads_document,
     graph: URIRef,
     blank_node_prefix: str = '',
@@ -132,12 +127,20 @@ def parse_quads(
         )
 
         for quad in quads:   # noqa: WPS526
-            yield quad.replace(
-                subgraph_names | NORMALIZE_TERMS_MAP | {
-                    # To enable nanopub rendering
-                    URIRef('http://purl.org/nanopub/temp/np/'): graph,
-                },
-            ).normalize()
+            # Build replacement map with subgraph names and nanopub temp namespace
+            replacement_map = subgraph_names | {
+                # To enable nanopub rendering
+                URIRef('http://purl.org/nanopub/temp/np/'): graph,
+            }
+            
+            # Apply redirects to all URIRefs in the replacement map
+            normalized_replacement_map = {
+                apply_redirect(key) if isinstance(key, URIRef) else key: 
+                apply_redirect(value_node) if isinstance(value_node, URIRef) else value_node  # noqa: WPS110
+                for key, value_node in replacement_map.items()
+            }
+            
+            yield quad.replace(normalized_replacement_map).normalize()
 
 
 def raise_if_term_is_qname(term_value: str):
