@@ -1,4 +1,3 @@
-from pathlib import Path
 from typing import Annotated
 
 from fastmcp import FastMCP
@@ -16,20 +15,6 @@ def render_uri(
     """Render a URI."""
     result = render_and_return(uri, as_format)
     return str(result)
-
-
-@mcp.prompt(description="How to author Linked Data with Iolanta")
-def ld_authoring_rules() -> str:
-    """How to author Linked Data with Iolanta."""
-    rules_path = Path(__file__).parent / 'prompts' / 'rules.md'
-    return rules_path.read_text()
-
-
-@mcp.prompt(description="How to author nanopublication assertions with Iolanta")
-def nanopublication_assertion_authoring_rules() -> str:
-    """How to author nanopublication assertions with Iolanta."""
-    rules_path = Path(__file__).parent / 'prompts' / 'nanopublication_assertion_authoring_rules.md'
-    return rules_path.read_text()
 
 
 def app():
