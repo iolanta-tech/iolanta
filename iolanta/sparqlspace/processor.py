@@ -81,6 +81,8 @@ REDIRECTS = MappingProxyType({
     # Convert lexvo.org/id URLs to lexvo.org/data URLs
     r'https://lexvo\.org/id/(.+)': r'http://lexvo.org/data/\1',
     r'https://www\.lexinfo\.net/(.+)': r'http://www.lexinfo.net/\1',
+    # Convert Wikidata https:// to http:// (Wikidata JSON-LD uses http:// URIs)
+    r'https://www\.wikidata\.org/entity/(.+)': r'http://www.wikidata.org/entity/\1',
 })
 
 
@@ -125,7 +127,7 @@ def _extract_from_mapping(  # noqa: WPS213
                 term
                 for triple in algebra['triples']
                 for term in triple
-                if isinstance(term, URIRef)
+                if isinstance(term, (URIRef, Variable))
             ]
 
         case 'Filter' | 'UnaryNot' | 'OrderCondition':
@@ -208,7 +210,14 @@ def normalize_term(term: Node) -> Node:
       * A dirty hack;
       * Based on hard code.
     """
-    return NORMALIZE_TERMS_MAP.get(term, term)
+    # First check the normalization map
+    normalized = NORMALIZE_TERMS_MAP.get(term, term)
+    
+    # Then apply redirects for URIRefs (e.g., https:// → http:// for Wikidata)
+    if isinstance(normalized, URIRef):
+        normalized = apply_redirect(normalized)
+    
+    return normalized
 
 
 def resolve_variables(
