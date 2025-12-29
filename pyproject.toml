@@ -70,7 +70,7 @@ labeled-triple-set = "iolanta.labeled_triple_set.labeled_triple_set:LabeledTripl
 sparqlspace = "iolanta.sparqlspace.processor:GlobalSPARQLProcessor"
 
 [tool.poetry.group.dev.dependencies]
-jeeves-yeti-pyproject = ">=0.2.44"
+jeeves-yeti-pyproject = ">=1.0"
 mkdocs-awesome-pages-plugin = ">=2.9.2"
 mkdocs-blogging-plugin = ">=2.2.11"
 mkdocstrings-python = ">=1.8.0"
@@ -85,65 +85,3 @@ all = ["iolanta-tables"]
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
-
-[tool.flakeheaven.exceptions."iolanta/facets/**.py"]
-wemake-python-styleguide = [
-    # Upper case constants used in Textual widget classes.
-    "-WPS115",
-
-    # __all__ in __init__.py is ok
-    "-WPS410",
-]
-
-[tool.flakeheaven.exceptions."iolanta/cyberspace/processor.py"]
-wemake-python-styleguide = [
-    # Underscored variables are ok
-    "-WPS121",
-    "-WPS122",
-]
-
-[tool.flakeheaven.exceptions."tests/**.py"]
-wemake-python-styleguide = [
-    # Found outer scope names shadowing
-    # Used for fixtures
-    "-WPS442",
-]
-
-
-[tool.flakeheaven.exceptions."iolanta/facets/textual_browser/history.py"]
-wemake-python-styleguide = [
-    # Save stuff into a dataclass attribute
-    "-WPS601",
-]
-
-
-[tool.flakeheaven.exceptions."**/facets.py"]
-wemake-python-styleguide = [
-    # Found upper-case constant in a class: DEFAULT_CSS
-    "-WPS115",
-]
-
-pycodestyle = [
-    # blank line contains whitespace
-    # This is TCSS, WTF?
-    "-W293"
-]
-
-
-[tool.flakeheaven.exceptions."**/*.md"]
-flake8-eradicate = [
-    # Found commented out code [flake8-eradicate]
-    "-E800",
-]
-
-[tool.flakeheaven.exceptions."iolanta/namespaces.py"]
-wemake-python-styleguide = [
-    # Found upper-case constant in a class: _NS
-    "-WPS115",
-]
-
-flake8-docstrings = [
-    # Missing docstring in public class
-    "-D101",
-]
