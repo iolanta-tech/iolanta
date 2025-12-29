@@ -1,10 +1,11 @@
+# noqa: WPS412, WPS400
 import json
 import os
 from pathlib import Path
 
 import funcy
 import sh
-from jeeves_yeti_pyproject import flakeheaven
+# from jeeves_yeti_pyproject import flakeheaven  # Skipped due to compatibility issues with Python 3.12+
 from jeeves_yeti_pyproject.mypy import construct_mypy_flags
 from rich.console import Console
 
