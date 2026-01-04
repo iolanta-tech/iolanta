@@ -1,0 +1,16 @@
+PREFIX roadmap: <https://iolanta.tech/roadmap/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+CONSTRUCT {
+  ?item a roadmap:Task .
+}
+WHERE {
+  # Find items that are values of roadmap:has-task property
+  ?container roadmap:has-task ?item .
+  
+  # Only infer if the item isn't already typed as a roadmap type
+  FILTER NOT EXISTS {
+    ?item rdf:type ?type .
+    FILTER(?type IN (roadmap:Task, roadmap:Event, roadmap:Bug))
+  }
+}
