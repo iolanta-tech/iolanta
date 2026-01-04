@@ -1,0 +1,25 @@
+PREFIX roadmap: <https://iolanta.tech/roadmap/>
+
+SELECT DISTINCT ?source ?target WHERE {
+    # Find roadmap:blocks relationships across all graphs (including inferred)
+    ?source roadmap:blocks ?target .
+    
+    # Only include edges where both source and target are Task/Event/Bug nodes
+    # (they will be filtered by the nodes query, but this ensures we only show
+    # relevant edges)
+    {
+        ?source a roadmap:Task .
+    } UNION {
+        ?source a roadmap:Event .
+    } UNION {
+        ?source a roadmap:Bug .
+    }
+    
+    {
+        ?target a roadmap:Task .
+    } UNION {
+        ?target a roadmap:Event .
+    } UNION {
+        ?target a roadmap:Bug .
+    }
+}
