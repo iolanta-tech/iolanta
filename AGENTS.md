@@ -22,6 +22,8 @@
 
 **C09.** Before writing a commit message, always diff the file to understand what changed. Base the commit message on the actual changes, not generic terms like "Update". Use `git diff <file>` to see the changes.
 
+**C10.** When committing new files, commit them one at a time. Never use `git add` with multiple files or directories. Always `git add <single-file>` then `git commit` for each file separately.
+
 ### Examples
 
 ✅ Correct:
