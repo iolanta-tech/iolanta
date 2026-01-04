@@ -1,0 +1,17 @@
+PREFIX roadmap: <https://iolanta.tech/roadmap/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT DISTINCT ?node ?is_unblocked WHERE {
+    # Search across all graphs (including inference graphs)
+    # This finds both original types and inferred types
+    {
+        ?node rdf:type roadmap:Task .
+    } UNION {
+        ?node rdf:type roadmap:Event .
+    } UNION {
+        ?node rdf:type roadmap:Bug .
+    }
+    
+    # Check if node is unblocked (has roadmap:Unblocked type)
+    BIND(EXISTS { ?node rdf:type roadmap:Unblocked } AS ?is_unblocked)
+}
