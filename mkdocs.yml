@@ -3,7 +3,7 @@ site_url: https://iolanta.tech
 repo_url: https://github.com/iolanta-tech/iolanta
 edit_uri: edit/master/docs/
 repo_name: iolanta-tech/iolanta
-copyright: Copyright © 2025 iolanta.tech
+copyright: Copyright © 2026 iolanta.tech
 
 markdown_extensions:
   - admonition
