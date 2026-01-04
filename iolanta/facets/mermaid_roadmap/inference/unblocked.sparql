@@ -1,0 +1,21 @@
+PREFIX roadmap: <https://iolanta.tech/roadmap/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+CONSTRUCT {
+  ?task a roadmap:Unblocked .
+}
+WHERE {
+  # Match Task, Event, or Bug instances
+  {
+    ?task a roadmap:Task .
+  } UNION {
+    ?task a roadmap:Event .
+  } UNION {
+    ?task a roadmap:Bug .
+  }
+  
+  # Only infer if there are no incoming blocks links
+  FILTER NOT EXISTS {
+    ?other roadmap:blocks ?task .
+  }
+}

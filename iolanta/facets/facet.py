@@ -2,32 +2,38 @@ import inspect
 from dataclasses import dataclass, field
 from functools import cached_property
 from pathlib import Path
-from typing import Any, Generic, Iterable, Optional, TypeVar, Union
+from typing import Any, Generic, Optional, TypeVar, Union
 
-from rdflib.term import BNode, Literal, Node, URIRef
+from rdflib.term import Literal, Node
 
-from iolanta.models import NotLiteralNode, Triple, TripleTemplate
+from iolanta.models import NotLiteralNode
 from iolanta.query_result import QueryResult, SPARQLQueryArgument
 
-FacetOutput = TypeVar('FacetOutput')
+FacetOutput = TypeVar("FacetOutput")
 
 
 @dataclass
-class Facet(Generic[FacetOutput]):
+class Facet(Generic[FacetOutput]):  # noqa: WPS214
     """Base facet class."""
 
     this: Node
-    iolanta: 'iolanta.Iolanta' = field(repr=False)
+    iolanta: "iolanta.Iolanta" = field(repr=False)
     as_datatype: Optional[NotLiteralNode] = None
 
     def __post_init__(self):
-        if type(self.this) == str:
-            raise ValueError(f'Facet {self.__class__.__name__} received a string as this: {self.this}')
+        if not isinstance(self.this, Node):
+            facet_name = self.__class__.__name__
+            this_type = type(self.this).__name__
+            raise ValueError(
+                f"Facet {facet_name} received a non-Node as this: {self.this} (type: {this_type})"
+            )
 
     @property
     def stored_queries_path(self) -> Path:
         """Construct directory for stored queries for this facet."""
-        return Path(inspect.getfile(self.__class__)).parent / 'sparql'
+        return Path(inspect.getfile(self.__class__)).parent / "sparql"
+
+    inference_path: Optional[Path] = None
 
     def query(
         self,

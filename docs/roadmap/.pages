@@ -1,0 +1,7 @@
+arrange:
+  - index.md
+  - Task.md
+  - Bug.md
+  - Event.md
+  - blocks.md
+  - is-blocked-by.md

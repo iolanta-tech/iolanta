@@ -1,0 +1,13 @@
+PREFIX roadmap: <https://iolanta.tech/roadmap/>
+
+CONSTRUCT {
+  ?a roadmap:blocks ?b .
+}
+WHERE {
+  ?b roadmap:is-blocked-by ?a .
+  
+  # Only infer if the relationship doesn't already exist
+  FILTER NOT EXISTS {
+    ?a roadmap:blocks ?b .
+  }
+}

@@ -1,0 +1,26 @@
+# It is imperative that this query executes after `blocks.sparql` because it relies upon proper `roadmap:blocks` relations.
+
+PREFIX roadmap: <https://iolanta.tech/roadmap/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+CONSTRUCT {
+  ?other a roadmap:Task .
+}
+WHERE {
+  # Match either Task or Event
+  {
+    ?task rdf:type roadmap:Task .
+  } UNION {
+    ?task rdf:type roadmap:Event .
+  }
+  
+  # Find nodes connected via roadmap:blocks chain (in either direction)
+  # ^roadmap:blocks is the inverse (equivalent to roadmap:is-blocked-by)
+  ?task (roadmap:blocks | ^roadmap:blocks)+ ?other .
+  
+  # Only infer if the node isn't already a Task
+  # (to avoid redundant triples, but allow inference even if node has other types)
+  FILTER NOT EXISTS {
+    ?other rdf:type roadmap:Task .
+  }
+}
