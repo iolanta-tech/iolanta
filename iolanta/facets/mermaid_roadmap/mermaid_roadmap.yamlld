@@ -1,0 +1,59 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  roadmap: https://roadmap.iolanta.tech/
+  iolanta: https://iolanta.tech/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  prov: http://www.w3.org/ns/prov#
+  owl: http://www.w3.org/2002/07/owl#
+
+  $: rdfs:label
+
+  rdfs:subClassOf:
+    "@type": "@id"
+  
+  rdfs:subPropertyOf:
+    "@type": "@id"
+
+  owl:inverseOf:
+    "@type": "@id"
+
+  →:
+    "@type": "@id"
+    "@id": iolanta:outputs
+
+  ↦:
+    "@id": iolanta:matches
+    "@type": iolanta:SPARQLText
+
+$id: pkg:pypi/iolanta#mermaid-roadmap
+$: Mermaid Roadmap
+
+→:
+  $id: https://iolanta.tech/roadmap/datatypes/mermaid
+  $: Mermaid
+  $type: iolanta:OutputDatatype
+  rdfs:subClassOf: https://iolanta.tech/datatypes/mermaid
+
+↦:
+  - ASK WHERE { GRAPH $this { ?s ?p ?o } }
+
+$included:
+  - $id: roadmap:Task
+    rdfs:subClassOf: prov:Activity
+    $: Task
+  
+  - $id: roadmap:Bug
+    rdfs:subClassOf: roadmap:Task
+    $: Bug
+  
+  - $id: roadmap:Event
+    rdfs:subClassOf: prov:Activity
+    $: Event
+  
+  - $id: roadmap:is-blocked-by
+    rdfs:subPropertyOf: prov:wasInformedBy
+    $: Is blocked by
+  
+  - $id: roadmap:blocks
+    owl:inverseOf: roadmap:is-blocked-by
+    $: Blocks
