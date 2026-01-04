@@ -20,6 +20,8 @@
 
 **C08.** Use single quotes for commit messages (e.g., `git commit -m 'message'`) to avoid shell interpretation issues with backticks in code references.
 
+**C09.** Before writing a commit message, always diff the file to understand what changed. Base the commit message on the actual changes, not generic terms like "Update". Use `git diff <file>` to see the changes.
+
 ### Examples
 
 ✅ Correct:
