@@ -12,7 +12,10 @@ from iolanta.models import NotLiteralNode  # noqa: WPS202
 
 
 def escape_label(label: str) -> str:
-    """Escape a label to prevent Mermaid from interpreting URLs as markdown links and handle quotes.
+    """Escape a label and return it wrapped in appropriate quotes.
+
+    Returns the label with URLs stripped, quotes escaped, and wrapped in quotes.
+    Uses single quotes if label contains double quotes to avoid escaping issues.
 
     Escapes quotes in labels that will be wrapped in quotes in Mermaid syntax.
     """
@@ -20,8 +23,15 @@ def escape_label(label: str) -> str:
     safe_label = (
         label.replace("https://", "").replace("http://", "").replace("www.", "")
     )
-    # Escape quotes for use inside quoted strings in Mermaid
-    return safe_label.replace('"', r'\"')
+    # Use single quotes if label contains double quotes to avoid escaping issues
+    use_single = '"' in safe_label
+    quote_char = "'" if use_single else '"'
+    # Escape the quote character that will be used for wrapping
+    if use_single:
+        escaped_label = safe_label.replace("'", r"\'")
+    else:
+        escaped_label = safe_label.replace('"', r"\"")
+    return f"{quote_char}{escaped_label}{quote_char}"
 
 
 class Direction(enum.StrEnum):
@@ -54,14 +64,13 @@ class MermaidURINode(MermaidScalar, frozen=True):
     def maybe_title(self):
         if not self.title:
             return ""
-        # Escape URLs to prevent Mermaid from interpreting them as markdown links
-        safe_title = escape_label(self.title)
-        return f'("{safe_title}")'
+        quoted_title = escape_label(self.title)
+        return f"({quoted_title})"
 
     @property
     def id(self):
         return re.sub(
-            r"[:\/\.#()]", "_", urllib_parse.unquote(str(self.url)).strip("/")
+            r"[:\/\.#()?=&+]", "_", urllib_parse.unquote(str(self.url)).strip("/")
         )
 
 
@@ -85,7 +94,7 @@ class MermaidLiteral(MermaidScalar, frozen=True):
 
 
 class MermaidBlankNode(MermaidScalar):
-    """{self.id}("{self.escaped_title}")"""
+    """{self.id}({self.escaped_title})"""
 
     node: BNode
     title: str
@@ -102,7 +111,7 @@ class MermaidBlankNode(MermaidScalar):
 
 class MermaidEdge(MermaidScalar):
     """
-    {self.source.id} --- {self.id}(["{self.escaped_title}"])--> {self.target.id}
+    {self.source.id} --- {self.id}([{self.escaped_title}])--> {self.target.id}
     click {self.id} "{self.predicate}"
     class {self.id} predicate
     """
@@ -130,7 +139,7 @@ class MermaidEdge(MermaidScalar):
 
 class MermaidSubgraph(Documented, BaseModel, arbitrary_types_allowed=True, frozen=True):
     """
-    subgraph {self.id}["{self.escaped_title}"]
+    subgraph {self.id}[{self.escaped_title}]
       direction {self.direction}
       {self.formatted_body}
     end
