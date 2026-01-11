@@ -95,3 +95,6 @@ tasks:
 
   - $type: Bug
     $: Inference depends on alphabetical order of its CONSTRUCT queries
+
+  - $type: Bug
+    $: <code>mermaid</code> datatype from roadmap plugin does not resolve nor is documented
