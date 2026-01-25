@@ -1,0 +1,102 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  iolanta: https://iolanta.tech/
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  owl: http://www.w3.org/2002/07/owl#
+
+  $: rdfs:label
+  →:
+    "@type": "@id"
+    "@id": iolanta:outputs
+  ⊆:
+    "@type": "@id"
+    "@id": rdfs:subClassOf
+  iolanta:hasDatatypeFacet:
+    "@type": "@id"
+
+$included:
+  # Define the three SPARQL result datatypes
+  - $id: https://iolanta.tech/datatypes/sparql-select-result
+    $type: owl:Class
+    ⊆: rdfs:Datatype
+    $: SPARQL SELECT Result
+    rdfs:comment: Datatype for SPARQL SELECT query results (variable bindings)
+
+  - $id: https://iolanta.tech/datatypes/sparql-construct-result
+    $type: owl:Class
+    ⊆: rdfs:Datatype
+    $: SPARQL CONSTRUCT Result
+    rdfs:comment: Datatype for SPARQL CONSTRUCT query results (RDF graph)
+
+  - $id: https://iolanta.tech/datatypes/sparql-ask-result
+    $type: owl:Class
+    ⊆: rdfs:Datatype
+    $: SPARQL ASK Result
+    rdfs:comment: Datatype for SPARQL ASK query results (boolean)
+
+  # Register SelectResult facets for each output format
+  - $id: pkg:pypi/iolanta#select-result-table-facet
+    $type: iolanta:Facet
+    $: SPARQL SELECT Result Table Facet
+    →: https://iolanta.tech/datatypes/table
+
+  - $id: pkg:pypi/iolanta#select-result-json-facet
+    $type: iolanta:Facet
+    $: SPARQL SELECT Result JSON Facet
+    →: https://iolanta.tech/datatypes/json
+
+  - $id: pkg:pypi/iolanta#select-result-csv-facet
+    $type: iolanta:Facet
+    $: SPARQL SELECT Result CSV Facet
+    →: https://iolanta.tech/datatypes/csv
+
+  - $id: https://iolanta.tech/datatypes/sparql-select-result
+    iolanta:hasDatatypeFacet:
+      - pkg:pypi/iolanta#select-result-table-facet
+      - pkg:pypi/iolanta#select-result-json-facet
+      - pkg:pypi/iolanta#select-result-csv-facet
+
+  # Register ConstructResult facets for each output format
+  - $id: pkg:pypi/iolanta#construct-result-table-facet
+    $type: iolanta:Facet
+    $: SPARQL CONSTRUCT Result Table Facet
+    →: https://iolanta.tech/datatypes/table
+
+  - $id: pkg:pypi/iolanta#construct-result-json-facet
+    $type: iolanta:Facet
+    $: SPARQL CONSTRUCT Result JSON Facet
+    →: https://iolanta.tech/datatypes/json
+
+  - $id: pkg:pypi/iolanta#construct-result-csv-facet
+    $type: iolanta:Facet
+    $: SPARQL CONSTRUCT Result CSV Facet
+    →: https://iolanta.tech/datatypes/csv
+
+  - $id: https://iolanta.tech/datatypes/sparql-construct-result
+    iolanta:hasDatatypeFacet:
+      - pkg:pypi/iolanta#construct-result-table-facet
+      - pkg:pypi/iolanta#construct-result-json-facet
+      - pkg:pypi/iolanta#construct-result-csv-facet
+
+  # Register AskResult facets for each output format
+  - $id: pkg:pypi/iolanta#ask-result-table-facet
+    $type: iolanta:Facet
+    $: SPARQL ASK Result Table Facet
+    →: https://iolanta.tech/datatypes/table
+
+  - $id: pkg:pypi/iolanta#ask-result-json-facet
+    $type: iolanta:Facet
+    $: SPARQL ASK Result JSON Facet
+    →: https://iolanta.tech/datatypes/json
+
+  - $id: pkg:pypi/iolanta#ask-result-csv-facet
+    $type: iolanta:Facet
+    $: SPARQL ASK Result CSV Facet
+    →: https://iolanta.tech/datatypes/csv
+
+  - $id: https://iolanta.tech/datatypes/sparql-ask-result
+    iolanta:hasDatatypeFacet:
+      - pkg:pypi/iolanta#ask-result-table-facet
+      - pkg:pypi/iolanta#ask-result-json-facet
+      - pkg:pypi/iolanta#ask-result-csv-facet

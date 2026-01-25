@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iolanta"
-version = "2.1.12"
+version = "2.1.13"
 description = "Semantic Web browser"
 authors = ["Anatoly Scherbakov <altaisoft@gmail.com>"]
 license = "MIT"
@@ -66,6 +66,15 @@ mermaid-graph = "iolanta.mermaid.facet:Mermaid"
 mermaid-roadmap = "iolanta.facets.mermaid_roadmap.facet:MermaidRoadmap"
 rich-declension-table = "iolanta.declension.facet:RichDeclensionTable"
 labeled-triple-set = "iolanta.labeled_triple_set.labeled_triple_set:LabeledTripleSet"
+select-result-table-facet = "iolanta.facets.query.select_result_table:SelectResultTableFacet"
+select-result-json-facet = "iolanta.facets.query.select_result_json:SelectResultJsonFacet"
+select-result-csv-facet = "iolanta.facets.query.select_result_csv:SelectResultCsvFacet"
+construct-result-table-facet = "iolanta.facets.query.construct_result_table:ConstructResultTableFacet"
+construct-result-json-facet = "iolanta.facets.query.construct_result_json:ConstructResultJsonFacet"
+construct-result-csv-facet = "iolanta.facets.query.construct_result_csv:ConstructResultCsvFacet"
+ask-result-table-facet = "iolanta.facets.query.ask_result_table:AskResultTableFacet"
+ask-result-json-facet = "iolanta.facets.query.ask_result_json:AskResultJsonFacet"
+ask-result-csv-facet = "iolanta.facets.query.ask_result_csv:AskResultCsvFacet"
 
 [tool.poetry.plugins."rdf.plugins.queryprocessor"]
 sparqlspace = "iolanta.sparqlspace.processor:GlobalSPARQLProcessor"

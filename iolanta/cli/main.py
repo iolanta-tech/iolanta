@@ -7,18 +7,25 @@ from typing import Annotated
 import loguru
 import platformdirs
 from documented import DocumentedError
-from rdflib import Literal, URIRef
+from rdflib import Graph, Literal, URIRef
 from rich.console import Console
 from rich.markdown import Markdown
 from rich.table import Table
-from typer import Argument, Context, Exit, Option, Typer
+from typer import Argument, Exit, Option, Typer
 from yarl import URL
 
 from iolanta.cli.models import LogLevel
+from iolanta.facets.errors import FacetNotFound
 from iolanta.iolanta import Iolanta
 from iolanta.models import NotLiteralNode
+from iolanta.namespaces import DATATYPES
+from iolanta.query_result import (
+    QueryResult,
+    SPARQLParseException,
+    SelectResult,
+)
 
-DEFAULT_LANGUAGE = locale.getlocale()[0].split('_')[0]
+DEFAULT_LANGUAGE = locale.getlocale()[0].split("_")[0]
 
 
 console = Console()
@@ -40,23 +47,18 @@ def string_to_node(name: str) -> NotLiteralNode:
         return URIRef(name)
 
     path = Path(name).absolute()
-    return URIRef(f'file://{path}')
+    return URIRef(f"file://{path}")
 
 
 def decode_datatype(datatype: str) -> URIRef:
-    if datatype.startswith('http'):
+    if datatype.startswith("http"):
         return URIRef(datatype)
 
-    return URIRef(f'https://iolanta.tech/datatypes/{datatype}')
+    return URIRef(f"https://iolanta.tech/datatypes/{datatype}")
 
 
-def render_and_return(
-    url: str,
-    as_datatype: str,
-    language: str = DEFAULT_LANGUAGE,
-    log_level: LogLevel = LogLevel.ERROR,
-):
-    """Render a given URL."""
+def setup_logging(log_level: LogLevel):
+    """Configure and return logger."""
     level = {
         LogLevel.DEBUG: logging.DEBUG,
         LogLevel.INFO: logging.INFO,
@@ -64,111 +66,229 @@ def render_and_return(
         LogLevel.ERROR: logging.ERROR,
     }[log_level]
 
-    log_file_path = platformdirs.user_log_path(
-        'iolanta',
-        ensure_exists=True,
-    ) / 'iolanta.log'
+    log_file_path = (
+        platformdirs.user_log_path(
+            "iolanta",
+            ensure_exists=True,
+        )
+        / "iolanta.log"
+    )
 
-    # Get the level name first
     level_name = {
-        logging.DEBUG: 'DEBUG',
-        logging.INFO: 'INFO', 
-        logging.WARNING: 'WARNING',
-        logging.ERROR: 'ERROR',
+        logging.DEBUG: "DEBUG",
+        logging.INFO: "INFO",
+        logging.WARNING: "WARNING",
+        logging.ERROR: "ERROR",
     }[level]
-    
-    # Configure global loguru logger BEFORE creating Iolanta instance
+
     loguru.logger.remove()
     loguru.logger.add(
         log_file_path,
         level=level_name,
-        format='{time} {level} {message}',
+        format="{time} {level} {message}",
         enqueue=True,
     )
     loguru.logger.add(
         sys.stderr,
         level=level_name,
-        format='{time} | {level:<8} | {name}:{function}:{line} - {message}',
+        format="{time} | {level:<8} | {name}:{function}:{line} - {message}",
     )
     loguru.logger.level(level_name)
-    
-    # Use the global logger
-    logger = loguru.logger
-    
-    node_url = URL(url)
-    if node_url.scheme and node_url.scheme != 'file':
-        node = URIRef(url)
 
-        iolanta: Iolanta = Iolanta(
-            language=Literal(language),
-            logger=logger,
+    return loguru.logger
+
+
+def handle_error(
+    error: Exception,
+    log_level: LogLevel,
+    use_markdown: bool = True,
+) -> None:
+    """
+    Handle an error by checking log level and printing appropriately.
+
+    If log level is DEBUG or INFO, re-raise the error.
+    Otherwise, print it and exit with code 1.
+    """
+    level = {
+        LogLevel.DEBUG: logging.DEBUG,
+        LogLevel.INFO: logging.INFO,
+        LogLevel.WARNING: logging.WARNING,
+        LogLevel.ERROR: logging.ERROR,
+    }[log_level]
+
+    if level in {logging.DEBUG, logging.INFO}:
+        raise error
+
+    if use_markdown:
+        console.print(
+            Markdown(
+                str(error),
+                justify="left",
+            ),
         )
-        
     else:
-        path = Path(node_url.path).absolute()
-        node = URIRef(f'file://{path}')
+        console.print(str(error))
+
+    raise Exit(1)
+
+
+def create_query_node(query_result: QueryResult) -> Literal:
+    """
+    Create a Literal node from a query result.
+
+    Converts QueryResult (SelectResult, Graph, or bool) into a Literal
+    with the appropriate datatype for facet rendering.
+    """
+    match query_result:
+        case SelectResult():
+            return Literal(
+                query_result,
+                datatype=DATATYPES["sparql-select-result"],
+            )
+        case Graph():
+            return Literal(
+                query_result,
+                datatype=DATATYPES["sparql-construct-result"],
+            )
+        case bool():
+            return Literal(
+                query_result,
+                datatype=DATATYPES["sparql-ask-result"],
+            )
+
+
+def render_and_return(
+    node: Literal | URIRef,
+    as_datatype: str,
+    language: str = DEFAULT_LANGUAGE,
+    log_level: LogLevel = LogLevel.ERROR,
+):
+    """
+    Render a node.
+
+    The node must be either a URIRef (for URLs) or a Literal (for query results).
+    """
+    logger = setup_logging(log_level)
+
+    # Determine Iolanta instance based on node type
+    if isinstance(node, Literal):
+        # Literal nodes (e.g., from query results) are used directly
+        # Use current directory as project_root for query results
         iolanta: Iolanta = Iolanta(
             language=Literal(language),
             logger=logger,
-            project_root=path,
+            project_root=Path.cwd(),
         )
+    elif isinstance(node, URIRef):
+        # URIRef - determine project_root if it's a file:// URI
+        if str(node).startswith("file://"):
+            path = Path(str(node).replace("file://", ""))
+            iolanta: Iolanta = Iolanta(
+                language=Literal(language),
+                logger=logger,
+                project_root=path,
+            )
+        else:
+            iolanta: Iolanta = Iolanta(
+                language=Literal(language),
+                logger=logger,
+            )
+    else:
+        # This should never happen due to type checking, but kept for safety
+        raise TypeError(f"Expected Literal or URIRef, got {type(node)}")
 
     return iolanta.render(
-        node=URIRef(node),
+        node=node,
         as_datatype=decode_datatype(as_datatype),
     )
 
 
-@app.command(name='render')
-def render_command(   # noqa: WPS231, WPS238, WPS210, C901
-    url: Annotated[str, Argument()],
-    as_datatype: Annotated[
-        str, Option(
-            '--as',
+@app.command(name="render")
+def render_command(  # noqa: WPS231, WPS238, WPS210, C901
+    url: Annotated[str | None, Argument()] = None,
+    query: Annotated[
+        str | None,
+        Option(
+            "--query",
+            help="SPARQL query to execute.",
         ),
-    ] = 'https://iolanta.tech/cli/interactive',
+    ] = None,
+    as_datatype: Annotated[
+        str | None,
+        Option(
+            "--as",
+        ),
+    ] = None,
     language: Annotated[
-        str, Option(
-            help='Data language to prefer.',
+        str,
+        Option(
+            help="Data language to prefer.",
         ),
     ] = DEFAULT_LANGUAGE,
     log_level: LogLevel = LogLevel.ERROR,
 ):
     """Render a given URL."""
-    try:
-        renderable = render_and_return(url, as_datatype, language, log_level)
-    except DocumentedError as documented_error:
-        level = {
-            LogLevel.DEBUG: logging.DEBUG,
-            LogLevel.INFO: logging.INFO,
-            LogLevel.WARNING: logging.WARNING,
-            LogLevel.ERROR: logging.ERROR,
-        }[log_level]
-        
-        if level in {logging.DEBUG, logging.INFO}:
-            raise
+    if query is not None:
+        # For queries, default to 'table' format
+        if as_datatype is None:
+            as_datatype = "table"
 
-        console.print(
-            Markdown(
-                str(documented_error),
-                justify='left',
-            ),
+        # Setup logging and create Iolanta instance (unlikely to raise)
+        logger = setup_logging(log_level)
+        iolanta: Iolanta = Iolanta(
+            language=Literal(language),
+            logger=logger,
+            project_root=Path.cwd(),
         )
+
+        try:
+            renderable = render_and_return(
+                node=create_query_node(iolanta.query(query)),
+                as_datatype=as_datatype,
+                language=language,
+                log_level=log_level,
+            )
+        except (SPARQLParseException, DocumentedError, FacetNotFound) as error:
+            handle_error(error, log_level, use_markdown=True)
+        except Exception as error:
+            handle_error(error, log_level, use_markdown=False)
+        else:
+            # FIXME: An intermediary Literal can be used to dispatch rendering.
+            match renderable:
+                case Table() as table:
+                    console.print(table)
+
+                case unknown:
+                    console.print(unknown)
+        return
+
+    if url is None:
+        console.print("Error: Either URL or --query must be provided")
         raise Exit(1)
 
-    except Exception as err:
-        level = {
-            LogLevel.DEBUG: logging.DEBUG,
-            LogLevel.INFO: logging.INFO,
-            LogLevel.WARNING: logging.WARNING,
-            LogLevel.ERROR: logging.ERROR,
-        }[log_level]
-        
-        if level in {logging.DEBUG, logging.INFO}:
-            raise
+    # For URLs, default to interactive mode
+    if as_datatype is None:
+        as_datatype = "https://iolanta.tech/cli/interactive"
 
-        console.print(str(err))
-        raise Exit(1)
+    # Parse string URL to URIRef (URL() is permissive and won't raise)
+    node_url = URL(url)
+    if node_url.scheme and node_url.scheme != "file":
+        node = URIRef(url)
+    else:
+        path = Path(node_url.path).absolute()
+        node = URIRef(f"file://{path}")
+
+    try:
+        renderable = render_and_return(
+            node=node,
+            as_datatype=as_datatype,
+            language=language,
+            log_level=log_level,
+        )
+    except DocumentedError as error:
+        handle_error(error, log_level, use_markdown=True)
+    except Exception as error:
+        handle_error(error, log_level, use_markdown=False)
     else:
         # FIXME: An intermediary Literal can be used to dispatch rendering.
         match renderable:
@@ -176,4 +296,4 @@ def render_command(   # noqa: WPS231, WPS238, WPS210, C901
                 console.print(table)
 
             case unknown:
-                print(unknown)
+                console.print(unknown)
