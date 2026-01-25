@@ -61,6 +61,14 @@
 
 **F04.** Never catch broad exceptions like `Exception` or `BaseException`. This is an antipattern that hides bugs, masks real problems, makes debugging harder, and violates the principle of catching only what you expect. Always catch specific exception types (e.g., `AttributeError`, `ValueError`, `KeyError`) that you actually expect and know how to handle. If you need to suppress a linting error about exception handling, use `# noqa` rather than changing the exception handling logic.
 
+**F05.** Condense try...except blocks to minimize their size. Extract common error handling logic into helper functions rather than duplicating it across multiple exception handlers. Use tuple exception catching (e.g., `except (Error1, Error2) as error:`) when multiple exceptions are handled identically.
+
+**F06.** Only put code in try blocks that can actually raise exceptions. Move operations that are unlikely or cannot raise exceptions (e.g., simple assignments, property access, object construction that doesn't involve I/O or parsing) outside of try blocks. This makes the code clearer about what can fail and reduces unnecessary exception handling overhead.
+
+**F07.** A branch that should never execute must never exist. Remove defensive `else` branches, `assert False` statements, or similar "this should never happen" code paths. If the type system or logic guarantees a branch is unreachable, trust it and remove the unreachable code. If you're concerned about future changes, use type checking and tests instead of defensive runtime checks.
+
+**F08.** Multiple if...elif branches with `isinstance()` calls must be replaced with `match/case` statements. The `match/case` syntax (Python 3.10+) is more readable, type-safe, and idiomatic for type-based dispatch. Use `match value: case Type():` instead of `if isinstance(value, Type): ... elif isinstance(value, OtherType): ...`.
+
 ## Adding Jeeves Commands
 
 **J00.** Jeeves is a task runner based on Typer. To add a new development command, add a function to `jeeves/__init__.py`. Functions in this module automatically become commands accessible via `j <command-name>`.
