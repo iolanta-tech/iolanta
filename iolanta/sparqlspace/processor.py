@@ -557,15 +557,6 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
                 path=not_found.path,
             )
 
-            self.graph.add(
-                (
-                    source_uri,
-                    RDF.type,
-                    IOLANTA["not-found"],
-                    source_uri,
-                )
-            )
-
             self._mark_as_loaded(source_uri)
 
             return Loaded()

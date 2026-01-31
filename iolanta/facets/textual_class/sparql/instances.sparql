@@ -1,8 +1,6 @@
-# Remember we are HTTPS-izing all URIs in Iolanta graph
-PREFIX rdf: <https://www.w3.org/1999/02/22-rdf-syntax-ns#>
-
 SELECT ?instance WHERE {
-    ?instance rdf:type $this .
+    ?instance a $this .
 
+    # Overcome what RDFLib does
     FILTER(!isLiteral(?instance)) .
 } ORDER BY ?instance

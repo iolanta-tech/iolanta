@@ -24,6 +24,14 @@ TEXT = """
 issues: https://github.com/iolanta.tech/iolanta/issues
 """
 
+PARSE_ERROR_TEMPLATE = """
+**Parse error**
+
+```
+{message}
+```
+"""
+
 CONTENT_TEMPLATE = """
 **File content**
 
@@ -46,7 +54,7 @@ class TextualNoFacetFound(Facet):
     def raw_content(self):
         """Content of the file, if applicable."""
         url = URL(self.this)
-        if url.scheme != 'file':
+        if url.scheme != "file":
             return None
 
         path = Path(url.path)
@@ -59,32 +67,50 @@ class TextualNoFacetFound(Facet):
         if path.is_dir():
             return None
 
+        parse_error_msg = self._parse_error_message()
         file_content = path.read_text()
-        return CONTENT_TEMPLATE.format(
+        content = CONTENT_TEMPLATE.format(
             content=file_content,
             type={
-                '.yamlld': 'yaml',
-                '.jsonld': 'json',
-            }.get(path.suffix, ''),
+                ".yamlld": "yaml",
+                ".jsonld": "json",
+                ".ttl": "turtle",
+            }.get(path.suffix, ""),
         )
+        if parse_error_msg:
+            content = PARSE_ERROR_TEMPLATE.format(message=parse_error_msg) + content
+        return content
+
+    def _parse_error_message(self) -> str | None:
+        """Return parse error message for this node if it failed to load."""
+        rows = self.query(
+            """
+            SELECT ?msg WHERE {
+                GRAPH <iolanta://_meta> { $this iolanta:parse-error ?msg }
+            }
+            """,
+            this=self.this,
+        )
+        if row := funcy.first(rows):
+            return str(row["msg"])
+        return None
 
     @property
     def subgraphs_description(self) -> str:
         """Return a formatted description of subgraphs, if any exist."""
         rows = self.query(
-            'SELECT ?subgraph WHERE { $this iolanta:has-sub-graph ?subgraph }',
+            "SELECT ?subgraph WHERE { $this iolanta:has-sub-graph ?subgraph }",
             this=self.this,
         )
-        subgraphs = funcy.lpluck('subgraph', rows)
+        subgraphs = funcy.lpluck("subgraph", rows)
         if subgraphs:
             return SUBGRAPHS_TEMPLATE.format(
-                formatted_subgraphs='\n'.join([
-                    f'- {subgraph}'
-                    for subgraph in subgraphs
-                ]),
+                formatted_subgraphs="\n".join(
+                    [f"- {subgraph}" for subgraph in subgraphs]
+                ),
             )
 
-        return ''
+        return ""
 
     def show(self):
         """Compose the page."""
@@ -93,8 +119,8 @@ class TextualNoFacetFound(Facet):
             Description(
                 Markdown(
                     TEXT.format(
-                        content=self.raw_content or '',
-                        subgraphs=self.subgraphs_description or '',
+                        content=self.raw_content or "",
+                        subgraphs=self.subgraphs_description or "",
                         reference_type=type(self.this).__name__,
                     ),
                 ),

@@ -45,22 +45,22 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
     """
 
     BINDINGS = [  # noqa: WPS115
-        ('alt+left', 'back', 'Back'),
-        ('alt+right', 'forward', 'Fwd'),
-        ('f5', 'reload', '🔄 Reload'),
-        ('escape', 'abort', '🛑 Abort'),
-        ('f12', 'console', 'Console'),
+        ("alt+left", "back", "Back"),
+        ("alt+right", "forward", "Fwd"),
+        ("f5", "reload", "🔄 Reload"),
+        ("escape", "abort", "🛑 Abort"),
+        ("f12", "console", "Console"),
     ]
 
     def __init__(self):
         """Set Home as first tab."""
-        super().__init__(id='page_switcher', initial='home')
+        super().__init__(id="page_switcher", initial="home")
         self.stop_file_watcher_event = threading.Event()
 
     def action_console(self):
         """Open dev console."""
         console_switcher = self.app.query_one(ConsoleSwitcher)
-        console_switcher.current = 'console'
+        console_switcher.current = "console"
         console_switcher.query_one(DevConsole).focus()
 
     @functools.cached_property
@@ -70,7 +70,7 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
 
     def compose(self):
         """Home is the first page to open."""
-        yield Home(id='home')
+        yield Home(id="home")
 
     def on_mount(self):
         """Navigate to the initial page."""
@@ -86,13 +86,13 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
         self.stop_file_watcher_event.set()
 
     def _watch_files(self):
-        for _ in watchfiles.watch(   # noqa: WPS352
+        for _ in watchfiles.watch(  # noqa: WPS352
             self.iolanta.project_root,
             stop_event=self.stop_file_watcher_event,
         ):
             self.app.call_from_thread(self.action_reload)
 
-    def render_iri(   # noqa: WPS210
+    def render_iri(  # noqa: WPS210
         self,
         this: NotLiteralNode,
         facet_iri: URIRef | None,
@@ -102,7 +102,7 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
         self.this = this
         iolanta: Iolanta = self.iolanta
 
-        as_datatype = URIRef('https://iolanta.tech/cli/textual')
+        as_datatype = URIRef("https://iolanta.tech/cli/textual")
         choices = FacetFinder(
             iolanta=self.iolanta,
             node=this,
@@ -117,12 +117,10 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
             )
 
         if facet_iri is None:
-            facet_iri = choices[0]['facet']
+            facet_iri = choices[0]["facet"]
 
         other_facets = [
-            choice['facet']
-            for choice in choices
-            if choice['facet'] != facet_iri
+            choice["facet"] for choice in choices if choice["facet"] != facet_iri
         ]
         flip_options = [
             FlipOption(
@@ -141,7 +139,7 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
         facet = facet_class(
             this=self.this,
             iolanta=iolanta,
-            as_datatype=URIRef('https://iolanta.tech/cli/textual'),
+            as_datatype=URIRef("https://iolanta.tech/cli/textual"),
         )
 
         try:
@@ -162,7 +160,7 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
             is_reload=is_reload,
         )
 
-    def on_worker_state_changed(   # noqa: WPS210
+    def on_worker_state_changed(  # noqa: WPS210
         self,
         event: Worker.StateChanged,
     ):
@@ -173,7 +171,7 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
 
                 if render_result.is_reload:
                     # We are reloading the current page.
-                    current_page = self.query_one(f'#{self.current}', Page)
+                    current_page = self.query_one(f"#{self.current}", Page)
                     current_page.remove_children()
                     current_page.mount(render_result.renderable)
 
@@ -184,7 +182,7 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
                 else:
                     # We are navigating to a new page.
                     page_uid = uuid.uuid4().hex
-                    page_id = f'page_{page_uid}'
+                    page_id = f"page_{page_uid}"
                     page = Page(
                         render_result.renderable,
                         iri=render_result.iri,
@@ -210,7 +208,7 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
     def is_loading(self) -> bool:
         """Determine if the app is presently loading something."""
         for worker in self.workers:
-            if worker.name == 'render_iri':
+            if worker.name == "render_iri":
                 return True
 
         return False
@@ -219,31 +217,31 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
         """Reset Iolanta graph and re-render current view."""
         if self.history.current is None:
             return
-        
+
         self.iolanta.reset()
 
         self.run_worker(
             functools.partial(
                 self.render_iri,
                 this=self.history.current.url,
-                facet_iri=self.history.current.facet_iri,
+                facet_iri=None,  # Re-resolve facet after reload so parse errors use TextualNoFacetFound
                 is_reload=True,
             ),
             thread=True,
             exclusive=True,
-            name='render_iri',
+            name="render_iri",
         )
         self.refresh_bindings()
 
     def action_abort(self):
         """Abort loading."""
         self.notify(
-            'Aborted.',
-            severity='warning',
+            "Aborted.",
+            severity="warning",
         )
 
         for worker in self.workers:
-            if worker.name == 'render_iri':
+            if worker.name == "render_iri":
                 worker.cancel()
                 break
 
@@ -252,18 +250,18 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
     def check_action(
         self,
         action: str,
-        parameters: tuple[object, ...],   # noqa: WPS110
+        parameters: tuple[object, ...],  # noqa: WPS110
     ) -> bool | None:
         """Check if action is available."""
         is_loading = self.is_loading
         match action:
-            case 'reload':
+            case "reload":
                 return not is_loading
-            case 'abort':
+            case "abort":
                 return is_loading
-            case 'back':
+            case "back":
                 return bool(self.history.past)
-            case 'forward':
+            case "forward":
                 return bool(self.history.future)
 
         return True
@@ -280,12 +278,12 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
         # Direct calls (like line 77) pass Node objects directly.
         if isinstance(this, str):
             # Check if string represents a blank node (starts with "_:")
-            if this.startswith('_:'):
+            if this.startswith("_:"):
                 # Create a BNode with the full string (including the "_:")
                 this = BNode(this)
             else:
                 this = URIRef(this)
-        
+
         self.run_worker(
             functools.partial(
                 self.render_iri,
@@ -295,7 +293,7 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
             ),
             thread=True,
             exclusive=True,
-            name='render_iri',
+            name="render_iri",
         )
         self.refresh_bindings()
 
@@ -319,8 +317,8 @@ class ConsoleSwitcher(ContentSwitcher):
     def __init__(self):
         """Specify initial params."""
         super().__init__(
-            id='console_switcher',
-            initial='page_switcher',
+            id="console_switcher",
+            initial="page_switcher",
         )
 
     def compose(self):
@@ -333,17 +331,17 @@ class DevConsole(RichLog):
     """Development console."""
 
     BINDINGS = [
-        ('f12,escape', 'close', 'Close Console'),
+        ("f12,escape", "close", "Close Console"),
     ]
 
     def __init__(self):
         """Set default props for console."""
-        super().__init__(highlight=False, markup=False, id='console')
+        super().__init__(highlight=False, markup=False, id="console")
 
     def action_close(self):
         """Close the dev console."""
         console_switcher = self.app.query_one(ConsoleSwitcher)
-        console_switcher.current = 'page_switcher'
+        console_switcher.current = "page_switcher"
 
         page_switcher = console_switcher.query_one(PageSwitcher)
         page_switcher.visible_content.focus()
