@@ -17,6 +17,7 @@ import yaml_ld
 from pyparsing import ParseException
 from rdflib import ConjunctiveGraph, Graph, Literal, URIRef
 from rdflib.namespace import NamespaceManager
+from rdflib.plugins.parsers.notation3 import BadSyntax
 from rdflib.plugins.sparql.processor import SPARQLResult
 from rdflib.term import Node
 from yaml_ld.document_loaders.content_types import ParserNotFound
@@ -256,10 +257,20 @@ class Iolanta:  # noqa: WPS214, WPS338
             except ParserNotFound as parser_not_found:
                 self.logger.error(f"{source} | {parser_not_found}")
                 continue
-            except YAMLLDError as yaml_ld_error:
-                # .add() only processes local files, so errors should be raised
-                self.logger.error(f"{source_file} | {yaml_ld_error}")
-                raise
+            except (YAMLLDError, BadSyntax) as parse_error:
+                self.logger.warning("%s | parse error: %s", source_file, parse_error)
+                file_iri = path_to_iri(source_file)
+                self.graph.addN(
+                    [
+                        (
+                            file_iri,
+                            namespaces.IOLANTA["parse-error"],
+                            Literal(str(parse_error)),
+                            namespaces.META,
+                        ),
+                    ]
+                )
+                continue
             except ValueError as value_error:
                 self.logger.error(f"{source} | {value_error}")
                 continue
@@ -362,7 +373,6 @@ class Iolanta:  # noqa: WPS214, WPS338
     ) -> Any:
         """Find an Iolanta facet for a node and render it."""
         node = normalize_term(node)
-
         if not as_datatype:
             raise ValueError(
                 f"Please provide the datatype to render {node} as.",
