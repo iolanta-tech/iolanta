@@ -1,10 +1,15 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 from documented import DocumentedError
 from rdflib.term import Node
 
 from iolanta.models import LDContext
+
+if TYPE_CHECKING:
+    from iolanta.iolanta import Iolanta
 
 
 @dataclass
@@ -14,7 +19,7 @@ class InsufficientDataForRender(DocumentedError):
     """
 
     node: Node
-    iolanta: 'iolanta.Iolanta'
+    iolanta: Iolanta
 
     @property
     def is_hopeless(self) -> bool:
@@ -22,9 +27,9 @@ class InsufficientDataForRender(DocumentedError):
 
         if hopeless:
             self.iolanta.logger.error(
-                '%s could not be rendered, we could not retrieve describing '
-                'data '
-                'from the Web.',
+                "%s could not be rendered, we could not retrieve describing "
+                "data "
+                "from the Web.",
                 self.node,
             )
 
@@ -52,5 +57,5 @@ class UnresolvedIRI(DocumentedError):
 
     iri: str
     prefix: str
-    file: Optional[str] = None    # noqa: WPS110
+    file: Optional[str] = None  # noqa: WPS110
     context: Optional[LDContext] = None

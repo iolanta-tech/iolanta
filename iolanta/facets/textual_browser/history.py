@@ -2,16 +2,16 @@ from collections import deque
 from dataclasses import dataclass, field
 from typing import Generic, TypeVar
 
-LocationType = TypeVar('LocationType')
+LocationType = TypeVar("LocationType")
 
 
 @dataclass
 class NavigationHistory(Generic[LocationType]):
     """Navigation history."""
 
-    past: deque = field(default_factory=deque)
+    past: deque[LocationType] = field(default_factory=deque)
     current: LocationType | None = None
-    future: deque = field(default_factory=deque)
+    future: deque[LocationType] = field(default_factory=deque)
 
     def goto(self, location: LocationType) -> LocationType:
         """Go to a location."""

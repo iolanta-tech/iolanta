@@ -22,16 +22,16 @@ def _object_to_qname(node: URIRef, graph: Graph):
 @node_to_qname.instance(URIRef)
 def _uriref_to_qname(node: URIRef, graph: Graph):
     try:
-        qname = ComputedQName(*graph.compute_qname(node))   # type: ignore
+        qname = ComputedQName(*graph.compute_qname(node))
 
     except ValueError:
         return node
 
     except NameError as err:
-        logger.exception(f'NameError! On: {node} Error: {err}')
+        logger.exception(f"NameError! On: {node} Error: {err}")
         return node
 
-    if qname.namespace_name.startswith('ns'):
+    if qname.namespace_name.startswith("ns"):
         return node
 
     return qname
