@@ -1,13 +1,18 @@
+from __future__ import annotations
+
 import inspect
 from dataclasses import dataclass, field
 from functools import cached_property
 from pathlib import Path
-from typing import Any, Generic, Optional, TypeVar, Union
+from typing import TYPE_CHECKING, Generic, Optional, TypeVar, Union
 
 from rdflib.term import Literal, Node
 
 from iolanta.models import NotLiteralNode
 from iolanta.query_result import QueryResult, SPARQLQueryArgument
+
+if TYPE_CHECKING:
+    from iolanta.iolanta import Iolanta
 
 FacetOutput = TypeVar("FacetOutput")
 
@@ -17,16 +22,8 @@ class Facet(Generic[FacetOutput]):  # noqa: WPS214
     """Base facet class."""
 
     this: Node
-    iolanta: "iolanta.Iolanta" = field(repr=False)
+    iolanta: Iolanta = field(repr=False)
     as_datatype: Optional[NotLiteralNode] = None
-
-    def __post_init__(self):
-        if not isinstance(self.this, Node):
-            facet_name = self.__class__.__name__
-            this_type = type(self.this).__name__
-            raise ValueError(
-                f"Facet {facet_name} received a non-Node as this: {self.this} (type: {this_type})"
-            )
 
     @property
     def stored_queries_path(self) -> Path:
@@ -50,7 +47,7 @@ class Facet(Generic[FacetOutput]):  # noqa: WPS214
         self,
         node: Union[str, Node],
         as_datatype: NotLiteralNode,
-    ) -> Any:
+    ) -> object:
         """Shortcut to render something via iolanta."""
         return self.iolanta.render(
             node=node,
