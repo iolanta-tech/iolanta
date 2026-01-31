@@ -160,7 +160,7 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214, WPS338
             renderable=renderable,
             flip_options=flip_options,
             facet_iri=facet_iri,
-            is_reload=is_reload,git
+            is_reload=is_reload,
         )
 
     def on_worker_state_changed(  # noqa: WPS210
