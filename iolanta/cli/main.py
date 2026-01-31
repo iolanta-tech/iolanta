@@ -183,10 +183,12 @@ def render_and_return(
         # URIRef - determine project_root if it's a file:// URI
         if str(node).startswith("file://"):
             path = Path(str(node).replace("file://", ""))
+            # Load current directory (like CLI AI agents): use parent if path is a file
+            project_root = path.parent if path.is_file() else path
             iolanta: Iolanta = Iolanta(
                 language=Literal(language),
                 logger=logger,
-                project_root=path,
+                project_root=project_root,
             )
         else:
             iolanta: Iolanta = Iolanta(
