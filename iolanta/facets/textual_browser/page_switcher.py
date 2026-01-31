@@ -1,3 +1,4 @@
+# noqa: WPS201
 import functools
 import threading
 import uuid
@@ -21,6 +22,8 @@ from iolanta.models import NotLiteralNode
 from iolanta.namespaces import DATATYPES
 from iolanta.widgets.mixin import IolantaWidgetMixin
 
+RENDER_IRI_WORKER_NAME = "render_iri"
+
 
 @dataclass
 class RenderResult:
@@ -37,7 +40,7 @@ class RenderResult:
     is_reload: bool
 
 
-class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
+class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214, WPS338
     """
     Container for open pages.
 
@@ -157,7 +160,7 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
             renderable=renderable,
             flip_options=flip_options,
             facet_iri=facet_iri,
-            is_reload=is_reload,
+            is_reload=is_reload,git
         )
 
     def on_worker_state_changed(  # noqa: WPS210
@@ -208,7 +211,7 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
     def is_loading(self) -> bool:
         """Determine if the app is presently loading something."""
         for worker in self.workers:
-            if worker.name == "render_iri":
+            if worker.name == RENDER_IRI_WORKER_NAME:
                 return True
 
         return False
@@ -229,7 +232,7 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
             ),
             thread=True,
             exclusive=True,
-            name="render_iri",
+            name=RENDER_IRI_WORKER_NAME,
         )
         self.refresh_bindings()
 
@@ -241,7 +244,7 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
         )
 
         for worker in self.workers:
-            if worker.name == "render_iri":
+            if worker.name == RENDER_IRI_WORKER_NAME:
                 worker.cancel()
                 break
 
@@ -268,9 +271,9 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
 
     def action_goto(
         self,
-        this: Node,
+        this: Node | str,
         facet_iri: str | None = None,
-    ):
+    ) -> None:
         """Go to an IRI."""
         # Convert string to Node if needed.
         # This happens when called via Textual action strings (from keyboard bindings
@@ -293,21 +296,23 @@ class PageSwitcher(IolantaWidgetMixin, ContentSwitcher):  # noqa: WPS214
             ),
             thread=True,
             exclusive=True,
-            name="render_iri",
+            name=RENDER_IRI_WORKER_NAME,
         )
         self.refresh_bindings()
 
     def action_back(self):
         """Go backward."""
         self.current = self.history.back().page_id
-        if page := self.visible_content:
+        page = self.visible_content
+        if page:
             page.focus()
 
     def action_forward(self):
         """Go forward."""
         self.current = self.history.forward().page_id
         self.focus()
-        if page := self.visible_content:
+        page = self.visible_content
+        if page:
             page.focus()
 
 
@@ -330,7 +335,7 @@ class ConsoleSwitcher(ContentSwitcher):
 class DevConsole(RichLog):
     """Development console."""
 
-    BINDINGS = [
+    BINDINGS = [  # noqa: WPS115
         ("f12,escape", "close", "Close Console"),
     ]
 
