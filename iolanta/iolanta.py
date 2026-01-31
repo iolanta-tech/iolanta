@@ -62,6 +62,21 @@ def _create_default_graph():
     return ConjunctiveGraph(identifier=namespaces.LOCAL.term("_inference"))
 
 
+def _loadable_files(path: Path) -> Iterable[Path]:
+    """Paths of loadable files under path, skipping hidden files and dirs."""
+    if path.is_file():
+        if not path.name.startswith("."):
+            yield path
+        return
+    for entry in path.iterdir():
+        if entry.name.startswith("."):
+            continue
+        if entry.is_file():
+            yield entry
+        else:
+            yield from _loadable_files(entry)
+
+
 @dataclass
 class Iolanta:  # noqa: WPS214, WPS338
     """Iolanta is a Semantic web browser."""
@@ -241,10 +256,7 @@ class Iolanta:  # noqa: WPS214, WPS338
         if not isinstance(source, Path):
             source = Path(source)
 
-        for source_file in list(source.rglob("*")) or [source]:
-            if source_file.is_dir():
-                continue
-
+        for source_file in _loadable_files(source):
             try:  # noqa: WPS225
                 ld_rdf = yaml_ld.to_rdf(source_file)
             except ConnectionError as name_resolution_error:
