@@ -1,0 +1,23 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  iolanta: https://iolanta.tech/
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+
+  iolanta:outputs:
+    "@type": "@id"
+
+  $: rdfs:label
+  →:
+    "@type": "@id"
+    "@id": iolanta:outputs
+
+  ↦: iolanta:matches
+
+$id: pkg:pypi/iolanta#kglint
+$: KGLint
+→:
+  $id: https://iolanta.tech/kglint/json
+  $: KGLint JSON
+↦:
+  - ASK WHERE { GRAPH $this { ?s ?p ?o } }
+  - ASK WHERE { $this <https://iolanta.tech/has-sub-graph> ?subgraph }
