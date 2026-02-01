@@ -54,6 +54,9 @@ def decode_datatype(datatype: str) -> URIRef:
     if datatype.startswith("http"):
         return URIRef(datatype)
 
+    if "/" in datatype:
+        return URIRef(f"https://iolanta.tech/{datatype}")
+
     return URIRef(f"https://iolanta.tech/datatypes/{datatype}")
 
 

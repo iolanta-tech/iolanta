@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iolanta"
-version = "2.1.19"
+version = "2.1.20"
 description = "Semantic Web browser"
 authors = ["Anatoly Scherbakov <altaisoft@gmail.com>"]
 license = "MIT"
@@ -67,6 +67,7 @@ mermaid-graph = "iolanta.mermaid.facet:Mermaid"
 mermaid-roadmap = "iolanta.facets.mermaid_roadmap.facet:MermaidRoadmap"
 rich-declension-table = "iolanta.declension.facet:RichDeclensionTable"
 labeled-triple-set = "iolanta.labeled_triple_set.labeled_triple_set:LabeledTripleSet"
+kglint = "iolanta.kglint.facet:KGLint"
 select-result-table-facet = "iolanta.facets.query.select_result_table:SelectResultTableFacet"
 select-result-json-facet = "iolanta.facets.query.select_result_json:SelectResultJsonFacet"
 select-result-csv-facet = "iolanta.facets.query.select_result_csv:SelectResultCsvFacet"
