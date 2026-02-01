@@ -1,0 +1,5 @@
+"@context":
+  ex: http://example.org/
+
+"@id": ex:UnlabeledResource
+ex:description: Some resource with no rdfs:label
