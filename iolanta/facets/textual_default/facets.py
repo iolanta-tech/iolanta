@@ -52,13 +52,14 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
             for row in property_rows
         ]
 
+        iolanta_lang = str(self.iolanta.language)
         property_pairs = [
             (property_iri, object_node)
             for property_iri, object_node in property_pairs
             if (
                 not isinstance(object_node, Literal)
                 or not (language := object_node.language)  # noqa: W503
-                or (language == self.iolanta.language)     # noqa: W503
+                or (language == iolanta_lang)
             )
         ]
 
