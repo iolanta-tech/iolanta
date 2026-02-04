@@ -607,6 +607,9 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
         except HTTPError as http_error:
             self.logger.warning(f"{source} | HTTP error: {http_error}")
             return Loaded()
+        except TypeError as type_error:
+            self.logger.error(f"{source} | JSON-LD type error: {type_error}")
+            return Loaded()
 
         try:
             quads = list(
