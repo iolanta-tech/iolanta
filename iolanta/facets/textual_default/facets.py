@@ -33,10 +33,10 @@ class Description(Static):
     """
 
 
-class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
+class TextualDefaultFacet(Facet[Widget]):  # noqa: WPS214
     """Default rendering engine."""
 
-    query_file_name = 'properties.sparql'
+    query_file_name = "properties.sparql"
     properties_on_the_right = False
 
     @functools.cached_property
@@ -47,10 +47,7 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
             this=self.this,
         )
 
-        property_pairs = [
-            (row['property'], row['object'])
-            for row in property_rows
-        ]
+        property_pairs = [(row["property"], row["object"]) for row in property_rows]
 
         iolanta_lang = str(self.iolanta.language)
         property_pairs = [
@@ -79,7 +76,9 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
                     property_value=property_value,
                     subject=self.this,
                     property_iri=property_iri,
-                ) if isinstance(property_value, Literal) else PropertyValue(
+                )
+                if isinstance(property_value, Literal)
+                else PropertyValue(
                     property_value=property_value,
                     subject=self.this,
                     property_iri=property_iri,
@@ -130,26 +129,28 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
 
         match literal_value:
             case str() as string:
-                return string
+                # Escape ALL square brackets - Rich's escape_markup only escapes
+                # lowercase tags, but [[ItemList]] etc. still cause MarkupError
+                return string.replace("[", r"\[")
 
             case minidom.Document() as xml_document:
                 return Syntax(
                     xml_document.toxml(),
-                    'xml',
+                    "xml",
                 )
 
             case something_else:
                 type_of_something_else = type(something_else)
                 raise ValueError(
-                    f'What is this? {something_else} '   # noqa: WPS326
-                    f'is a {type_of_something_else}!',   # noqa: WPS326
+                    f"What is this? {something_else} "  # noqa: WPS326
+                    f"is a {type_of_something_else}!",  # noqa: WPS326
                 )
 
     @functools.cached_property
     def properties(self) -> Widget | None:
         """Render properties table."""
         if not self.grouped_properties:
-            return Static('No properties found ☹')
+            return Static("No properties found ☹")
 
         return PropertiesContainer(*self.rows)
 
@@ -160,7 +161,7 @@ class TextualDefaultFacet(Facet[Widget]):   # noqa: WPS214
 
         if self.description:
             widgets.append(Description(self.description))
-        
+
         widgets.append(self.properties)
 
         return VerticalScroll(*widgets)
@@ -176,11 +177,12 @@ class PageFooter(PageTitle):
     }
     """
 
+
 class InverseProperties(TextualDefaultFacet):
     """Inverse properties view."""
 
-    META = Path(__file__).parent / 'textual-inverse-properties.yamlld'
-    query_file_name = 'inverse-properties.sparql'
+    META = Path(__file__).parent / "textual-inverse-properties.yamlld"
+    query_file_name = "inverse-properties.sparql"
     properties_on_the_right = True
 
     def show(self) -> Widget:
@@ -189,5 +191,5 @@ class InverseProperties(TextualDefaultFacet):
             VerticalScroll(
                 self.properties,
             ),
-            PageFooter(self.this, extra='[i]& its inverse RDF properties[/i]'),
+            PageFooter(self.this, extra="[i]& its inverse RDF properties[/i]"),
         )
