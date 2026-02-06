@@ -1,0 +1,8 @@
+$id: interactive-mode-alternatives
+table:columns:
+  - table:self
+table:class:
+  $reverse:
+    rdf:type:
+      - rdfs:label: Separate commands
+      - rdfs:label: One command

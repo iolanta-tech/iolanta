@@ -1,0 +1,23 @@
+Reflection Questions (3 Points) [MC-4]
+Keith Corbett
+•
+Dec 11
+Assignment
+•
+3 points
+Due Dec 20
+
+Reflect on the considerations of building knowledge graphs in a real-world enterprise.
+
+📘Instructions
+Create a document and answer the questions listed below.
+Submit your document to earn 3 possible points. Due December 19th.
+
+✅ Questions
+In our own words, what is your Big Picture understanding when Technical and Business considerations are combined?
+How can you apply what you learned from the BigPicture to your work, projects, or real-world situations?
+What still needs clarification?
+
+---
+
+The whole MC4 section of the curriculum is titled "Build something real"

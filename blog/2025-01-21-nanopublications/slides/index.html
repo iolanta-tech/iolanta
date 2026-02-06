@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Navigating Cyberspace: Exploring & Rendering Linked Data in the Terminal</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <link rel="stylesheet" href="shower/themes/ribbon//styles/styles.css">
+    <style>
+        .shower {
+            --slide-ratio: calc(16 / 9);
+        }
+
+        #cover {
+            background: url(pictures/cover.png) no-repeat center center;
+            background-size: cover;
+        }
+
+        #rdf {
+            background: url(pictures/rdf.jpg) no-repeat center center;
+            background-size: cover;
+        }
+
+        #rdf h2, #rdf p {
+            color: white;
+        }
+
+        #lingua-franca {
+            background: url(pictures/lingua-franca.jpg) no-repeat center center;
+            background-size: cover;
+        }
+
+        #lingua-franca h2, #lingua-franca p {
+            color: white;
+        }
+
+        #show {
+            background: url(pictures/datascape.png) no-repeat center center;
+            background-size: cover;
+        }
+
+        #show h2, #show p {
+            color: white;
+        }
+
+        #cyberspace {
+            background: url(pictures/cyberspace.jpg) no-repeat center center;
+            background-size: cover;
+        }
+
+        #cyberspace h2, #cyberspace p, #cyberspace li {
+            color: white;
+        }
+
+        aside {
+            display: none;
+        }
+    </style>
+</head>
+<body class="shower list">
+    <header class="caption">
+        <h1>Navigating Cyberspace: Exploring & Rendering Linked Data in the Terminal</h1>
+        <p>21 January 2025 | Nanopublications Session</p>
+    </header>
+
+    <section class="slide" id="cover">
+        <h2>Navigating Cyberspace</h2>
+        <p>Exploring & Rendering Linked Data in the Terminal</p>
+
+        <style>
+            #cover h2 {
+                margin: 40% 0 0;
+                color: white;
+                text-align: center;
+                font-size: 70px;
+            }
+
+            #cover p {
+                margin: 10px 0 0;
+                text-align: center;
+                color: white;
+                font-style: italic;
+                font-size: 20px;
+            }
+
+            #cover p a {
+                color: white;
+            }
+        </style>
+
+        <aside>
+          Thank you very much, hello everyone, I would like to talk about the issues of navigating Linked Data and a potential approach to that problem I am currently working on, and I will be very happy to hear what you think.
+        </aside>
+    </section>
+
+    <section class="slide">
+        <h2>About</h2>
+        <ul>
+          <li>
+            <a href="https://yeti.sh">Anatoly Scherbakov</a>
+          </li>
+          <li>
+            Software developer
+            <em>(<a href="https://yeti.sh/cv">primarily</a> Python)</em>
+          </li>
+          <li>Linked Data enthusiast</li>
+          <li>
+            Invited expert @ W3C JSON for Linked Data Working Group
+            <ul>
+              <li>working on <a href="https://github.com/json-ld/yaml-ld">YAML-LD</a></li>
+              <li>helping with <a href="https://github.com/w3c/json-ld-api">JSON-LD</a></li>
+            </ul>
+          </li>
+        </ul>
+        <aside>
+          My name's Anatoly, I am a Python software developer. I am also kind of a fan of Linked Data. I am involved with W3C JSON for Linked Data working group, particularly with YAML-LD, which is a notation for JSON-LD that tries to make Linked Data more easily writeable by a live person, while JSON-LD, with which I am also trying to help, is more easily writeable for a machine.
+        </aside>
+    </section>
+
+    <section class="slide" id="rdf">
+      <h2>RDF</h2>
+      <p>Consists of quads</p>
+      <aside>
+        In general, the topic of interaction between Linked Data and humans is important to me, and I believe there are improvements to be done. There is a great deal of information already available as Linked Data, but many potential users who are not specifically Linked Data professionals have certain difficulties using that data.
+      </aside>
+    </section>
+
+    <section class="slide" id="cyberspace">
+      <h2>Cyberspace</h2>
+
+      <ul>
+        <li>© William Gibson</li>
+        <li>A set of all quads available<br/> for an individual</li>
+        <li>
+          Quad is:
+          <ul>
+            <li>Subject</li>
+            <li>Predicate</li>
+            <li>Object</li>
+            <li>IRI of the source where the above where obtained</li>
+          </ul>
+        </li>
+      </ul>
+      <aside>
+        For the purposes of this presentation, I propose the term "cyberspace" to denote the set of all RDF quads available to an individual, the whole volume of machine readable data a particular person or machine can access. We will also assume that the named graph in each of those quads signifies the source from which the quad is retrievable. We are a hijacking a term coined by William Gibson, a sci-fi writer, and I also hope he will forgive us.
+      </aside>
+    </section>
+
+    <section class="slide">
+      <h2 class="shout">
+        pip install iolanta
+      </h2>
+      <aside>
+        I've written a little tool, named Iolanta, that might assist in navigating the vast depths of the cyberspace. I apologize if the LLM-generated backgrounds on my slides were hinting on something colorful and three-dimensional, and vaguely futuristic, - Iolanta is nothing of the sort, it is merely a terminal application.
+      </aside>
+    </section>
+
+    <section class="slide">
+      <small>
+      <code>
+        iolanta https://purl.org/np/RAYskLSM5x29icArnWvo9nVrIVEN2mfPoDq3TQSgm-9kk
+      </code>
+      </small>
+      <aside>
+        <p>
+          Let us copy and paste this command into the terminal. This is a URL of a nanopublication. Unfortunately, not all parts of this nanopublication have been converted to a human readable form. We can see this is Tobias, and we will have to guess that he retracts another nanopublication. Let's click on it.
+        </p>
+
+        <p>
+          Now this is a bit more interesting. This nanopublication asserts a few triples about red things, which are a class, have a label and a definition. All written by Tobias again, and then retracted using the publication we have already seen.
+        </p>
+
+        <p>
+          Let's click on the <code>label</code>. From the header of the screen, one might guess that this is a regular <code>label</code> property from RDF Schema vocabulary, but this page is trying to make it more explicit. We can see that RDFS defines this term and we can jump to the whole vocabulary.
+        </p>
+
+        <p>
+          Which conveniently shows us its terms, grouped by rather arbitrary categories. This is only one of possible views for the RDFS ontology, it is designed to present it, well, as ontology - that is why Iolanta chooses it as a default. However, there are other views, this is the Properties view which describes the ontology itself.
+        </p>
+
+        <p>
+          Note that one of its properties is <code>Term Group</code>, and that's exactly what defines grouping of terms that we have been looking at. This term is defined by VANN ontology by Ian Davis back in 2010.
+        </p>
+
+        <p>
+          I would like to show one more example. Let's go back, here, and see what we know about Tobias. His information is being sourced from ORCID portal, and this page shows a lot of pieces that we fail to properly render, they are just blank node identifiers. Like this one, which could theoretically be nicely rendered as Scopus ID. This still needs a lot of work.
+        </p>
+
+        <p>
+          On this screen, I will return to the presentation; if you have questions or thoughts, we can always come back during the discussion.
+        </p>
+      </aside>
+    </section>
+
+    <section class="slide">
+      <h2>Use Cases</h2>
+      <ul>
+        <li>Browse the Cyberspace</li>
+        <li>Generate tables, lists, diagrams, and more from Cyberspace</li>
+        <li>Inject Cyberspace-sourced information into human readable content</li>
+        <li>Ideas are welcome!</li>
+      </ul>
+
+      <aside>
+        <p>
+          What is Iolanta good for? Why is it built? - In order to make machine readable data more readable for a human. Now opinions might differ as to how human friendly a terminal is, but as a programmer, I use terminal a lot, and this environment was a natural habitat for me to experiment within.
+        </p>
+        <p>
+          In addition, terminal gives you quite a lot of interoperability. At this point, Iolanta is drawing a text based user interface, but it will be even easier to generate JSON, YAML, HTML, TeX or any other textual format - based on Linked Data available in the Cyberspace.
+        </p>
+        <p>
+          Therefore, in addition to merely browsing the Cyberspace, retrieval of information from there for use in other programs, or as part of documents, is also an important use case.
+        </p>
+
+        <p>
+          I will be thrilled to hear your ideas of how it might be useful in your work.
+        </p>
+      </aside>
+    </section>
+
+    <section class="slide">
+      <h2>Links</h2>
+      <ul>
+        <li>Site: <a href="https://iolanta.tech">iolanta.tech</a></li>
+        <li>
+          GitHub: <a href="https://github.com/iolanta-tech/iolanta">iolanta-tech/iolanta</a>
+        </li>
+        <li>
+          Feedback, bug reports, issues, PRs are very much welcome!
+        </li>
+      </ul>
+      <aside>
+        These are some links; I will make a publication on the site of the tool with the slides this presentation.
+      </aside>
+    </section>
+
+    <section class="slide">
+      <h2 class="shout">Thank you!<br/><small>Any rotten 🍅?</small></h2>
+      <aside>
+        Thank you very much, and I will be happy to answer any questions.
+      </aside>
+    </section>
+
+    <div class="progress"></div>
+
+    <script src="shower//shower.js"></script>
+
+</body>
+</html>

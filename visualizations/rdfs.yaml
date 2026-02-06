@@ -1,0 +1,41 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  vann: http://purl.org/vocab/vann/
+  foaf: http://xmlns.com/foaf/0.1/
+  owl: http://www.w3.org/2002/07/owl#
+  iolanta: https://iolanta.tech/
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+
+$id: "rdfs:"
+vann:termGroup:
+  - rdfs:label: Properties
+    $reverse:
+      rdf:type:
+        - $id: rdfs:domain
+        - $id: rdfs:range
+        - $id: rdfs:subPropertyOf
+  - rdfs:label: Classes
+    $reverse:
+      rdf:type:
+        - $id: rdfs:Class
+        - $id: rdfs:Resource
+        - $id: rdfs:Datatype
+        - $id: rdfs:Literal
+        - $id: rdfs:subClassOf
+  - rdfs:label: Human Readable
+    $reverse:
+      rdf:type:
+        - $id: rdfs:label
+        - $id: rdfs:comment
+  - rdfs:label: Provenance
+    $reverse:
+      rdf:type:
+        - $id: rdfs:isDefinedBy
+        - $id: rdfs:seeAlso
+  - rdfs:label: Containers
+    $reverse:
+      rdf:type:
+        - $id: rdfs:Container
+        - $id: rdfs:ContainerMembershipProperty
+        - $id: rdfs:member

@@ -1,0 +1,26 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  roadmap: https://iolanta.tech/roadmap/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+
+  $: rdfs:label
+  
+  →:
+    "@id": roadmap:blocks
+    "@type": "@id"
+  
+  ←:
+    "@id": roadmap:is-blocked-by
+    "@type": "@id"
+  
+  blocks:
+    "@id": roadmap:blocks
+    "@type": "@id"
+  
+  is-blocked-by:
+    "@id": roadmap:is-blocked-by
+    "@type": "@id"
+  
+  tasks:
+    "@id": roadmap:has-task
+    "@type": "@id"

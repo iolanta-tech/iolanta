@@ -1,0 +1,12 @@
+"@context": context.yamlld
+
+$id: iolanta:SPARQLText
+$type: owl:Class
+
+$: SPARQL Text
+
+⊆: rdfs:Datatype
+
+comment: |
+  Datatype for SPARQL query text.
+  Must be valid SPARQL syntax.

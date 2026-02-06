@@ -1,0 +1,24 @@
+"@context":
+  "@import": "https://json-ld.org/contexts/dollar-convenience.jsonld"
+  
+  schema: "https://schema.org/"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  dcterms: "http://purl.org/dc/terms/"
+  wd: "https://www.wikidata.org/entity/"
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+  
+  organizer:
+    "@id": "https://schema.org/organizer"
+    "@type": "@id"
+  
+  location:
+    "@id": "https://schema.org/location"
+    "@type": "@id"
+
+# This assertion is derived from news reports about Alen Simonyan's announcement
+# Source: https://www.1lurer.am/en/2025/06/07/Next-Parliamentary-elections-will-be-held-on-June-7-2026-Alen-Simonyan/1326754
+$id: https://dbpedia.org/resource/2026_Armenian_parliamentary_election
+schema:startDate: "2026-06-07"
+location: wd:Q399
+organizer: wd:Q327333
