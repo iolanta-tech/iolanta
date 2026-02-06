@@ -28,7 +28,7 @@ class RDF(rdflib.RDF):
 
 
 class DCTERMS(rdflib.DCTERMS):
-    _NS = rdflib.Namespace('https://purl.org/dc/terms/')
+    _NS = rdflib.Namespace('http://purl.org/dc/terms/')
 
 
 class VANN(rdflib.VANN):
