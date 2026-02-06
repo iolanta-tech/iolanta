@@ -27,6 +27,9 @@ $included:
   - $id: "http://www.w3.org/2002/07/owl#"
     →: owl.yaml
 
+  - $id: "http://www.w3.org/2001/XMLSchema#"
+    →: xsd.yaml
+
   - $id: "http://w3id.org/fair/fip/terms/"
     →: fair-fip.yamlld
 

@@ -1,0 +1,128 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  vann: http://purl.org/vocab/vann/
+  owl: http://www.w3.org/2002/07/owl#
+  iolanta: https://iolanta.tech/
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+
+$id: "xsd:"
+vann:termGroup:
+  - rdfs:label: Special
+    $reverse:
+      rdf:type:
+        - $id: xsd:anySimpleType
+          rdfs:label: anySimpleType
+        - $id: xsd:anyAtomicType
+          rdfs:label: anyAtomicType
+
+  - rdfs:label: Primitive
+    $reverse:
+      rdf:type:
+        - $id: xsd:string
+          rdfs:label: string
+        - $id: xsd:boolean
+          rdfs:label: boolean
+        - $id: xsd:decimal
+          rdfs:label: decimal
+        - $id: xsd:float
+          rdfs:label: float
+        - $id: xsd:double
+          rdfs:label: double
+        - $id: xsd:duration
+          rdfs:label: duration
+        - $id: xsd:dateTime
+          rdfs:label: dateTime
+        - $id: xsd:time
+          rdfs:label: time
+        - $id: xsd:date
+          rdfs:label: date
+        - $id: xsd:gYearMonth
+          rdfs:label: gYearMonth
+        - $id: xsd:gYear
+          rdfs:label: gYear
+        - $id: xsd:gMonthDay
+          rdfs:label: gMonthDay
+        - $id: xsd:gDay
+          rdfs:label: gDay
+        - $id: xsd:gMonth
+          rdfs:label: gMonth
+        - $id: xsd:hexBinary
+          rdfs:label: hexBinary
+        - $id: xsd:base64Binary
+          rdfs:label: base64Binary
+        - $id: xsd:anyURI
+          rdfs:label: anyURI
+        - $id: xsd:QName
+          rdfs:label: QName
+        - $id: xsd:NOTATION
+          rdfs:label: NOTATION
+
+  - rdfs:label: Derived Strings
+    $reverse:
+      rdf:type:
+        - $id: xsd:normalizedString
+          rdfs:label: normalizedString
+        - $id: xsd:token
+          rdfs:label: token
+        - $id: xsd:language
+          rdfs:label: language
+        - $id: xsd:NMTOKEN
+          rdfs:label: NMTOKEN
+        - $id: xsd:NMTOKENS
+          rdfs:label: NMTOKENS
+        - $id: xsd:Name
+          rdfs:label: Name
+        - $id: xsd:NCName
+          rdfs:label: NCName
+        - $id: xsd:ID
+          rdfs:label: ID
+        - $id: xsd:IDREF
+          rdfs:label: IDREF
+        - $id: xsd:IDREFS
+          rdfs:label: IDREFS
+        - $id: xsd:ENTITY
+          rdfs:label: ENTITY
+        - $id: xsd:ENTITIES
+          rdfs:label: ENTITIES
+
+  - rdfs:label: Derived Numerics
+    $reverse:
+      rdf:type:
+        - $id: xsd:integer
+          rdfs:label: integer
+        - $id: xsd:nonPositiveInteger
+          rdfs:label: nonPositiveInteger
+        - $id: xsd:negativeInteger
+          rdfs:label: negativeInteger
+        - $id: xsd:long
+          rdfs:label: long
+        - $id: xsd:int
+          rdfs:label: int
+        - $id: xsd:short
+          rdfs:label: short
+        - $id: xsd:byte
+          rdfs:label: byte
+        - $id: xsd:nonNegativeInteger
+          rdfs:label: nonNegativeInteger
+        - $id: xsd:unsignedLong
+          rdfs:label: unsignedLong
+        - $id: xsd:unsignedInt
+          rdfs:label: unsignedInt
+        - $id: xsd:unsignedShort
+          rdfs:label: unsignedShort
+        - $id: xsd:unsignedByte
+          rdfs:label: unsignedByte
+        - $id: xsd:positiveInteger
+          rdfs:label: positiveInteger
+
+  - rdfs:label: Derived Date/Time
+    $reverse:
+      rdf:type:
+        - $id: xsd:yearMonthDuration
+          rdfs:label: yearMonthDuration
+        - $id: xsd:dayTimeDuration
+          rdfs:label: dayTimeDuration
+        - $id: xsd:dateTimeStamp
+          rdfs:label: dateTimeStamp
