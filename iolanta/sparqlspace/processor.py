@@ -88,15 +88,15 @@ def _extract_from_mapping(  # noqa: WPS213, WPS231
         case "Filter" | "UnaryNot" | "OrderCondition":
             yield from extract_mentioned_urls(algebra["expr"])  # noqa: WPS204, WPS226
 
-        case "Builtin_EXISTS":
-            # Builtin_EXISTS uses 'graph' instead of 'arg'
+        case "Builtin_EXISTS" | "Builtin_NOTEXISTS":
+            # Both use 'graph' instead of 'arg'
             yield from extract_mentioned_urls(algebra["graph"])
 
         case built_in if built_in.startswith("Builtin_"):
-            # Some built-ins may not have an 'arg' key
-            arg_value = algebra.get("arg")
-            if arg_value is not None:
-                yield from extract_mentioned_urls(arg_value)
+            # CompValue.get() returns the key name as default (not None),
+            # so use 'in' to check for key presence.
+            if "arg" in algebra:
+                yield from extract_mentioned_urls(algebra["arg"])   # noqa: WPS529
 
         case "RelationalExpression":
             yield from extract_mentioned_urls(algebra["expr"])
