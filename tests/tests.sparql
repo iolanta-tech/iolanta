@@ -1,0 +1,58 @@
+SELECT
+    ?manifest ?base_iri ?test ?result ?input ?req ?extract_all_scripts ?base
+    ?context ?frame ?redirect_to ?compact_arrays
+WHERE {
+    ?manifest mf:entries/rdf:rest*/rdf:first ?test .
+
+    ?test
+        a $test_class ;
+        mf:result ?result ;
+        mf:action ?input .
+
+    OPTIONAL {
+        ?manifest jld:baseIri ?base_iri .
+    }
+
+    OPTIONAL {
+        ?test jld:req ?req .
+    }
+
+    OPTIONAL {
+        ?test jld:option / jld:extractAllScripts ?extract_all_scripts .
+    }
+
+    OPTIONAL {
+        ?test jld:option / jld:base ?base .
+    }
+
+    OPTIONAL {
+        ?test jld:option / jld:redirectTo ?redirect_to .
+    }
+
+
+    OPTIONAL {
+        ?test jld:option / jld:compactArrays ?compact_arrays .
+    }
+
+    OPTIONAL {
+        ?test jld:context ?context .
+    }
+
+    OPTIONAL {
+        ?test jld:frame ?frame .
+    }
+
+    # FIXME: We mimic how `pyld` tests work, skipping 1.0 tests. This is probably incorrect though.
+    FILTER NOT EXISTS {
+        ?test jld:option / jld:specVersion "json-ld-1.0"^^xsd:string .
+    }
+
+    FILTER NOT EXISTS {
+        ?test jld:option / jld:processingMode "json-ld-1.0"^^xsd:string .
+    }
+
+    # Skip non-normative tests (Extended Profile); implementations may skip when asserting conformance.
+    FILTER NOT EXISTS {
+        ?test jld:option / jld:normative "false"^^xsd:boolean .
+    }
+}
