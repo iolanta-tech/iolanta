@@ -3,7 +3,8 @@ from pathlib import Path
 from typing import Iterable, NamedTuple
 
 import funcy
-from rdflib import Literal, Node
+from rdflib import Literal
+from rdflib.term import Node
 from textual.containers import Vertical
 from textual.coordinate import Coordinate
 from textual.widgets import DataTable
