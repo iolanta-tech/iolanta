@@ -6,7 +6,8 @@ from dataclasses import dataclass
 from typing import Any
 
 import watchfiles
-from rdflib import BNode, Node, URIRef
+from rdflib import BNode, URIRef
+from rdflib.term import Node
 from textual.widgets import ContentSwitcher, RichLog
 from textual.worker import Worker, WorkerState
 
