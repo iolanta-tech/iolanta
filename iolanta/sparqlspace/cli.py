@@ -2,7 +2,7 @@ from enum import StrEnum
 from typing import Annotated
 
 import rich
-from rdflib import Node
+from rdflib.term import Node
 from rdflib.query import Result
 from rich.table import Table
 from typer import Option, Typer
