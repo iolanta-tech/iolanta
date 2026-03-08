@@ -2,12 +2,10 @@ import functools
 from pathlib import Path
 from typing import Iterable
 
-import boltons
-import cachetools
 import funcy
-from boltons.cacheutils import cached, cachedmethod
 from pydantic import AnyUrl
-from rdflib import BNode, Literal, Node, URIRef
+from rdflib import BNode, Literal, URIRef
+from rdflib.term import Node
 
 from iolanta import Facet
 from iolanta.mermaid.models import (

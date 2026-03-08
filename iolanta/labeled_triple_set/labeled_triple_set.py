@@ -2,16 +2,9 @@ from pathlib import Path
 from typing import Annotated, Iterable
 from typing import Literal as TypingLiteral
 
-from pydantic import (
-    AnyUrl,
-    BaseModel,
-    Field,
-    TypeAdapter,
-    field_serializer,
-    field_validator,
-    validator,
-)
-from rdflib import BNode, Literal, Node, URIRef
+from pydantic import AnyUrl, BaseModel, Field, TypeAdapter
+from rdflib import BNode, Literal, URIRef
+from rdflib.term import Node
 
 from iolanta import Facet
 from iolanta.models import NotLiteralNode
