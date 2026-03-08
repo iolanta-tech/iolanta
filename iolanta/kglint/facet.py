@@ -4,7 +4,8 @@ import re
 from pathlib import Path
 
 import funcy
-from rdflib import BNode, Literal, Node, URIRef
+from rdflib import BNode, Literal, URIRef
+from rdflib.term import Node
 
 from iolanta import Facet
 from iolanta.kglint.models import (
@@ -20,7 +21,7 @@ from iolanta.kglint.models import (
 )
 from iolanta.namespaces import DATATYPES
 
-QNAME_RE = re.compile(r'^\S+:\S+$')
+QNAME_RE = re.compile(r"^\S+:\S+$")
 
 
 def _serialize(node: Node) -> str:
