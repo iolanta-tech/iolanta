@@ -1,7 +1,8 @@
 from pathlib import Path
 from typing import Iterable
 
-from rdflib import BNode, Literal, Node, URIRef
+from rdflib import BNode, Literal, URIRef
+from rdflib.term import Node
 
 from iolanta import Facet
 from iolanta.mermaid.models import (
@@ -10,12 +11,11 @@ from iolanta.mermaid.models import (
     MermaidEdge,
     MermaidLiteral,
     MermaidScalar,
-    MermaidSubgraph,
+    MermaidSubgraph,  # noqa: F401 - required for model_rebuild() namespace
     MermaidURINode,
 )
 from iolanta.namespaces import DATATYPES
 from pydantic import AnyUrl
-from rdflib import URIRef as RDFURIRef
 
 
 class TaskNode(MermaidScalar):
@@ -44,7 +44,7 @@ class BlocksEdge(MermaidEdge):
         super().__init__(
             source=source,
             target=target,
-            predicate=RDFURIRef('https://iolanta.tech/roadmap/blocks'),
+            predicate=URIRef('https://iolanta.tech/roadmap/blocks'),
             title='',
         )
 
