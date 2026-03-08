@@ -2,7 +2,8 @@ from collections import defaultdict
 from typing import Iterable
 
 import funcy
-from rdflib import Literal, Node
+from rdflib import Literal
+from rdflib.term import Node
 from rich.style import Style
 from rich.text import Text
 from textual.containers import Vertical
