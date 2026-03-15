@@ -4,7 +4,9 @@ import os
 from pathlib import Path
 
 import funcy
+import rdflib
 import sh
+import yaml_ld
 # from jeeves_yeti_pyproject import flakeheaven  # Skipped due to compatibility issues with Python 3.12+
 from jeeves_yeti_pyproject.mypy import construct_mypy_flags
 from rich.console import Console
@@ -112,3 +114,67 @@ def master():
             'count': count,
         }),
     )
+
+
+_SUPPORTED_EXAMPLE_SUFFIXES = {'.ttl', '.jsonld', '.rdf', '.yamlld'}
+
+
+def _load_example_graph(path: Path) -> frozenset:
+    """Parse an RDF example file into a frozenset of triples."""
+    g = rdflib.Graph()
+    match path.suffix:
+        case '.ttl':
+            g.parse(path, format='turtle')
+        case '.jsonld':
+            g.parse(path, format='json-ld')
+        case '.rdf':
+            g.parse(path, format='xml')
+        case '.yamlld':
+            g.parse(data=json.dumps(yaml_ld.expand(path)), format='json-ld')
+    return frozenset(g)
+
+
+def verify_rdf_examples(
+    directory: Path = Path('docs/blog/2026-03-15-more-rdf-mappings'),
+):
+    """Verify that all RDF example files in a directory yield the same triples."""
+    example_files = sorted(
+        path
+        for path in directory.glob('example.*')
+        if path.suffix in _SUPPORTED_EXAMPLE_SUFFIXES
+    )
+
+    graphs: dict[str, frozenset] = {}
+    for path in example_files:
+        triples = _load_example_graph(path)
+        graphs[path.name] = triples
+        console.print(f'[cyan]{path.name}[/cyan]: {len(triples)} triples')
+
+    if len(graphs) < 2:
+        console.print('[yellow]Need at least 2 example files to compare.[/yellow]')
+        return
+
+    files = list(graphs.keys())
+    reference_name = files[0]
+    reference_triples = graphs[reference_name]
+    all_match = True
+
+    for other_name in files[1:]:
+        other_triples = graphs[other_name]
+        only_in_ref = reference_triples - other_triples
+        only_in_other = other_triples - reference_triples
+
+        if only_in_ref or only_in_other:
+            all_match = False
+            console.print(f'\n[red]✗ {reference_name} ≠ {other_name}[/red]')
+            for triple in sorted(only_in_ref, key=str):
+                console.print(f'  [red]only in {reference_name}:[/red] {triple}')
+            for triple in sorted(only_in_other, key=str):
+                console.print(f'  [red]only in {other_name}:[/red] {triple}')
+        else:
+            console.print(f'[green]✓[/green] {reference_name} == {other_name}')
+
+    if all_match:
+        console.print('\n[bold green]All examples match![/bold green]')
+    else:
+        raise SystemExit(1)
