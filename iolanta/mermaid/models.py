@@ -7,8 +7,15 @@ from urllib import parse as urllib_parse
 from documented import Documented
 from pydantic import AnyUrl, BaseModel
 from rdflib import BNode, Literal, URIRef
+from rdflib.namespace import XSD
 
 from iolanta.models import NotLiteralNode  # noqa: WPS202
+
+DATATYPE_ICONS: dict[URIRef, str] = {
+    XSD.date: "📅",
+    XSD.dateTime: "🕐",
+    XSD.boolean: "✅",
+}
 
 
 def escape_label(label: str) -> str:
@@ -82,8 +89,10 @@ class MermaidLiteral(MermaidScalar, frozen=True):
     @property
     def title(self) -> str:
         raw_title = str(self.literal) or "EMPTY"
-        # Replace quotes with safer characters for Mermaid
-        return raw_title.replace('"', '"').replace("'", "'")
+        icon = DATATYPE_ICONS.get(self.literal.datatype, "")
+        if icon:
+            raw_title = f"{icon} {raw_title}"
+        return raw_title.replace('"', '\u201c').replace("'", "\u2019")
 
     @property
     def id(self) -> str:
