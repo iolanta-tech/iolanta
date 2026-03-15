@@ -1,0 +1,48 @@
+{
+  "@context": {
+    "ex": "https://example.org/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "birthDate": {
+      "@id": "schema:birthDate",
+      "@type": "xsd:date"
+    },
+    "knows": {
+      "@id": "schema:knows",
+      "@type": "@id"
+    },
+    "affiliation": {
+      "@id": "schema:affiliation",
+      "@type": "@id"
+    }
+  },
+  "@graph": [
+    {
+      "@id": "ex:alice",
+      "@type": "schema:Person",
+      "schema:name": {
+        "@value": "Alice",
+        "@language": "en"
+      },
+      "birthDate": "1990-05-14",
+      "knows": "ex:bob",
+      "affiliation": "ex:acme"
+    },
+    {
+      "@id": "ex:bob",
+      "@type": "schema:Person",
+      "schema:name": {
+        "@value": "Bob",
+        "@language": "en"
+      }
+    },
+    {
+      "@id": "ex:acme",
+      "@type": "schema:Organization",
+      "schema:name": {
+        "@value": "ACME Corp",
+        "@language": "en"
+      }
+    }
+  ]
+}
