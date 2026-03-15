@@ -107,6 +107,22 @@ def _as_filter(iolanta_instance: Iolanta, uri: str, datatype: str) -> str:
     )
 
 
+def _colored_bytes(path: Path) -> str:
+    """Render binary file bytes as colored HTML spans, one color per byte value."""
+    data = path.read_bytes()
+    spans = []
+    for i, byte in enumerate(data):
+        hue = int(byte / 255 * 300)
+        color = f"hsl({hue}deg,70%,55%)"
+        sep = "\n" if i % 16 == 15 else " "
+        spans.append(f'<span style="color:{color}">{byte:02x}</span>{sep}')
+    return (
+        '<pre style="line-height:1.8;font-size:0.85em">'
+        + "".join(spans)
+        + "</pre>"
+    )
+
+
 def define_env(env: MacrosPlugin):
     iolanta = Iolanta(project_root=Path(__file__).parent / "docs")
 
@@ -114,6 +130,7 @@ def define_env(env: MacrosPlugin):
     env.filters["uri"] = as_uri
     env.macros["sparql"] = functools.partial(sparql_query_from_file, iolanta)
     env.macros["path_to_uri"] = path_to_iri
+    env.macros["colored_bytes"] = _colored_bytes
     env.variables["docs"] = Path(__file__).parent / "docs"
     env.variables["iolanta"] = Path(__file__).parent
     env.variables["URIRef"] = URIRef
