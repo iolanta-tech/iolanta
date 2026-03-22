@@ -20,11 +20,11 @@ class FoundRow(TypedDict):
 
 
 GET_QUERY_TO_FACET = (
-    Path(__file__).parent / 'locator' / 'sparql' / 'get-query-to-facet.sparql'
+    Path(__file__).parent / "locator" / "sparql" / "get-query-to-facet.sparql"
 ).read_text()
 
 
-def reorder_rows_by_facet_preferences(   # noqa: WPS214, WPS210
+def reorder_rows_by_facet_preferences(  # noqa: WPS214, WPS210
     rows: list[FoundRow],
     ordering: set[tuple[URIRef, URIRef]],
 ) -> list[FoundRow]:
@@ -39,7 +39,7 @@ def reorder_rows_by_facet_preferences(   # noqa: WPS214, WPS210
     To be fair, this should be understood and unit tested.
     """
     # Map each facet to its index in the original list for stable ordering
-    row_index_map = {row['facet']: index for index, row in enumerate(rows)}
+    row_index_map = {row["facet"]: index for index, row in enumerate(rows)}
 
     # Initialize the topological sorter
     ts = TopologicalSorter()
@@ -54,11 +54,7 @@ def reorder_rows_by_facet_preferences(   # noqa: WPS214, WPS210
 
     # Append any remaining facets not in the ordering, preserving their original
     # order
-    remaining_facets = [
-        facet
-        for facet in row_index_map
-        if facet not in sorted_facets
-    ]
+    remaining_facets = [facet for facet in row_index_map if facet not in sorted_facets]
 
     # Combine sorted and remaining facets
     final_order = sorted_facets + remaining_facets
@@ -66,15 +62,15 @@ def reorder_rows_by_facet_preferences(   # noqa: WPS214, WPS210
     # Map back to rows and sort them
     return sorted(
         rows,
-        key=lambda row: final_order.index(row['facet']),
+        key=lambda row: final_order.index(row["facet"]),
     )
 
 
 @dataclass
-class FacetFinder:   # noqa: WPS214
+class FacetFinder:  # noqa: WPS214
     """Engine to find facets for a given node."""
 
-    iolanta: 'iolanta.Iolanta'    # type: ignore
+    iolanta: "iolanta.Iolanta"  # type: ignore
     node: Node
     as_datatype: NotLiteralNode
 
@@ -92,7 +88,7 @@ class FacetFinder:   # noqa: WPS214
         if (data_type := self.node.datatype) is None:
             return []
 
-        rows = self.iolanta.query(   # noqa: WPS462
+        rows = self.iolanta.query(  # noqa: WPS462
             """
             SELECT ?output_datatype ?facet WHERE {
                 $data_type iolanta:hasDatatypeFacet ?facet .
@@ -102,7 +98,7 @@ class FacetFinder:   # noqa: WPS214
             data_type=data_type,
         )
 
-        rows = [row for row in rows if row['output_datatype'] == self.as_datatype]
+        rows = [row for row in rows if row["output_datatype"] == self.as_datatype]
 
         return sorted(
             rows,
@@ -116,10 +112,7 @@ class FacetFinder:   # noqa: WPS214
             as_datatype=self.as_datatype,
         )
 
-        query_to_facet = {
-            row['match']: row['facet']
-            for row in rows
-        }
+        query_to_facet = {row["match"]: row["facet"] for row in rows}
 
         for query, facet in query_to_facet.items():
             # TODO: Verify that `query` is an ASK query
@@ -133,23 +126,23 @@ class FacetFinder:   # noqa: WPS214
         TODO fix this to allow arbitrary prefixes.
         """
         scheme = URL(str(self.node)).scheme
-        if scheme != 'urn':
+        if scheme != "urn":
             return []
 
         if not isinstance(self.node, URIRef):
             return []
 
-        rows = self.iolanta.query(   # noqa: WPS462
+        rows = self.iolanta.query(  # noqa: WPS462
             """
             SELECT ?output_datatype ?facet WHERE {
                 $prefix iolanta:hasFacetByPrefix ?facet .
                 ?facet iolanta:outputs ?output_datatype .
             }
             """,
-            prefix=URIRef(f'{scheme}:'),
+            prefix=URIRef(f"{scheme}:"),
         )
 
-        rows = [row for row in rows if row['output_datatype'] == self.as_datatype]
+        rows = [row for row in rows if row["output_datatype"] == self.as_datatype]
 
         return sorted(
             rows,
@@ -161,7 +154,7 @@ class FacetFinder:   # noqa: WPS214
         if isinstance(self.node, Literal):
             return []
 
-        rows = self.iolanta.query(   # noqa: WPS462
+        rows = self.iolanta.query(  # noqa: WPS462
             """
             SELECT ?output_datatype ?facet WHERE {
                 $node iolanta:facet ?facet .
@@ -172,46 +165,32 @@ class FacetFinder:   # noqa: WPS214
         )
 
         # FIXME This is probably suboptimal, why don't we use `IN output_datatypes`?
-        rows = [row for row in rows if row['output_datatype'] == self.as_datatype]
+        rows = [row for row in rows if row["output_datatype"] == self.as_datatype]
 
         return sorted(
             rows,
             key=self.row_sorter_by_output_datatype,
         )
 
-    def _classes_for_node(self, node: NotLiteralNode) -> list[NotLiteralNode]:
-        rows = self.iolanta.query(  # noqa: WPS462
+    def by_instance_facet(self) -> Iterable[FoundRow]:
+        """Find facet by classes the IRI belongs to."""
+        if isinstance(self.node, Literal):
+            return []
+
+        rows: list[FoundRow] = self.iolanta.query(  # noqa: WPS462
             """
-            SELECT DISTINCT ?class WHERE {
+            SELECT DISTINCT ?output_datatype ?facet WHERE {
                 $node
                     rdf:type / (owl:equivalentClass|^owl:equivalentClass)*
                     ?class .
-            }
-            """,
-            node=node,
-        )
-
-        return funcy.lpluck('class', rows)
-
-    def by_instance_facet(self) -> Iterable[FoundRow]:
-        """Find facet by classes the IRI belongs to."""
-        classes = self._classes_for_node(self.node)
-        if not classes:
-            return []
-
-        formatted_classes = ', '.join(f'<{iri}>' for iri in classes)
-
-        rows: list[FoundRow] = self.iolanta.query(   # noqa: WPS462
-            """
-            SELECT ?output_datatype ?facet WHERE {
                 ?class iolanta:hasInstanceFacet ?facet .
                 ?facet iolanta:outputs ?output_datatype .
-                FILTER(?class IN (%s)) .
             }
-            """ % formatted_classes,
-            classes=classes,
-            output_datatype=self.as_datatype,
+            """,
+            node=self.node,
         )
+
+        rows = [row for row in rows if row["output_datatype"] == self.as_datatype]
 
         return sorted(
             rows,
@@ -221,16 +200,16 @@ class FacetFinder:   # noqa: WPS214
     def by_output_datatype_default_facet(self) -> Iterable[FoundRow]:
         """Find facet based on output_datatype only."""
         rows = self.iolanta.query(
-            '''
+            """
             SELECT ?facet ?output_datatype WHERE {
               $output_datatype iolanta:hasDefaultFacet ?facet .
             }
-            ''',
+            """,
             output_datatype=self.as_datatype,
         )
 
         return [
-            FoundRow(facet=row['facet'], output_datatype=row['output_datatype'])
+            FoundRow(facet=row["facet"], output_datatype=row["output_datatype"])
             for row in rows
         ]
 
@@ -246,7 +225,7 @@ class FacetFinder:   # noqa: WPS214
         )
 
         return [
-            FoundRow(facet=row['facet'], output_datatype=row['output_datatype'])
+            FoundRow(facet=row["facet"], output_datatype=row["output_datatype"])
             for row in rows
         ]
 
@@ -264,10 +243,7 @@ class FacetFinder:   # noqa: WPS214
             """,
         )
 
-        return {
-            (row['preferred'], row['over'])
-            for row in rows
-        }
+        return {(row["preferred"], row["over"]) for row in rows}
 
     def choices(self) -> list[FoundRow]:
         """Return all suitable facets."""
