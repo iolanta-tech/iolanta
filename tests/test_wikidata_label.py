@@ -22,3 +22,15 @@ def test_wikidata_rhysling_title_http():
         as_datatype=DATATYPES.title,
     )
     assert rendered_output == 'Rhysling', f"Expected 'Rhysling', got '{rendered_output}'"
+
+
+def test_wikidata_rhysling_title_bare_host_no_www():
+    """Bare https://wikidata.org/entity/... must normalize to graph IRIs (www + http)."""
+    iolanta = Iolanta()
+    rendered_output = iolanta.render(
+        URIRef('https://wikidata.org/entity/Q24229338'),
+        as_datatype=DATATYPES.title,
+    )
+    assert rendered_output == 'Rhysling', f"Expected 'Rhysling', got '{rendered_output}'"
+
+
