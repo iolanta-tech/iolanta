@@ -1,18 +1,17 @@
 from pathlib import Path
 
 import funcy
-from rdflib import URIRef
 
 from iolanta.facets.facet import Facet
 
 PRIORITIES = [   # noqa: WPS407
+    'preferred_label',
     'dc_title',
     'schema_title',
     'schema_name',
     'rdfs_label',
     'foaf_name',
     'literal_form',
-    'preferred_label',
 ]
 
 
