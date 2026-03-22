@@ -26,8 +26,8 @@ REDIRECTS = MappingProxyType(
         r"http://lexvo\.org/id/(.+)": r"http://lexvo.org/data/\1",
         r"https://lexvo\.org/id/(.+)": r"http://lexvo.org/data/\1",
         r"https://www\.lexinfo\.net/(.+)": r"http://www.lexinfo.net/\1",
-        # Convert Wikidata https:// to http:// (Wikidata JSON-LD uses http:// URIs)
-        r"https://www\.wikidata\.org/entity/(.+)": r"http://www.wikidata.org/entity/\1",
+        # Wikidata: map bare or www host + http(s) to http://www.wikidata.org/...
+        r"https?://(www\.)?wikidata\.org/(.+)": r"http://www.wikidata.org/\2",
     }
 )
 
