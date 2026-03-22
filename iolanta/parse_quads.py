@@ -6,11 +6,25 @@ from urllib.parse import unquote
 from documented import DocumentedError
 from rdflib import BNode, Literal, URIRef
 from rdflib.term import Node
+from rdflib.util import _iri2uri
 
 from iolanta.errors import UnresolvedIRI
 from iolanta.models import Quad
 from iolanta.namespaces import IOLANTA, META
 from iolanta.sparqlspace.redirects import apply_redirect
+
+
+def _iri_term_value_to_uriref(term_value: str) -> URIRef:
+    """
+    Build a URIRef from an RDF IRI string.
+
+    Percent-decodes the value, then normalizes http(s) IRIs so path/query/fragment
+    are RFC 3986-safe (rdflib Turtle/N3 and ``URIRef.n3()`` reject spaces and
+    several other characters in the raw string).
+    """
+    decoded = unquote(term_value)
+    normalized = _iri2uri(decoded)
+    return URIRef(normalized)
 
 
 def parse_term(   # noqa: C901
@@ -25,7 +39,7 @@ def parse_term(   # noqa: C901
     term_value = term['value']
 
     if term_type == 'IRI':
-        return URIRef(unquote(term_value))
+        return _iri_term_value_to_uriref(term_value)
 
     if term_type == 'literal':
         language = term.get('language')
