@@ -96,7 +96,7 @@ def _extract_from_mapping(  # noqa: WPS213, WPS231
             # CompValue.get() returns the key name as default (not None),
             # so use 'in' to check for key presence.
             if "arg" in algebra:
-                yield from extract_mentioned_urls(algebra["arg"])   # noqa: WPS529
+                yield from extract_mentioned_urls(algebra["arg"])  # noqa: WPS529
 
         case "RelationalExpression":
             yield from extract_mentioned_urls(algebra["expr"])
@@ -411,7 +411,11 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             try:
                 self.load(url)
             except Exception as err:
-                self.logger.exception(f"Failed to load {url}: {err}", url, err)
+                self.logger.exception(
+                    "Failed to load {}: {}",
+                    str(url),
+                    err,
+                )
 
         # Run inference if there's new data since last inference run
         # (after URLs are loaded so inference can use the loaded data)
