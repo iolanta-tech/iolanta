@@ -83,6 +83,7 @@ sparqlspace = "iolanta.sparqlspace.processor:GlobalSPARQLProcessor"
 
 [tool.poetry.group.dev.dependencies]
 jeeves-yeti-pyproject = ">=1.0"
+mkdocs-material = ">=9.7.5"
 mkdocs-awesome-pages-plugin = ">=2.9.2"
 mkdocs-blogging-plugin = ">=2.2.11"
 mkdocstrings-python = ">=1.8.0"
