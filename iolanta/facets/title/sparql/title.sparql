@@ -5,7 +5,7 @@ SELECT * WHERE {
     }
 
     OPTIONAL {
-        $iri <https://purl.org/dc/elements/1.1/title> ?dc_title .
+        $iri <http://purl.org/dc/elements/1.1/title> ?dc_title .
         FILTER (!lang(?dc_title) || lang(?dc_title) = $language)
     }
 
