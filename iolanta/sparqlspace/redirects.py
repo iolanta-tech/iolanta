@@ -10,7 +10,8 @@ REDIRECTS = MappingProxyType(
         #   - either find a way to resolve these URLs automatically,
         #   - or create a repository of those redirects online.
         r"http://purl\.org/vocab/vann/$": "https://vocab.org/vann/vann-vocab-20100607.rdf",
-        r"https://purl\.org/dc/elements/1\.1/$": "https://purl.org/dc/terms/",
+        r"https://purl\.org/dc/elements/1\.1/(.+)": r"http://purl.org/dc/elements/1.1/\1",
+        r"https://purl\.org/dc/terms/(.+)": r"http://purl.org/dc/terms/\1",
         r"http://www\.w3\.org/1999/02/22-rdf-syntax-ns#$": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
         r"http://www\.w3\.org/2000/01/rdf-schema#$": "http://www.w3.org/2000/01/rdf-schema#",
         r"http://www\.w3\.org/2002/07/owl#$": "http://www.w3.org/2002/07/owl#",
