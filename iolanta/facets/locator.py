@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 from functools import cached_property
 from graphlib import TopologicalSorter
 from pathlib import Path
-from typing import Iterable, List, TypedDict
+from typing import TYPE_CHECKING, Iterable, List, TypedDict
 
 import funcy
 from rdflib.term import Literal, Node, URIRef
@@ -10,6 +12,9 @@ from yarl import URL
 
 from iolanta.facets.errors import FacetNotFound
 from iolanta.models import NotLiteralNode
+
+if TYPE_CHECKING:
+    from iolanta.iolanta import Iolanta
 
 
 class FoundRow(TypedDict):
@@ -70,7 +75,7 @@ def reorder_rows_by_facet_preferences(  # noqa: WPS214, WPS210
 class FacetFinder:  # noqa: WPS214
     """Engine to find facets for a given node."""
 
-    iolanta: "iolanta.Iolanta"  # type: ignore
+    iolanta: Iolanta
     node: Node
     as_datatype: NotLiteralNode
 
