@@ -1,0 +1,23 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  ex: https://example.org/
+  schema: https://schema.org/
+  xsd: http://www.w3.org/2001/XMLSchema#
+  birthDate:
+    "@id": schema:birthDate
+    "@type": xsd:date
+  schema:name:
+    "@language": en
+
+$id: ex:alice
+$type: schema:Person
+schema:name: Alice
+birthDate: 1990-05-14
+schema:knows:
+  $id: ex:bob
+  $type: schema:Person
+  schema:name: Bob
+schema:affiliation:
+  $id: ex:acme
+  $type: schema:Organization
+  schema:name: ACME Corp

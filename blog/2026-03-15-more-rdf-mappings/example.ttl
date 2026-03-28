@@ -1,0 +1,18 @@
+@prefix ex: <https://example.org/> .
+@prefix schema: <https://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:alice
+  a schema:Person ;
+  schema:name "Alice"@en ;
+  schema:birthDate "1990-05-14"^^xsd:date ;
+  schema:knows ex:bob ;
+  schema:affiliation ex:acme .
+
+ex:bob
+  a schema:Person ;
+  schema:name "Bob"@en .
+
+ex:acme
+  a schema:Organization ;
+  schema:name "ACME Corp"@en .

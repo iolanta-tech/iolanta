@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:schema="https://schema.org/"
+    xmlns:ex="https://example.org/">
+
+  <schema:Person rdf:about="https://example.org/alice">
+    <schema:name xml:lang="en">Alice</schema:name>
+    <schema:birthDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">1990-05-14</schema:birthDate>
+    <schema:knows rdf:resource="https://example.org/bob"/>
+    <schema:affiliation rdf:resource="https://example.org/acme"/>
+  </schema:Person>
+
+  <schema:Person rdf:about="https://example.org/bob">
+    <schema:name xml:lang="en">Bob</schema:name>
+  </schema:Person>
+
+  <schema:Organization rdf:about="https://example.org/acme">
+    <schema:name xml:lang="en">ACME Corp</schema:name>
+  </schema:Organization>
+</rdf:RDF>

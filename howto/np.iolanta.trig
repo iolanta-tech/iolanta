@@ -1,0 +1,38 @@
+@prefix doap: <http://usefulinc.com/ns/doap#> .
+@prefix np: <http://www.nanopub.org/nschema#> .
+@prefix orcid: <https://orcid.org/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://purl.org/nanopub/temp/np/Head> {
+    <http://purl.org/nanopub/temp/np/> a np:Nanopublication ;
+        np:hasAssertion <http://purl.org/nanopub/temp/np/assertion> ;
+        np:hasProvenance <http://purl.org/nanopub/temp/np/provenance> ;
+        np:hasPublicationInfo <http://purl.org/nanopub/temp/np/pubinfo> .
+}
+
+<http://purl.org/nanopub/temp/np/assertion> {
+    <https://github.com/iolanta-tech/iolanta> a doap:GitRepository ;
+        rdfs:label "Iolanta Git repository" .
+
+    <https://iolanta.tech/> a doap:Project ;
+        rdfs:label "Iolanta" ;
+        doap:description "A terminal-based Linked Data browser and visualizer that renders RDF resources into human-readable views." ;
+        doap:download-page <https://pypi.org/project/iolanta/> ;
+        doap:homepage <https://iolanta.tech/> ;
+        doap:implements <https://www.w3.org/TR/rdf11-concepts/> ;
+        doap:programming-language <https://www.wikidata.org/entity/Q28865> ;
+        doap:repository <https://github.com/iolanta-tech/iolanta> .
+}
+
+<http://purl.org/nanopub/temp/np/provenance> {
+    <http://purl.org/nanopub/temp/np/assertion> prov:generatedAtTime "2025-09-14T23:41:07.527984"^^xsd:dateTime .
+}
+
+<http://purl.org/nanopub/temp/np/pubinfo> {
+    <http://purl.org/nanopub/temp/np/> prov:generatedAtTime "2025-09-14T23:41:07.527984"^^xsd:dateTime ;
+        prov:wasAttributedTo orcid:0009-0001-8740-4213 .
+}
+
+

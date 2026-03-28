@@ -1,0 +1,68 @@
+Speed Presentation (8 Points) [MC-3]
+
+📘Instructions
+
+The knowledge graph design and presentation must address at least one of the main topics of the assignment: Inferencing (Reasoning), Reification, Bridging Vocabularies (Stitching), or Querying Knowledge Graphs.
+
+The knowledge graph design and/or presentation must also address at least one of the Advanced Topics: Punning, Probabilities in OWL/RDF, Type Level Claims, or OKN & Knowledge Commons.
+
+✅ For this Speed Presentation, you will extend a knowledge graph design using advanced constructs and techniques. Your presentation should demonstrate your understanding and application of the constructs and techniques described in the materials for MC-3 “Build with Nuance”.
+
+The knowledge graph design you use for this presentation should extend the novel knowledge graph design you presented in MC-2 "Build with Confidence".
+
+📌 Your presentation should address 1) one or more of the main topics in Level 300 and 2) one of the advanced topics in Level 300. 
+
+Note: Other topics that are related to the materials may be addressed at the discretion of the moderator, for example, those more closely related to LPGs.
+
+Main Topics
+Inferencing (Reasoning),
+Reification,
+Bridging Vocabularies (Stitching), or
+Querying Knowledge Graphs
+Advanced Topics
+Punning,
+Probabilities,
+Type Level Claims, or
+OKN & Knowledge Commons 
+📌 Remember that this is a "speed presentation", so focus on the most important aspects and justifications.
+
+🟩 Your presentation can be either a video recording while sharing your screen, a Google Slides presentation, or a document with text and images. 
+
+🟨 Review the rubric before turning in the assignment. 
+
+🟥 You need at least 6 of 8 possible points to succeed with this assignment.
+
+When you are ready to "turn in" or submit your assignment:
+Click the "Add or create" button (or similar) to attach your completed work.
+Choose the file you want to submit from your computer or Google Drive.
+Once you have added your work, look for the "Turn in" button and click it to finalize your submission.
+Google Classroom will notify you if an instructor returns your submission with feedback. At the instructor's discretion, you may have an opportunity to revise your submission and resubmit it for evaluation.
+/8
+/4
+The knowledge graph design addressed at least one of the main topics of the assignment: Inferencing (Reasoning), Reification, Bridging Vocabularies (Stitching), or Querying Knowledge Graphs
+Excellent
+4 pts
+Fully meets the criterion as required.
+Good
+3 pts
+Mostly meets the criterion; minor aspects need improvement.
+Needs Improvement
+2 pts
+Partially meets the criterion; key elements missing or incomplete.
+Not Satisfactory
+1 pt
+Does not meet the criterion.
+/4
+The knowledge graph presentation addresses at least one of the Advanced Topics: Punning, Probabilities in OWL/RDF, Type Level Claims, or OKN & Knowledge Commons
+Excellent
+4 pts
+Fully meets the criterion as required.
+Good
+3 pts
+Mostly meets the criterion; minor aspects need improvement.
+Needs Improvement
+2 pts
+Partially meets the criterion; key elements missing or incomplete.
+Not Satisfactory
+1 pt
+Does not meet the criterion.
