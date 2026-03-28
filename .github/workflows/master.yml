@@ -16,11 +16,6 @@ jobs:
       - run: pip install -q poetry
       - run: poetry config virtualenvs.create false --local
       - run: poetry install
-      - uses: actions/checkout@v3
-        with:
-          repository: iolanta-tech/mkdocs-material-insiders
-          path: mkdocs-material-insiders
-          token: ${{ secrets.INSIDERS_TOKEN }}
 
       - run: j --log-level info master
 
