@@ -10,7 +10,7 @@ import loguru
 import requests
 import yaml_ld
 from nanopub import NanopubClient
-from rdflib import ConjunctiveGraph, Dataset, Namespace, URIRef, Variable
+from rdflib import ConjunctiveGraph, Dataset, Graph, Namespace, URIRef, Variable
 from rdflib.namespace import RDF as original_RDF
 from rdflib.plugins.sparql.algebra import translateQuery
 from rdflib.plugins.sparql.evaluate import evalQuery
@@ -21,7 +21,7 @@ from rdflib.query import Processor
 from rdflib.term import BNode, Literal, Node
 from requests.exceptions import ConnectionError, HTTPError, InvalidSchema
 from yaml_ld.document_loaders.content_types import ParserNotFound
-from yaml_ld.errors import NotFound, YAMLLDError
+from yaml_ld.errors import NoLinkedDataFoundInHTML, NotFound, YAMLLDError
 from yarl import URL
 
 from iolanta.errors import UnresolvedIRI
@@ -181,6 +181,26 @@ def normalize_term(term: Node) -> Node:
         return apply_redirect(term)
 
     return term
+
+
+DCMI_NAMESPACE_DOCUMENTS = {
+    str(DC): URIRef(
+        "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/dublin_core_elements.rdf",
+    ),
+    str(DCTERMS): URIRef(
+        "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/dublin_core_terms.rdf",
+    ),
+}
+
+
+def find_dcmi_namespace_document(source: URIRef) -> URIRef | None:
+    """Return the DCMI namespace document for a term URI if known."""
+    source_str = str(source)
+    for namespace, document in DCMI_NAMESPACE_DOCUMENTS.items():
+        if source_str.startswith(namespace):
+            return document
+
+    return None
 
 
 def resolve_variables(
@@ -490,6 +510,51 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             if isinstance(visualization, URIRef):
                 self.load(visualization)
 
+    def _load_dcmi_namespace_document(self, source_uri: URIRef) -> LoadResult:
+        """Load DCMI namespace RDF for a term while preserving the term IRI."""
+        namespace_document = find_dcmi_namespace_document(source_uri)
+        if namespace_document is None:
+            return Skipped()
+
+        try:
+            document_graph = Graph().parse(namespace_document)
+        except HTTPError as http_error:
+            self.logger.warning(f"{namespace_document} | HTTP error: {http_error}")
+            return Loaded()
+        except ConnectionError as name_resolution_error:
+            self.logger.info(
+                "%s | name resolution error: %s",
+                namespace_document,
+                str(name_resolution_error),
+            )
+            return Loaded()
+
+        quads = [
+            (
+                normalize_term(subject),
+                normalize_term(predicate),
+                normalize_term(object_),
+                source_uri,
+            )
+            for subject, predicate, object_ in document_graph
+        ]
+        if quads:
+            self.graph.addN(quads)
+            self.graph.last_not_inferred_source = source_uri
+            self.logger.info(
+                f"{namespace_document} | loaded {len(quads)} triples into graphs: {source_uri}",
+            )
+
+        self.graph.add(
+            (
+                source_uri,
+                IOLANTA["redirects-to"],
+                namespace_document,
+            )
+        )
+        self._mark_as_loaded(source_uri)
+        return Loaded()
+
     def load(  # noqa: C901, WPS210, WPS212, WPS213, WPS231
         self,
         source: URIRef,
@@ -544,6 +609,15 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             resolved_source = yaml_ld.load_document(source)["documentUrl"]
         except NotFound as not_found:
             self.logger.info(f"{not_found.path} | 404 Not Found")
+            dcmi_namespace_document = find_dcmi_namespace_document(source_uri)
+            if dcmi_namespace_document is not None:
+                self.logger.info(
+                    "Redirecting %s → namespace document %s",
+                    not_found.path,
+                    dcmi_namespace_document,
+                )
+                return self._load_dcmi_namespace_document(source_uri)
+
             namespaces = [RDF, RDFS, OWL, FOAF, DC, VANN]
 
             for namespace in namespaces:
@@ -565,6 +639,28 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
 
             return Loaded()
 
+        except NoLinkedDataFoundInHTML:
+            dcmi_namespace_document = find_dcmi_namespace_document(source_uri)
+            if dcmi_namespace_document is not None:
+                self.logger.info(
+                    "Redirecting %s → namespace document %s",
+                    source,
+                    dcmi_namespace_document,
+                )
+                return self._load_dcmi_namespace_document(source_uri)
+
+            raise
+        except KeyError:
+            dcmi_namespace_document = find_dcmi_namespace_document(source_uri)
+            if dcmi_namespace_document is not None:
+                self.logger.info(
+                    "Redirecting %s → namespace document %s",
+                    source,
+                    dcmi_namespace_document,
+                )
+                return self._load_dcmi_namespace_document(source_uri)
+
+            raise
         except Exception as err:
             self.logger.info(f"{source} | Failed: {err}")
             self.graph.add(
