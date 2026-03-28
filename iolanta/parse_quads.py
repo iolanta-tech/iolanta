@@ -27,7 +27,7 @@ def _iri_term_value_to_uriref(term_value: str) -> URIRef:
     return URIRef(normalized)
 
 
-def parse_term(   # noqa: C901
+def parse_term(  # noqa: C901
     term,
     blank_node_prefix,
 ) -> Node:
@@ -35,16 +35,16 @@ def parse_term(   # noqa: C901
     if term is None:
         raise SpaceInProperty()
 
-    term_type = term['type']
-    term_value = term['value']
+    term_type = term["type"]
+    term_value = term["value"]
 
-    if term_type == 'IRI':
+    if term_type == "IRI":
         return _iri_term_value_to_uriref(term_value)
 
-    if term_type == 'literal':
-        language = term.get('language')
+    if term_type == "literal":
+        language = term.get("language")
 
-        datatype_raw = term.get('datatype')
+        datatype_raw = term.get("datatype")
         datatype = URIRef(datatype_raw) if datatype_raw else None
 
         if language and datatype:
@@ -56,12 +56,12 @@ def parse_term(   # noqa: C901
             lang=language,
         )
 
-    if term_type == 'blank node':
+    if term_type == "blank node":
         return BNode(
-            value=term_value.replace('_:', f'{blank_node_prefix}_'),
+            value=term_value.replace("_:", f"{blank_node_prefix}_"),
         )
 
-    raise ValueError(f'Unknown term: {term}')
+    raise ValueError(f"Unknown term: {term}")
 
 
 def construct_subgraph_name(subgraph_name: str, graph: URIRef) -> URIRef:
@@ -74,7 +74,7 @@ def construct_subgraph_name(subgraph_name: str, graph: URIRef) -> URIRef:
     if subgraph_name.startswith(str(graph)):
         return URIRef(subgraph_name)
 
-    return URIRef(f'{graph}#{subgraph_name}')
+    return URIRef(f"{graph}#{subgraph_name}")
 
 
 def _parse_quads_per_subgraph(
@@ -86,9 +86,9 @@ def _parse_quads_per_subgraph(
     for quad in raw_quads:
         try:
             yield Quad(
-                subject=parse_term(quad['subject'], blank_node_prefix),
-                predicate=parse_term(quad['predicate'], blank_node_prefix),
-                object=parse_term(quad['object'], blank_node_prefix),
+                subject=parse_term(quad["subject"], blank_node_prefix),
+                predicate=parse_term(quad["predicate"], blank_node_prefix),
+                object=parse_term(quad["object"], blank_node_prefix),
                 graph=subgraph,
             )
         except SpaceInProperty as err:
@@ -101,13 +101,13 @@ def _parse_quads_per_subgraph(
 def parse_quads(  # noqa: WPS210
     quads_document,
     graph: URIRef,
-    blank_node_prefix: str = '',
+    blank_node_prefix: str = "",
 ) -> Iterable[Quad]:
     """Parse an N-Quads output into a Quads stream."""
     blank_node_prefix = hashlib.md5(  # noqa: S324
         blank_node_prefix.encode(),
     ).hexdigest()
-    blank_node_prefix = f'_:{blank_node_prefix}'
+    blank_node_prefix = f"_:{blank_node_prefix}"
 
     subgraph_names = {
         URIRef(subgraph_name): construct_subgraph_name(
@@ -115,20 +115,20 @@ def parse_quads(  # noqa: WPS210
             graph=graph,
         )
         for subgraph_name in quads_document.keys()
-        if subgraph_name != '@default'
+        if subgraph_name != "@default"
     }
     subgraph_names[graph] = graph
 
     for subgraph, quads in quads_document.items():
-        if subgraph == '@default':
-            subgraph = graph   # noqa: WPS440
+        if subgraph == "@default":
+            subgraph = graph  # noqa: WPS440
 
         else:
             subgraph = URIRef(subgraph)
 
             yield Quad(
                 graph,
-                IOLANTA['has-sub-graph'],
+                IOLANTA["has-sub-graph"],
                 subgraph_names[subgraph],
                 META,
             )
@@ -140,31 +140,34 @@ def parse_quads(  # noqa: WPS210
             subgraph=subgraph_names[subgraph],
         )
 
-        for quad in quads:   # noqa: WPS526
+        for quad in quads:  # noqa: WPS526
             # Build replacement map with subgraph names and nanopub temp namespace
             replacement_map = subgraph_names | {
                 # To enable nanopub rendering
-                URIRef('http://purl.org/nanopub/temp/np/'): graph,
+                URIRef("http://purl.org/nanopub/temp/np/"): graph,
             }
-            
+
             # Apply redirects to all URIRefs in the replacement map
             normalized_replacement_map = {
-                apply_redirect(key) if isinstance(key, URIRef) else key: 
-                apply_redirect(value_node) if isinstance(value_node, URIRef) else value_node  # noqa: WPS110
+                apply_redirect(key) if isinstance(key, URIRef) else key: apply_redirect(
+                    value_node
+                )
+                if isinstance(value_node, URIRef)
+                else value_node  # noqa: WPS110
                 for key, value_node in replacement_map.items()
             }
-            
+
             yield quad.replace(normalized_replacement_map).normalize()
 
 
 def raise_if_term_is_qname(term_value: str):
     """Raise an error if a QName is provided instead of a full IRI."""
-    prefix, etc = term_value.split(':', 1)
+    prefix, etc = term_value.split(":", 1)
 
-    if etc.startswith('/'):
+    if etc.startswith("/"):
         return
 
-    if prefix in {'local', 'templates', 'urn'}:
+    if prefix in {"local", "templates", "urn"}:
         return
 
     raise UnresolvedIRI(
