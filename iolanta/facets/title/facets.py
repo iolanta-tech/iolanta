@@ -1,30 +1,29 @@
 from pathlib import Path
 
 import funcy
-from rdflib import URIRef
 
 from iolanta.facets.facet import Facet
 
-PRIORITIES = [   # noqa: WPS407
-    'dc_title',
-    'schema_title',
-    'schema_name',
-    'rdfs_label',
-    'foaf_name',
-    'literal_form',
-    'preferred_label',
+PRIORITIES = [  # noqa: WPS407
+    "preferred_label",
+    "dc_title",
+    "schema_title",
+    "schema_name",
+    "rdfs_label",
+    "foaf_name",
+    "literal_form",
 ]
 
 
 class TitleFacet(Facet[str]):
     """Title of an object."""
 
-    META = Path(__file__).parent / 'title.yamlld'
+    META = Path(__file__).parent / "title.yamlld"
 
     def show(self) -> str:
         """Render title of a thing."""
         choices = self.stored_query(
-            'title.sparql',
+            "title.sparql",
             iri=self.this,
             language=self.iolanta.language,
         )

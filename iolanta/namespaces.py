@@ -1,47 +1,39 @@
 import rdflib
 
-LOCAL = rdflib.Namespace('local:')
-IOLANTA = rdflib.Namespace('https://iolanta.tech/')
-DATATYPES = rdflib.Namespace('https://iolanta.tech/datatypes/')
-IOLANTA_FACETS = rdflib.Namespace('pkg:pypi/iolanta#')
-NP = rdflib.Namespace('https://www.nanopub.org/nschema#')
-RDFG = rdflib.Namespace('https://www.w3.org/2004/03/trix/rdfg-1/')
+LOCAL = rdflib.Namespace("local:")
+IOLANTA = rdflib.Namespace("https://iolanta.tech/")
+DATATYPES = rdflib.Namespace("https://iolanta.tech/datatypes/")
+IOLANTA_FACETS = rdflib.Namespace("pkg:pypi/iolanta#")
+NP = rdflib.Namespace("https://www.nanopub.org/nschema#")
+RDFG = rdflib.Namespace("https://www.w3.org/2004/03/trix/rdfg-1/")
 SDO = rdflib.SDO
+DC = rdflib.DC
+DCTERMS = rdflib.DCTERMS
 
-META = rdflib.URIRef('iolanta://_meta')
-
-
-class DC(rdflib.DC):
-    _NS = rdflib.Namespace('https://purl.org/dc/elements/1.1/')
+META = rdflib.URIRef("iolanta://_meta")
 
 
 class OWL(rdflib.OWL):
-    _NS = rdflib.Namespace('https://www.w3.org/2002/07/owl#')
+    _NS = rdflib.Namespace("https://www.w3.org/2002/07/owl#")
 
 
 class RDFS(rdflib.RDFS):
-    _NS = rdflib.Namespace('http://www.w3.org/2000/01/rdf-schema#')
+    _NS = rdflib.Namespace("http://www.w3.org/2000/01/rdf-schema#")
 
 
 class RDF(rdflib.RDF):
-    _NS = rdflib.Namespace('http://www.w3.org/1999/02/22-rdf-syntax-ns#')
+    _NS = rdflib.Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
 
 
-class DCTERMS(rdflib.DCTERMS):
-    _NS = rdflib.Namespace('http://purl.org/dc/terms/')
+class VANN(rdflib.VANN): ...
 
 
-class VANN(rdflib.VANN):
-    ...
-
-
-class FOAF(rdflib.FOAF):
-    ...
+class FOAF(rdflib.FOAF): ...
 
 
 class XSD(rdflib.XSD):
-    _NS = rdflib.Namespace('https://www.w3.org/2001/XMLSchema#')
+    _NS = rdflib.Namespace("https://www.w3.org/2001/XMLSchema#")
 
 
 class PROV(rdflib.PROV):
-    _NS = rdflib.Namespace('https://www.w3.org/ns/prov#')
+    _NS = rdflib.Namespace("https://www.w3.org/ns/prov#")
