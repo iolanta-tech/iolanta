@@ -1,0 +1,7 @@
+"@context":
+  ex: http://example.org/
+  schema: https://schema.org/
+
+"@id": ex:Person
+schema:url:
+  "@id": https://example.com/no-ld
