@@ -3,6 +3,7 @@ import dataclasses
 import datetime
 from pathlib import Path
 from threading import Lock
+from types import MappingProxyType
 from typing import Any, Iterable, Mapping
 
 import funcy
@@ -183,14 +184,16 @@ def normalize_term(term: Node) -> Node:
     return term
 
 
-DCMI_NAMESPACE_DOCUMENTS = {
-    str(DC): URIRef(
-        "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/dublin_core_elements.rdf",
-    ),
-    str(DCTERMS): URIRef(
-        "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/dublin_core_terms.rdf",
-    ),
-}
+DCMI_NAMESPACE_DOCUMENTS = MappingProxyType(
+    {
+        str(DC): URIRef(
+            "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/dublin_core_elements.rdf",
+        ),
+        str(DCTERMS): URIRef(
+            "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/dublin_core_terms.rdf",
+        ),
+    }
+)
 
 
 def find_dcmi_namespace_document(source: URIRef) -> URIRef | None:
@@ -201,6 +204,21 @@ def find_dcmi_namespace_document(source: URIRef) -> URIRef | None:
             return document
 
     return None
+
+
+def _namespace_document_quads(
+    document_graph: Graph,
+    source_uri: URIRef,
+) -> list[tuple[Node, Node, Node, URIRef]]:
+    return [
+        (
+            normalize_term(subject),
+            normalize_term(predicate),
+            normalize_term(object_),
+            source_uri,
+        )
+        for subject, predicate, object_ in document_graph
+    ]
 
 
 def resolve_variables(
@@ -503,6 +521,18 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             )
         )
 
+    def _mark_as_failed(self, source_uri: URIRef) -> Loaded:
+        self.graph.add(
+            (
+                source_uri,
+                RDF.type,
+                IOLANTA["failed"],
+                source_uri,
+            )
+        )
+        self._mark_as_loaded(source_uri)
+        return Loaded()
+
     def _follow_is_visualized_with_links(self, uri: URIRef):
         """Follow `dcterms:isReferencedBy` links."""
         triples = self.graph.triples((uri, DCTERMS.isReferencedBy, None))
@@ -529,15 +559,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
             )
             return Loaded()
 
-        quads = [
-            (
-                normalize_term(subject),
-                normalize_term(predicate),
-                normalize_term(object_),
-                source_uri,
-            )
-            for subject, predicate, object_ in document_graph
-        ]
+        quads = _namespace_document_quads(document_graph, source_uri)
         if quads:
             self.graph.addN(quads)
             self.graph.last_not_inferred_source = source_uri
@@ -639,7 +661,7 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
 
             return Loaded()
 
-        except NoLinkedDataFoundInHTML:
+        except (NoLinkedDataFoundInHTML, KeyError):
             dcmi_namespace_document = find_dcmi_namespace_document(source_uri)
             if dcmi_namespace_document is not None:
                 self.logger.info(
@@ -648,32 +670,11 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
                     dcmi_namespace_document,
                 )
                 return self._load_dcmi_namespace_document(source_uri)
-
-            raise
-        except KeyError:
-            dcmi_namespace_document = find_dcmi_namespace_document(source_uri)
-            if dcmi_namespace_document is not None:
-                self.logger.info(
-                    "Redirecting %s → namespace document %s",
-                    source,
-                    dcmi_namespace_document,
-                )
-                return self._load_dcmi_namespace_document(source_uri)
-
-            raise
+            self.logger.info("%s | Failed to resolve linked data document", source)
+            return self._mark_as_failed(source_uri)
         except Exception as err:
             self.logger.info(f"{source} | Failed: {err}")
-            self.graph.add(
-                (
-                    URIRef(source),
-                    RDF.type,
-                    IOLANTA["failed"],
-                    source_uri,
-                )
-            )
-            self._mark_as_loaded(source_uri)
-
-            return Loaded()
+            return self._mark_as_failed(source_uri)
 
         if resolved_source:
             resolved_source_uri_ref = URIRef(resolved_source)

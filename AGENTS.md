@@ -69,6 +69,8 @@
 
 **F08.** Multiple if...elif branches with `isinstance()` calls must be replaced with `match/case` statements. The `match/case` syntax (Python 3.10+) is more readable, type-safe, and idiomatic for type-based dispatch. Use `match value: case Type():` instead of `if isinstance(value, Type): ... elif isinstance(value, OtherType): ...`.
 
+**F09.** In tests, prefer repeated string literals over helper constants introduced only to satisfy string-reuse lint rules. If satisfying a lint rule would require structural refactoring, API changes, or other non-local reshaping, stop and ask first. In tests, prefer a targeted `# noqa` over abstractions created only to silence the linter.
+
 ## Adding Jeeves Commands
 
 **J00.** Jeeves is a task runner based on Typer. To add a new development command, add a function to `jeeves/__init__.py`. Functions in this module automatically become commands accessible via `j <command-name>`.
