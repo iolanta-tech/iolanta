@@ -17,7 +17,6 @@ from yarl import URL
 from iolanta.cli.models import LogLevel
 from iolanta.facets.errors import FacetNotFound
 from iolanta.iolanta import Iolanta
-from iolanta.models import NotLiteralNode
 from iolanta.namespaces import DATATYPES
 from iolanta.query_result import (
     QueryResult,
@@ -32,22 +31,6 @@ console = Console()
 
 
 app = Typer(no_args_is_help=True)
-
-
-def string_to_node(name: str) -> NotLiteralNode:
-    """
-    Parse a string into a node identifier.
-
-    String might be:
-      * a URL,
-      * or a local disk path.
-    """
-    url = URL(name)
-    if url.scheme:
-        return URIRef(name)
-
-    path = Path(name).absolute()
-    return URIRef(f"file://{path}")
 
 
 def decode_datatype(datatype: str) -> URIRef:
@@ -160,6 +143,18 @@ def create_query_node(query_result: QueryResult) -> Literal:
             )
 
 
+def print_renderable(renderable) -> None:
+    match renderable:
+        case Table() as table:
+            console.print(table)
+        case str() as text:
+            sys.stdout.write(text)
+            if not text.endswith("\n"):
+                sys.stdout.write("\n")
+        case unknown:
+            console.print(unknown)
+
+
 def render_and_return(
     node: Literal | URIRef,
     as_datatype: str,
@@ -258,13 +253,7 @@ def render_command(  # noqa: WPS231, WPS238, WPS210, C901
         except Exception as error:
             handle_error(error, log_level, use_markdown=False)
         else:
-            # FIXME: An intermediary Literal can be used to dispatch rendering.
-            match renderable:
-                case Table() as table:
-                    console.print(table)
-
-                case unknown:
-                    console.print(unknown)
+            print_renderable(renderable)
         return
 
     if url is None:
@@ -295,10 +284,4 @@ def render_command(  # noqa: WPS231, WPS238, WPS210, C901
     except Exception as error:
         handle_error(error, log_level, use_markdown=False)
     else:
-        # FIXME: An intermediary Literal can be used to dispatch rendering.
-        match renderable:
-            case Table() as table:
-                console.print(table)
-
-            case unknown:
-                console.print(unknown)
+        print_renderable(renderable)
