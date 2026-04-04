@@ -5,6 +5,12 @@ CONSTRUCT {
 }
 WHERE {
   ?entity
-    (wikibase:claim | wikibase:qualifier | wikibase:statementProperty | wikibase:statementValueNormalized) ?thing ;
+    (
+      wikibase:claim
+      | wikibase:directClaim
+      | wikibase:qualifier
+      | wikibase:statementProperty
+      | wikibase:statementValueNormalized
+    ) ?thing ;
     rdfs:label ?label .
 }
