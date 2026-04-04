@@ -38,3 +38,15 @@ def test_wikidata_rhysling_title_bare_host_no_www():
     assert rendered_output == "Rhysling", (
         f"Expected 'Rhysling', got '{rendered_output}'"
     )
+
+
+def test_wikidata_direct_property_title():
+    """Wikidata direct property IRIs render their human-readable label."""
+    iolanta = Iolanta()
+    rendered_output = iolanta.render(
+        URIRef("http://www.wikidata.org/prop/direct/P397"),
+        as_datatype=DATATYPES.title,
+    )
+    assert rendered_output == "parent astronomical body", (
+        f"Expected 'parent astronomical body', got '{rendered_output}'"
+    )
