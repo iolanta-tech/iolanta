@@ -1,4 +1,14 @@
 SELECT * WHERE {
-    $person schema:familyName ?family_name .
-    $person schema:givenName ?given_name .
+    $person (
+        <http://xmlns.com/foaf/0.1/familyName>
+        | <http://schema.org/familyName>
+        | <https://schema.org/familyName>
+    ) ?family_name .
+    $person (
+        <http://xmlns.com/foaf/0.1/givenName>
+        | <http://schema.org/givenName>
+        | <https://schema.org/givenName>
+    ) ?given_name .
+    FILTER (!lang(?family_name) || lang(?family_name) = $language)
+    FILTER (!lang(?given_name) || lang(?given_name) = $language)
 }
