@@ -92,3 +92,21 @@ def build_docs():
 ```
 
 **J04.** For commands that wrap existing tools, prefer composing standard commands with pipes/redirection rather than creating a Jeeves command. Only create Jeeves commands when they add significant value (e.g., complex workflows, multiple steps, or project-specific logic).
+
+## Rendering and Facets
+
+**A00.** Before adding fallback logic to a generic facet, search for an existing specialized facet and use facet selection first. Do not hardcode domain-specific rendering in a general-purpose facet when a class-specific facet already exists.
+
+**A01.** When introducing or changing a namespace canonical IRI, audit every redirect, resolver, and fetch path that depends on that namespace. A namespace change is incomplete until resolution behavior is verified end to end.
+
+**A02.** A specialized renderer must not lose data the generic renderer already supports. If the generic Mermaid facet renders blank nodes, a specialized Mermaid facet must render them too unless omission is explicitly requested.
+
+**A03.** For remote RDF sources, verify the actual content-negotiated payload before making schema assumptions. Do not infer predicates or `rdf:type` values for ORCID, Wikidata, or similar sources from memory.
+
+**A04.** In Mermaid, do not reuse a real subgraph ID as an edge endpoint from inside another subgraph. Mermaid may reinterpret that as containment and nest graphs incorrectly.
+
+**A05.** When using Mermaid HTML labels, validate both the generated Mermaid source and a rendered SVG or PNG. Syntax acceptance alone is not sufficient; inspect the actual visual output.
+
+**A06.** If a rendering change is about layout or readability, inspect the rendered artifact yourself before claiming it is fixed.
+
+**A07.** Keep regression tests aligned with the intended architecture, not just the observed final string output. For example, when relevant, test that the specialized facet is selected rather than only asserting the rendered text.
