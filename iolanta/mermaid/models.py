@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import enum
 import hashlib
 import re
@@ -57,6 +59,101 @@ class MermaidScalar(Documented, BaseModel, arbitrary_types_allowed=True):
         raise NotImplementedError()
 
 
+class MermaidAnchorNode(MermaidScalar, frozen=True):
+    """
+    {self.id}[" "]
+    class {self.id} hidden
+    """
+
+    name: str
+
+    @property
+    def id(self) -> str:
+        name_hash = hashlib.md5(self.name.encode()).hexdigest()
+        return f"Anchor_{name_hash}"
+
+
+class MermaidTextNode(MermaidScalar, frozen=True):
+    """
+    {self.id}[{self.escaped_title}]
+    {self.click_line}
+    """
+
+    name: str
+    title: str
+    url: AnyUrl | None = None
+
+    @property
+    def id(self) -> str:
+        name_hash = hashlib.md5(self.name.encode()).hexdigest()
+        return f"Text_{name_hash}"
+
+    @property
+    def escaped_title(self) -> str:
+        return escape_label(self.title)
+
+    @property
+    def click_line(self) -> str:
+        if self.url is None:
+            return ""
+        return f'click {self.id} "{self.url}"'
+
+
+class MermaidLabelNode(MermaidScalar, frozen=True):
+    """
+    {self.id}[{self.escaped_title}]
+    class {self.id} label
+    {self.click_line}
+    """
+
+    name: str
+    title: str
+    url: AnyUrl | None = None
+
+    @property
+    def id(self) -> str:
+        name_hash = hashlib.md5(self.name.encode()).hexdigest()
+        return f"Label_{name_hash}"
+
+    @property
+    def escaped_title(self) -> str:
+        return escape_label(self.title)
+
+    @property
+    def click_line(self) -> str:
+        if self.url is None:
+            return ""
+        return f'click {self.id} "{self.url}"'
+
+
+class MermaidHTMLNode(MermaidScalar, frozen=True):
+    """
+    {self.id}["{self.html}"]
+    """
+
+    name: str
+    html: str
+
+    @property
+    def id(self) -> str:
+        name_hash = hashlib.md5(self.name.encode()).hexdigest()
+        return f"Html_{name_hash}"
+
+
+class MermaidDotNode(MermaidScalar, frozen=True):
+    """
+    {self.id}(" ")
+    class {self.id} nanopubdot
+    """
+
+    name: str
+
+    @property
+    def id(self) -> str:
+        name_hash = hashlib.md5(self.name.encode()).hexdigest()
+        return f"Dot_{name_hash}"
+
+
 class MermaidURINode(MermaidScalar, frozen=True):
     """
     {self.id}{self.maybe_title}
@@ -92,7 +189,7 @@ class MermaidLiteral(MermaidScalar, frozen=True):
         icon = DATATYPE_ICONS.get(self.literal.datatype, "")
         if icon:
             raw_title = f"{icon} {raw_title}"
-        return raw_title.replace('"', '\u201c').replace("'", "\u2019")
+        return raw_title.replace('"', "\u201c").replace("'", "\u2019")
 
     @property
     def id(self) -> str:
@@ -125,8 +222,8 @@ class MermaidEdge(MermaidScalar):
     class {self.id} predicate
     """
 
-    source: "MermaidURINode | MermaidBlankNode | MermaidSubgraph"
-    target: "MermaidURINode | MermaidLiteral | MermaidBlankNode | MermaidSubgraph"
+    source: MermaidScalar | MermaidSubgraph
+    target: MermaidScalar | MermaidSubgraph
     predicate: URIRef
     title: str
 
@@ -146,17 +243,68 @@ class MermaidEdge(MermaidScalar):
         return escape_label(self.title)
 
 
+class MermaidPlainEdge(MermaidScalar):
+    """{self.source.id} --- {self.target.id}"""
+
+    source: MermaidScalar | MermaidSubgraph
+    target: MermaidScalar | MermaidSubgraph
+
+    @property
+    def id(self) -> str:
+        return hashlib.md5(
+            f"{self.source.id}{self.target.id}".encode(),
+        ).hexdigest()
+
+    @property
+    def nodes(self):
+        return [self.source, self.target]
+
+
+class MermaidInvisibleEdge(MermaidScalar):
+    """{self.source.id} ~~~ {self.target.id}"""
+
+    source: MermaidScalar | MermaidSubgraph
+    target: MermaidScalar | MermaidSubgraph
+
+    @property
+    def id(self) -> str:
+        return hashlib.md5(
+            f"{self.source.id}{self.target.id}invisible".encode(),
+        ).hexdigest()
+
+    @property
+    def nodes(self):
+        return [self.source, self.target]
+
+
+class MermaidArrowEdge(MermaidScalar):
+    """{self.source.id} --> {self.target.id}"""
+
+    source: MermaidScalar | MermaidSubgraph
+    target: MermaidScalar | MermaidSubgraph
+
+    @property
+    def id(self) -> str:
+        return hashlib.md5(
+            f"{self.source.id}{self.target.id}arrow".encode(),
+        ).hexdigest()
+
+    @property
+    def nodes(self):
+        return [self.source, self.target]
+
+
 class MermaidSubgraph(Documented, BaseModel, arbitrary_types_allowed=True, frozen=True):
     """
-    subgraph {self.id}[{self.escaped_title}]
+    subgraph {self.id}{self.maybe_title}
       direction {self.direction}
       {self.formatted_body}
     end
     """
 
-    children: list[MermaidScalar]
+    children: list[MermaidScalar | MermaidSubgraph]
     uri: NotLiteralNode
-    title: str
+    title: str | None
     direction: Direction = Direction.LR
 
     @property
@@ -167,7 +315,13 @@ class MermaidSubgraph(Documented, BaseModel, arbitrary_types_allowed=True, froze
     @property
     def escaped_title(self) -> str:
         """Escape the subgraph title to prevent markdown link parsing."""
-        return escape_label(self.title)
+        return "" if self.title is None else escape_label(self.title)
+
+    @property
+    def maybe_title(self) -> str:
+        if self.title is None:
+            return ""
+        return f"[{self.escaped_title}]"
 
     @property
     def formatted_body(self):
@@ -181,7 +335,11 @@ class Diagram(Documented, BaseModel):
     """
     graph {self.direction}
     {self.formatted_body}
-      classDef predicate fill:transparent,stroke:transparent,stroke-width:0px;
+      classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
+      classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
+      classDef label fill:transparent,stroke:transparent,color:#e5e7eb,stroke-width:0px;
+      classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
+      classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
       {self.formatted_tail}
     """
 
