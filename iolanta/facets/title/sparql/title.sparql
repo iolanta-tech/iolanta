@@ -10,17 +10,26 @@ SELECT * WHERE {
     }
 
     OPTIONAL {
-        $iri <https://schema.org/title> ?schema_title .
+        $iri (
+            <http://schema.org/title>
+            | <https://schema.org/title>
+        ) ?schema_title .
         FILTER (!lang(?schema_title) || lang(?schema_title) = $language)
     }
 
     OPTIONAL {
-        $iri <https://schema.org/name> ?schema_name .
+        $iri (
+            <http://schema.org/name>
+            | <https://schema.org/name>
+        ) ?schema_name .
         FILTER (!lang(?schema_name) || lang(?schema_name) = $language)
     }
 
     OPTIONAL {
-        $iri <https://xmlns.com/foaf/0.1/name> ?foaf_name .
+        $iri (
+            <http://xmlns.com/foaf/0.1/name>
+            | <https://xmlns.com/foaf/0.1/name>
+        ) ?foaf_name .
         FILTER (!lang(?foaf_name) || lang(?foaf_name) = $language)
     }
 

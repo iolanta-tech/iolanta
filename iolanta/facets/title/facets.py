@@ -6,6 +6,7 @@ from iolanta.facets.facet import Facet
 
 PRIORITIES = [  # noqa: WPS407
     "preferred_label",
+    "schema_full_name",
     "dc_title",
     "schema_title",
     "schema_name",
