@@ -1,0 +1,23 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  iolanta: https://iolanta.tech/
+  np: http://www.nanopub.org/nschema#
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+
+  $: rdfs:label
+
+  iolanta:hasInstanceFacet:
+    "@type": "@id"
+
+  iolanta:outputs:
+    "@type": "@id"
+
+  iolanta:is-preferred-over:
+    "@type": "@id"
+
+$id: np:Nanopublication
+iolanta:hasInstanceFacet:
+  $id: pkg:pypi/iolanta#mermaid-nanopublication
+  $: Nanopublication Mermaid
+  iolanta:outputs: https://iolanta.tech/datatypes/mermaid
+  iolanta:is-preferred-over: pkg:pypi/iolanta#mermaid-graph
