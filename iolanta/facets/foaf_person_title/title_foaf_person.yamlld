@@ -1,0 +1,33 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  iolanta: https://iolanta.tech/
+  foaf: http://xmlns.com/foaf/0.1/
+  schema: https://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+
+  $: rdfs:label
+
+  iolanta:hasInstanceFacet:
+    "@type": "@id"
+
+  iolanta:outputs:
+    "@type": "@id"
+
+"@included":
+  - $id: foaf:Person
+    iolanta:hasInstanceFacet:
+      $id: pkg:pypi/iolanta#title-foaf-person
+      $: FOAF Person Title
+      iolanta:outputs: https://iolanta.tech/datatypes/title
+
+  - $id: http://schema.org/Person
+    iolanta:hasInstanceFacet:
+      $id: pkg:pypi/iolanta#title-foaf-person
+      $: Schema Person Title
+      iolanta:outputs: https://iolanta.tech/datatypes/title
+
+  - $id: schema:Person
+    iolanta:hasInstanceFacet:
+      $id: pkg:pypi/iolanta#title-foaf-person
+      $: Schema Person Title
+      iolanta:outputs: https://iolanta.tech/datatypes/title
