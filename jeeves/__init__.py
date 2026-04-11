@@ -5,7 +5,9 @@ from pathlib import Path
 
 import funcy
 import rdflib
+import requests
 import sh
+import yaml
 import yaml_ld
 
 # from jeeves_yeti_pyproject import flakeheaven  # Skipped due to compatibility issues with Python 3.12+
@@ -169,3 +171,38 @@ def verify_rdf_examples(
         console.print("\n[bold green]All examples match![/bold green]")
     else:
         raise SystemExit(1)
+
+
+_TRUSTED_DOMAINS = frozenset((
+    "w3.org",
+    "xmlns.com",
+    "schema.org",
+    "schemas.org",
+))
+
+
+def sync_prefix_cc():
+    """Fetch prefix.cc/context and regenerate iolanta/data/prefixes.yamlld."""
+    response = requests.get("http://prefix.cc/context")
+    response.raise_for_status()
+    context = response.json()["@context"]
+
+    entries = [
+        {
+            "vann:preferredNamespacePrefix": prefix,
+            "vann:preferredNamespaceUri": namespace_url,
+        }
+        for prefix, namespace_url in sorted(context.items())
+        if isinstance(namespace_url, str)
+        and len(prefix) >= 2
+        and any(domain in namespace_url for domain in _TRUSTED_DOMAINS)
+    ]
+
+    (project_directory.parent / "iolanta/data/prefixes.yamlld").write_text(
+        yaml.dump(
+            {"@context": "context.yaml", "$graph": entries},
+            allow_unicode=True,
+            sort_keys=False,
+        ),
+    )
+    console.print(f"[green]Written {len(entries)} prefixes[/green]")
