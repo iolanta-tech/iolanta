@@ -1,0 +1,60 @@
+"@context":
+  "@import": context.yaml
+  vann: http://purl.org/vocab/vann/
+  jsonld: "http://www.w3.org/ns/json-ld#"
+
+$id: "jsonld:"
+$: JSON-LD
+vann:termGroup:
+  - $: Keywords
+    $reverse:
+      rdf:type:
+        - jsonld:graphContainerType
+        - jsonld:idContainerType
+        - jsonld:indexContainerType
+        - jsonld:languageContainerType
+        - jsonld:listContainerType
+        - jsonld:setContainerType
+        - jsonld:typeContainerType
+
+  - $: Classes
+    $reverse:
+      rdf:type:
+        - jsonld:Context
+        - jsonld:PrefixDefinition
+        - jsonld:TermDefinition
+
+  - $: Profiles
+    $reverse:
+      rdf:type:
+        - jsonld:compacted
+        - jsonld:expanded
+        - jsonld:flattened
+        - jsonld:frame
+        - jsonld:framed
+        - jsonld:streaming
+
+  - $: Context Properties
+    $reverse:
+      rdf:type:
+        - jsonld:base
+        - jsonld:context
+        - jsonld:definition
+        - jsonld:direction
+        - jsonld:import
+        - jsonld:language
+        - jsonld:propagate
+        - jsonld:version
+        - jsonld:vocab
+
+  - $: Term Properties
+    $reverse:
+      rdf:type:
+        - jsonld:container
+        - jsonld:id
+        - jsonld:nest
+        - jsonld:prefix
+        - jsonld:protected
+        - jsonld:reverse
+        - jsonld:term
+        - jsonld:type
