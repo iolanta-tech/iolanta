@@ -84,7 +84,9 @@
       $id: pkg:pypi/iolanta#textual-ontology
       $: Ontology
       →: https://iolanta.tech/cli/textual
-      ⪯: pkg:pypi/iolanta#textual-properties
+      ⪯:
+        - pkg:pypi/iolanta#textual-properties
+        - pkg:pypi/iolanta#textual-graph
 
   - $id: https://iolanta.tech/datatypes/textual-graph-triples
     $: Graph Triples
