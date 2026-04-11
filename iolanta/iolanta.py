@@ -44,6 +44,13 @@ from iolanta.resolvers.pypi import PyPIResolver
 from iolanta.resolvers.python_import import PythonImportResolver
 from iolanta.sparqlspace.processor import normalize_term  # noqa: WPS201
 
+_VANN_PREFIXES_QUERY = """
+    SELECT ?prefix ?uri WHERE {
+        ?node <http://purl.org/vocab/vann/preferredNamespacePrefix> ?prefix ;
+              <http://purl.org/vocab/vann/preferredNamespaceUri> ?uri .
+    }
+"""  # noqa: WPS462
+
 
 class LoggerProtocol(Protocol):
     """Abstract Logger interface that unites `loguru` & standard `logging`."""
@@ -326,15 +333,16 @@ class Iolanta:  # noqa: WPS214, WPS338
         )
         self.graph.bind(prefix="local", namespace=namespaces.LOCAL)
         self.graph.bind(prefix="iolanta", namespace=namespaces.IOLANTA)
-        self.graph.bind(prefix="rdf", namespace=namespaces.RDF)
-        self.graph.bind(prefix="rdfs", namespace=namespaces.RDFS)
-        self.graph.bind(prefix="owl", namespace=namespaces.OWL)
-        self.graph.bind(prefix="foaf", namespace=namespaces.FOAF)
-        self.graph.bind(prefix="schema", namespace=namespaces.SDO)
-        self.graph.bind(prefix="vann", namespace=namespaces.VANN)
-        self.graph.bind(prefix="np", namespace=namespaces.NP)
-        self.graph.bind(prefix="dcterms", namespace=namespaces.DCTERMS)
-        self.graph.bind(prefix="rdfg", namespace=namespaces.RDFG)
+
+    def bind_prefixes_from_graph(self):
+        """Bind namespace prefixes declared via VANN, without overriding existing ones."""
+        prefix_bindings = self.graph.query(_VANN_PREFIXES_QUERY)
+        for row in prefix_bindings:
+            self.graph.bind(
+                prefix=str(row.prefix),
+                namespace=str(row.uri),
+                override=False,
+            )
 
     @functools.cached_property
     def context_paths(self) -> Iterable[Path]:
@@ -377,6 +385,7 @@ class Iolanta:  # noqa: WPS214, WPS338
         self.add_files_from_facets()
         if self.project_root:
             self.add(self.project_root)
+        self.bind_prefixes_from_graph()
 
     def render(
         self,

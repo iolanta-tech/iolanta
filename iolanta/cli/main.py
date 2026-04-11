@@ -1,3 +1,4 @@
+import contextlib
 import locale
 import logging
 import sys
@@ -155,7 +156,7 @@ def print_renderable(renderable) -> None:
             console.print(unknown)
 
 
-def render_and_return(
+def render_and_return(  # noqa: WPS210, WPS231
     node: Literal | URIRef,
     as_datatype: str,
     language: str = DEFAULT_LANGUAGE,
@@ -196,6 +197,11 @@ def render_and_return(
     else:
         # This should never happen due to type checking, but kept for safety
         raise TypeError(f"Expected Literal or URIRef, got {type(node)}")
+
+    node_str = str(node)
+    if isinstance(node, URIRef) and node_str.count(":") == 1 and "://" not in node_str:  # noqa: WPS221
+        with contextlib.suppress(ValueError, KeyError):
+            node = URIRef(iolanta.graph.namespace_manager.expand_curie(node_str))
 
     return iolanta.render(
         node=node,
