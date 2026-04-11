@@ -71,6 +71,10 @@
 
 **F09.** In tests, prefer repeated string literals over helper constants introduced only to satisfy string-reuse lint rules. If satisfying a lint rule would require structural refactoring, API changes, or other non-local reshaping, stop and ask first. In tests, prefer a targeted `# noqa` over abstractions created only to silence the linter.
 
+**F10.** To suppress a WPS violation for an entire file (e.g. WPS202), add it to `.flake8` under `per-file-ignores` — do not use a module-level `# noqa` comment. Module-level `# noqa` does not work for file-wide WPS suppressions.
+
+**F11.** Use `frozenset(("a", "b", ...))` with a tuple literal, not `frozenset({"a", "b", ...})` with a set literal. The set-literal form triggers WPS527.
+
 ## Adding Jeeves Commands
 
 **J00.** Jeeves is a task runner based on Typer. To add a new development command, add a function to `jeeves/__init__.py`. Functions in this module automatically become commands accessible via `j <command-name>`.
