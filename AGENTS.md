@@ -114,3 +114,8 @@ def build_docs():
 **A06.** If a rendering change is about layout or readability, inspect the rendered artifact yourself before claiming it is fixed.
 
 **A07.** Keep regression tests aligned with the intended architecture, not just the observed final string output. For example, when relevant, test that the specialized facet is selected rather than only asserting the rendered text.
+
+## Subdirectory guidance
+
+- [tests/AGENTS.md](tests/AGENTS.md) — integration screenshot tests, SVG capture via Textual + `iolanta`
+- [docs/howto/nanopublish-with-llm/AGENTS.md](docs/howto/nanopublish-with-llm/AGENTS.md) — YAML-LD / Linked Data authoring for nanopublishing
