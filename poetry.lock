@@ -1432,14 +1432,14 @@ all = ["sh (>=2.0.4)"]
 
 [[package]]
 name = "jeeves-yeti-pyproject"
-version = "1.0.2"
+version = "1.0.3"
 description = "Opinionated Jeeves plugin for Python projects."
 optional = false
 python-versions = "<4.0,>=3.10"
 groups = ["dev"]
 files = [
-    {file = "jeeves_yeti_pyproject-1.0.2-py3-none-any.whl", hash = "sha256:bde020d0462ba9d407771a8dd193fc437f5fa3c7e3eeea4909e735f40bd7cf00"},
-    {file = "jeeves_yeti_pyproject-1.0.2.tar.gz", hash = "sha256:89dc6df29ccd07cc96d001032aab2d82df80adf673718fbc4bc5652464c63927"},
+    {file = "jeeves_yeti_pyproject-1.0.3-py3-none-any.whl", hash = "sha256:8513fa1ffb5b5f02d173e2e5d3eec2b26e4b72b4418e454bfdb7d78aba7c01ff"},
+    {file = "jeeves_yeti_pyproject-1.0.3.tar.gz", hash = "sha256:1f5721aca50239253d90d0cc3bafb82c27a4aee5fe6ae3557bfe401b01bac0ae"},
 ]
 
 [package.dependencies]
