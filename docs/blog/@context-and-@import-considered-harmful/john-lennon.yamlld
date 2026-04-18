@@ -1,0 +1,10 @@
+# YAML-LD is used here for readability.
+# The same remote-context vulnerability exists in JSON-LD because
+# YAML-LD serializes the same JSON-LD data model.
+"@context": https://json-ld.org/contexts/person.jsonld
+"@id": http://dbpedia.org/resource/John_Lennon
+name: John Lennon
+born: 1940-10-09
+spouse:
+  - http://dbpedia.org/resource/Yoko_Ono
+  - http://dbpedia.org/resource/Cynthia_Lennon
