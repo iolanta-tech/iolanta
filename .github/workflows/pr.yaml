@@ -44,7 +44,7 @@ jobs:
 
       - name: Post Test Report
         if: always() && github.actor != 'dependabot[bot]'
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v3
         with:
           name: pytest
           path: tests/artifacts/pytest.xml
