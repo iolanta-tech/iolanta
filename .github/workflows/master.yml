@@ -20,7 +20,7 @@ jobs:
       - run: j --log-level info master
 
       - name: Upload mypy baseline
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mypy-baseline
           path: tests/artifacts/mypy_baseline.json
