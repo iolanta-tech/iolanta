@@ -8,28 +8,40 @@ hide: [navigation]
 
 # `@context` & `@import` considered harmful <small>April 18, 2026</small>
 
-## A concrete example
+The front page of [:material-web: `json-ld.org`](https://json-ld.org/) presents us with an example about John Lennon, a famous British rock musician. With your permission, let's rewrite this example in [YAML-LD](https://www.w3.org/TR/yaml-ld-10/) — for the sake of brevity.
 
-Start with the official JSON-LD site example, rewritten in YAML-LD for readability.
-The vulnerability is the same in JSON-LD and YAML-LD because they use the same
-JSON-LD data model and the same remote-context loading rules.
-
+<div class="grid" markdown>
+<div markdown>
 ```yaml
 --8<-- "docs/blog/@context-and-@import-considered-harmful/john-lennon.yamlld"
 ```
+</div>
+<div markdown>
+```mermaid
+{{ (docs / 'blog/@context-and-@import-considered-harmful/john-lennon.yamlld') | as('mermaid') }}
+```
+</div>
+</div>
 
-The meaning of that document depends on what the remote context returns. At the time
-of writing, the relevant part of `https://json-ld.org/contexts/person.jsonld` is:
+At first glance, this looks like ordinary JSON or YAML with intuitive property
+names: `born`, `spouse`, `homepage`. But those names have no machine-readable
+meaning on their own. Their meaning comes from the remote context:
 
 ```json
 --8<-- "docs/blog/@context-and-@import-considered-harmful/person-context-excerpt.jsonld"
 ```
 
-Interpreted with that context, the document means:
+The Mermaid diagram shows the knowledge graph produced once that context is applied.
 
-```mermaid
-{{ (docs / 'blog/@context-and-@import-considered-harmful/john-lennon.yamlld') | as('mermaid') }}
-```
+Now the spoofing step: the document bytes stay the same, but the meaning changes
+if the context changes. If `born` is remapped from `schema:birthDate` to
+`schema:deathDate`, then the same `1940-10-09` literal stops meaning "John
+Lennon was born on October 9, 1940" and starts meaning "John Lennon died on
+October 9, 1940". If `spouse` is remapped to `schema:parent`, the same link to
+Cynthia Lennon stops meaning "spouse" and starts meaning "parent".
+
+That is context spoofing: not changing the payload, but changing the dictionary
+that tells processors what the payload means.
 
 ## Problem
 
@@ -49,17 +61,11 @@ This becomes dangerous in signed or otherwise security-sensitive systems: the do
 can keep the same shape while its semantics move underneath it. Signatures protect the
 *canonicalized RDF triples*, not the `@context` URL or its contents.
 
-As of 2026, the older PaySwarm context `http://purl.org/payswarm/v1` no longer
-resolves at all: the domain is unreachable. This is not an attack — it is ordinary
-link rot — but the effect on dependent documents is identical: the context is gone,
-and with it the meaning of every document that referenced it.
-
 ### From specification example to real-world exploit
 
-The PaySwarm scenario is not hypothetical. Mastodon has had documented incidents
-where ActivityPub objects with attacker-controlled `@context` URLs were used for
-remote actor impersonation. A poisoned context redefined terms in ways that bypassed
-access restrictions — a direct instantiation of the attack the spec describes:
+This is not just a toy example. ActivityPub deployments have had documented
+incidents and security discussions around attacker-controlled JSON-LD contexts
+changing how remote objects are interpreted:
 
 - [Mastodon GHSA-3fjr-858r-92rw](https://github.com/mastodon/mastodon/security/advisories/GHSA-3fjr-858r-92rw)
 - [ActivityPub context vulnerability discussion](https://socialhub.activitypub.rocks/t/potential-security-vulnerability-remote-json-ld-contexts-may-be-used-to-bypass-restrictions-when-arbitrary-objects-are-allowed-to-be-created/5439)
@@ -294,6 +300,8 @@ checking CORS headers — but the mechanism exists at the HTTP level and could b
 ---
 
 ## References
+
+https://github.com/web-payments/web-payments.org/issues/21
 
 - [JSON-LD WG Charter 2025](https://w3c.github.io/json-ld-charter-2025/)
 - [Verifiable Credential Data Integrity 1.0](https://www.w3.org/TR/vc-data-integrity/)
