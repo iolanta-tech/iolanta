@@ -121,7 +121,11 @@ class FacetFinder:  # noqa: WPS214
 
         for query, facet in query_to_facet.items():
             # TODO: Verify that `query` is an ASK query
-            is_matching = self.iolanta.query(query, this=self.node)
+            is_matching = self.iolanta.query(
+                query,
+                this=self.node,
+                language=self.iolanta.language,
+            )
             if is_matching:
                 yield FoundRow(facet=facet, output_datatype=self.as_datatype)
 
