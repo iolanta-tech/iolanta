@@ -86,7 +86,13 @@ def _extract_from_mapping(  # noqa: WPS213, WPS231
                 if isinstance(term, (URIRef, Variable))
             ]
 
-        case "Filter" | "UnaryNot" | "OrderCondition":
+        case "Filter":
+            # FILTER wraps the graph pattern in `p`; only walking `expr` misses
+            # variables such as `$this` in the BGP and breaks URL prefetch for ASK.
+            yield from extract_mentioned_urls(algebra["p"])  # noqa: WPS226
+            yield from extract_mentioned_urls(algebra["expr"])  # noqa: WPS204, WPS226
+
+        case "UnaryNot" | "OrderCondition":
             yield from extract_mentioned_urls(algebra["expr"])  # noqa: WPS204, WPS226
 
         case "Builtin_EXISTS" | "Builtin_NOTEXISTS":
@@ -158,6 +164,9 @@ def extract_mentioned_urls(
         case list() as expressions:
             for expression in expressions:
                 yield from extract_mentioned_urls(expression)
+
+        case Literal() | BNode():
+            return
 
         case unknown_algebra:
             algebra_type = type(unknown_algebra)
