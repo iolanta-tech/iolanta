@@ -3,8 +3,6 @@
   - ../context.yamlld
   - iolanta:hasDefaultFacet:
       "@type": "@id"
-    iolanta:hasInstanceFacet:
-      "@type": "@id"
 
 $id: https://iolanta.tech/datatypes/title
 $type: iolanta:OutputDatatype
@@ -17,11 +15,6 @@ rdfs:comment: >
 
 iolanta:hasDefaultFacet: pkg:pypi/iolanta#title
 
-"@included":
-  "@id": foaf:Person
-  iolanta:hasInstanceFacet:
-    "@id": pkg:pypi/iolanta#title-foaf-person
-    →: https://iolanta.tech/datatypes/title
 ---
 
 {{ URIRef("https://iolanta.tech/datatypes/title") | as('mkdocs-material-insiders-markdown') }} 
