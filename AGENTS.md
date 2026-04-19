@@ -115,6 +115,8 @@ def build_docs():
 
 **A07.** Keep regression tests aligned with the intended architecture, not just the observed final string output. For example, when relevant, test that the specialized facet is selected rather than only asserting the rendered text.
 
+**A08.** When debugging facet selection, SPARQL, or graph shape for YAML-LD or JSON-LD you have as a file, run `pyld to-rdf` on that document and inspect the triples before asserting which predicates or literals exist. Do not infer graph content from memory. For remote sources, **A03** still applies.
+
 ## Subdirectory guidance
 
 - [tests/AGENTS.md](tests/AGENTS.md) — integration screenshot tests, SVG capture via Textual + `iolanta`
