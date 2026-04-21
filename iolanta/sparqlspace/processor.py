@@ -472,8 +472,6 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
                 f"Running inference, last_not_inferred_source: {last_source}"
             )  # noqa: WPS237
             self._run_inference()
-        else:
-            self.logger.debug("Skipping inference, last_not_inferred_source is None")
 
         NanopubQueryPlugin(graph=self.graph)(query, bindings=initBindings)
 
