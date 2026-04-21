@@ -1,0 +1,15 @@
+╭──────────────────────────────────────────────────────────────────────────────╮
+│ Failed to load the context.                                                  │
+│                                                                              │
+│ URL of the context: ni:///sha-256;abc123...?ct=application/ld+json Reason:   │
+│ Cannot choose the loader by URL protocol.                                    │
+│                                                                              │
+│  • URL: ni:/sha-256;abc123...?ct=application/ld+json                         │
+│  • Scheme: ni                                                                │
+│  • Available schemes: file, http, https                                      │
+╰──────────────────────────────────────────────────────────────────────────────╯
+💡 To see Python traceback, use:                                                
+
+pyld --log-level info to-rdf                                                    
+/home/anatoly/projects/iolanta/docs/blog/remote-contexts-considered-harmful/john
+-lennon-content-addressed.yamlld                                                

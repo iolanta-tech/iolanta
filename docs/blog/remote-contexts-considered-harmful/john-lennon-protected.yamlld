@@ -1,0 +1,17 @@
+"@context":
+  - born:
+      "@id": http://schema.org/birthDate
+      "@type": xsd:date
+      "@protected": true
+    spouse:
+      "@id": http://schema.org/spouse
+      "@type": "@id"
+      "@protected": true
+    dbr: http://dbpedia.org/resource/
+    xsd: http://www.w3.org/2001/XMLSchema#
+  - person-spoofed.jsonld  # Spoofed, https://json-ld.org/contexts/person.jsonld was here originally
+  - https://json-ld.org/contexts/dollar-convenience.jsonld
+$id: dbr:John_Lennon
+name: John Lennon
+born: 1940-10-09
+spouse: ["dbr:Yoko_Ono", "dbr:Cynthia_Lennon"]

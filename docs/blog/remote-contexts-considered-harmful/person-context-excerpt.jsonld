@@ -1,0 +1,15 @@
+{
+  "@context": {
+    "Person": "http://xmlns.com/foaf/0.1/Person",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "name": "http://xmlns.com/foaf/0.1/name",
+    "born": {
+      "@id": "http://schema.org/birthDate",
+      "@type": "xsd:date"
+    },
+    "spouse": {
+      "@id": "http://schema.org/spouse",
+      "@type": "@id"
+    }
+  }
+}

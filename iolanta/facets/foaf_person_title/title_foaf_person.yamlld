@@ -6,28 +6,27 @@
   rdfs: http://www.w3.org/2000/01/rdf-schema#
 
   $: rdfs:label
-
-  iolanta:hasInstanceFacet:
+  →:
     "@type": "@id"
+    "@id": iolanta:outputs
+  ↦: iolanta:matches
 
-  iolanta:outputs:
-    "@type": "@id"
+$id: pkg:pypi/iolanta#title-foaf-person
+$: FOAF Person Title
+→: https://iolanta.tech/datatypes/title
 
-"@included":
-  - $id: foaf:Person
-    iolanta:hasInstanceFacet:
-      $id: pkg:pypi/iolanta#title-foaf-person
-      $: FOAF Person Title
-      iolanta:outputs: https://iolanta.tech/datatypes/title
-
-  - $id: http://schema.org/Person
-    iolanta:hasInstanceFacet:
-      $id: pkg:pypi/iolanta#title-foaf-person
-      $: Schema Person Title
-      iolanta:outputs: https://iolanta.tech/datatypes/title
-
-  - $id: schema:Person
-    iolanta:hasInstanceFacet:
-      $id: pkg:pypi/iolanta#title-foaf-person
-      $: Schema Person Title
-      iolanta:outputs: https://iolanta.tech/datatypes/title
+↦: |
+  ASK WHERE {
+    $this (
+      <http://xmlns.com/foaf/0.1/familyName>
+      | <http://schema.org/familyName>
+      | <https://schema.org/familyName>
+    ) ?family_name .
+    $this (
+      <http://xmlns.com/foaf/0.1/givenName>
+      | <http://schema.org/givenName>
+      | <https://schema.org/givenName>
+    ) ?given_name .
+    FILTER (!lang(?family_name) || lang(?family_name) = $language)
+    FILTER (!lang(?given_name) || lang(?given_name) = $language)
+  }

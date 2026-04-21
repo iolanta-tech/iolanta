@@ -97,6 +97,8 @@ def build_docs():
 
 **J04.** For commands that wrap existing tools, prefer composing standard commands with pipes/redirection rather than creating a Jeeves command. Only create Jeeves commands when they add significant value (e.g., complex workflows, multiple steps, or project-specific logic).
 
+**J05.** For `docs/blog/remote-contexts-considered-harmful/`, regenerate all derived tab artifacts with `j generate-remote-contexts-considered-harmful-artifacts`. Keep Mermaid diagrams inside tab partials pre-generated as `.mmd` files included from disk; do not rely on live Jinja Mermaid macros inside snippet-included partials.
+
 ## Rendering and Facets
 
 **A00.** Before adding fallback logic to a generic facet, search for an existing specialized facet and use facet selection first. Do not hardcode domain-specific rendering in a general-purpose facet when a class-specific facet already exists.
@@ -114,6 +116,22 @@ def build_docs():
 **A06.** If a rendering change is about layout or readability, inspect the rendered artifact yourself before claiming it is fixed.
 
 **A07.** Keep regression tests aligned with the intended architecture, not just the observed final string output. For example, when relevant, test that the specialized facet is selected rather than only asserting the rendered text.
+
+**A08.** When debugging facet selection, SPARQL, or graph shape for YAML-LD or JSON-LD you have as a file, run `pyld to-rdf` on that document and inspect the triples before asserting which predicates or literals exist. Do not infer graph content from memory. For remote sources, **A03** still applies.
+
+## Prose and documentation
+
+**P00.** DRY: no duplicated facts, lists, or citations—say each once, in the right place.
+
+**P01.** Quote external sources exactly. Preserve in-text links from the source, and use a full sentence unless the excerpt is explicitly marked as partial.
+
+**P02.** Keep prose terse by default. Prefer source quote, necessary example, and concrete tradeoffs; remove explanations that repeat nearby quotes, tables, headings, or examples.
+
+**P03.** For tabbed MkDocs documentation, prefer normal Markdown `===` tabs over hand-written raw HTML tab markup when possible. Raw HTML tabs plus nested Markdown/HTML blocks are fragile and harder to maintain.
+
+**P04.** In snippet-included Markdown partials (`--8<--`), do not rely on live Jinja expressions being rendered. If a tab body needs dynamic output such as Mermaid, pre-generate the artifact and include the generated file instead.
+
+**P05.** Hidden dotfile Markdown partials placed next to an `index.md` page are acceptable for local snippet includes in this docs setup and do not become standalone MkDocs pages.
 
 ## Subdirectory guidance
 

@@ -1,0 +1,24 @@
+graph LR
+  5f101372727c98c91391212c3a17d5ea_b0("John Lennon")
+  Literal-4649fa93775b9ab0c7a5e1bd15b6744a[["📅 1940-10-09"]]
+  5f101372727c98c91391212c3a17d5ea_b0("John Lennon")
+  http___dbpedia_org_resource_Cynthia_Lennon("Cynthia Lennon")
+  click http___dbpedia_org_resource_Cynthia_Lennon "http://dbpedia.org/resource/Cynthia_Lennon"
+  5f101372727c98c91391212c3a17d5ea_b0("John Lennon")
+  http___dbpedia_org_resource_Yoko_Ono("Yoko Ono")
+  click http___dbpedia_org_resource_Yoko_Ono "http://dbpedia.org/resource/Yoko_Ono"
+  5f101372727c98c91391212c3a17d5ea_b0 --- c61fa04ee4bc149ca544908066fc5320(["birthDate"])--> Literal-4649fa93775b9ab0c7a5e1bd15b6744a
+  click c61fa04ee4bc149ca544908066fc5320 "http://schema.org/birthDate"
+  class c61fa04ee4bc149ca544908066fc5320 predicate
+  5f101372727c98c91391212c3a17d5ea_b0 --- 9a4226e685e7907b94de856d2f6fbda5(["spouse"])--> http___dbpedia_org_resource_Cynthia_Lennon
+  click 9a4226e685e7907b94de856d2f6fbda5 "http://schema.org/spouse"
+  class 9a4226e685e7907b94de856d2f6fbda5 predicate
+  5f101372727c98c91391212c3a17d5ea_b0 --- 6c450ce6fb06a569581c81cc5107d4b3(["spouse"])--> http___dbpedia_org_resource_Yoko_Ono
+  click 6c450ce6fb06a569581c81cc5107d4b3 "http://schema.org/spouse"
+  class 6c450ce6fb06a569581c81cc5107d4b3 predicate
+  classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
+  classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
+  classDef label fill:transparent,stroke:transparent,color:#e5e7eb,stroke-width:0px;
+  classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
+  classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
+  

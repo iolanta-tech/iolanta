@@ -1,7 +1,9 @@
 # noqa: WPS412, WPS400
+from concurrent.futures import ThreadPoolExecutor
 import json
 import os
 from pathlib import Path
+import re
 
 import funcy
 import rdflib
@@ -25,6 +27,8 @@ artifacts = project_directory / "tests/artifacts"
 pytest_xml = artifacts / "pytest.xml"
 
 console = Console()
+
+_ANSI_ESCAPE_PATTERN = re.compile(r"\x1b\[[0-9;]*m")
 
 
 def deploy_to_github_pages():
@@ -171,6 +175,75 @@ def verify_rdf_examples(
         console.print("\n[bold green]All examples match![/bold green]")
     else:
         raise SystemExit(1)
+
+
+def dump_pyld_output(source: Path, target: Path):
+    """Run `pyld to-rdf` on a file and write the raw output to a file."""
+    result = sh.pyld.bake(
+        _env={**os.environ, "NO_COLOR": "1"},
+    )(
+        "to-rdf",
+        source,
+        _err_to_out=True,
+        _ok_code=frozenset((0, 1)),
+    )
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(_ANSI_ESCAPE_PATTERN.sub("", str(result)))
+    console.print(f"[green]Written[/green] {target}")
+
+
+def _dump_iolanta_output(
+    source: Path,
+    target: Path,
+    output_datatype: str = "mermaid",
+):
+    """Run `iolanta --as` on a file and write the raw output to a file."""
+    result = sh.iolanta.bake(
+        _env={
+            **os.environ,
+            "NO_COLOR": "1",
+            "XDG_STATE_HOME": "/tmp",
+        },
+    )(
+        source,
+        "--as",
+        output_datatype,
+    )
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(str(result))
+    console.print(f"[green]Written[/green] {target}")
+
+
+def generate_remote_contexts_considered_harmful_artifacts():
+    """Regenerate all derived outputs for `remote-contexts-considered-harmful`."""
+    directory = project_directory.parent / "docs/blog/remote-contexts-considered-harmful"
+
+    tasks = (
+        lambda: dump_pyld_output(
+            directory / "john-lennon-protected.yamlld",
+            directory / "john-lennon-protected-result.txt",
+        ),
+        lambda: dump_pyld_output(
+            directory / "john-lennon-sri.jsonld",
+            directory / "john-lennon-sri-result.txt",
+        ),
+        lambda: dump_pyld_output(
+            directory / "john-lennon-content-addressed.yamlld",
+            directory / "john-lennon-content-addressed-result.txt",
+        ),
+        lambda: _dump_iolanta_output(
+            directory / "john-lennon-inline-context.yamlld",
+            directory / "john-lennon-inline-context.mmd",
+        ),
+        lambda: _dump_iolanta_output(
+            directory / "john-lennon.yamlld",
+            directory / "john-lennon.mmd",
+        ),
+    )
+
+    with ThreadPoolExecutor() as executor:
+        for future in (executor.submit(task) for task in tasks):
+            future.result()
 
 
 _TRUSTED_DOMAINS = frozenset((

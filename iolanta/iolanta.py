@@ -15,7 +15,7 @@ from typing import (  # noqa: WPS235
 import loguru
 import yaml_ld
 from pyparsing import ParseException
-from rdflib import ConjunctiveGraph, Graph, Literal, URIRef
+from rdflib import ConjunctiveGraph, Graph, Literal, Namespace, URIRef
 from rdflib.namespace import NamespaceManager
 from rdflib.plugins.parsers.notation3 import BadSyntax
 from rdflib.plugins.sparql.processor import SPARQLResult
@@ -333,6 +333,7 @@ class Iolanta:  # noqa: WPS214, WPS338
         )
         self.graph.bind(prefix="local", namespace=namespaces.LOCAL)
         self.graph.bind(prefix="iolanta", namespace=namespaces.IOLANTA)
+        self.graph.bind(prefix="dbr", namespace=Namespace('http://dbpedia.org/resource/'))
 
     def bind_prefixes_from_graph(self):
         """Bind namespace prefixes declared via VANN, without overriding existing ones."""

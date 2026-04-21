@@ -5,4 +5,5 @@ per-file-ignores =
     iolanta/sparqlspace/processor.py:WPS201,WPS202,WPS402
     jeeves/__init__.py:WPS412,WPS400,WPS202
     tests/test_integration.py:WPS202
+    tests/test_apply_redirect.py:WPS202
     iolanta/mermaid/models.py:WPS202

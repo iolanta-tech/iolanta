@@ -1,0 +1,14 @@
+"@context":
+  born:
+    "@id": http://schema.org/birthDate
+    "@type": xsd:date
+  spouse:
+    "@id": http://schema.org/spouse
+    "@type": "@id"
+  name: http://xmlns.com/foaf/0.1/name
+  dbr: http://dbpedia.org/resource/
+  xsd: http://www.w3.org/2001/XMLSchema#
+$id: dbr:John_Lennon
+name: John Lennon
+born: 1940-10-09
+spouse: ["dbr:Yoko_Ono", "dbr:Cynthia_Lennon"]

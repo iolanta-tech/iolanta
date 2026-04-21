@@ -4,7 +4,6 @@ import funcy
 from rdflib import URIRef
 
 from iolanta import Facet
-from iolanta.namespaces import DATATYPES
 
 
 class FOAFPersonTitle(Facet[str]):

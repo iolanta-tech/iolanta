@@ -21,13 +21,11 @@
 $id: pkg:pypi/iolanta#title
 
 $: Title
-→: https://iolanta.tech/datatypes/title
-
-"@included":
-  - $id: https://iolanta.tech/datatypes/title
-    $type: iolanta:OutputDatatype
-    $: Title
-    rdfs:comment: >
-      A short string naming something. Used in links, lists, page titles, property tables, and many other cases.
-    ⊆: xsd:string
-    iolanta:hasDefaultFacet: pkg:pypi/iolanta#title
+→:
+  $id: https://iolanta.tech/datatypes/title
+  $type: iolanta:OutputDatatype
+  $: Title
+  rdfs:comment: >
+    A short string naming something. Used in links, lists, page titles, property tables, and many other cases.
+  ⊆: xsd:string
+  iolanta:hasDefaultFacet: pkg:pypi/iolanta#title
