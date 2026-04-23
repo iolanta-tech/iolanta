@@ -2,5 +2,7 @@
 $id: pkg:pypi/iolanta#textual-graph
 $: Graph Triples
 →: https://iolanta.tech/cli/textual
-⪯: pkg:pypi/iolanta#textual-inverse-properties
+⪯:
+  - pkg:pypi/iolanta#textual-properties
+  - pkg:pypi/iolanta#textual-inverse-properties
 ↦: ASK WHERE { GRAPH $this { ?s ?p ?o } }
