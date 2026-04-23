@@ -92,7 +92,7 @@ Being hacked is not the only risk associated with remote contexts.
 
     ActivityPub implementations resolve JSON-LD over the wire when handling remote actors and objects; that has produced both shipped vulnerabilities and long-running design discussion about attacker-controlled contexts:
 
-    - [Mastodon GHSA-3fjr-858r-92rw](https://github.com/mastodon/mastodon/security/advisories/GHSA-3fjr-858r-92rw)
+    - [:material-github: mastodon/mastodon GHSA-3fjr-858r-92rw](https://github.com/mastodon/mastodon/security/advisories/GHSA-3fjr-858r-92rw)
     - [SocialHub — remote JSON-LD contexts in federation](https://socialhub.activitypub.rocks/t/potential-security-vulnerability-remote-json-ld-contexts-may-be-used-to-bypass-restrictions-when-arbitrary-objects-are-allowed-to-be-created/5439)
 
 -   :material-link-off:{ .lg .middle } __Context Unavailable__
@@ -111,13 +111,13 @@ Being hacked is not the only risk associated with remote contexts.
 
     ---
 
-    Each remote context fetch tells the context publisher *which document* is being processed and *by whom* — a timing and correlation signal. The JSON-LD WG addresses this under privacy considerations for remote contexts ([w3c/json-ld-syntax#430](https://github.com/w3c/json-ld-syntax/issues/430)).
+    Each remote context fetch tells the context publisher *which document* is being processed and *by whom* — a timing and correlation signal. The JSON-LD WG addresses this under privacy considerations for remote contexts ([:material-github: w3c/json-ld-syntax#430](https://github.com/w3c/json-ld-syntax/issues/430)).
 
 -   :material-server-network:{ .lg .middle } __Server Overloaded__
 
     ---
 
-    A context URL shared across millions of documents generates a fetch every time any processor encounters any of those documents. High-volume deployments such as ActivityPub federation, Verifiable Credential issuers, and bulk RDF pipelines can produce enormous request rates against a handful of context servers. This is precisely why the JSON-LD Best Practices [recommend liberal cache-control headers](https://w3c.github.io/json-ld-bp/#cache) and why implementations such as [Mastodon preload well-known contexts](https://github.com/mastodon/mastodon/pull/9412) rather than fetching them on demand.
+    A context URL shared across millions of documents generates a fetch every time any processor encounters any of those documents. High-volume deployments such as ActivityPub federation, Verifiable Credential issuers, and bulk RDF pipelines can produce enormous request rates against a handful of context servers. This is precisely why the JSON-LD Best Practices [recommend liberal cache-control headers](https://w3c.github.io/json-ld-bp/#cache) and why implementations such as [:material-github: mastodon/mastodon#9412](https://github.com/mastodon/mastodon/pull/9412) rather than fetching them on demand.
 
 </div>
 

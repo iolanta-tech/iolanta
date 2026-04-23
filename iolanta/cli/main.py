@@ -2,6 +2,7 @@ import contextlib
 import locale
 import logging
 import sys
+import tempfile
 from pathlib import Path
 from typing import Annotated
 
@@ -34,6 +35,34 @@ console = Console()
 app = Typer(no_args_is_help=True)
 
 
+def _fallback_log_path() -> Path:
+    """Return a log path writable in sandboxed or agentic environments."""
+    log_directory = Path(tempfile.gettempdir()) / "iolanta" / "log"
+    log_directory.mkdir(parents=True, exist_ok=True)
+    return log_directory / "iolanta.log"
+
+
+def _ensure_log_file_path(log_file_path: Path) -> Path:
+    """Verify that a log file path can be opened for appending."""
+    log_file_path.parent.mkdir(parents=True, exist_ok=True)
+    log_file_path.touch(exist_ok=True)
+    return log_file_path
+
+
+def _log_file_path() -> Path:
+    """Return preferred log path, falling back when user state is read-only."""
+    try:
+        return _ensure_log_file_path(
+            platformdirs.user_log_path(
+                "iolanta",
+                ensure_exists=True,
+            )
+            / "iolanta.log",
+        )
+    except OSError:
+        return _fallback_log_path()
+
+
 def decode_datatype(datatype: str) -> URIRef:
     if datatype.startswith("http"):
         return URIRef(datatype)
@@ -53,14 +82,6 @@ def setup_logging(log_level: LogLevel):
         LogLevel.ERROR: logging.ERROR,
     }[log_level]
 
-    log_file_path = (
-        platformdirs.user_log_path(
-            "iolanta",
-            ensure_exists=True,
-        )
-        / "iolanta.log"
-    )
-
     level_name = {
         logging.DEBUG: "DEBUG",
         logging.INFO: "INFO",
@@ -70,7 +91,7 @@ def setup_logging(log_level: LogLevel):
 
     loguru.logger.remove()
     loguru.logger.add(
-        log_file_path,
+        _log_file_path(),
         level=level_name,
         format="{time} {level} {message}",
         enqueue=True,

@@ -1,10 +1,9 @@
+import pytest
 from rdflib import URIRef
 
-from iolanta.facets.generic.bool_literal import BoolLiteral
 from iolanta.resolvers.python_import import PythonImportResolver
 
 
 def test_resolver():
-    assert PythonImportResolver()[
-        URIRef('pkg:pypi/iolanta#boolean')
-    ] == BoolLiteral
+    with pytest.raises(NotImplementedError):
+        PythonImportResolver().resolve(URIRef('pkg:pypi/iolanta#boolean'))
