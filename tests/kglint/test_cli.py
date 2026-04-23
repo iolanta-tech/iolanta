@@ -34,6 +34,10 @@ def _load_document_with_missing_ld(
     return original_load_document(uri)
 
 
+def _raise_read_only_log_path(*args, **kwargs):
+    raise OSError("read-only")
+
+
 @pytest.fixture(autouse=True)
 def writable_log_path(monkeypatch, tmp_path):
     monkeypatch.setattr(
@@ -41,6 +45,28 @@ def writable_log_path(monkeypatch, tmp_path):
         "user_log_path",
         lambda *args, **kwargs: tmp_path,
     )
+
+
+def test_setup_logging_uses_temp_fallback(
+    monkeypatch,
+    tmp_path,
+):
+    """Sandboxed agents may not be able to write platform user state dirs."""
+    monkeypatch.setattr(
+        cli_main.platformdirs,
+        "user_log_path",
+        _raise_read_only_log_path,
+    )
+    monkeypatch.setattr(
+        cli_main.tempfile,
+        "gettempdir",
+        lambda: str(tmp_path),
+    )
+
+    logger = cli_main.setup_logging(cli_main.LogLevel.ERROR)
+    logger.error("fallback log test")
+
+    assert (tmp_path / "iolanta/log/iolanta.log").exists()
 
 
 def test_cli_kglint_json():
