@@ -5060,14 +5060,14 @@ dev = ["black (>=19.3b0) ; python_version >= \"3.6\"", "pytest (>=4.6.2)"]
 
 [[package]]
 name = "yaml-ld"
-version = "1.1.18"
+version = "1.1.19"
 description = "YAML-LD for Python"
 optional = false
 python-versions = "<4.0,>=3.12"
 groups = ["main"]
 files = [
-    {file = "yaml_ld-1.1.18-py3-none-any.whl", hash = "sha256:36fc1604f44bf6c8bff7bc6d359ad0ebba906d74d3442369f6e084075725714f"},
-    {file = "yaml_ld-1.1.18.tar.gz", hash = "sha256:a095a334a8c57d8b034a9871b326d7d71f33f19030a8a6024c205d6d5d34918a"},
+    {file = "yaml_ld-1.1.19-py3-none-any.whl", hash = "sha256:4ed892143d73d327e41c3c7a59d9d9c1588f7a4d87e7c18c94b8193569169bc9"},
+    {file = "yaml_ld-1.1.19.tar.gz", hash = "sha256:17704fe7483f60811b8ae8afd9923419998916d9ca8c5b1b3cfb17be6d155440"},
 ]
 
 [package.dependencies]
@@ -5223,4 +5223,4 @@ all = []
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<4.0"
-content-hash = "4a6fb3954029e4b8654239c0b98a3888a98f09298599bc0ff9b0c3702ff20d9d"
+content-hash = "fef9316f9688033c569db51f423185325bff279ddb0db18f50d5c65ca78d8361"
