@@ -2745,22 +2745,22 @@ files = [
 
 [[package]]
 name = "nanopub"
-version = "2.1.0"
+version = "2.2.0"
 description = "Python client for Nanopublications"
 optional = false
 python-versions = "<4.0.0,>=3.12.0"
 groups = ["main"]
 files = [
-    {file = "nanopub-2.1.0-py3-none-any.whl", hash = "sha256:09fdabe7bc06472faa5b8ca173347e33f522f0e650578ff07cd5808d463021f9"},
-    {file = "nanopub-2.1.0.tar.gz", hash = "sha256:0f21025d4a676e74173263425c521c3b3e2feb23f133ad0b4ca75397c875d7b0"},
+    {file = "nanopub-2.2.0-py3-none-any.whl", hash = "sha256:cb0e89678d732076fe77f01acee790a3a1d6b3b4941e7d67cbb3390d1be74a90"},
+    {file = "nanopub-2.2.0.tar.gz", hash = "sha256:3ec25574d766deed65c849562bb21b23f48fc55463119ebffe41d324eae6d188"},
 ]
 
 [package.dependencies]
 pycryptodome = ">=3.15.0"
-pyshacl = "*"
-rdflib = ">=6.0.2"
+pyshacl = ">=0.28.1"
+rdflib = ">=6.3.2"
 requests = "*"
-SPARQLWrapper = "*"
+sparqlwrapper = "*"
 typer = "*"
 yatiml = "*"
 
