@@ -1506,40 +1506,51 @@ files = [
 
 [[package]]
 name = "ipython"
-version = "8.33.0"
+version = "9.13.0"
 description = "IPython: Productive Interactive Computing"
 optional = false
-python-versions = ">=3.10"
+python-versions = ">=3.11"
 groups = ["dev"]
 files = [
-    {file = "ipython-8.33.0-py3-none-any.whl", hash = "sha256:aa5b301dfe1eaf0167ff3238a6825f810a029c9dad9d3f1597f30bd5ff65cc44"},
-    {file = "ipython-8.33.0.tar.gz", hash = "sha256:4c3e36a6dfa9e8e3702bd46f3df668624c975a22ff340e96ea7277afbd76217d"},
+    {file = "ipython-9.13.0-py3-none-any.whl", hash = "sha256:57f9d4639e20818d328d287c7b549af3d05f12486ea8f2e7f73e52a36ec4d201"},
+    {file = "ipython-9.13.0.tar.gz", hash = "sha256:7e834b6afc99f020e3f05966ced34792f40267d64cb1ea9043886dab0dde5967"},
 ]
 
 [package.dependencies]
-colorama = {version = "*", markers = "sys_platform == \"win32\""}
-decorator = "*"
-jedi = ">=0.16"
-matplotlib-inline = "*"
-pexpect = {version = ">4.3", markers = "sys_platform != \"win32\" and sys_platform != \"emscripten\""}
+colorama = {version = ">=0.4.4", markers = "sys_platform == \"win32\""}
+decorator = ">=5.1.0"
+ipython-pygments-lexers = ">=1.0.0"
+jedi = ">=0.18.2"
+matplotlib-inline = ">=0.1.6"
+pexpect = {version = ">4.6", markers = "sys_platform != \"win32\" and sys_platform != \"emscripten\""}
 prompt_toolkit = ">=3.0.41,<3.1.0"
-pygments = ">=2.4.0"
-stack_data = "*"
+psutil = ">=7"
+pygments = ">=2.14.0"
+stack_data = ">=0.6.0"
 traitlets = ">=5.13.0"
 
 [package.extras]
-all = ["ipython[black,doc,kernel,matplotlib,nbconvert,nbformat,notebook,parallel,qtconsole]", "ipython[test,test-extra]"]
+all = ["argcomplete (>=3.0)", "ipython[doc,matplotlib,terminal,test,test-extra]", "types-decorator"]
 black = ["black"]
-doc = ["docrepr", "exceptiongroup", "intersphinx_registry", "ipykernel", "ipython[test]", "matplotlib", "setuptools (>=18.5)", "sphinx (>=1.3)", "sphinx-rtd-theme", "sphinxcontrib-jquery", "tomli ; python_version < \"3.11\"", "typing_extensions"]
-kernel = ["ipykernel"]
-matplotlib = ["matplotlib"]
-nbconvert = ["nbconvert"]
-nbformat = ["nbformat"]
-notebook = ["ipywidgets", "notebook"]
-parallel = ["ipyparallel"]
-qtconsole = ["qtconsole"]
-test = ["packaging", "pickleshare", "pytest", "pytest-asyncio (<0.22)", "testpath"]
-test-extra = ["curio", "ipython[test]", "matplotlib (!=3.2.0)", "nbformat", "numpy (>=1.23)", "pandas", "trio"]
+doc = ["docrepr", "exceptiongroup", "intersphinx_registry", "ipykernel", "ipython[matplotlib,test]", "setuptools (>=80.0)", "sphinx (>=8.0)", "sphinx-rtd-theme (>=0.1.8)", "sphinx_toml (==0.0.4)", "typing_extensions"]
+matplotlib = ["matplotlib (>3.9)"]
+test = ["packaging (>=23.0.0)", "pytest (>=7.0.0)", "pytest-asyncio (>=1.0.0)", "setuptools (>=80.0)", "testpath (>=0.2)"]
+test-extra = ["curio", "ipykernel (>6.30)", "ipython[matplotlib]", "ipython[test]", "jupyter_ai", "nbclient", "nbformat", "numpy (>=2.0)", "pandas (>2.1)", "trio (>=0.22.0)"]
+
+[[package]]
+name = "ipython-pygments-lexers"
+version = "1.1.1"
+description = "Defines a variety of Pygments lexers for highlighting IPython code."
+optional = false
+python-versions = ">=3.8"
+groups = ["dev"]
+files = [
+    {file = "ipython_pygments_lexers-1.1.1-py3-none-any.whl", hash = "sha256:a9462224a505ade19a605f71f8fa63c2048833ce50abc86768a0d81d876dc81c"},
+    {file = "ipython_pygments_lexers-1.1.1.tar.gz", hash = "sha256:09c0138009e56b6854f9535736f4171d855c8c08a563a0dcd8022f78355c7e81"},
+]
+
+[package.dependencies]
+pygments = "*"
 
 [[package]]
 name = "jaraco-classes"
@@ -3143,33 +3154,38 @@ files = [
 
 [[package]]
 name = "psutil"
-version = "6.0.0"
-description = "Cross-platform lib for process and system monitoring in Python."
+version = "7.2.2"
+description = "Cross-platform lib for process and system monitoring."
 optional = false
-python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,>=2.7"
+python-versions = ">=3.6"
 groups = ["dev"]
 files = [
-    {file = "psutil-6.0.0-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:a021da3e881cd935e64a3d0a20983bda0bb4cf80e4f74fa9bfcb1bc5785360c6"},
-    {file = "psutil-6.0.0-cp27-cp27m-manylinux2010_i686.whl", hash = "sha256:1287c2b95f1c0a364d23bc6f2ea2365a8d4d9b726a3be7294296ff7ba97c17f0"},
-    {file = "psutil-6.0.0-cp27-cp27m-manylinux2010_x86_64.whl", hash = "sha256:a9a3dbfb4de4f18174528d87cc352d1f788b7496991cca33c6996f40c9e3c92c"},
-    {file = "psutil-6.0.0-cp27-cp27mu-manylinux2010_i686.whl", hash = "sha256:6ec7588fb3ddaec7344a825afe298db83fe01bfaaab39155fa84cf1c0d6b13c3"},
-    {file = "psutil-6.0.0-cp27-cp27mu-manylinux2010_x86_64.whl", hash = "sha256:1e7c870afcb7d91fdea2b37c24aeb08f98b6d67257a5cb0a8bc3ac68d0f1a68c"},
-    {file = "psutil-6.0.0-cp27-none-win32.whl", hash = "sha256:02b69001f44cc73c1c5279d02b30a817e339ceb258ad75997325e0e6169d8b35"},
-    {file = "psutil-6.0.0-cp27-none-win_amd64.whl", hash = "sha256:21f1fb635deccd510f69f485b87433460a603919b45e2a324ad65b0cc74f8fb1"},
-    {file = "psutil-6.0.0-cp36-abi3-macosx_10_9_x86_64.whl", hash = "sha256:c588a7e9b1173b6e866756dde596fd4cad94f9399daf99ad8c3258b3cb2b47a0"},
-    {file = "psutil-6.0.0-cp36-abi3-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:6ed2440ada7ef7d0d608f20ad89a04ec47d2d3ab7190896cd62ca5fc4fe08bf0"},
-    {file = "psutil-6.0.0-cp36-abi3-manylinux_2_12_x86_64.manylinux2010_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:5fd9a97c8e94059b0ef54a7d4baf13b405011176c3b6ff257c247cae0d560ecd"},
-    {file = "psutil-6.0.0-cp36-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:e2e8d0054fc88153ca0544f5c4d554d42e33df2e009c4ff42284ac9ebdef4132"},
-    {file = "psutil-6.0.0-cp36-cp36m-win32.whl", hash = "sha256:fc8c9510cde0146432bbdb433322861ee8c3efbf8589865c8bf8d21cb30c4d14"},
-    {file = "psutil-6.0.0-cp36-cp36m-win_amd64.whl", hash = "sha256:34859b8d8f423b86e4385ff3665d3f4d94be3cdf48221fbe476e883514fdb71c"},
-    {file = "psutil-6.0.0-cp37-abi3-win32.whl", hash = "sha256:a495580d6bae27291324fe60cea0b5a7c23fa36a7cd35035a16d93bdcf076b9d"},
-    {file = "psutil-6.0.0-cp37-abi3-win_amd64.whl", hash = "sha256:33ea5e1c975250a720b3a6609c490db40dae5d83a4eb315170c4fe0d8b1f34b3"},
-    {file = "psutil-6.0.0-cp38-abi3-macosx_11_0_arm64.whl", hash = "sha256:ffe7fc9b6b36beadc8c322f84e1caff51e8703b88eee1da46d1e3a6ae11b4fd0"},
-    {file = "psutil-6.0.0.tar.gz", hash = "sha256:8faae4f310b6d969fa26ca0545338b21f73c6b15db7c4a8d934a5482faa818f2"},
+    {file = "psutil-7.2.2-cp313-cp313t-macosx_10_13_x86_64.whl", hash = "sha256:2edccc433cbfa046b980b0df0171cd25bcaeb3a68fe9022db0979e7aa74a826b"},
+    {file = "psutil-7.2.2-cp313-cp313t-macosx_11_0_arm64.whl", hash = "sha256:e78c8603dcd9a04c7364f1a3e670cea95d51ee865e4efb3556a3a63adef958ea"},
+    {file = "psutil-7.2.2-cp313-cp313t-manylinux2010_x86_64.manylinux_2_12_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:1a571f2330c966c62aeda00dd24620425d4b0cc86881c89861fbc04549e5dc63"},
+    {file = "psutil-7.2.2-cp313-cp313t-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:917e891983ca3c1887b4ef36447b1e0873e70c933afc831c6b6da078ba474312"},
+    {file = "psutil-7.2.2-cp313-cp313t-win_amd64.whl", hash = "sha256:ab486563df44c17f5173621c7b198955bd6b613fb87c71c161f827d3fb149a9b"},
+    {file = "psutil-7.2.2-cp313-cp313t-win_arm64.whl", hash = "sha256:ae0aefdd8796a7737eccea863f80f81e468a1e4cf14d926bd9b6f5f2d5f90ca9"},
+    {file = "psutil-7.2.2-cp314-cp314t-macosx_10_15_x86_64.whl", hash = "sha256:eed63d3b4d62449571547b60578c5b2c4bcccc5387148db46e0c2313dad0ee00"},
+    {file = "psutil-7.2.2-cp314-cp314t-macosx_11_0_arm64.whl", hash = "sha256:7b6d09433a10592ce39b13d7be5a54fbac1d1228ed29abc880fb23df7cb694c9"},
+    {file = "psutil-7.2.2-cp314-cp314t-manylinux2010_x86_64.manylinux_2_12_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:1fa4ecf83bcdf6e6c8f4449aff98eefb5d0604bf88cb883d7da3d8d2d909546a"},
+    {file = "psutil-7.2.2-cp314-cp314t-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:e452c464a02e7dc7822a05d25db4cde564444a67e58539a00f929c51eddda0cf"},
+    {file = "psutil-7.2.2-cp314-cp314t-win_amd64.whl", hash = "sha256:c7663d4e37f13e884d13994247449e9f8f574bc4655d509c3b95e9ec9e2b9dc1"},
+    {file = "psutil-7.2.2-cp314-cp314t-win_arm64.whl", hash = "sha256:11fe5a4f613759764e79c65cf11ebdf26e33d6dd34336f8a337aa2996d71c841"},
+    {file = "psutil-7.2.2-cp36-abi3-macosx_10_9_x86_64.whl", hash = "sha256:ed0cace939114f62738d808fdcecd4c869222507e266e574799e9c0faa17d486"},
+    {file = "psutil-7.2.2-cp36-abi3-macosx_11_0_arm64.whl", hash = "sha256:1a7b04c10f32cc88ab39cbf606e117fd74721c831c98a27dc04578deb0c16979"},
+    {file = "psutil-7.2.2-cp36-abi3-manylinux2010_x86_64.manylinux_2_12_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:076a2d2f923fd4821644f5ba89f059523da90dc9014e85f8e45a5774ca5bc6f9"},
+    {file = "psutil-7.2.2-cp36-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:b0726cecd84f9474419d67252add4ac0cd9811b04d61123054b9fb6f57df6e9e"},
+    {file = "psutil-7.2.2-cp36-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:fd04ef36b4a6d599bbdb225dd1d3f51e00105f6d48a28f006da7f9822f2606d8"},
+    {file = "psutil-7.2.2-cp36-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:b58fabe35e80b264a4e3bb23e6b96f9e45a3df7fb7eed419ac0e5947c61e47cc"},
+    {file = "psutil-7.2.2-cp37-abi3-win_amd64.whl", hash = "sha256:eb7e81434c8d223ec4a219b5fc1c47d0417b12be7ea866e24fb5ad6e84b3d988"},
+    {file = "psutil-7.2.2-cp37-abi3-win_arm64.whl", hash = "sha256:8c233660f575a5a89e6d4cb65d9f938126312bca76d8fe087b947b3a1aaac9ee"},
+    {file = "psutil-7.2.2.tar.gz", hash = "sha256:0746f5f8d406af344fd547f1c8daa5f5c33dbc293bb8d6a16d80b4bb88f59372"},
 ]
 
 [package.extras]
-test = ["enum34 ; python_version <= \"3.4\"", "ipaddress ; python_version < \"3.0\"", "mock ; python_version < \"3.0\"", "pywin32 ; sys_platform == \"win32\"", "wmi ; sys_platform == \"win32\""]
+dev = ["abi3audit", "black", "check-manifest", "colorama ; os_name == \"nt\"", "coverage", "packaging", "psleak", "pylint", "pyperf", "pypinfo", "pyreadline3 ; os_name == \"nt\"", "pytest", "pytest-cov", "pytest-instafail", "pytest-xdist", "pywin32 ; os_name == \"nt\" and implementation_name != \"pypy\"", "requests", "rstcheck", "ruff", "setuptools", "sphinx", "sphinx_rtd_theme", "toml-sort", "twine", "validate-pyproject[all]", "virtualenv", "vulture", "wheel", "wheel ; os_name == \"nt\" and implementation_name != \"pypy\"", "wmi ; os_name == \"nt\" and implementation_name != \"pypy\""]
+test = ["psleak", "pytest", "pytest-instafail", "pytest-xdist", "pywin32 ; os_name == \"nt\" and implementation_name != \"pypy\"", "setuptools", "wheel ; os_name == \"nt\" and implementation_name != \"pypy\"", "wmi ; os_name == \"nt\" and implementation_name != \"pypy\""]
 
 [[package]]
 name = "ptyprocess"
@@ -4288,14 +4304,14 @@ files = [
 
 [[package]]
 name = "safety"
-version = "3.2.9"
+version = "3.2.4"
 description = "Checks installed dependencies for known vulnerabilities and licenses."
 optional = false
 python-versions = ">=3.7"
 groups = ["dev"]
 files = [
-    {file = "safety-3.2.9-py3-none-any.whl", hash = "sha256:5e199c057550dc6146c081084274279dfb98c17735193b028db09a55ea508f1a"},
-    {file = "safety-3.2.9.tar.gz", hash = "sha256:494bea752366161ac9e0742033d2a82e4dc51d7c788be42e0ecf5f3ef36b8071"},
+    {file = "safety-3.2.4-py3-none-any.whl", hash = "sha256:242ff7ae448d7fb2ea455c90f44e3f2ca45be9c8559b2fe9dfc89617164a0f17"},
+    {file = "safety-3.2.4.tar.gz", hash = "sha256:bac0202016d736a2118057964a0e3983fa20ff2563fd103cac3f3ac1ed3fea11"},
 ]
 
 [package.dependencies]
@@ -4306,12 +4322,11 @@ filelock = ">=3.12.2,<3.13.0"
 jinja2 = ">=3.1.0"
 marshmallow = ">=3.15.0"
 packaging = ">=21.0"
-psutil = ">=6.0.0,<6.1.0"
 pydantic = ">=1.10.12"
 requests = "*"
 rich = "*"
 "ruamel.yaml" = ">=0.17.21"
-safety-schemas = ">=0.0.4"
+safety-schemas = ">=0.0.2"
 setuptools = ">=65.5.1"
 typer = "*"
 typing-extensions = ">=4.7.1"
@@ -5219,4 +5234,4 @@ all = []
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<4.0"
-content-hash = "fef9316f9688033c569db51f423185325bff279ddb0db18f50d5c65ca78d8361"
+content-hash = "53506441bff791101860f325220e7cd1eaa9df0a1e8ee20ea7e3c26d7ed64126"
