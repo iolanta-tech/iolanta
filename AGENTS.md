@@ -75,6 +75,8 @@
 
 **F11.** Use `frozenset(("a", "b", ...))` with a tuple literal, not `frozenset({"a", "b", ...})` with a set literal. The set-literal form triggers WPS527.
 
+**F12.** After changing Python code, run `j fmt` and then `j lint`. Fix lint findings in touched files before reporting completion; if `j lint` still fails because of unrelated project-wide errors, report that clearly.
+
 ## Adding Jeeves Commands
 
 **J00.** Jeeves is a task runner based on Typer. To add a new development command, add a function to `jeeves/__init__.py`. Functions in this module automatically become commands accessible via `j <command-name>`.

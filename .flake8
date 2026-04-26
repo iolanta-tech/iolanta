@@ -3,6 +3,7 @@ per-file-ignores =
     iolanta/facets/textual_ontology/facets.py:WPS201
     iolanta/cli/main.py:WPS201,WPS202
     iolanta/sparqlspace/processor.py:WPS201,WPS202,WPS402
+    iolanta/namespaces.py:WPS115,WPS604
     jeeves/__init__.py:WPS412,WPS400,WPS202
     tests/test_integration.py:WPS202
     tests/kglint/test_cli.py:WPS202

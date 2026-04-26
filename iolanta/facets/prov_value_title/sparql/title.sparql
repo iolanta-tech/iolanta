@@ -1,0 +1,11 @@
+PREFIX prov: <http://www.w3.org/ns/prov#>
+
+SELECT ?value ?source WHERE {
+    $node
+        prov:value ?value ;
+        prov:wasDerivedFrom ?source .
+
+    FILTER (!isLiteral(?value) || !lang(?value) || lang(?value) = $language)
+    FILTER (!isLiteral(?source) || !lang(?source) || lang(?source) = $language)
+}
+ORDER BY ?value ?source
