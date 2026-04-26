@@ -36,4 +36,4 @@ class XSD(rdflib.XSD):
 
 
 class PROV(rdflib.PROV):
-    _NS = rdflib.Namespace("https://www.w3.org/ns/prov#")
+    _NS = rdflib.Namespace("http://www.w3.org/ns/prov#")
