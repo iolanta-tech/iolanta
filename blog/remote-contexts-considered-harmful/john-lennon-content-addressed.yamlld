@@ -1,0 +1,8 @@
+"@context":
+  - ni:///sha-256;abc123...?ct=application/ld+json
+  - https://json-ld.org/contexts/dollar-convenience.jsonld
+  - dbr: http://dbpedia.org/resource/
+$id: dbr:John_Lennon
+name: John Lennon
+born: 1940-10-09
+spouse: ["dbr:Yoko_Ono", "dbr:Cynthia_Lennon"]

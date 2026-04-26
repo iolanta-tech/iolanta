@@ -1,0 +1,11 @@
+╭──────────────────────────────────────────────────────────────────────────────╮
+│ ('Invalid JSON-LD syntax; keywords cannot be overridden.',) Type:            │
+│ jsonld.SyntaxError Code: keyword redefinition Details: {'context':           │
+│ {'@value': 'https://json-ld.org/contexts/person.jsonld', '@sri':             │
+│ 'sha256-abc123...'}, 'term': '@value'}                                       │
+╰──────────────────────────────────────────────────────────────────────────────╯
+💡 To see Python traceback, use:                                                
+
+pyld --log-level info to-rdf                                                    
+/home/anatoly/projects/iolanta/docs/blog/remote-contexts-considered-harmful/john
+-lennon-sri.jsonld                                                              

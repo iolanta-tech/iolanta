@@ -1,0 +1,3802 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="It makes sense to map RDF to multiple data formats">
+      
+      
+      
+        <link rel="canonical" href="https://iolanta.tech/blog/2026-03-15-more-rdf-mappings/">
+      
+      
+        <link rel="prev" href="../2025-03-15.writing-a-nanopublication/">
+      
+      
+        <link rel="next" href="../knowledge-graph-assignment/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>The more RDF mappings, the better - iolanta</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#the-more-rdf-mappings-the-better-march-15-2026" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="iolanta" class="md-header__button md-logo" aria-label="iolanta" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            iolanta
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              The more RDF mappings, the better
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/iolanta-tech/iolanta" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    iolanta-tech/iolanta
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../howto/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Howto
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../plugins/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Plugins
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+
+    <aside class="md-banner">
+        <div class="md-banner__inner md-grid md-typeset">
+            <code>
+                pip install iolanta
+            </code>
+        </div>
+    </aside>
+
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="iolanta" class="md-nav__button md-logo" aria-label="iolanta" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    iolanta
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/iolanta-tech/iolanta" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    iolanta-tech/iolanta
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+      <br>
+      <small>Linked Data browser</small>
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../howto/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Howto
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Howto
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Armenia pm election
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Armenia pm election
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../howto/armenia-pm-election/assertion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assertion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Asteroid mr spock
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Asteroid mr spock
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../howto/asteroid-mr-spock/statement/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Statement
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../howto/create-plugin/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Create plugin
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Create plugin
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../howto/nanopublish/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Nanopublish
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Nanopublish
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../howto/nanopublish-with-llm/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Nanopublish with llm
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Nanopublish with llm
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../howto/nanopublish-with-llm/AGENTS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Writing Linked Data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../howto/nanopublish-with-llm/rhysling-crater-v0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rhysling crater v0
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../howto/nanopublish-with-llm/rhysling-crater-v1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rhysling crater v1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Facet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Facet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../matches/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    iolanta:matches property
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../is-preferred-over/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ≼ iolanta:is-preferred-over
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../outputs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    → iolanta:outputs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../when-no-facet-found/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    📛 when-no-facet-found
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../has-sub-graph/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    iolanta:has-sub-graph property
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_8" id="__nav_3_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datatypes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Datatypes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datatypes/fallback-title/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fallback Title
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datatypes/mermaid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mermaid
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datatypes/mkdocs-material-insiders-markdown/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MkDocs Material Insiders Markdown
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datatypes/title/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Title
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Blog
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../avoid-rdfs-duplicates/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Avoid duplicate RDFS ontologies by …
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../call-provenance-page/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Call Provenance page with …
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../communication-directions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linked Data is a communication system
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../create-blog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Start Iolanta Blog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deagentize-social-networks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    De-agentize social networks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../find-facets-by-sparql-templates/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Find facets by SPARQL patterns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../flip-menu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use bottom menu to flip facets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../flip/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flip
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../group-terms-by/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Group an ontology terms by a property
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../is-referenced-by/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use dcterms:isReferencedBy to let Iolanta know where to fetch information about a thing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../knowledge-base-evolution/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knowledge Base Evolution
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ld-is-about-speed/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linked Data is about speed of change to knowledge preserving its consistency
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../p-for-provenance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Press P to see provenance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parse-json-ld-with-pyld/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parse JSON-LD with pyld library
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../popup-notification-about-syntax-errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Show a popup notification for syntax errors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rational-decisions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Make decisions rationally
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../render-mermaid-diagram/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Render Mermaid diagram in MkDocs using "as" filter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../social-media-impeding-rationality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Social media are impeding rationality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../title-file-type/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Page for the title datatype is in Markdown with Script tag
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../use-reasonable-as-reasoner/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use ... as reasoner
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../use-vann-term-group/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use vann:termGroup for Ontology facet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_23" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../2025-01-21-nanopublications/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2025 01 21 nanopublications
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_23" id="__nav_4_23_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_23_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_23">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    2025 01 21 nanopublications
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_23_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_23_2" id="__nav_4_23_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Slides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_23_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_23_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Slides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2025-01-21-nanopublications/slides/LICENSE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The MIT License
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_23_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_23_2_2" id="__nav_4_23_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shower
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_23_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_23_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Shower
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_23_2_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_23_2_2_1" id="__nav_4_23_2_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Themes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_4_23_2_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_23_2_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Themes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_23_2_2_1_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_23_2_2_1_1" id="__nav_4_23_2_2_1_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Material
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="6" aria-labelledby="__nav_4_23_2_2_1_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_23_2_2_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Material
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2025-01-21-nanopublications/slides/shower/themes/material/LICENSE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The MIT License
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_23_2_2_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_23_2_2_1_2" id="__nav_4_23_2_2_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ribbon
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="6" aria-labelledby="__nav_4_23_2_2_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_23_2_2_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ribbon
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2025-01-21-nanopublications/slides/shower/themes/ribbon/LICENSE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The MIT License
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_24" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../2025-03-15.writing-a-nanopublication/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2025 03 15.writing a nanopublication
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_24_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_24">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    2025 03 15.writing a nanopublication
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_25" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="./" class="md-nav__link md-nav__link--active">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2026 03 15 more rdf mappings
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_25_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_25">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    2026 03 15 more rdf mappings
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_26" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../knowledge-graph-assignment/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knowledge graph assignment
+  
+
+    
+      <br>
+      <small>A foundational knowledge graph design for semantic web browsing and data visualization</small>
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_26" id="__nav_4_26_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_26_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_26">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Knowledge graph assignment
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_26_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../knowledge-graph-assignment/mc2/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mc2
+  
+
+    
+      <br>
+      <small>Building with confidence - modularity, time/space, entities, and queries</small>
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_26_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_26_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Mc2
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_26_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../knowledge-graph-assignment/mc3/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mc3
+  
+
+    
+      <br>
+      <small>Building with nuance - inference, reification, and advanced constructs</small>
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_26_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_26_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Mc3
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_26_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../knowledge-graph-assignment/mc4/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mc4
+  
+
+    
+      <br>
+      <small>Reflections on technical and business considerations in enterprise knowledge graphs</small>
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_26_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_26_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Mc4
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_27" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../remote-contexts-considered-harmful/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Remote contexts considered harmful
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_27_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_27">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Remote contexts considered harmful
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plugins
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Plugins
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plugins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plugins
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#motivation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Motivation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RDF
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#json-ld-based-on-json" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JSON-LD based on JSON
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#yaml-ld-based-on-yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        YAML-LD based on YAML
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rdfxml-based-on-xml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RDF/XML based on XML
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cbor-ld-based-on-cbor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CBOR-LD based on CBOR
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-point" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The point
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+  
+
+
+
+  
+    <a href="https://github.com/iolanta-tech/iolanta/edit/master/docs/blog/2026-03-15-more-rdf-mappings/index.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="the-more-rdf-mappings-the-better-march-15-2026">The more RDF mappings, the better <small>March 15, 2026</small></h1>
+<blockquote>
+<p><strong>6.5</strong> For an answer which cannot be expressed the question too cannot be expressed.</p>
+<p>— <strong>Ludwig Wittgenstein</strong> <a href="https://en.wikisource.org/wiki/Tractatus_Logico-Philosophicus/6#6.5">Tractatus Logico-Philosophicus</a></p>
+</blockquote>
+<h2 id="motivation">Motivation</h2>
+<p>From time to time, I encounter discussions about which data formats are better to map to RDF:</p>
+<ul>
+<li><a href="https://toml.io/">TOML</a> vs YAML?</li>
+<li><a href="https://bsonspec.org/">BSON</a> vs CBOR?</li>
+<li>…and so on</li>
+</ul>
+<p>This post argues that such discussions may not be entirely productive.</p>
+<h2 id="rdf">RDF</h2>
+<p><strong>RDF <em>(Resource Description Framework)</em></strong> is a very simple data model. Indeed, <a href="https://www.w3.org/TR/rdf11-concepts/">RDF 1.1</a> introduces very few notions — a node, a property, URI, Blank Node, and Literal. Datatype is not required for understanding; Named Graph and Dataset are a bonus. With this toolset, RDF aims to convey knowledge about this Multiverse.</p>
+<p>RDF is not a silver bullet — it cannot be the best data model for every use case. Arguably, RDF can be described as a <em>lingua franca</em> — the intermediary model which facilitates communication among people and machines even if they speak many different data models, formats, and languages.</p>
+<p>To that end, there are <em>mappings</em> of RDF to various data formats, through which it becomes straightforward to convey RDF semantics using native languages of systems which do not necessarily speak RDF.</p>
+<p>Here is a small RDF graph in <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.47 5.95c.48-.28 1-.51 1.53-.67V4c0-1.1.87-2 1.97-2.03C13.13 2 14 2.9 14 4v1.28c.53.17 1.05.39 1.53.67l-1.6 2.12h-3.86zM19 12c0 .5-.05.95-.14 1.4l-2.53-.78-1.19-3.66 1.6-2.11q.645.6 1.14 1.35c.79-.07 1.55.05 2.23.39 1.03.53 1.73 1.54 1.89 2.69l-3 .36zM5 12v-.35l-3-.37c.16-1.15.86-2.16 1.89-2.69a3.54 3.54 0 0 1 2.19-.33c.33-.51.71-.98 1.16-1.39l1.62 2.08-1.19 3.67-2.53.78C5.05 12.95 5 12.5 5 12m5.24-2.43h3.52l1.09 3.36L12 15l-2.85-2.07zm-2.11 4.48 3.12 2.26v2.65c-.57-.06-1.12-.19-1.63-.38l-1.23 2.76a3.49 3.49 0 0 1-2.02-2.58c-.14-.76-.02-1.52.32-2.2-.45-.52-.82-1.1-1.1-1.74zm7.74 0 2.54.77c-.28.64-.65 1.22-1.1 1.74.34.68.46 1.44.33 2.2a3.52 3.52 0 0 1-2.03 2.58l-1.22-2.76c-.53.19-1.06.36-1.64.42v-2.69z"/></svg></span> <a href="https://www.w3.org/TR/turtle/">Turtle</a>:</p>
+<div class="grid">
+<div>
+<div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">ex:</span><span class="w"> </span><span class="nv">&lt;https://example.org/&gt;</span><span class="w"> </span><span class="p">.</span>
+<span class="k">@prefix</span><span class="w"> </span><span class="nn">schema:</span><span class="w"> </span><span class="nv">&lt;https://schema.org/&gt;</span><span class="w"> </span><span class="p">.</span>
+<span class="k">@prefix</span><span class="w"> </span><span class="nn">xsd:</span><span class="w"> </span><span class="nv">&lt;http://www.w3.org/2001/XMLSchema#&gt;</span><span class="w"> </span><span class="p">.</span>
+
+<span class="nn">ex</span><span class="p">:</span><span class="nt">alice</span>
+  <span class="kt">a</span> <span class="nn">schema</span><span class="p">:</span><span class="nt">Person</span> <span class="p">;</span>
+  <span class="nn">schema</span><span class="p">:</span><span class="nt">name</span> <span class="s">&quot;Alice&quot;</span><span class="o">@</span><span class="ge">en</span> <span class="p">;</span>
+  <span class="nn">schema</span><span class="p">:</span><span class="nt">birthDate</span> <span class="s">&quot;1990-05-14&quot;</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">date</span> <span class="p">;</span>
+  <span class="nn">schema</span><span class="p">:</span><span class="nt">knows</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">bob</span> <span class="p">;</span>
+  <span class="nn">schema</span><span class="p">:</span><span class="nt">affiliation</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">acme</span> <span class="p">.</span>
+
+<span class="nn">ex</span><span class="p">:</span><span class="nt">bob</span>
+  <span class="kt">a</span> <span class="nn">schema</span><span class="p">:</span><span class="nt">Person</span> <span class="p">;</span>
+  <span class="nn">schema</span><span class="p">:</span><span class="nt">name</span> <span class="s">&quot;Bob&quot;</span><span class="o">@</span><span class="ge">en</span> <span class="p">.</span>
+
+<span class="nn">ex</span><span class="p">:</span><span class="nt">acme</span>
+  <span class="kt">a</span> <span class="nn">schema</span><span class="p">:</span><span class="nt">Organization</span> <span class="p">;</span>
+  <span class="nn">schema</span><span class="p">:</span><span class="nt">name</span> <span class="s">&quot;ACME Corp&quot;</span><span class="o">@</span><span class="ge">en</span> <span class="p">.</span>
+</code></pre></div>
+</div>
+<div>
+<div class="admonition success">
+<p class="admonition-title">Pro</p>
+<ul>
+<li>Well-suited for authoring RDF by hand or with an LLM</li>
+<li>Comments supported</li>
+<li>Widely supported across RDF tooling</li>
+<li>Concise, reduces repetition in objects and properties</li>
+</ul>
+</div>
+<div class="admonition failure">
+<p class="admonition-title">Contra</p>
+<ul>
+<li>Less familiar to developers outside the RDF community</li>
+</ul>
+</div>
+</div>
+</div>
+<p>The graph looks like this:</p>
+<pre class="mermaid"><code>graph LR
+  https___example_org_alice("Alice")
+  click https___example_org_alice "https://example.org/alice"
+  https___example_org_bob("Bob")
+  click https___example_org_bob "https://example.org/bob"
+  https___example_org_bob("Bob")
+  click https___example_org_bob "https://example.org/bob"
+  https___schema_org_Person("Person")
+  click https___schema_org_Person "https://schema.org/Person"
+  https___example_org_alice("Alice")
+  click https___example_org_alice "https://example.org/alice"
+  https___example_org_acme("ACME Corp")
+  click https___example_org_acme "https://example.org/acme"
+  https___example_org_alice("Alice")
+  click https___example_org_alice "https://example.org/alice"
+  Literal-58cc6d78674efd8c82808811df4ceb0e[["📅 1990-05-14"]]
+  https___example_org_acme("ACME Corp")
+  click https___example_org_acme "https://example.org/acme"
+  https___schema_org_Organization("Organization")
+  click https___schema_org_Organization "https://schema.org/Organization"
+  https___example_org_alice("Alice")
+  click https___example_org_alice "https://example.org/alice"
+  https___schema_org_Person("Person")
+  click https___schema_org_Person "https://schema.org/Person"
+  https___example_org_alice --- 2155f99084c4b0b6a75a5389e0a7e5c6(["knows"])--&gt; https___example_org_bob
+  click 2155f99084c4b0b6a75a5389e0a7e5c6 "https://schema.org/knows"
+  class 2155f99084c4b0b6a75a5389e0a7e5c6 predicate
+  https___example_org_bob --- 682794cd0cb5644813c3d85aae51823a(["type"])--&gt; https___schema_org_Person
+  click 682794cd0cb5644813c3d85aae51823a "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  class 682794cd0cb5644813c3d85aae51823a predicate
+  https___example_org_alice --- da20e920e903efd69cb04b8202036091(["affiliation"])--&gt; https___example_org_acme
+  click da20e920e903efd69cb04b8202036091 "https://schema.org/affiliation"
+  class da20e920e903efd69cb04b8202036091 predicate
+  https___example_org_alice --- 3818b6860c769e13a276071ca633c8db(["birthDate"])--&gt; Literal-58cc6d78674efd8c82808811df4ceb0e
+  click 3818b6860c769e13a276071ca633c8db "https://schema.org/birthDate"
+  class 3818b6860c769e13a276071ca633c8db predicate
+  https___example_org_acme --- bc1686593bb7a726e3eb0e481c8353e8(["type"])--&gt; https___schema_org_Organization
+  click bc1686593bb7a726e3eb0e481c8353e8 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  class bc1686593bb7a726e3eb0e481c8353e8 predicate
+  https___example_org_alice --- 2e806a3c86517dfd116832a4edfcf5ce(["type"])--&gt; https___schema_org_Person
+  click 2e806a3c86517dfd116832a4edfcf5ce "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  class 2e806a3c86517dfd116832a4edfcf5ce predicate
+  classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
+  classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
+  classDef label fill:transparent,stroke:transparent,color:#e5e7eb,stroke-width:0px;
+  classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
+  classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
+</code></pre>
+<p>Turtle is the default format of examples in RDF specifications, but it is not the only one.</p>
+<h2 id="json-ld-based-on-json"><a href="https://www.w3.org/TR/json-ld11/">JSON-LD</a> <small>based on <a href="https://www.json.org/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.043 23.968c.479-.004.953-.029 1.426-.094a11.8 11.8 0 0 0 3.146-.863 12.4 12.4 0 0 0 3.793-2.542 12 12 0 0 0 2.44-3.427 11.8 11.8 0 0 0 1.02-3.476c.149-1.16.135-2.346-.045-3.499a12 12 0 0 0-.793-2.788 11 11 0 0 0-.854-1.617c-1.168-1.837-2.861-3.314-4.81-4.3a13 13 0 0 0-2.172-.87h-.005c.119.063.24.132.345.201.12.074.239.146.351.225a9 9 0 0 1 1.559 1.33c1.063 1.145 1.797 2.548 2.218 4.041.284.982.434 1.998.495 3.017.044.743.044 1.491-.047 2.229-.149 1.27-.554 2.51-1.228 3.596a7.5 7.5 0 0 1-1.903 2.084c-1.244.928-2.877 1.482-4.436 1.114a4 4 0 0 1-.748-.258 4.7 4.7 0 0 1-.779-.45 6 6 0 0 1-1.244-1.105 6.5 6.5 0 0 1-1.049-1.747 7.4 7.4 0 0 1-.494-2.54c-.03-1.273.225-2.553.854-3.67a6.4 6.4 0 0 1 1.663-1.918c.225-.178.464-.333.704-.479l.016-.007a5.1 5.1 0 0 0-1.441-.12 5 5 0 0 0-1.228.24c-.359.12-.704.27-1.019.45a6 6 0 0 0-.733.494c-.211.18-.42.36-.615.555-1.123 1.153-1.768 2.682-2.022 4.256-.15.973-.15 1.96-.091 2.95.105 1.395.391 2.787.945 4.062a8.5 8.5 0 0 0 1.348 2.173 8.14 8.14 0 0 0 3.132 2.23 8 8 0 0 0 2.113.54c.074.015.149.015.209.015zm-2.934-.398a4 4 0 0 1-.45-.228 8.5 8.5 0 0 1-2.038-1.534c-1.094-1.137-1.827-2.566-2.247-4.08a15.2 15.2 0 0 1-.495-3.172 12 12 0 0 1 .046-2.082c.135-1.257.495-2.501 1.124-3.58a6.9 6.9 0 0 1 1.783-2.053 6.2 6.2 0 0 1 1.633-.9 5.36 5.36 0 0 1 3.522-.045c.029 0 .029 0 .045.03.015.015.045.015.06.03.045.016.104.045.165.074.239.12.479.271.704.42a6.3 6.3 0 0 1 2.097 2.502c.42.914.615 1.934.631 2.938.014 1.079-.18 2.157-.645 3.146a6.4 6.4 0 0 1-2.638 2.832c.09.03.18.045.271.075.225.044.449.074.688.074 1.468.045 2.892-.66 3.94-1.647q.293-.27.54-.585c.225-.27.435-.54.614-.823.239-.375.435-.75.614-1.154a8 8 0 0 0 .509-1.664c.196-1.004.211-2.022.149-3.026-.135-2.022-.673-4.045-1.842-5.724a9 9 0 0 0-.555-.719 10 10 0 0 0-1.063-1.034 8.5 8.5 0 0 0-1.363-.915 10 10 0 0 0-1.692-.598l-.3-.06c-.209-.03-.42-.044-.634-.06a9 9 0 0 0-1.015.016c-.704.045-1.412.16-2.112.337C5.799 1.227 2.863 3.566 1.3 6.67A11.8 11.8 0 0 0 .238 9.801a11.8 11.8 0 0 0-.104 3.775c.12 1.02.374 2.023.778 2.977.227.57.511 1.124.825 1.648 1.094 1.783 2.683 3.236 4.51 4.24.688.39 1.408.69 2.157.944.226.074.45.15.689.21z"/></svg></span> JSON</a></small></h2>
+<p>JSON-LD is useful when a system already speaks JSON and you want <a href="https://www.w3.org/wiki/LinkedData">Linked Data</a> semantics without leaving that ecosystem.</p>
+<div class="grid">
+<div>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;@context&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;ex&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.org/&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;schema&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://schema.org/&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;xsd&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://www.w3.org/2001/XMLSchema#&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;birthDate&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;@id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;schema:birthDate&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;@type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;xsd:date&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;knows&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;@id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;schema:knows&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;@type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;@id&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;affiliation&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;@id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;schema:affiliation&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;@type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;@id&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;@graph&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;@id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ex:alice&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;@type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;schema:Person&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;schema:name&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;@value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;@language&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;en&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;birthDate&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1990-05-14&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;knows&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ex:bob&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;affiliation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ex:acme&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;@id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ex:bob&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;@type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;schema:Person&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;schema:name&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;@value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bob&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;@language&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;en&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;@id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ex:acme&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;@type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;schema:Organization&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;schema:name&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;@value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ACME Corp&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;@language&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;en&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+<div>
+<div class="admonition success">
+<p class="admonition-title">Pro</p>
+<ul>
+<li>Native to web browsers and APIs; embeddable in <code>&lt;script&gt;</code> tags</li>
+<li>Widely supported by search engines for structured data</li>
+<li>JSON supported by every language &amp; ecosystem</li>
+</ul>
+</div>
+<div class="admonition failure">
+<p class="admonition-title">Contra</p>
+<ul>
+<li>Comments not supported</li>
+<li>Harder to write by hand or with an LLM</li>
+</ul>
+</div>
+</div>
+</div>
+<h2 id="yaml-ld-based-on-yaml"><a href="https://w3c.github.io/yaml-ld/">YAML-LD</a> <small>based on <a href="https://yaml.org/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m0 .97 4.111 6.453v4.09h2.638v-4.09L11.053.969H8.214L5.58 5.125 2.965.969Zm12.093.024-4.47 10.544h2.114l.97-2.345h4.775l.804 2.345h2.26L14.255.994Zm1.133 2.225 1.463 3.87h-3.096zm3.06 9.475v10.29H24v-2.199h-5.454v-8.091zm-12.175.002v10.335h2.217v-7.129l2.32 4.792h1.746l2.4-4.96v7.295h2.127V12.696h-2.904L9.44 17.37l-2.455-4.674Z"/></svg></span> YAML</a></small></h2>
+<p>YAML-LD is useful when the same semantics should be carried in a format that is friendlier for manual authoring and configuration-oriented workflows.</p>
+<div class="grid">
+<div>
+<div class="highlight"><pre><span></span><code><span class="s">&quot;@context&quot;</span><span class="p p-Indicator">:</span>
+<span class="w">  </span><span class="s">&quot;@import&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://json-ld.org/contexts/dollar-convenience.jsonld</span>
+<span class="w">  </span><span class="nt">ex</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://example.org/</span>
+<span class="w">  </span><span class="nt">schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://schema.org/</span>
+<span class="w">  </span><span class="nt">xsd</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://www.w3.org/2001/XMLSchema#</span>
+<span class="w">  </span><span class="nt">birthDate</span><span class="p">:</span>
+<span class="w">    </span><span class="s">&quot;@id&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">schema:birthDate</span>
+<span class="w">    </span><span class="s">&quot;@type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">xsd:date</span>
+<span class="w">  </span><span class="nt">schema:name</span><span class="p">:</span>
+<span class="w">    </span><span class="s">&quot;@language&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">en</span>
+
+<span class="nt">$id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ex:alice</span>
+<span class="nt">$type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">schema:Person</span>
+<span class="nt">schema:name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Alice</span>
+<span class="nt">birthDate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1990-05-14</span>
+<span class="nt">schema:knows</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">$id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ex:bob</span>
+<span class="w">  </span><span class="nt">$type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">schema:Person</span>
+<span class="w">  </span><span class="nt">schema:name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Bob</span>
+<span class="nt">schema:affiliation</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">$id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ex:acme</span>
+<span class="w">  </span><span class="nt">$type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">schema:Organization</span>
+<span class="w">  </span><span class="nt">schema:name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ACME Corp</span>
+</code></pre></div>
+</div>
+<div>
+<div class="admonition success">
+<p class="admonition-title">Pro</p>
+<ul>
+<li>Supports the full JSON-LD data model</li>
+<li>Well-suited for authoring RDF by hand or with an LLM</li>
+<li>Supports comments</li>
+<li>YAML supported by every language &amp; ecosystem</li>
+</ul>
+</div>
+<div class="admonition failure">
+<p class="admonition-title">Contra</p>
+<ul>
+<li>YAML 1.1 has implicit type coercions that surprise developers, such as the <a href="https://www.bram.us/2022/01/11/yaml-the-norway-problem/">Norway problem</a><ul>
+<li>Fixed by YAML 1.2</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<h2 id="rdfxml-based-on-xml"><a href="https://www.w3.org/TR/rdf-syntax-grammar/">RDF/XML</a> <small>based on <a href="https://www.w3.org/XML/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.89 3 1.96.4L11.11 21l-1.96-.4zm6.7 9L16 8.41V5.58L22.42 12 16 18.41v-2.83zM1.58 12 8 5.58v2.83L4.41 12 8 15.58v2.83z"/></svg></span> XML</a></small></h2>
+<p>RDF/XML remains useful wherever XML tooling, storage, or institutional constraints are already present.</p>
+<div class="grid">
+<div>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="nt">&lt;rdf:RDF</span>
+<span class="w">    </span><span class="na">xmlns:rdf=</span><span class="s">&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;</span>
+<span class="w">    </span><span class="na">xmlns:schema=</span><span class="s">&quot;https://schema.org/&quot;</span>
+<span class="w">    </span><span class="na">xmlns:ex=</span><span class="s">&quot;https://example.org/&quot;</span><span class="nt">&gt;</span>
+
+<span class="w">  </span><span class="nt">&lt;schema:Person</span><span class="w"> </span><span class="na">rdf:about=</span><span class="s">&quot;https://example.org/alice&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;schema:name</span><span class="w"> </span><span class="na">xml:lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>Alice<span class="nt">&lt;/schema:name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;schema:birthDate</span><span class="w"> </span><span class="na">rdf:datatype=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema#date&quot;</span><span class="nt">&gt;</span>1990-05-14<span class="nt">&lt;/schema:birthDate&gt;</span>
+<span class="w">    </span><span class="nt">&lt;schema:knows</span><span class="w"> </span><span class="na">rdf:resource=</span><span class="s">&quot;https://example.org/bob&quot;</span><span class="nt">/&gt;</span>
+<span class="w">    </span><span class="nt">&lt;schema:affiliation</span><span class="w"> </span><span class="na">rdf:resource=</span><span class="s">&quot;https://example.org/acme&quot;</span><span class="nt">/&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/schema:Person&gt;</span>
+
+<span class="w">  </span><span class="nt">&lt;schema:Person</span><span class="w"> </span><span class="na">rdf:about=</span><span class="s">&quot;https://example.org/bob&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;schema:name</span><span class="w"> </span><span class="na">xml:lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>Bob<span class="nt">&lt;/schema:name&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/schema:Person&gt;</span>
+
+<span class="w">  </span><span class="nt">&lt;schema:Organization</span><span class="w"> </span><span class="na">rdf:about=</span><span class="s">&quot;https://example.org/acme&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;schema:name</span><span class="w"> </span><span class="na">xml:lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>ACME<span class="w"> </span>Corp<span class="nt">&lt;/schema:name&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/schema:Organization&gt;</span>
+<span class="nt">&lt;/rdf:RDF&gt;</span>
+</code></pre></div>
+</div>
+<div>
+<div class="admonition success">
+<p class="admonition-title">Pro</p>
+<ul>
+<li>Over two decades of institutional adoption and tooling</li>
+<li><a href="https://www.w3.org/TR/xslt-30/">XSLT</a>, <a href="https://www.w3.org/TR/xquery-31/">XQuery</a>, <a href="https://www.w3.org/TR/xpath-31/">XPath</a> and other XML-specific tools available</li>
+</ul>
+</div>
+<div class="admonition failure">
+<p class="admonition-title">Contra</p>
+<ul>
+<li>Notoriously hard to read and write by hand or LLM</li>
+<li>Multiple valid serialisations of the same graph make diffing hard</li>
+</ul>
+</div>
+</div>
+</div>
+<h2 id="cbor-ld-based-on-cbor"><a href="https://w3c.github.io/cbor-ld/">CBOR-LD</a> <small>based on <a href="https://cbor.io/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M0 96c0-35.3 28.7-64 64-64h320c35.3 0 64 28.7 64 64v320c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64zm144 4c-24.3 0-44 19.7-44 44v48c0 24.3 19.7 44 44 44h32c24.3 0 44-19.7 44-44v-48c0-24.3-19.7-44-44-44zm-4 44c0-2.2 1.8-4 4-4h32c2.2 0 4 1.8 4 4v48c0 2.2-1.8 4-4 4h-32c-2.2 0-4-1.8-4-4zm140-44c-11 0-20 9-20 20 0 9.7 6.9 17.7 16 19.6V216c0 11 9 20 20 20s20-9 20-20v-96c0-11-9-20-20-20zM132 296c0 9.7 6.9 17.7 16 19.6V392c0 11 9 20 20 20s20-9 20-20v-96c0-11-9-20-20-20h-16c-11 0-20 9-20 20m96 24v48c0 24.3 19.7 44 44 44h32c24.3 0 44-19.7 44-44v-48c0-24.3-19.7-44-44-44h-32c-24.3 0-44 19.7-44 44m44-4h32c2.2 0 4 1.8 4 4v48c0 2.2-1.8 4-4 4h-32c-2.2 0-4-1.8-4-4v-48c0-2.2 1.8-4 4-4"/></svg></span> CBOR</a></small></h2>
+<p>CBOR-LD is a binary format useful when bandwidth or storage is the constraint.</p>
+<div class="grid">
+<div>
+<pre style="line-height:1.8;font-size:0.85em"><span style="color:hsl(255deg,70%,55%)">d9</span> <span style="color:hsl(5deg,70%,55%)">05</span> <span style="color:hsl(1deg,70%,55%)">01</span> <span style="color:hsl(190deg,70%,55%)">a2</span> <span style="color:hsl(0deg,70%,55%)">00</span> <span style="color:hsl(195deg,70%,55%)">a6</span> <span style="color:hsl(115deg,70%,55%)">62</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(141deg,70%,55%)">78</span> <span style="color:hsl(136deg,70%,55%)">74</span> <span style="color:hsl(122deg,70%,55%)">68</span> <span style="color:hsl(136deg,70%,55%)">74</span> <span style="color:hsl(136deg,70%,55%)">74</span> <span style="color:hsl(131deg,70%,55%)">70</span> <span style="color:hsl(135deg,70%,55%)">73</span> <span style="color:hsl(68deg,70%,55%)">3a</span>
+<span style="color:hsl(55deg,70%,55%)">2f</span> <span style="color:hsl(55deg,70%,55%)">2f</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(141deg,70%,55%)">78</span> <span style="color:hsl(114deg,70%,55%)">61</span> <span style="color:hsl(128deg,70%,55%)">6d</span> <span style="color:hsl(131deg,70%,55%)">70</span> <span style="color:hsl(127deg,70%,55%)">6c</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(54deg,70%,55%)">2e</span> <span style="color:hsl(130deg,70%,55%)">6f</span> <span style="color:hsl(134deg,70%,55%)">72</span> <span style="color:hsl(121deg,70%,55%)">67</span> <span style="color:hsl(55deg,70%,55%)">2f</span> <span style="color:hsl(116deg,70%,55%)">63</span> <span style="color:hsl(141deg,70%,55%)">78</span>
+<span style="color:hsl(135deg,70%,55%)">73</span> <span style="color:hsl(117deg,70%,55%)">64</span> <span style="color:hsl(141deg,70%,55%)">78</span> <span style="color:hsl(38deg,70%,55%)">21</span> <span style="color:hsl(122deg,70%,55%)">68</span> <span style="color:hsl(136deg,70%,55%)">74</span> <span style="color:hsl(136deg,70%,55%)">74</span> <span style="color:hsl(131deg,70%,55%)">70</span> <span style="color:hsl(68deg,70%,55%)">3a</span> <span style="color:hsl(55deg,70%,55%)">2f</span> <span style="color:hsl(55deg,70%,55%)">2f</span> <span style="color:hsl(140deg,70%,55%)">77</span> <span style="color:hsl(140deg,70%,55%)">77</span> <span style="color:hsl(140deg,70%,55%)">77</span> <span style="color:hsl(54deg,70%,55%)">2e</span> <span style="color:hsl(140deg,70%,55%)">77</span>
+<span style="color:hsl(60deg,70%,55%)">33</span> <span style="color:hsl(54deg,70%,55%)">2e</span> <span style="color:hsl(130deg,70%,55%)">6f</span> <span style="color:hsl(134deg,70%,55%)">72</span> <span style="color:hsl(121deg,70%,55%)">67</span> <span style="color:hsl(55deg,70%,55%)">2f</span> <span style="color:hsl(58deg,70%,55%)">32</span> <span style="color:hsl(56deg,70%,55%)">30</span> <span style="color:hsl(56deg,70%,55%)">30</span> <span style="color:hsl(57deg,70%,55%)">31</span> <span style="color:hsl(55deg,70%,55%)">2f</span> <span style="color:hsl(103deg,70%,55%)">58</span> <span style="color:hsl(90deg,70%,55%)">4d</span> <span style="color:hsl(89deg,70%,55%)">4c</span> <span style="color:hsl(97deg,70%,55%)">53</span> <span style="color:hsl(116deg,70%,55%)">63</span>
+<span style="color:hsl(122deg,70%,55%)">68</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(128deg,70%,55%)">6d</span> <span style="color:hsl(114deg,70%,55%)">61</span> <span style="color:hsl(41deg,70%,55%)">23</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(125deg,70%,55%)">6b</span> <span style="color:hsl(129deg,70%,55%)">6e</span> <span style="color:hsl(130deg,70%,55%)">6f</span> <span style="color:hsl(140deg,70%,55%)">77</span> <span style="color:hsl(135deg,70%,55%)">73</span> <span style="color:hsl(190deg,70%,55%)">a2</span> <span style="color:hsl(116deg,70%,55%)">63</span> <span style="color:hsl(75deg,70%,55%)">40</span> <span style="color:hsl(123deg,70%,55%)">69</span> <span style="color:hsl(117deg,70%,55%)">64</span>
+<span style="color:hsl(127deg,70%,55%)">6c</span> <span style="color:hsl(135deg,70%,55%)">73</span> <span style="color:hsl(116deg,70%,55%)">63</span> <span style="color:hsl(122deg,70%,55%)">68</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(128deg,70%,55%)">6d</span> <span style="color:hsl(114deg,70%,55%)">61</span> <span style="color:hsl(68deg,70%,55%)">3a</span> <span style="color:hsl(125deg,70%,55%)">6b</span> <span style="color:hsl(129deg,70%,55%)">6e</span> <span style="color:hsl(130deg,70%,55%)">6f</span> <span style="color:hsl(140deg,70%,55%)">77</span> <span style="color:hsl(135deg,70%,55%)">73</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(75deg,70%,55%)">40</span> <span style="color:hsl(136deg,70%,55%)">74</span>
+<span style="color:hsl(142deg,70%,55%)">79</span> <span style="color:hsl(131deg,70%,55%)">70</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(116deg,70%,55%)">63</span> <span style="color:hsl(75deg,70%,55%)">40</span> <span style="color:hsl(123deg,70%,55%)">69</span> <span style="color:hsl(117deg,70%,55%)">64</span> <span style="color:hsl(120deg,70%,55%)">66</span> <span style="color:hsl(135deg,70%,55%)">73</span> <span style="color:hsl(116deg,70%,55%)">63</span> <span style="color:hsl(122deg,70%,55%)">68</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(128deg,70%,55%)">6d</span> <span style="color:hsl(114deg,70%,55%)">61</span> <span style="color:hsl(135deg,70%,55%)">73</span> <span style="color:hsl(122deg,70%,55%)">68</span>
+<span style="color:hsl(136deg,70%,55%)">74</span> <span style="color:hsl(136deg,70%,55%)">74</span> <span style="color:hsl(131deg,70%,55%)">70</span> <span style="color:hsl(135deg,70%,55%)">73</span> <span style="color:hsl(68deg,70%,55%)">3a</span> <span style="color:hsl(55deg,70%,55%)">2f</span> <span style="color:hsl(55deg,70%,55%)">2f</span> <span style="color:hsl(135deg,70%,55%)">73</span> <span style="color:hsl(116deg,70%,55%)">63</span> <span style="color:hsl(122deg,70%,55%)">68</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(128deg,70%,55%)">6d</span> <span style="color:hsl(114deg,70%,55%)">61</span> <span style="color:hsl(54deg,70%,55%)">2e</span> <span style="color:hsl(130deg,70%,55%)">6f</span> <span style="color:hsl(134deg,70%,55%)">72</span>
+<span style="color:hsl(121deg,70%,55%)">67</span> <span style="color:hsl(55deg,70%,55%)">2f</span> <span style="color:hsl(123deg,70%,55%)">69</span> <span style="color:hsl(115deg,70%,55%)">62</span> <span style="color:hsl(123deg,70%,55%)">69</span> <span style="color:hsl(134deg,70%,55%)">72</span> <span style="color:hsl(136deg,70%,55%)">74</span> <span style="color:hsl(122deg,70%,55%)">68</span> <span style="color:hsl(80deg,70%,55%)">44</span> <span style="color:hsl(114deg,70%,55%)">61</span> <span style="color:hsl(136deg,70%,55%)">74</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(190deg,70%,55%)">a2</span> <span style="color:hsl(116deg,70%,55%)">63</span> <span style="color:hsl(75deg,70%,55%)">40</span> <span style="color:hsl(123deg,70%,55%)">69</span>
+<span style="color:hsl(117deg,70%,55%)">64</span> <span style="color:hsl(131deg,70%,55%)">70</span> <span style="color:hsl(135deg,70%,55%)">73</span> <span style="color:hsl(116deg,70%,55%)">63</span> <span style="color:hsl(122deg,70%,55%)">68</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(128deg,70%,55%)">6d</span> <span style="color:hsl(114deg,70%,55%)">61</span> <span style="color:hsl(68deg,70%,55%)">3a</span> <span style="color:hsl(115deg,70%,55%)">62</span> <span style="color:hsl(123deg,70%,55%)">69</span> <span style="color:hsl(134deg,70%,55%)">72</span> <span style="color:hsl(136deg,70%,55%)">74</span> <span style="color:hsl(122deg,70%,55%)">68</span> <span style="color:hsl(80deg,70%,55%)">44</span> <span style="color:hsl(114deg,70%,55%)">61</span>
+<span style="color:hsl(136deg,70%,55%)">74</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(75deg,70%,55%)">40</span> <span style="color:hsl(136deg,70%,55%)">74</span> <span style="color:hsl(142deg,70%,55%)">79</span> <span style="color:hsl(131deg,70%,55%)">70</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(122deg,70%,55%)">68</span> <span style="color:hsl(141deg,70%,55%)">78</span> <span style="color:hsl(135deg,70%,55%)">73</span> <span style="color:hsl(117deg,70%,55%)">64</span> <span style="color:hsl(68deg,70%,55%)">3a</span> <span style="color:hsl(117deg,70%,55%)">64</span> <span style="color:hsl(114deg,70%,55%)">61</span> <span style="color:hsl(136deg,70%,55%)">74</span>
+<span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(125deg,70%,55%)">6b</span> <span style="color:hsl(114deg,70%,55%)">61</span> <span style="color:hsl(120deg,70%,55%)">66</span> <span style="color:hsl(120deg,70%,55%)">66</span> <span style="color:hsl(123deg,70%,55%)">69</span> <span style="color:hsl(127deg,70%,55%)">6c</span> <span style="color:hsl(123deg,70%,55%)">69</span> <span style="color:hsl(114deg,70%,55%)">61</span> <span style="color:hsl(136deg,70%,55%)">74</span> <span style="color:hsl(123deg,70%,55%)">69</span> <span style="color:hsl(130deg,70%,55%)">6f</span> <span style="color:hsl(129deg,70%,55%)">6e</span> <span style="color:hsl(190deg,70%,55%)">a2</span> <span style="color:hsl(116deg,70%,55%)">63</span> <span style="color:hsl(75deg,70%,55%)">40</span>
+<span style="color:hsl(123deg,70%,55%)">69</span> <span style="color:hsl(117deg,70%,55%)">64</span> <span style="color:hsl(134deg,70%,55%)">72</span> <span style="color:hsl(135deg,70%,55%)">73</span> <span style="color:hsl(116deg,70%,55%)">63</span> <span style="color:hsl(122deg,70%,55%)">68</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(128deg,70%,55%)">6d</span> <span style="color:hsl(114deg,70%,55%)">61</span> <span style="color:hsl(68deg,70%,55%)">3a</span> <span style="color:hsl(114deg,70%,55%)">61</span> <span style="color:hsl(120deg,70%,55%)">66</span> <span style="color:hsl(120deg,70%,55%)">66</span> <span style="color:hsl(123deg,70%,55%)">69</span> <span style="color:hsl(127deg,70%,55%)">6c</span> <span style="color:hsl(123deg,70%,55%)">69</span>
+<span style="color:hsl(114deg,70%,55%)">61</span> <span style="color:hsl(136deg,70%,55%)">74</span> <span style="color:hsl(123deg,70%,55%)">69</span> <span style="color:hsl(130deg,70%,55%)">6f</span> <span style="color:hsl(129deg,70%,55%)">6e</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(75deg,70%,55%)">40</span> <span style="color:hsl(136deg,70%,55%)">74</span> <span style="color:hsl(142deg,70%,55%)">79</span> <span style="color:hsl(131deg,70%,55%)">70</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(116deg,70%,55%)">63</span> <span style="color:hsl(75deg,70%,55%)">40</span> <span style="color:hsl(123deg,70%,55%)">69</span> <span style="color:hsl(117deg,70%,55%)">64</span> <span style="color:hsl(12deg,70%,55%)">0b</span>
+<span style="color:hsl(154deg,70%,55%)">83</span> <span style="color:hsl(195deg,70%,55%)">a6</span> <span style="color:hsl(2deg,70%,55%)">02</span> <span style="color:hsl(128deg,70%,55%)">6d</span> <span style="color:hsl(135deg,70%,55%)">73</span> <span style="color:hsl(116deg,70%,55%)">63</span> <span style="color:hsl(122deg,70%,55%)">68</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(128deg,70%,55%)">6d</span> <span style="color:hsl(114deg,70%,55%)">61</span> <span style="color:hsl(68deg,70%,55%)">3a</span> <span style="color:hsl(94deg,70%,55%)">50</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(134deg,70%,55%)">72</span> <span style="color:hsl(135deg,70%,55%)">73</span> <span style="color:hsl(130deg,70%,55%)">6f</span>
+<span style="color:hsl(129deg,70%,55%)">6e</span> <span style="color:hsl(4deg,70%,55%)">04</span> <span style="color:hsl(122deg,70%,55%)">68</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(141deg,70%,55%)">78</span> <span style="color:hsl(68deg,70%,55%)">3a</span> <span style="color:hsl(114deg,70%,55%)">61</span> <span style="color:hsl(127deg,70%,55%)">6c</span> <span style="color:hsl(123deg,70%,55%)">69</span> <span style="color:hsl(116deg,70%,55%)">63</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(28deg,70%,55%)">18</span> <span style="color:hsl(117deg,70%,55%)">64</span> <span style="color:hsl(121deg,70%,55%)">67</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(141deg,70%,55%)">78</span>
+<span style="color:hsl(68deg,70%,55%)">3a</span> <span style="color:hsl(114deg,70%,55%)">61</span> <span style="color:hsl(116deg,70%,55%)">63</span> <span style="color:hsl(128deg,70%,55%)">6d</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(28deg,70%,55%)">18</span> <span style="color:hsl(120deg,70%,55%)">66</span> <span style="color:hsl(30deg,70%,55%)">1a</span> <span style="color:hsl(44deg,70%,55%)">26</span> <span style="color:hsl(90deg,70%,55%)">4d</span> <span style="color:hsl(288deg,70%,55%)">f5</span> <span style="color:hsl(0deg,70%,55%)">00</span> <span style="color:hsl(28deg,70%,55%)">18</span> <span style="color:hsl(124deg,70%,55%)">6a</span> <span style="color:hsl(120deg,70%,55%)">66</span> <span style="color:hsl(118deg,70%,55%)">65</span>
+<span style="color:hsl(141deg,70%,55%)">78</span> <span style="color:hsl(68deg,70%,55%)">3a</span> <span style="color:hsl(115deg,70%,55%)">62</span> <span style="color:hsl(130deg,70%,55%)">6f</span> <span style="color:hsl(115deg,70%,55%)">62</span> <span style="color:hsl(125deg,70%,55%)">6b</span> <span style="color:hsl(135deg,70%,55%)">73</span> <span style="color:hsl(116deg,70%,55%)">63</span> <span style="color:hsl(122deg,70%,55%)">68</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(128deg,70%,55%)">6d</span> <span style="color:hsl(114deg,70%,55%)">61</span> <span style="color:hsl(68deg,70%,55%)">3a</span> <span style="color:hsl(129deg,70%,55%)">6e</span> <span style="color:hsl(114deg,70%,55%)">61</span> <span style="color:hsl(128deg,70%,55%)">6d</span>
+<span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(190deg,70%,55%)">a2</span> <span style="color:hsl(7deg,70%,55%)">06</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(76deg,70%,55%)">41</span> <span style="color:hsl(127deg,70%,55%)">6c</span> <span style="color:hsl(123deg,70%,55%)">69</span> <span style="color:hsl(116deg,70%,55%)">63</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(21deg,70%,55%)">12</span> <span style="color:hsl(115deg,70%,55%)">62</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(129deg,70%,55%)">6e</span> <span style="color:hsl(191deg,70%,55%)">a3</span> <span style="color:hsl(2deg,70%,55%)">02</span> <span style="color:hsl(128deg,70%,55%)">6d</span>
+<span style="color:hsl(135deg,70%,55%)">73</span> <span style="color:hsl(116deg,70%,55%)">63</span> <span style="color:hsl(122deg,70%,55%)">68</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(128deg,70%,55%)">6d</span> <span style="color:hsl(114deg,70%,55%)">61</span> <span style="color:hsl(68deg,70%,55%)">3a</span> <span style="color:hsl(94deg,70%,55%)">50</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(134deg,70%,55%)">72</span> <span style="color:hsl(135deg,70%,55%)">73</span> <span style="color:hsl(130deg,70%,55%)">6f</span> <span style="color:hsl(129deg,70%,55%)">6e</span> <span style="color:hsl(4deg,70%,55%)">04</span> <span style="color:hsl(120deg,70%,55%)">66</span> <span style="color:hsl(118deg,70%,55%)">65</span>
+<span style="color:hsl(141deg,70%,55%)">78</span> <span style="color:hsl(68deg,70%,55%)">3a</span> <span style="color:hsl(115deg,70%,55%)">62</span> <span style="color:hsl(130deg,70%,55%)">6f</span> <span style="color:hsl(115deg,70%,55%)">62</span> <span style="color:hsl(125deg,70%,55%)">6b</span> <span style="color:hsl(135deg,70%,55%)">73</span> <span style="color:hsl(116deg,70%,55%)">63</span> <span style="color:hsl(122deg,70%,55%)">68</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(128deg,70%,55%)">6d</span> <span style="color:hsl(114deg,70%,55%)">61</span> <span style="color:hsl(68deg,70%,55%)">3a</span> <span style="color:hsl(129deg,70%,55%)">6e</span> <span style="color:hsl(114deg,70%,55%)">61</span> <span style="color:hsl(128deg,70%,55%)">6d</span>
+<span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(190deg,70%,55%)">a2</span> <span style="color:hsl(7deg,70%,55%)">06</span> <span style="color:hsl(116deg,70%,55%)">63</span> <span style="color:hsl(77deg,70%,55%)">42</span> <span style="color:hsl(130deg,70%,55%)">6f</span> <span style="color:hsl(115deg,70%,55%)">62</span> <span style="color:hsl(21deg,70%,55%)">12</span> <span style="color:hsl(115deg,70%,55%)">62</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(129deg,70%,55%)">6e</span> <span style="color:hsl(191deg,70%,55%)">a3</span> <span style="color:hsl(2deg,70%,55%)">02</span> <span style="color:hsl(135deg,70%,55%)">73</span> <span style="color:hsl(135deg,70%,55%)">73</span> <span style="color:hsl(116deg,70%,55%)">63</span>
+<span style="color:hsl(122deg,70%,55%)">68</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(128deg,70%,55%)">6d</span> <span style="color:hsl(114deg,70%,55%)">61</span> <span style="color:hsl(68deg,70%,55%)">3a</span> <span style="color:hsl(92deg,70%,55%)">4f</span> <span style="color:hsl(134deg,70%,55%)">72</span> <span style="color:hsl(121deg,70%,55%)">67</span> <span style="color:hsl(114deg,70%,55%)">61</span> <span style="color:hsl(129deg,70%,55%)">6e</span> <span style="color:hsl(123deg,70%,55%)">69</span> <span style="color:hsl(143deg,70%,55%)">7a</span> <span style="color:hsl(114deg,70%,55%)">61</span> <span style="color:hsl(136deg,70%,55%)">74</span> <span style="color:hsl(123deg,70%,55%)">69</span> <span style="color:hsl(130deg,70%,55%)">6f</span>
+<span style="color:hsl(129deg,70%,55%)">6e</span> <span style="color:hsl(4deg,70%,55%)">04</span> <span style="color:hsl(121deg,70%,55%)">67</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(141deg,70%,55%)">78</span> <span style="color:hsl(68deg,70%,55%)">3a</span> <span style="color:hsl(114deg,70%,55%)">61</span> <span style="color:hsl(116deg,70%,55%)">63</span> <span style="color:hsl(128deg,70%,55%)">6d</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(125deg,70%,55%)">6b</span> <span style="color:hsl(135deg,70%,55%)">73</span> <span style="color:hsl(116deg,70%,55%)">63</span> <span style="color:hsl(122deg,70%,55%)">68</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(128deg,70%,55%)">6d</span>
+<span style="color:hsl(114deg,70%,55%)">61</span> <span style="color:hsl(68deg,70%,55%)">3a</span> <span style="color:hsl(129deg,70%,55%)">6e</span> <span style="color:hsl(114deg,70%,55%)">61</span> <span style="color:hsl(128deg,70%,55%)">6d</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(190deg,70%,55%)">a2</span> <span style="color:hsl(7deg,70%,55%)">06</span> <span style="color:hsl(123deg,70%,55%)">69</span> <span style="color:hsl(76deg,70%,55%)">41</span> <span style="color:hsl(78deg,70%,55%)">43</span> <span style="color:hsl(90deg,70%,55%)">4d</span> <span style="color:hsl(81deg,70%,55%)">45</span> <span style="color:hsl(37deg,70%,55%)">20</span> <span style="color:hsl(78deg,70%,55%)">43</span> <span style="color:hsl(130deg,70%,55%)">6f</span>
+<span style="color:hsl(134deg,70%,55%)">72</span> <span style="color:hsl(131deg,70%,55%)">70</span> <span style="color:hsl(21deg,70%,55%)">12</span> <span style="color:hsl(115deg,70%,55%)">62</span> <span style="color:hsl(118deg,70%,55%)">65</span> <span style="color:hsl(129deg,70%,55%)">6e</span> </pre>
+<p>406 bytes — 36% smaller than JSON-LD, using the <a href="https://github.com/digitalbazaar/cborld">reference JS implementation</a>. With a registered context, compression would exceed 60%.</p>
+</div>
+<div>
+<div class="admonition success">
+<p class="admonition-title">Pro</p>
+<ul>
+<li>Dramatically smaller than any text format — fits RDF into QR codes, barcodes, and constrained devices</li>
+<li>Builds on the JSON-LD ecosystem: any JSON-LD document can be encoded</li>
+<li>Payload is self-describing via the <code>0xcb1d</code> CBOR tag; no out-of-band schema needed</li>
+</ul>
+</div>
+<div class="admonition failure">
+<p class="admonition-title">Contra</p>
+<ul>
+<li>Binary — not human-readable or diffable</li>
+<li>Full semantic compression requires contexts registered in the <a href="https://json-ld.github.io/cborld-registry/">CBOR-LD registry</a></li>
+</ul>
+</div>
+</div>
+</div>
+<h2 id="the-point">The point</h2>
+<p>RDF mappings do not compete with each other — they extend the reach of RDF as a <em>lingua franca</em>. Ideally, for every widely-used data format, a well-specified RDF mapping should exist.</p>
+<p>The <a href="https://www.w3.org/groups/wg/json-ld/">JSON-LD Working Group</a> is working on making that happen. You are welcome to join.</p>
+<script type="application/ld+json">
+[]
+</script>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright © 2026 iolanta.tech
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.indexes", "navigation.tabs", "navigation.tabs.sticky", "content.code.annotate", "content.action.edit", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

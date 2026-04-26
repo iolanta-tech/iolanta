@@ -1,0 +1,100 @@
+"@context": https://iolanta.tech/roadmap/contexts/v0.1.yamlld
+
+tasks:
+  # IPFS rendering
+  - $id: _:ipfs
+    $: Render LD from IPFS
+  
+  # Decision Matrix & ADRs workflow
+  - $id: _:render-decision-matrix
+    $: Render a Decision Matrix with Iolanta
+    blocks:
+      - $id: _:manage-adrs
+        $: Manage ADRs with Iolanta
+        blocks:
+          - $id: _:manage-roadmaps
+            $: Build roadmaps & plans with Iolanta
+            blocks:
+              - $id: _:roadmap3d
+                $: Implement a 3D view for the roadmap (because should look cool)
+  
+  - $id: _:generate-roadmap
+    $: Generate this roadmap from LD
+    blocks:
+      - _:manage-roadmaps
+  
+  # WASM facet
+  - $id: _:wasm
+    $: First WASM based facet
+  
+  # Nanopublications workflow
+  - $id: _:unblock-nanopubs
+    $: Unblock Nanopubs
+    blocks:
+      - $id: "https://github.com/Nanopublication/nanopub-py/pull/180"
+        $type: roadmap:Event
+        $: "PR 180: Nanopublication/nanopub-py is merged"
+      - $id: _:jeeves-nanopubs
+        $: Start jeeves-nanopublications
+      - _:discovery-mcp
+      - $id: _:armenian-pronouns
+        $: Armenian pronouns nanopub
+  
+  - $id: _:discovery-mcp
+    $: Discovery MCP discovers LD based on free form text
+    blocks:
+      - $id: _:write-nanopubs
+        $: Write nanopublications with Iolanta
+  
+  # Bugs
+  - $id: _:foaf-title
+    $type: roadmap:Bug
+    $: FOAF Title facet only reacts on foaf:Person class
+    # NOTE: Appears to be implemented (iolanta/facets/foaf_person_title/)
+  
+  - $id: _:starts-from-console
+    $type: roadmap:Bug
+    $: Iolanta starts with a blank console
+  
+  - $id: _:sparqlspace-inference-bug
+    $type: roadmap:Bug
+    $: SPARQL inference handled by sparqlspace
+  
+  - $id: _:sparqlspace-integration-tests
+    $type: roadmap:Bug
+    $: sparqlspace has no integration tests
+  
+  - $id: _:pyld-fails-on-lexinfo
+    $type: roadmap:Bug
+    $: pyld fails on lexinfo
+    blocks:
+      - _:armenian-pronouns
+  
+  # Usecases
+  - $id: _:tractatus
+    $: Tractatus Logico-Philosophicus → LD
+  
+  - $id: _:implement-yaml-ld-ontology
+    $: Implement YAML-LD Ontology
+  
+  - $id: _:howto-facet
+    $: HOWTO Make your own facet
+  
+  - $id: "https://iolanta.tech/Facet/"
+    $: Generate Facets list
+  
+  - $type: Bug
+    $: "Upper ontology not chosen for <code>roadmap</code>"
+    blocks:
+      - $type: Bug
+        $: "<code>$type: Bug</code> does not work; maybe use some other syntax even?"
+      - $type: Bug
+        $: Unable to specify if <code>Event</code> had happened
+      - $type: Bug
+        $: Roadmap <code>Unblocked</code> is a <code>Class</code>
+
+  - $type: Bug
+    $: Inference depends on alphabetical order of its CONSTRUCT queries
+
+  - $type: Bug
+    $: <code>mermaid</code> datatype from roadmap plugin does not resolve nor is documented
