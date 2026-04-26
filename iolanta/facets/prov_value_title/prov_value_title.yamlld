@@ -1,0 +1,31 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  iolanta: https://iolanta.tech/
+  prov: http://www.w3.org/ns/prov#
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+
+  $: rdfs:label
+  →:
+    "@type": "@id"
+    "@id": iolanta:outputs
+  ↦: iolanta:matches
+  ⪯:
+    "@type": "@id"
+    "@id": iolanta:is-preferred-over
+
+$id: pkg:pypi/iolanta#title-prov-value
+$: PROV Value Title
+→: https://iolanta.tech/datatypes/title
+⪯: pkg:pypi/iolanta#title
+
+↦: |
+  PREFIX prov: <http://www.w3.org/ns/prov#>
+
+  ASK WHERE {
+    $this
+      prov:value ?value ;
+      prov:wasDerivedFrom ?source .
+
+    FILTER (!isLiteral(?value) || !lang(?value) || lang(?value) = $language)
+    FILTER (!isLiteral(?source) || !lang(?source) || lang(?source) = $language)
+  }
