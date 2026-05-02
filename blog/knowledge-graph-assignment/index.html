@@ -3698,26 +3698,26 @@
 <pre class="mermaid"><code>graph LR
   iolanta_OutputDatatype("Output Datatype")
   click iolanta_OutputDatatype "iolanta:OutputDatatype"
-  Literal-53d3f4c1edd701295ec517eb3054c54c[["Output format where visualization applications render their results.
-  Examples: terminal text, HTML, Mermaid diagrams.
-  "]]
+  http___www_w3_org_2000_01_rdf-schema_Datatype("Datatype")
+  click http___www_w3_org_2000_01_rdf-schema_Datatype "http://www.w3.org/2000/01/rdf-schema#Datatype"
   iolanta_OutputDatatype("Output Datatype")
   click iolanta_OutputDatatype "iolanta:OutputDatatype"
   http___www_w3_org_2002_07_owl_Class("Class")
   click http___www_w3_org_2002_07_owl_Class "http://www.w3.org/2002/07/owl#Class"
   iolanta_OutputDatatype("Output Datatype")
   click iolanta_OutputDatatype "iolanta:OutputDatatype"
-  http___www_w3_org_2000_01_rdf-schema_Datatype("Datatype")
-  click http___www_w3_org_2000_01_rdf-schema_Datatype "http://www.w3.org/2000/01/rdf-schema#Datatype"
-  iolanta_OutputDatatype --- bd834691fbbaf6e925da018a5efe50bb(["comment"])--&gt; Literal-53d3f4c1edd701295ec517eb3054c54c
-  click bd834691fbbaf6e925da018a5efe50bb "http://www.w3.org/2000/01/rdf-schema#comment"
-  class bd834691fbbaf6e925da018a5efe50bb predicate
-  iolanta_OutputDatatype --- 1612f2e1de4a62cc1e34441428ef79ab(["type"])--&gt; http___www_w3_org_2002_07_owl_Class
-  click 1612f2e1de4a62cc1e34441428ef79ab "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
-  class 1612f2e1de4a62cc1e34441428ef79ab predicate
+  Literal-53d3f4c1edd701295ec517eb3054c54c[["Output format where visualization applications render their results.
+  Examples: terminal text, HTML, Mermaid diagrams.
+  "]]
   iolanta_OutputDatatype --- 4e687391c7c2b68d411d1c212a7f11b7(["subClassOf"])--&gt; http___www_w3_org_2000_01_rdf-schema_Datatype
   click 4e687391c7c2b68d411d1c212a7f11b7 "http://www.w3.org/2000/01/rdf-schema#subClassOf"
   class 4e687391c7c2b68d411d1c212a7f11b7 predicate
+  iolanta_OutputDatatype --- 1612f2e1de4a62cc1e34441428ef79ab(["type"])--&gt; http___www_w3_org_2002_07_owl_Class
+  click 1612f2e1de4a62cc1e34441428ef79ab "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  class 1612f2e1de4a62cc1e34441428ef79ab predicate
+  iolanta_OutputDatatype --- bd834691fbbaf6e925da018a5efe50bb(["comment"])--&gt; Literal-53d3f4c1edd701295ec517eb3054c54c
+  click bd834691fbbaf6e925da018a5efe50bb "http://www.w3.org/2000/01/rdf-schema#comment"
+  class bd834691fbbaf6e925da018a5efe50bb predicate
   classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
   classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
   classDef label fill:transparent,stroke:transparent,color:#e5e7eb,stroke-width:0px;
@@ -3840,22 +3840,22 @@
 <pre class="mermaid"><code>graph LR
   iolanta_outputs("outputs")
   click iolanta_outputs "iolanta:outputs"
-  iolanta_OutputDatatype("Output Datatype")
-  click iolanta_OutputDatatype "iolanta:OutputDatatype"
-  iolanta_outputs("outputs")
-  click iolanta_outputs "iolanta:outputs"
   http___www_w3_org_2002_07_owl_ObjectProperty("ObjectProperty")
   click http___www_w3_org_2002_07_owl_ObjectProperty "http://www.w3.org/2002/07/owl#ObjectProperty"
   iolanta_outputs("outputs")
   click iolanta_outputs "iolanta:outputs"
+  iolanta_OutputDatatype("Output Datatype")
+  click iolanta_OutputDatatype "iolanta:OutputDatatype"
+  iolanta_outputs("outputs")
+  click iolanta_outputs "iolanta:outputs"
   iolanta_Facet("Facet")
   click iolanta_Facet "iolanta:Facet"
-  iolanta_outputs --- 1dad8eafd900bf48c87f461de56ae589(["range"])--&gt; iolanta_OutputDatatype
-  click 1dad8eafd900bf48c87f461de56ae589 "http://www.w3.org/2000/01/rdf-schema#range"
-  class 1dad8eafd900bf48c87f461de56ae589 predicate
   iolanta_outputs --- 1d35bb3d419b744a5b73ccbdaa04884e(["type"])--&gt; http___www_w3_org_2002_07_owl_ObjectProperty
   click 1d35bb3d419b744a5b73ccbdaa04884e "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
   class 1d35bb3d419b744a5b73ccbdaa04884e predicate
+  iolanta_outputs --- 1dad8eafd900bf48c87f461de56ae589(["range"])--&gt; iolanta_OutputDatatype
+  click 1dad8eafd900bf48c87f461de56ae589 "http://www.w3.org/2000/01/rdf-schema#range"
+  class 1dad8eafd900bf48c87f461de56ae589 predicate
   iolanta_outputs --- fd722a9993f374578620ab05b9ba1ffd(["domain"])--&gt; iolanta_Facet
   click fd722a9993f374578620ab05b9ba1ffd "http://www.w3.org/2000/01/rdf-schema#domain"
   class fd722a9993f374578620ab05b9ba1ffd predicate
@@ -3934,32 +3934,32 @@
 </div>
 <div>
 <pre class="mermaid"><code>graph LR
+  pkg_pypi_iolanta_mermaid-graph("Mermaid Graph")
+  click pkg_pypi_iolanta_mermaid-graph "pkg:pypi/iolanta#mermaid-graph"
+  Literal-e6835a48474d4a4a89205cd8b404de41[["ASK WHERE { $this iolanta:has-sub-graph ?subgraph }"]]
   https___iolanta_tech_datatypes_mermaid("Mermaid")
   click https___iolanta_tech_datatypes_mermaid "https://iolanta.tech/datatypes/mermaid"
   https___iolanta_tech_OutputDatatype("iolanta.tech/OutputDatatype")
   click https___iolanta_tech_OutputDatatype "https://iolanta.tech/OutputDatatype"
   pkg_pypi_iolanta_mermaid-graph("Mermaid Graph")
   click pkg_pypi_iolanta_mermaid-graph "pkg:pypi/iolanta#mermaid-graph"
-  Literal-c68220abab4f6bdf9e5acec73f922900[["ASK WHERE { GRAPH $this { ?s ?p ?o } }"]]
-  pkg_pypi_iolanta_mermaid-graph("Mermaid Graph")
-  click pkg_pypi_iolanta_mermaid-graph "pkg:pypi/iolanta#mermaid-graph"
   https___iolanta_tech_datatypes_mermaid("Mermaid")
   click https___iolanta_tech_datatypes_mermaid "https://iolanta.tech/datatypes/mermaid"
   pkg_pypi_iolanta_mermaid-graph("Mermaid Graph")
   click pkg_pypi_iolanta_mermaid-graph "pkg:pypi/iolanta#mermaid-graph"
-  Literal-e6835a48474d4a4a89205cd8b404de41[["ASK WHERE { $this iolanta:has-sub-graph ?subgraph }"]]
-  https___iolanta_tech_datatypes_mermaid --- 2c41fe73c4bf95cb558aa97c1a8146d7(["type"])--&gt; https___iolanta_tech_OutputDatatype
-  click 2c41fe73c4bf95cb558aa97c1a8146d7 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
-  class 2c41fe73c4bf95cb558aa97c1a8146d7 predicate
-  pkg_pypi_iolanta_mermaid-graph --- 8db2148e4e56918908ee4f077007d419(["iolanta.tech/matches"])--&gt; Literal-c68220abab4f6bdf9e5acec73f922900
-  click 8db2148e4e56918908ee4f077007d419 "https://iolanta.tech/matches"
-  class 8db2148e4e56918908ee4f077007d419 predicate
-  pkg_pypi_iolanta_mermaid-graph --- 44fc138a211015cfd7132826e6552473(["outputs"])--&gt; https___iolanta_tech_datatypes_mermaid
-  click 44fc138a211015cfd7132826e6552473 "https://iolanta.tech/outputs"
-  class 44fc138a211015cfd7132826e6552473 predicate
+  Literal-c68220abab4f6bdf9e5acec73f922900[["ASK WHERE { GRAPH $this { ?s ?p ?o } }"]]
   pkg_pypi_iolanta_mermaid-graph --- 3238bde1af35c3f73d34849ad4437033(["iolanta.tech/matches"])--&gt; Literal-e6835a48474d4a4a89205cd8b404de41
   click 3238bde1af35c3f73d34849ad4437033 "https://iolanta.tech/matches"
   class 3238bde1af35c3f73d34849ad4437033 predicate
+  https___iolanta_tech_datatypes_mermaid --- 2c41fe73c4bf95cb558aa97c1a8146d7(["type"])--&gt; https___iolanta_tech_OutputDatatype
+  click 2c41fe73c4bf95cb558aa97c1a8146d7 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  class 2c41fe73c4bf95cb558aa97c1a8146d7 predicate
+  pkg_pypi_iolanta_mermaid-graph --- 44fc138a211015cfd7132826e6552473(["outputs"])--&gt; https___iolanta_tech_datatypes_mermaid
+  click 44fc138a211015cfd7132826e6552473 "https://iolanta.tech/outputs"
+  class 44fc138a211015cfd7132826e6552473 predicate
+  pkg_pypi_iolanta_mermaid-graph --- 8db2148e4e56918908ee4f077007d419(["iolanta.tech/matches"])--&gt; Literal-c68220abab4f6bdf9e5acec73f922900
+  click 8db2148e4e56918908ee4f077007d419 "https://iolanta.tech/matches"
+  class 8db2148e4e56918908ee4f077007d419 predicate
   classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
   classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
   classDef label fill:transparent,stroke:transparent,color:#e5e7eb,stroke-width:0px;
