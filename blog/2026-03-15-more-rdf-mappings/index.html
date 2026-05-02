@@ -3466,11 +3466,19 @@
 <pre class="mermaid"><code>graph LR
   https___example_org_alice("Alice")
   click https___example_org_alice "https://example.org/alice"
-  https___schema_org_Person("Person")
-  click https___schema_org_Person "https://schema.org/Person"
+  Literal-58cc6d78674efd8c82808811df4ceb0e[["📅 1990-05-14"]]
   https___example_org_alice("Alice")
   click https___example_org_alice "https://example.org/alice"
-  Literal-58cc6d78674efd8c82808811df4ceb0e[["📅 1990-05-14"]]
+  https___example_org_acme("ACME Corp")
+  click https___example_org_acme "https://example.org/acme"
+  https___example_org_alice("Alice")
+  click https___example_org_alice "https://example.org/alice"
+  https___schema_org_Person("Person")
+  click https___schema_org_Person "https://schema.org/Person"
+  https___example_org_bob("Bob")
+  click https___example_org_bob "https://example.org/bob"
+  https___schema_org_Person("Person")
+  click https___schema_org_Person "https://schema.org/Person"
   https___example_org_acme("ACME Corp")
   click https___example_org_acme "https://example.org/acme"
   https___schema_org_Organization("Organization")
@@ -3479,32 +3487,24 @@
   click https___example_org_alice "https://example.org/alice"
   https___example_org_bob("Bob")
   click https___example_org_bob "https://example.org/bob"
-  https___example_org_alice("Alice")
-  click https___example_org_alice "https://example.org/alice"
-  https___example_org_acme("ACME Corp")
-  click https___example_org_acme "https://example.org/acme"
-  https___example_org_bob("Bob")
-  click https___example_org_bob "https://example.org/bob"
-  https___schema_org_Person("Person")
-  click https___schema_org_Person "https://schema.org/Person"
-  https___example_org_alice --- 2e806a3c86517dfd116832a4edfcf5ce(["type"])--&gt; https___schema_org_Person
-  click 2e806a3c86517dfd116832a4edfcf5ce "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
-  class 2e806a3c86517dfd116832a4edfcf5ce predicate
   https___example_org_alice --- 3818b6860c769e13a276071ca633c8db(["birthDate"])--&gt; Literal-58cc6d78674efd8c82808811df4ceb0e
   click 3818b6860c769e13a276071ca633c8db "https://schema.org/birthDate"
   class 3818b6860c769e13a276071ca633c8db predicate
+  https___example_org_alice --- da20e920e903efd69cb04b8202036091(["affiliation"])--&gt; https___example_org_acme
+  click da20e920e903efd69cb04b8202036091 "https://schema.org/affiliation"
+  class da20e920e903efd69cb04b8202036091 predicate
+  https___example_org_alice --- 2e806a3c86517dfd116832a4edfcf5ce(["type"])--&gt; https___schema_org_Person
+  click 2e806a3c86517dfd116832a4edfcf5ce "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  class 2e806a3c86517dfd116832a4edfcf5ce predicate
+  https___example_org_bob --- 682794cd0cb5644813c3d85aae51823a(["type"])--&gt; https___schema_org_Person
+  click 682794cd0cb5644813c3d85aae51823a "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  class 682794cd0cb5644813c3d85aae51823a predicate
   https___example_org_acme --- bc1686593bb7a726e3eb0e481c8353e8(["type"])--&gt; https___schema_org_Organization
   click bc1686593bb7a726e3eb0e481c8353e8 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
   class bc1686593bb7a726e3eb0e481c8353e8 predicate
   https___example_org_alice --- 2155f99084c4b0b6a75a5389e0a7e5c6(["knows"])--&gt; https___example_org_bob
   click 2155f99084c4b0b6a75a5389e0a7e5c6 "https://schema.org/knows"
   class 2155f99084c4b0b6a75a5389e0a7e5c6 predicate
-  https___example_org_alice --- da20e920e903efd69cb04b8202036091(["affiliation"])--&gt; https___example_org_acme
-  click da20e920e903efd69cb04b8202036091 "https://schema.org/affiliation"
-  class da20e920e903efd69cb04b8202036091 predicate
-  https___example_org_bob --- 682794cd0cb5644813c3d85aae51823a(["type"])--&gt; https___schema_org_Person
-  click 682794cd0cb5644813c3d85aae51823a "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
-  class 682794cd0cb5644813c3d85aae51823a predicate
   classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
   classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
   classDef label fill:transparent,stroke:transparent,color:#e5e7eb,stroke-width:0px;
