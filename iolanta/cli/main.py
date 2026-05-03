@@ -1,4 +1,5 @@
 import contextlib
+import json
 import locale
 import logging
 import sys
@@ -16,7 +17,7 @@ from rich.table import Table
 from typer import Argument, Exit, Option, Typer
 from yarl import URL
 
-from iolanta.cli.models import LogLevel
+from iolanta.cli.models import JsonLines, LogLevel
 from iolanta.facets.errors import FacetNotFound
 from iolanta.iolanta import Iolanta
 from iolanta.namespaces import DATATYPES
@@ -167,6 +168,10 @@ def create_query_node(query_result: QueryResult) -> Literal:
 
 def print_renderable(renderable) -> None:
     match renderable:
+        case JsonLines() as jl:
+            for line in jl.lines:
+                sys.stdout.write(f"{json.dumps(line, ensure_ascii=False)}\n")
+                sys.stdout.flush()
         case Table() as table:
             console.print(table)
         case str() as text:
