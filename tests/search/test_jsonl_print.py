@@ -7,7 +7,7 @@ from iolanta.cli.models import JsonLines
 
 def test_print_renderable_streams_jsonlines(capsys):
     payload = JsonLines(lines=iter([
-        {"uri": "https://example.org/a", "source": "wikidata"},
+        {"uri": "https://example.org/a", "source": "wikidata"},  # noqa: WPS226
         {"uri": "https://example.org/b", "source": "dbpedia"},
     ]))
 
@@ -21,7 +21,7 @@ def test_print_renderable_streams_jsonlines(capsys):
     assert captured.err == ""
 
 
-def test_print_renderable_jsonlines_unicode_passthrough(capsys):
+def test_print_renderable_jsonlines_unicode(capsys):
     payload = JsonLines(lines=iter([{"title": "Иоланта"}]))
 
     print_renderable(payload)
