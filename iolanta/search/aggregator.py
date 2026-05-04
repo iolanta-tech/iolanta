@@ -27,6 +27,16 @@ def run_search(notion: str) -> Iterable[SearchHit]:
     raises — every error becomes either a stderr line (resolver failure)
     or absence of hits.
 
+    Notes
+    -----
+    - ``PER_SOURCE_TIMEOUT_SECONDS`` is a defense-in-depth ceiling — the
+      practical per-source bound is the resolver-level ``timeout=10`` on
+      ``session.get``. When the future timeout fires, the worker thread
+      keeps running until the socket times out; ``ThreadPoolExecutor``
+      shutdown waits for it to drain.
+    - Closing this generator early waits for all in-flight resolvers to
+      drain (bounded by ``PER_SOURCE_TIMEOUT_SECONDS``).
+
     Args:
         notion: Free-form query string forwarded to every resolver.
 
