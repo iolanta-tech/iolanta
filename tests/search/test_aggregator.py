@@ -1,4 +1,5 @@
 """Test the run_search aggregator."""
+
 import json
 import time
 from unittest.mock import patch
@@ -63,9 +64,7 @@ def test_run_search_emits_stderr_line_when_resolver_raises(  # noqa: WPS118
 
     assert [hit.source for hit in hits] == ["wikidata"]
     err_lines = [
-        json.loads(line)
-        for line in capsys.readouterr().err.splitlines()
-        if line
+        json.loads(line) for line in capsys.readouterr().err.splitlines() if line
     ]
     assert {"source": "dbpedia", "error": "kaput"} in err_lines
 
