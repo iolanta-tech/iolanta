@@ -1,0 +1,20 @@
+{
+  "docs": [
+    {
+      "resource": ["http://dbpedia.org/resource/Isaac_Asimov"],
+      "label": ["Isaac Asimov"],
+      "comment": ["Isaac Asimov was a Russian-born American author and professor of biochemistry at Boston University."],
+      "type": [
+        "http://dbpedia.org/ontology/Person",
+        "http://dbpedia.org/ontology/Writer"
+      ],
+      "refCount": ["3421"]
+    },
+    {
+      "resource": ["http://dbpedia.org/resource/Asimov%27s_Science_Fiction"],
+      "label": ["Asimov's Science Fiction"],
+      "type": ["http://dbpedia.org/ontology/Magazine"],
+      "refCount": ["89"]
+    }
+  ]
+}
