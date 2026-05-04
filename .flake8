@@ -8,4 +8,6 @@ per-file-ignores =
     tests/test_integration.py:WPS202
     tests/kglint/test_cli.py:WPS202
     tests/test_apply_redirect.py:WPS202
-    iolanta/mermaid/models.py:WPS202
+    iolanta/mermaid/models.py:WPS202,WPS407,WPS237,WPS338,WPS602
+    iolanta/mermaid/facet.py:WPS115,WPS231
+    iolanta/cli/models.py:WPS110
