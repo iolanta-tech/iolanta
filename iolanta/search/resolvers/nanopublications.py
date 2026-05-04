@@ -1,4 +1,5 @@
 """Nanopublications Lucene SAIL resolver."""
+
 import requests
 
 from iolanta.search.models import SearchHit
