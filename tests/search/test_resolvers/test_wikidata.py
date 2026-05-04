@@ -3,6 +3,8 @@ import json
 from pathlib import Path
 from unittest.mock import MagicMock
 
+import pytest
+
 from iolanta.search.models import SearchHit
 from iolanta.search.resolvers.wikidata import WikidataResolver
 
@@ -46,9 +48,8 @@ def test_wikidata_handles_zero_hits():
     assert resolver.search("blargh", session) == []
 
 
-def test_wikidata_raises_value_error_on_malformed_response():
+def test_wikidata_raises_value_error_on_malformed_response():  # noqa: WPS118
     session = _mock_session({"unexpected": "shape"})
     resolver = WikidataResolver()
-    import pytest
     with pytest.raises((KeyError, ValueError)):
         resolver.search("Isaac Asimov", session)
