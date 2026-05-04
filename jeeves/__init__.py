@@ -214,9 +214,20 @@ def _dump_iolanta_output(
     console.print(f"[green]Written[/green] {target}")
 
 
+_REMOTE_CONTEXTS_CONSIDERED_HARMFUL_DIR = (
+    project_directory.parent / "docs/blog/remote-contexts-considered-harmful"
+)
+
+
+def generate_remote_contexts_index_mmd():
+    """Regenerate `index.mmd` (Mermaid) from `index.md` for the remote-contexts post."""
+    blog = _REMOTE_CONTEXTS_CONSIDERED_HARMFUL_DIR
+    _dump_iolanta_output(blog / "index.md", blog / "index.mmd")
+
+
 def generate_remote_contexts_considered_harmful_artifacts():
     """Regenerate all derived outputs for `remote-contexts-considered-harmful`."""
-    directory = project_directory.parent / "docs/blog/remote-contexts-considered-harmful"
+    directory = _REMOTE_CONTEXTS_CONSIDERED_HARMFUL_DIR
 
     tasks = (
         lambda: dump_pyld_output(
@@ -239,6 +250,10 @@ def generate_remote_contexts_considered_harmful_artifacts():
             directory / "john-lennon.yamlld",
             directory / "john-lennon.mmd",
         ),
+        lambda: _dump_iolanta_output(
+            directory / "index.md",
+            directory / "index.mmd",
+        ),
     )
 
     with ThreadPoolExecutor() as executor:
@@ -246,12 +261,14 @@ def generate_remote_contexts_considered_harmful_artifacts():
             future.result()
 
 
-_TRUSTED_DOMAINS = frozenset((
-    "w3.org",
-    "xmlns.com",
-    "schema.org",
-    "schemas.org",
-))
+_TRUSTED_DOMAINS = frozenset(
+    (
+        "w3.org",
+        "xmlns.com",
+        "schema.org",
+        "schemas.org",
+    )
+)
 
 
 def sync_prefix_cc():
