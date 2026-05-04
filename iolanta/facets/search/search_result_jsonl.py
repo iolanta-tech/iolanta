@@ -3,7 +3,6 @@ from collections.abc import Iterable
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
-from documented import DocumentedError
 from rdflib import Literal, URIRef
 
 from iolanta.cli.models import JsonLines
@@ -53,5 +52,5 @@ class SearchResultJsonlFacet(RichFacet):
                 URIRef(uri),
                 as_datatype=DATATYPES.title,
             )
-        except (FacetNotFound, DocumentedError):
+        except FacetNotFound:
             return None
