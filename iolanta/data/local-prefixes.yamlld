@@ -1,0 +1,5 @@
+"@context": context.yaml
+
+$graph:
+  - vann:preferredNamespacePrefix: ibis
+    vann:preferredNamespaceUri: https://vocab.methodandstructure.com/ibis#
