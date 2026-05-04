@@ -1,4 +1,5 @@
 """Linked Open Vocabularies (LOV) term-search resolver."""
+
 import requests
 
 from iolanta.search.models import SearchHit
@@ -33,9 +34,7 @@ class LovResolver:
             SearchHit(
                 uri=entry["uri"][0],
                 source=self.source_name,
-                description=(
-                    entry["comment"][0] if entry.get("comment") else None
-                ),
+                description=(entry["comment"][0] if entry.get("comment") else None),
                 score=entry.get("score"),
                 types=entry.get("type") or [],
             )
