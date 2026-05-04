@@ -1,4 +1,5 @@
 """Test NanopublicationsResolver against a captured SPARQL JSON response."""
+
 import json
 from pathlib import Path
 from unittest.mock import MagicMock
@@ -6,9 +7,7 @@ from unittest.mock import MagicMock
 from iolanta.search.models import SearchHit
 from iolanta.search.resolvers.nanopublications import NanopublicationsResolver
 
-FIXTURE = (
-    Path(__file__).parent.parent / "fixtures" / "nanopub_asimov.sparql-json"
-)
+FIXTURE = Path(__file__).parent.parent / "fixtures" / "nanopub_asimov.sparql-json"
 
 
 def _mock_session(payload: dict) -> MagicMock:
