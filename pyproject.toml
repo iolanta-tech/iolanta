@@ -79,6 +79,7 @@ construct-result-csv-facet = "iolanta.facets.query.construct_result_csv:Construc
 ask-result-table-facet = "iolanta.facets.query.ask_result_table:AskResultTableFacet"
 ask-result-json-facet = "iolanta.facets.query.ask_result_json:AskResultJsonFacet"
 ask-result-csv-facet = "iolanta.facets.query.ask_result_csv:AskResultCsvFacet"
+search-result-jsonl-facet = "iolanta.facets.search.search_result_jsonl:SearchResultJsonlFacet"
 
 [tool.poetry.plugins."rdf.plugins.queryprocessor"]
 sparqlspace = "iolanta.sparqlspace.processor:GlobalSPARQLProcessor"
