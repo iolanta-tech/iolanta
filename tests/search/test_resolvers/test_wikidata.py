@@ -1,4 +1,5 @@
 """Test the WikidataResolver against a captured reconciliation API response."""
+
 import json
 from pathlib import Path
 from unittest.mock import MagicMock
