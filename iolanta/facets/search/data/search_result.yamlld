@@ -1,0 +1,38 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  iolanta: https://iolanta.tech/
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  owl: http://www.w3.org/2002/07/owl#
+
+  $: rdfs:label
+  →:
+    "@type": "@id"
+    "@id": iolanta:outputs
+  ⊆:
+    "@type": "@id"
+    "@id": rdfs:subClassOf
+  iolanta:hasDatatypeFacet:
+    "@type": "@id"
+
+$included:
+  - $id: https://iolanta.tech/datatypes/search-result
+    $type: owl:Class
+    ⊆: rdfs:Datatype
+    $: Search Result
+    rdfs:comment: Internal wrapping datatype for an iterable of SearchHit candidates produced by --search.
+
+  - $id: https://iolanta.tech/datatypes/jsonl
+    $type: owl:Class
+    ⊆: rdfs:Datatype
+    $: JSON Lines
+    rdfs:comment: Newline-delimited JSON output format. One JSON object per line, terminated by \n.
+
+  - $id: pkg:pypi/iolanta#search-result-jsonl-facet
+    $type: iolanta:Facet
+    $: Search Result JSONL Facet
+    →: https://iolanta.tech/datatypes/jsonl
+
+  - $id: https://iolanta.tech/datatypes/search-result
+    iolanta:hasDatatypeFacet:
+      - pkg:pypi/iolanta#search-result-jsonl-facet
