@@ -1,0 +1,17 @@
+{
+  "results": [
+    {
+      "uri": ["http://purl.org/dc/terms/creator"],
+      "score": 0.91,
+      "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+      "vocabulary.prefix": ["dct"],
+      "comment": ["An entity primarily responsible for making the resource."]
+    },
+    {
+      "uri": ["http://schema.org/author"],
+      "score": 0.74,
+      "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+      "vocabulary.prefix": ["schema"]
+    }
+  ]
+}
