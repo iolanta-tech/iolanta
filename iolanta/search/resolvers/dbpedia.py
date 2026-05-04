@@ -1,4 +1,5 @@
 """DBpedia Lookup resolver."""
+
 import requests
 
 from iolanta.search.models import SearchHit
