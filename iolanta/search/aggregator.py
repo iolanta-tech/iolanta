@@ -1,4 +1,5 @@
 """Parallel fan-out aggregator that drives the four search resolvers."""
+
 import json
 import sys
 from collections.abc import Iterable
@@ -67,8 +68,8 @@ def _emit_failure(source: str, error: Exception) -> None:
         error: Exception instance whose ``str()`` becomes the message.
     """
     sys.stderr.write(
-        '{0}\n'.format(
-            json.dumps({'source': source, 'error': str(error)}),
+        "{0}\n".format(
+            json.dumps({"source": source, "error": str(error)}),
         ),
     )
     sys.stderr.flush()
