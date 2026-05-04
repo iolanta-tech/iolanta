@@ -1,4 +1,5 @@
 """Common protocol for the four search resolvers."""
+
 from typing import Protocol
 
 import requests
