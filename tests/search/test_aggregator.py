@@ -8,6 +8,10 @@ import requests
 from iolanta.search.aggregator import run_search
 from iolanta.search.models import SearchHit
 
+_STUB_SLEEP_SECONDS = 0.3
+# 4 * 0.3 sequential = 1.2; parallel ~0.3 + slack
+_PARALLEL_WALL_CLOCK_BUDGET_SECONDS = 0.9
+
 
 class _StubResolver:
     def __init__(self, source_name, hits=None, raises=None, sleep=0):
@@ -35,15 +39,15 @@ def _hit(source: str) -> SearchHit:
 
 def test_run_search_yields_hits_from_all_resolvers():  # noqa: WPS118
     stubs = (
-        _StubResolver("wikidata", hits=[_hit("wikidata")]),
-        _StubResolver("dbpedia", hits=[_hit("dbpedia")]),
+        _StubResolver("wikidata", hits=[_hit("wikidata")]),  # noqa: WPS226
+        _StubResolver("dbpedia", hits=[_hit("dbpedia")]),  # noqa: WPS226
         _StubResolver("nanopublication", hits=[_hit("nanopublication")]),
         _StubResolver("lov", hits=[_hit("lov")]),
     )
     with patch("iolanta.search.aggregator.RESOLVERS", stubs):
-        results = list(run_search("anything"))
+        hits = list(run_search("anything"))
 
-    sources = sorted(hit.source for hit in results)
+    sources = sorted(hit.source for hit in hits)
     assert sources == ["dbpedia", "lov", "nanopublication", "wikidata"]
 
 
@@ -55,9 +59,9 @@ def test_run_search_emits_stderr_line_when_resolver_raises(  # noqa: WPS118
         _StubResolver("dbpedia", raises=requests.RequestException("kaput")),
     )
     with patch("iolanta.search.aggregator.RESOLVERS", stubs):
-        results = list(run_search("anything"))
+        hits = list(run_search("anything"))
 
-    assert [hit.source for hit in results] == ["wikidata"]
+    assert [hit.source for hit in hits] == ["wikidata"]
     err_lines = [
         json.loads(line)
         for line in capsys.readouterr().err.splitlines()
@@ -69,7 +73,11 @@ def test_run_search_emits_stderr_line_when_resolver_raises(  # noqa: WPS118
 def test_run_search_runs_resolvers_in_parallel():
     """Total wall time must be ~max(per-resolver sleep), not the sum."""
     stubs = tuple(
-        _StubResolver(f"src{index}", hits=[_hit(f"src{index}")], sleep=0.3)
+        _StubResolver(
+            f"src{index}",
+            hits=[_hit(f"src{index}")],
+            sleep=_STUB_SLEEP_SECONDS,
+        )
         for index in range(4)
     )
     with patch("iolanta.search.aggregator.RESOLVERS", stubs):
@@ -77,4 +85,4 @@ def test_run_search_runs_resolvers_in_parallel():
         list(run_search("anything"))
         elapsed = time.monotonic() - start
     # Sequential would take 4 * 0.3 = 1.2s; parallel ~0.3s (slack).
-    assert elapsed < 0.9
+    assert elapsed < _PARALLEL_WALL_CLOCK_BUDGET_SECONDS  # noqa: WPS459
