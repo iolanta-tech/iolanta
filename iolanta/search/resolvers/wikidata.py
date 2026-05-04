@@ -1,4 +1,5 @@
 """Wikidata Reconciliation API resolver."""
+
 import json
 
 import requests
