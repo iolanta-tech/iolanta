@@ -1,4 +1,5 @@
 """Data models for the search subsystem."""
+
 from dataclasses import dataclass
 
 
