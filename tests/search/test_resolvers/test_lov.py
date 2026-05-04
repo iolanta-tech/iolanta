@@ -1,4 +1,5 @@
 """Test LovResolver against captured LOV term-search responses."""
+
 import json
 from pathlib import Path
 from unittest.mock import MagicMock
