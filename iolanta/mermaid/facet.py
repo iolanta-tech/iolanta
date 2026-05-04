@@ -5,7 +5,7 @@ from typing import Iterable
 import funcy
 from pydantic import AnyUrl
 from rdflib import BNode, Literal, URIRef
-from rdflib.term import Node
+from rdflib.term import IdentifiedNode, Node
 
 from iolanta import Facet
 from iolanta.mermaid.models import (
@@ -23,20 +23,37 @@ from iolanta.namespaces import DATATYPES
 
 def filter_edges(edges: Iterable[MermaidEdge]) -> Iterable[MermaidEdge]:
     for edge in edges:
-        if isinstance(edge.target, MermaidLiteral) and edge.source.title == edge.target.title:
+        if (
+            isinstance(edge.target, MermaidLiteral)
+            and edge.source.title == edge.target.title
+        ):
             continue
 
         yield edge
 
 
-def filter_nodes(edges: Iterable[MermaidEdge], except_uris: Iterable[NotLiteralNode]) -> Iterable[MermaidURINode | MermaidLiteral | MermaidBlankNode]:
-    nodes = [
-        node
-        for edge in edges
-        for node in edge.nodes
-    ]
+def _mermaid_node_identity(
+    node: MermaidURINode | MermaidLiteral | MermaidBlankNode,
+) -> IdentifiedNode | Literal:
+    """RDF term used to dedupe node declarations (one Mermaid line per graph node)."""
+    match node:
+        case MermaidURINode(uri=uri):
+            return uri
+        case MermaidLiteral(literal=literal):
+            return literal
+        case MermaidBlankNode(node=bnode):
+            return bnode
 
-    literals_in_edges = {edge.target for edge in edges if isinstance(edge.target, MermaidLiteral)}
+
+def filter_nodes(
+    edges: Iterable[MermaidEdge], except_uris: Iterable[NotLiteralNode]
+) -> Iterable[MermaidURINode | MermaidLiteral | MermaidBlankNode]:
+    nodes = [node for edge in edges for node in edge.nodes]
+
+    literals_in_edges = {
+        edge.target for edge in edges if isinstance(edge.target, MermaidLiteral)
+    }
+    seen: set[IdentifiedNode | Literal] = set()
     for node in nodes:
         if isinstance(node, MermaidLiteral) and node not in literals_in_edges:
             continue
@@ -50,39 +67,54 @@ def filter_nodes(edges: Iterable[MermaidEdge], except_uris: Iterable[NotLiteralN
         if isinstance(node, MermaidSubgraph):
             continue
 
+        identity = _mermaid_node_identity(node)
+        if identity in seen:
+            continue
+        seen.add(identity)
         yield node
 
 
 class Mermaid(Facet[str]):
     """Mermaid diagram."""
 
-    META = Path(__file__).parent / 'mermaid.yamlld'
+    META = Path(__file__).parent / "mermaid.yamlld"
 
     def as_mermaid(self, node: Node):
         match node:
             case URIRef() as uri:
                 if uri in self.subgraph_uris:
-                    return MermaidSubgraph(children=[], uri=uri, title=self.render(uri, as_datatype=DATATYPES.title))
+                    return MermaidSubgraph(
+                        children=[],
+                        uri=uri,
+                        title=self.render(uri, as_datatype=DATATYPES.title),
+                    )
 
-                return MermaidURINode(uri=uri, url=AnyUrl(uri), title=self.render(uri, as_datatype=DATATYPES.title))
+                return MermaidURINode(
+                    uri=uri,
+                    url=AnyUrl(uri),
+                    title=self.render(uri, as_datatype=DATATYPES.title),
+                )
             case Literal() as literal:
                 return MermaidLiteral(literal=literal)
             case BNode() as bnode:
-                return MermaidBlankNode(node=bnode, title=self.render(bnode, as_datatype=DATATYPES.title))
+                return MermaidBlankNode(
+                    node=bnode, title=self.render(bnode, as_datatype=DATATYPES.title)
+                )
             case unknown:
                 unknown_type = type(unknown)
-                raise ValueError(f'Unknown something: {unknown} ({unknown_type})')
+                raise ValueError(f"Unknown something: {unknown} ({unknown_type})")
 
     def construct_mermaid_for_graph(self, graph: URIRef) -> Iterable[MermaidScalar]:
         """Render graph as mermaid."""
-        rows = self.stored_query('graph.sparql', this=graph)
+        rows = self.stored_query("graph.sparql", this=graph)
         edges = [
             MermaidEdge(
-                source=self.as_mermaid(row['s']),
-                target=self.as_mermaid(row['o']),
-                title=self.render(row['p'], as_datatype=DATATYPES.title),
-                predicate=row['p'],
-            ) for row in rows
+                source=self.as_mermaid(row["s"]),
+                target=self.as_mermaid(row["o"]),
+                title=self.render(row["p"], as_datatype=DATATYPES.title),
+                predicate=row["p"],
+            )
+            for row in rows
         ]
 
         edges = list(filter_edges(edges))
@@ -99,8 +131,8 @@ class Mermaid(Facet[str]):
     def subgraph_uris(self) -> set[NotLiteralNode]:
         return set(
             funcy.pluck(
-                'subgraph',
-                self.stored_query('subgraphs.sparql', this=self.this),
+                "subgraph",
+                self.stored_query("subgraphs.sparql", this=self.this),
             ),
         )
 
