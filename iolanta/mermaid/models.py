@@ -19,6 +19,17 @@ DATATYPE_ICONS: dict[URIRef, str] = {
     XSD.boolean: "✅",
 }
 
+# Full 32-char MD5 node ids inflate Mermaid source past common renderer limits;
+# truncated digests stay stable for a given input and collide rarely in doc-sized graphs.
+_MERMAID_ID_HASH_LEN = 12
+
+
+def _mermaid_stable_short_id(*material: str) -> str:
+    """Return a short hex prefix of MD5(material), stable for identical inputs."""
+    return hashlib.md5("\x1f".join(material).encode()).hexdigest()[
+        :_MERMAID_ID_HASH_LEN
+    ]
+
 
 def escape_label(label: str) -> str:
     """Escape a label and return it wrapped in appropriate quotes.
@@ -69,8 +80,7 @@ class MermaidAnchorNode(MermaidScalar, frozen=True):
 
     @property
     def id(self) -> str:
-        name_hash = hashlib.md5(self.name.encode()).hexdigest()
-        return f"Anchor_{name_hash}"
+        return f"Anchor_{_mermaid_stable_short_id(self.name)}"
 
 
 class MermaidTextNode(MermaidScalar, frozen=True):
@@ -85,8 +95,7 @@ class MermaidTextNode(MermaidScalar, frozen=True):
 
     @property
     def id(self) -> str:
-        name_hash = hashlib.md5(self.name.encode()).hexdigest()
-        return f"Text_{name_hash}"
+        return f"Text_{_mermaid_stable_short_id(self.name)}"
 
     @property
     def escaped_title(self) -> str:
@@ -112,8 +121,7 @@ class MermaidLabelNode(MermaidScalar, frozen=True):
 
     @property
     def id(self) -> str:
-        name_hash = hashlib.md5(self.name.encode()).hexdigest()
-        return f"Label_{name_hash}"
+        return f"Label_{_mermaid_stable_short_id(self.name)}"
 
     @property
     def escaped_title(self) -> str:
@@ -136,8 +144,7 @@ class MermaidHTMLNode(MermaidScalar, frozen=True):
 
     @property
     def id(self) -> str:
-        name_hash = hashlib.md5(self.name.encode()).hexdigest()
-        return f"Html_{name_hash}"
+        return f"Html_{_mermaid_stable_short_id(self.name)}"
 
 
 class MermaidDotNode(MermaidScalar, frozen=True):
@@ -150,8 +157,7 @@ class MermaidDotNode(MermaidScalar, frozen=True):
 
     @property
     def id(self) -> str:
-        name_hash = hashlib.md5(self.name.encode()).hexdigest()
-        return f"Dot_{name_hash}"
+        return f"Dot_{_mermaid_stable_short_id(self.name)}"
 
 
 class MermaidURINode(MermaidScalar, frozen=True):
@@ -195,8 +201,7 @@ class MermaidLiteral(MermaidScalar, frozen=True):
     def id(self) -> str:
         # Use the lexical form of the literal, not rdflib's .value (which may be empty for typed literals),
         # to ensure different texts get distinct node IDs in Mermaid.
-        value_hash = hashlib.md5(str(self.literal).encode()).hexdigest()
-        return f"Literal-{value_hash}"
+        return f"Literal-{_mermaid_stable_short_id(str(self.literal))}"
 
 
 class MermaidBlankNode(MermaidScalar):
@@ -207,7 +212,8 @@ class MermaidBlankNode(MermaidScalar):
 
     @property
     def id(self) -> str:
-        return self.node.replace("_:", "")
+        # rdflib blank node labels are long hex strings; hash keeps ids short and stable per n3 identity.
+        return f"B{_mermaid_stable_short_id(str(self.node))}"
 
     @property
     def escaped_title(self) -> str:
@@ -219,7 +225,6 @@ class MermaidEdge(MermaidScalar):
     """
     {self.source.id} --- {self.id}([{self.escaped_title}])--> {self.target.id}
     click {self.id} "{self.predicate}"
-    class {self.id} predicate
     """
 
     source: MermaidScalar | MermaidSubgraph
@@ -229,9 +234,11 @@ class MermaidEdge(MermaidScalar):
 
     @property
     def id(self) -> str:
-        return hashlib.md5(
-            f"{self.source.id}{self.predicate}{self.target.id}".encode()  # noqa: WPS237
-        ).hexdigest()
+        return _mermaid_stable_short_id(
+            f"{self.source.id}",
+            str(self.predicate),
+            f"{self.target.id}",
+        )
 
     @property
     def nodes(self):
@@ -251,9 +258,7 @@ class MermaidPlainEdge(MermaidScalar):
 
     @property
     def id(self) -> str:
-        return hashlib.md5(
-            f"{self.source.id}{self.target.id}".encode(),
-        ).hexdigest()
+        return _mermaid_stable_short_id(f"{self.source.id}", f"{self.target.id}")
 
     @property
     def nodes(self):
@@ -268,9 +273,9 @@ class MermaidInvisibleEdge(MermaidScalar):
 
     @property
     def id(self) -> str:
-        return hashlib.md5(
-            f"{self.source.id}{self.target.id}invisible".encode(),
-        ).hexdigest()
+        return _mermaid_stable_short_id(
+            f"{self.source.id}", f"{self.target.id}", "invisible"
+        )
 
     @property
     def nodes(self):
@@ -285,9 +290,9 @@ class MermaidArrowEdge(MermaidScalar):
 
     @property
     def id(self) -> str:
-        return hashlib.md5(
-            f"{self.source.id}{self.target.id}arrow".encode(),
-        ).hexdigest()
+        return _mermaid_stable_short_id(
+            f"{self.source.id}", f"{self.target.id}", "arrow"
+        )
 
     @property
     def nodes(self):
@@ -309,8 +314,7 @@ class MermaidSubgraph(Documented, BaseModel, arbitrary_types_allowed=True, froze
 
     @property
     def id(self):
-        uri_hash = hashlib.md5(str(self.uri).encode()).hexdigest()
-        return f"subgraph_{uri_hash}"
+        return f"subgraph_{_mermaid_stable_short_id(str(self.uri))}"
 
     @property
     def escaped_title(self) -> str:
@@ -340,12 +344,35 @@ class Diagram(Documented, BaseModel):
       classDef label fill:transparent,stroke:transparent,color:#e5e7eb,stroke-width:0px;
       classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
       classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-      {self.formatted_tail}
+      {self.batched_predicate_class_line}{self.formatted_tail}
     """
 
     children: list[MermaidScalar | MermaidSubgraph]
     direction: Direction = Direction.LR
     tail: str | None = None
+
+    @staticmethod
+    def _predicate_mid_edge_ids(
+        children: list[MermaidScalar | MermaidSubgraph],
+    ) -> list[str]:
+        """Collect MermaidEdge middle-node ids (predicate labels on edges)."""
+        found: list[str] = []
+        for child in children:
+            if isinstance(child, MermaidEdge):
+                found.append(child.id)
+            elif isinstance(child, MermaidSubgraph):
+                found.extend(
+                    Diagram._predicate_mid_edge_ids(list(child.children)),
+                )
+        return found
+
+    @property
+    def batched_predicate_class_line(self) -> str:
+        """One Mermaid `class` line for all predicate-style edge nodes."""
+        ids = Diagram._predicate_mid_edge_ids(self.children)
+        if not ids:
+            return ""
+        return f"class {','.join(ids)} predicate\n"
 
     @property
     def formatted_tail(self) -> str:
