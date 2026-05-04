@@ -1,9 +1,16 @@
 import re
+from pathlib import Path
 from types import MappingProxyType
 
 from rdflib import URIRef
 
+from iolanta.conversions import path_to_iri
+
 # All entries are (pattern, replacement) strings; pattern may be regex with $ for exact match.
+PROJECT_ROOT = Path(__file__).parents[2]
+LOCAL_VISUALIZATIONS_URL = "https://iolanta.tech/visualizations/"
+LOCAL_VISUALIZATIONS_PATH = PROJECT_ROOT / "docs/visualizations"
+
 REDIRECTS = MappingProxyType(
     {
         # FIXME This is presently hardcoded; we need to
@@ -44,6 +51,11 @@ def apply_redirect(source: URIRef) -> URIRef:  # noqa: WPS210
     - Replace the source with the destination, substituting any regex groups
     """
     source_str = str(source)
+    if source_str.startswith(LOCAL_VISUALIZATIONS_URL):
+        relative_path = source_str.removeprefix(LOCAL_VISUALIZATIONS_URL)
+        local_path = LOCAL_VISUALIZATIONS_PATH / relative_path
+        if local_path.is_file():
+            return path_to_iri(local_path)
 
     for pattern, destination in REDIRECTS.items():
         pattern_str = str(pattern)
