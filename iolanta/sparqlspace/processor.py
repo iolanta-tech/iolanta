@@ -25,6 +25,7 @@ from yaml_ld.document_loaders.content_types import ParserNotFound
 from yaml_ld.errors import NoLinkedDataFoundInHTML, NotFound, YAMLLDError
 from yarl import URL
 
+from iolanta import conversions
 from iolanta.errors import UnresolvedIRI
 from iolanta.namespaces import (  # noqa: WPS235
     DC,
@@ -44,8 +45,9 @@ REASONING_ENABLED = True
 OWL_REASONING_ENABLED = False
 
 INFERENCE_DIR = Path(__file__).parent / "inference"
+PROJECT_ROOT = Path(__file__).parents[2]
 INDICES = [  # noqa: WPS407
-    URIRef("https://iolanta.tech/visualizations/index.yaml"),
+    conversions.path_to_iri(PROJECT_ROOT / "docs/visualizations/index.yaml"),
 ]
 
 
@@ -76,7 +78,7 @@ def _extract_from_mapping(  # noqa: WPS213, WPS231
 ) -> Iterable[URIRef | Variable]:
     match algebra.name:  # noqa: WPS242
         case "SelectQuery" | "AskQuery" | "Project" | "Distinct" | "Slice":
-            yield from extract_mentioned_urls(algebra["p"])  # noqa: WPS226
+            yield from extract_mentioned_urls(algebra["p"])  # noqa: WPS204, WPS226
 
         case "BGP":
             yield from [  # noqa: WPS353, WPS221
@@ -604,7 +606,14 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
 
         url = URL(source)
 
-        if url.scheme in {"file", "python", "local", "urn", "doi"}:
+        if url.scheme == "file" and conversions.url_to_path(url).name.startswith(
+            "context."
+        ):
+            # FIXME temporary fix. `yaml-ld` doesn't read `context.*` files and
+            #   fails.
+            return Skipped()
+
+        if url.scheme in {"python", "local", "urn", "doi"}:
             # FIXME temporary fix. `yaml-ld` doesn't read `context.*` files and
             #   fails.
             return Skipped()
