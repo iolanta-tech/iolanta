@@ -26,6 +26,7 @@ from iolanta.query_result import (
     SPARQLParseException,
     SelectResult,
 )
+from iolanta.search.aggregator import run_search
 
 DEFAULT_LANGUAGE = locale.getlocale()[0].split("_")[0]
 
@@ -236,13 +237,20 @@ def render_and_return(  # noqa: WPS210, WPS231
 
 
 @app.command(name="render")
-def render_command(  # noqa: WPS231, WPS238, WPS210, C901
+def render_command(  # noqa: WPS231, WPS238, WPS210, WPS211, WPS213, C901
     url: Annotated[str | None, Argument()] = None,
     query: Annotated[
         str | None,
         Option(
             "--query",
             help="SPARQL query to execute.",
+        ),
+    ] = None,
+    search: Annotated[
+        str | None,
+        Option(
+            "--search",
+            help="Notion to look up across linked-data search APIs.",
         ),
     ] = None,
     as_datatype: Annotated[
@@ -288,8 +296,33 @@ def render_command(  # noqa: WPS231, WPS238, WPS210, C901
             print_renderable(renderable)
         return
 
+    if search is not None:
+        if as_datatype is None:
+            console.print("Error: --search requires --as (e.g. --as jsonl)")
+            raise Exit(1)
+
+        search_node = Literal(
+            run_search(search),
+            datatype=DATATYPES["search-result"],
+        )
+
+        try:
+            renderable = render_and_return(
+                node=search_node,
+                as_datatype=as_datatype,
+                language=language,
+                log_level=log_level,
+            )
+        except (DocumentedError, FacetNotFound) as error:
+            handle_error(error, log_level, use_markdown=True)
+        except Exception as error:
+            handle_error(error, log_level, use_markdown=False)
+        else:
+            print_renderable(renderable)
+        return
+
     if url is None:
-        console.print("Error: Either URL or --query must be provided")
+        console.print("Error: URL, --query, or --search must be provided")
         raise Exit(1)
 
     # For URLs, default to interactive mode
