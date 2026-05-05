@@ -50,8 +50,8 @@ def test_search_jsonl_emits_one_line_per_hit(mock_run_search, runner):
 
 
 @patch("iolanta.cli.main.run_search")
-def test_search_default_as_raises_facet_not_found(mock_run_search, runner):
-    """Bare `iolanta --search Asimov` (no --as) is the deliberate v0 crash."""
+def test_search_without_as_exits_with_error(mock_run_search, runner):
+    """Bare `iolanta --search Asimov` (no --as) exits 1 with a clear error."""
     mock_run_search.return_value = iter([
         _hit("wikidata", "https://www.wikidata.org/entity/Q34981"),
     ])
