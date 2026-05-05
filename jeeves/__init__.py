@@ -214,9 +214,20 @@ def _dump_iolanta_output(
     console.print(f"[green]Written[/green] {target}")
 
 
+_REMOTE_CONTEXTS_CONSIDERED_HARMFUL_DIR = (
+    project_directory.parent / "docs/blog/remote-contexts-considered-harmful"
+)
+
+
+def generate_remote_contexts_index_mmd():
+    """Regenerate `index.mmd` (Mermaid) from `index.md` for the remote-contexts post."""
+    blog = _REMOTE_CONTEXTS_CONSIDERED_HARMFUL_DIR
+    _dump_iolanta_output(blog / "index.md", blog / "index.mmd")
+
+
 def generate_remote_contexts_considered_harmful_artifacts():
     """Regenerate all derived outputs for `remote-contexts-considered-harmful`."""
-    directory = project_directory.parent / "docs/blog/remote-contexts-considered-harmful"
+    directory = _REMOTE_CONTEXTS_CONSIDERED_HARMFUL_DIR
 
     tasks = (
         lambda: dump_pyld_output(
@@ -239,6 +250,10 @@ def generate_remote_contexts_considered_harmful_artifacts():
             directory / "john-lennon.yamlld",
             directory / "john-lennon.mmd",
         ),
+        lambda: _dump_iolanta_output(
+            directory / "index.md",
+            directory / "index.mmd",
+        ),
     )
 
     with ThreadPoolExecutor() as executor:
@@ -246,12 +261,14 @@ def generate_remote_contexts_considered_harmful_artifacts():
             future.result()
 
 
-_TRUSTED_DOMAINS = frozenset((
-    "w3.org",
-    "xmlns.com",
-    "schema.org",
-    "schemas.org",
-))
+_TRUSTED_DOMAINS = frozenset(
+    (
+        "w3.org",
+        "xmlns.com",
+        "schema.org",
+        "schemas.org",
+    )
+)
 
 
 def sync_prefix_cc():
@@ -279,3 +296,84 @@ def sync_prefix_cc():
         ),
     )
     console.print(f"[green]Written {len(entries)} prefixes[/green]")
+
+
+def refresh_search_fixtures(notion: str = "Isaac Asimov"):
+    """Recapture the four search-resolver fixtures from live APIs.
+
+    Manual command. Not run in CI. Use this when an upstream API contract drift
+    is suspected and the captured fixtures need refreshing.
+    """
+    fixtures_dir = project_directory.parent / "tests/search/fixtures"
+    fixtures_dir.mkdir(parents=True, exist_ok=True)
+
+    with requests.Session() as session:
+        session.headers["User-Agent"] = "iolanta-fixture-refresh"
+
+        wikidata_response = session.get(
+            "https://wikidata-reconciliation.wmcloud.org/en/api",
+            params={
+                "queries": json.dumps({"q0": {"query": notion, "limit": 10}}),
+            },
+            timeout=30,
+        )
+        wikidata_response.raise_for_status()
+        (fixtures_dir / "wikidata_asimov.json").write_text(
+            json.dumps(wikidata_response.json(), indent=2, ensure_ascii=False),
+        )
+        console.print("[green]Refreshed[/green] wikidata_asimov.json")
+
+        dbpedia_response = session.get(
+            "https://lookup.dbpedia.org/api/search",
+            params={"query": notion, "maxResults": 10, "format": "JSON"},
+            headers={"Accept": "application/json"},
+            timeout=30,
+        )
+        dbpedia_response.raise_for_status()
+        (fixtures_dir / "dbpedia_asimov.json").write_text(
+            json.dumps(dbpedia_response.json(), indent=2, ensure_ascii=False),
+        )
+        console.print("[green]Refreshed[/green] dbpedia_asimov.json")
+
+        sparql_query = (
+            'PREFIX search: <http://www.openrdf.org/contrib/lucenesail#>\n'
+            'SELECT DISTINCT ?subj ?score WHERE {\n'
+            '  ?subj search:matches [\n'
+            f'    search:query "{notion}" ;\n'
+            '    search:score ?score\n'
+            '  ] .\n'
+            '} ORDER BY DESC(?score) LIMIT 10'
+        )
+        nanopub_response = session.get(
+            "https://query.knowledgepixels.com/repo/text",
+            params={"query": sparql_query},
+            headers={"Accept": "application/sparql-results+json"},
+            timeout=30,
+        )
+        nanopub_response.raise_for_status()
+        (fixtures_dir / "nanopub_asimov.sparql-json").write_text(
+            json.dumps(nanopub_response.json(), indent=2, ensure_ascii=False),
+        )
+        console.print("[green]Refreshed[/green] nanopub_asimov.sparql-json")
+
+        lov_author_response = session.get(
+            "https://lov.linkeddata.es/dataset/lov/api/v2/term/search",
+            params={"q": "author of"},
+            timeout=30,
+        )
+        lov_author_response.raise_for_status()
+        (fixtures_dir / "lov_author.json").write_text(
+            json.dumps(lov_author_response.json(), indent=2, ensure_ascii=False),
+        )
+        console.print("[green]Refreshed[/green] lov_author.json")
+
+        lov_asimov_response = session.get(
+            "https://lov.linkeddata.es/dataset/lov/api/v2/term/search",
+            params={"q": notion},
+            timeout=30,
+        )
+        lov_asimov_response.raise_for_status()
+        (fixtures_dir / "lov_asimov.json").write_text(
+            json.dumps(lov_asimov_response.json(), indent=2, ensure_ascii=False),
+        )
+        console.print("[green]Refreshed[/green] lov_asimov.json")

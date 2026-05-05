@@ -5,6 +5,9 @@ edit_uri: edit/master/docs/
 repo_name: iolanta-tech/iolanta
 copyright: Copyright © 2026 iolanta.tech
 
+exclude_docs: |
+  superpowers/
+
 markdown_extensions:
   - admonition
   - codehilite

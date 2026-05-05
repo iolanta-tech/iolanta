@@ -1,0 +1,15 @@
+{
+  "head": {"vars": ["subj", "score"]},
+  "results": {
+    "bindings": [
+      {
+        "subj": {"type": "uri", "value": "http://purl.org/np/RA7Y8x9z-fake-asimov-1"},
+        "score": {"type": "literal", "datatype": "http://www.w3.org/2001/XMLSchema#float", "value": "12.4"}
+      },
+      {
+        "subj": {"type": "uri", "value": "http://purl.org/np/RA7Y8x9z-fake-asimov-2"},
+        "score": {"type": "literal", "datatype": "http://www.w3.org/2001/XMLSchema#float", "value": "8.31"}
+      }
+    ]
+  }
+}

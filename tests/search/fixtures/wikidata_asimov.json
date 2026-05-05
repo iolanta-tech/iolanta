@@ -1,0 +1,25 @@
+{
+  "q0": {
+    "result": [
+      {
+        "id": "Q34981",
+        "name": "Isaac Asimov",
+        "description": "American writer and biochemist (1920-1992)",
+        "score": 0.94,
+        "type": [
+          {"id": "Q5", "name": "human"},
+          {"id": "Q36180", "name": "writer"}
+        ]
+      },
+      {
+        "id": "Q1571537",
+        "name": "Isaac Asimov's Science Fiction Magazine",
+        "description": "American science fiction magazine",
+        "score": 0.42,
+        "type": [
+          {"id": "Q41298", "name": "magazine"}
+        ]
+      }
+    ]
+  }
+}

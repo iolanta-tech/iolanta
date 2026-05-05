@@ -121,6 +121,10 @@ def build_docs():
 
 **A08.** When debugging facet selection, SPARQL, or graph shape for YAML-LD or JSON-LD you have as a file, run `pyld to-rdf` on that document and inspect the triples before asserting which predicates or literals exist. Do not infer graph content from memory. For remote sources, **A03** still applies.
 
+**A09.** Do not hand-edit generated prefix data in `iolanta/data/prefixes.yamlld`; use a separate non-generated data file for local prefix overrides.
+
+**A10.** When changing bundled visualization overlays in `docs/visualizations/`, verify Iolanta loads the local overlay files rather than the published `https://iolanta.tech/visualizations/` copies.
+
 ## Prose and documentation
 
 **P00.** DRY: no duplicated facts, lists, or citations—say each once, in the right place.
@@ -134,6 +138,8 @@ def build_docs():
 **P04.** In snippet-included Markdown partials (`--8<--`), do not rely on live Jinja expressions being rendered. If a tab body needs dynamic output such as Mermaid, pre-generate the artifact and include the generated file instead.
 
 **P05.** Hidden dotfile Markdown partials placed next to an `index.md` page are acceptable for local snippet includes in this docs setup and do not become standalone MkDocs pages.
+
+**P06.** In documentation prose, format GitHub issue and pull request links with the GitHub Material icon, e.g. `[:material-github: owner/repo#123](https://github.com/owner/repo/issues/123)`.
 
 ## Subdirectory guidance
 

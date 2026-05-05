@@ -2,6 +2,7 @@ PREFIX vs: <https://www.w3.org/2003/06/sw-vocab-status/ns#>
 
 SELECT ?term ?group ?status WHERE {
     ?term rdfs:isDefinedBy $iri .
+    FILTER (?term != $iri)
 
     OPTIONAL {
         ?term rdf:type ?group .

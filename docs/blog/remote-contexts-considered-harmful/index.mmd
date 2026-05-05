@@ -1,0 +1,299 @@
+graph LR
+  Bf89e54622707("Context updates require reissuing documents")
+  https___vocab_methodandstructure_com_ibis_Argument("Argument")
+  click https___vocab_methodandstructure_com_ibis_Argument "https://vocab.methodandstructure.com/ibis#Argument"
+  Bdb67a4225c37("Aggressively cache contexts")
+  B96de9af5e5f1("Cached entries may expire or differ by deployment")
+  Bb357c0431c4b("Repeat processing can survive temporary outages")
+  B9ed80b1e656d("Vetted copies need an update process")
+  B40121b421666("Shared vocabularies are cross-origin by design")
+  Ba9eb731a9e30("The origin model is widely implemented")
+  B1a8ef6296b42("JSON-LD @sri")
+  B383231988dd4("Hash travels with the context reference")
+  B1469a9e8f1bb("Content-addressed context URIs")
+  B20007dcd409e("Content-addressed context schemes have weak adoption")
+  B4fd68375a00e("Use a vetted context allowlist")
+  B13e130a2e5fc("Fits controlled processing environments")
+  Literal-3372d781aa1f[["The integrity hash is carried by the reference itself, with no separate lockfile."]]
+  B0685f72fa6fc("Shared contexts are repeated in every document")
+  Literal-7b9524c5e3d6[["Real JSON-LD documents commonly rely on shared cross-origin vocabularies such as schema.org and w3id.org."]]
+  Literal-05af7767aa1f[["Same-origin policy is already implemented by browsers."]]
+  Literal-5be342a13b79[["Updating an inline context requires reissuing every document that embeds it."]]
+  B0a87a718bdec("Fits Linked Data trust literature")
+  Bc97ecab0f65d("Imported contexts are not covered")
+  Baab43a5bccd1("Hash fragment in application/ld+json")
+  B80eae73a5d4b("The referencing document does not bind the hash")
+  Bf0c7423c62bc("Reduces repeated fetches")
+  B99073f8d9343("No external allowlist is needed")
+  B06013c31b5c2("How should JSON-LD documents avoid remote context risks?")
+  Bc2a89a0c737d("Inline contexts")
+  B9d94180f3b3a("Context servers must cooperate")
+  Bf4ba3ff94fd8("Structured context references are heavier")
+  Literal-ca2071652e15[["Remote JSON-LD contexts make document meaning depend on mutable network resources, which creates risks around changed, spoofed, unavailable, privacy-leaking, or overloaded context servers."]]
+  Literal-533bf2a00042[["The hash is supplied by the response server, not by the document that references the context."]]
+  https___vocab_methodandstructure_com_ibis_Position("Position")
+  click https___vocab_methodandstructure_com_ibis_Position "https://vocab.methodandstructure.com/ibis#Position"
+  Literal-ce0d1238a65a[["Origin policy can be described without a separate deployment-specific allowlist."]]
+  Literal-3143840d7b9c[["The proposal does not yet cover @import chains."]]
+  B4a2f871f02f7("Origin-based policy")
+  B8c909c337620("Origin checks do not validate context content")
+  Bef30dbfcc950("Already available in JSON-LD 1.1")
+  Literal-b5e33717debf[["Protected terms require no new JSON-LD syntax or future revision."]]
+  B6e13a6911ba1("JSON-LD @protected")
+  B01b74e8b2b40("Direct analogy to browser SRI")
+  Literal-04bfa4db6676[["The model is familiar because it mirrors a proven browser standard."]]
+  Literal-e73d1ece70a7[["Cache entries can expire, be evicted, or vary between processors."]]
+  Literal-080d92843927[["Caching reduces repeated requests against shared public context servers."]]
+  https___vocab_methodandstructure_com_ibis_Issue("Issue")
+  click https___vocab_methodandstructure_com_ibis_Issue "https://vocab.methodandstructure.com/ibis#Issue"
+  B0c0e7e06fea2("Does not authenticate fetched bytes")
+  Ba107a6b9cb7e("Existing context URLs must be replaced or aliased")
+  Literal-6557de704284[["Location-based context URLs such as schema.org and w3id.org would need a migration path."]]
+  B5f0353317545("No author syntax change is required")
+  Literal-3781c3ef0e98[["Hash fragments in HTTP responses are transparent to document authors."]]
+  Bbdb7d70b077c("Correct processing does not depend on loader policy")
+  Literal-80f95a5bc3f9[["Content-addressed context URIs align with approaches such as Trusty URIs and nanopublications."]]
+  B7f560c7f7519("The first fetch is still trusted")
+  Literal-4f2842ae8586[["Organizations must update and re-vet cached context copies."]]
+  Literal-5f061e5905ee[["A vetted allowlist works well for archival, reproducible, air-gapped, and privacy-sensitive processing."]]
+  Literal-3734fc262561[["Protected terms prevent some redefinitions but do not authenticate the remote context or pin its content."]]
+  Literal-59f1d4b7b507[["Existing context servers would need to emit the relevant hash information."]]
+  Literal-c9504c3f0069[["A plain context URL becomes an object with metadata, making simple @context usage less readable."]]
+  Literal-124d00f9b9b4[["Inline contexts avoid depending on cache or document-loader configuration."]]
+  B641f043d8de7("Unknown context URLs are refused")
+  Bc780551a69d3("The document carries its own term definitions")
+  Literal-203ce8a7fdc7[["Origin policy restricts who can serve a context, not what bytes the context contains or whether it remains available."]]
+  Bcf3631293047("The URI itself checks integrity")
+  Literal-77a04c8cbb4f[["Mutation produces a different content-addressed URI by construction."]]
+  B26a7c81b7170("Meaningful protection requires inline setup")
+  Literal-6d8ea9bbe404[["Key terms must be declared inline before loading later contexts, reducing the value of loading them remotely."]]
+  Literal-a3d9acc223f3[["Large shared contexts such as schema.org become verbose when embedded repeatedly."]]
+  Literal-b31eaf149dee[["Caching does not authenticate the first response or make spoofed bytes trustworthy."]]
+  B12a470ae96f5("Trust policy does not travel with the document")
+  Literal-e66f98cdcb65[["Another deployment may resolve the same context URLs differently."]]
+  Literal-489c7cc3ef52[["The ni scheme has no mainstream adoption, and IPFS adds infrastructure dependency."]]
+  Literal-c6024b6ce405[["A vetted allowlist can refuse unknown context URLs instead of fetching them."]]
+  Literal-6ee14fa825c0[["Inline contexts make the document fully carry the term definitions it depends on."]]
+  Literal-9a1a7a1280c5[["A warm cache can tolerate temporary server or network failures."]]
+  Bf89e54622707 --- 196d43cbdf11(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click 196d43cbdf11 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  Bdb67a4225c37 --- e84baee6286c(["opposed by"])--> B96de9af5e5f1
+  click e84baee6286c "https://vocab.methodandstructure.com/ibis#opposed-by"
+  Bb357c0431c4b --- 55795af7d924(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click 55795af7d924 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B9ed80b1e656d --- e13d2533100c(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click e13d2533100c "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B40121b421666 --- f857ebc6e504(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click f857ebc6e504 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  Ba9eb731a9e30 --- 83c24ca887aa(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click 83c24ca887aa "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B1a8ef6296b42 --- 49e96341cb63(["supported by"])--> B383231988dd4
+  click 49e96341cb63 "https://vocab.methodandstructure.com/ibis#supported-by"
+  B1469a9e8f1bb --- d361934ba253(["opposed by"])--> B20007dcd409e
+  click d361934ba253 "https://vocab.methodandstructure.com/ibis#opposed-by"
+  B4fd68375a00e --- ee0fd7b9aa5f(["supported by"])--> B13e130a2e5fc
+  click ee0fd7b9aa5f "https://vocab.methodandstructure.com/ibis#supported-by"
+  B383231988dd4 --- cad56228a64c(["comment"])--> Literal-3372d781aa1f
+  click cad56228a64c "http://www.w3.org/2000/01/rdf-schema#comment"
+  B0685f72fa6fc --- c5b2b643ee48(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click c5b2b643ee48 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B4fd68375a00e --- 09f4a8451739(["opposed by"])--> B9ed80b1e656d
+  click 09f4a8451739 "https://vocab.methodandstructure.com/ibis#opposed-by"
+  B96de9af5e5f1 --- e120522b7054(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click e120522b7054 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B40121b421666 --- 210abd129985(["comment"])--> Literal-7b9524c5e3d6
+  click 210abd129985 "http://www.w3.org/2000/01/rdf-schema#comment"
+  Ba9eb731a9e30 --- e0bb3dc849ed(["comment"])--> Literal-05af7767aa1f
+  click e0bb3dc849ed "http://www.w3.org/2000/01/rdf-schema#comment"
+  Bf89e54622707 --- 00aa94c1f449(["comment"])--> Literal-5be342a13b79
+  click 00aa94c1f449 "http://www.w3.org/2000/01/rdf-schema#comment"
+  B1469a9e8f1bb --- 5074d83f2973(["supported by"])--> B0a87a718bdec
+  click 5074d83f2973 "https://vocab.methodandstructure.com/ibis#supported-by"
+  Bc97ecab0f65d --- 0f763fd8cded(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click 0f763fd8cded "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  Baab43a5bccd1 --- e1baa1baad17(["opposed by"])--> B80eae73a5d4b
+  click e1baa1baad17 "https://vocab.methodandstructure.com/ibis#opposed-by"
+  Bf0c7423c62bc --- 822dabe6be8f(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click 822dabe6be8f "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B99073f8d9343 --- 95d1d031894e(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click 95d1d031894e "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B06013c31b5c2 --- 49bfb3cf0009(["response"])--> Bc2a89a0c737d
+  click 49bfb3cf0009 "https://vocab.methodandstructure.com/ibis#response"
+  B06013c31b5c2 --- 044ec00c58b6(["response"])--> B1a8ef6296b42
+  click 044ec00c58b6 "https://vocab.methodandstructure.com/ibis#response"
+  Baab43a5bccd1 --- 756f74004ad9(["opposed by"])--> B9d94180f3b3a
+  click 756f74004ad9 "https://vocab.methodandstructure.com/ibis#opposed-by"
+  Bf4ba3ff94fd8 --- 7fd88708111f(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click 7fd88708111f "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B06013c31b5c2 --- 1453f187b416(["comment"])--> Literal-ca2071652e15
+  click 1453f187b416 "http://www.w3.org/2000/01/rdf-schema#comment"
+  B80eae73a5d4b --- 8abdf00cb2e6(["comment"])--> Literal-533bf2a00042
+  click 8abdf00cb2e6 "http://www.w3.org/2000/01/rdf-schema#comment"
+  B1469a9e8f1bb --- 33230ee86919(["type"])--> https___vocab_methodandstructure_com_ibis_Position
+  click 33230ee86919 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B99073f8d9343 --- cd7adf56a157(["comment"])--> Literal-ce0d1238a65a
+  click cd7adf56a157 "http://www.w3.org/2000/01/rdf-schema#comment"
+  Bc97ecab0f65d --- 0b29cecdbdd0(["comment"])--> Literal-3143840d7b9c
+  click 0b29cecdbdd0 "http://www.w3.org/2000/01/rdf-schema#comment"
+  B4a2f871f02f7 --- 5de946e63e95(["opposed by"])--> B8c909c337620
+  click 5de946e63e95 "https://vocab.methodandstructure.com/ibis#opposed-by"
+  B06013c31b5c2 --- db2a30ffdc4f(["response"])--> Bdb67a4225c37
+  click db2a30ffdc4f "https://vocab.methodandstructure.com/ibis#response"
+  B06013c31b5c2 --- cac0e668291f(["response"])--> Baab43a5bccd1
+  click cac0e668291f "https://vocab.methodandstructure.com/ibis#response"
+  Bef30dbfcc950 --- b1fdc897157e(["comment"])--> Literal-b5e33717debf
+  click b1fdc897157e "http://www.w3.org/2000/01/rdf-schema#comment"
+  B06013c31b5c2 --- c97ef3640134(["response"])--> B6e13a6911ba1
+  click c97ef3640134 "https://vocab.methodandstructure.com/ibis#response"
+  B06013c31b5c2 --- 38f7f74acfc0(["response"])--> B1469a9e8f1bb
+  click 38f7f74acfc0 "https://vocab.methodandstructure.com/ibis#response"
+  B01b74e8b2b40 --- 177beaf72504(["comment"])--> Literal-04bfa4db6676
+  click 177beaf72504 "http://www.w3.org/2000/01/rdf-schema#comment"
+  B96de9af5e5f1 --- f11d571a490d(["comment"])--> Literal-e73d1ece70a7
+  click f11d571a490d "http://www.w3.org/2000/01/rdf-schema#comment"
+  B0a87a718bdec --- 47aeff0af1ce(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click 47aeff0af1ce "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  Bf0c7423c62bc --- a6d0fb7719df(["comment"])--> Literal-080d92843927
+  click a6d0fb7719df "http://www.w3.org/2000/01/rdf-schema#comment"
+  B06013c31b5c2 --- 3d669a27762f(["type"])--> https___vocab_methodandstructure_com_ibis_Issue
+  click 3d669a27762f "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  Bc2a89a0c737d --- e5729fc96757(["opposed by"])--> B0685f72fa6fc
+  click e5729fc96757 "https://vocab.methodandstructure.com/ibis#opposed-by"
+  B0c0e7e06fea2 --- d4694e4cc39c(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click d4694e4cc39c "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  Ba107a6b9cb7e --- 9f07cb7cb3b9(["comment"])--> Literal-6557de704284
+  click 9f07cb7cb3b9 "http://www.w3.org/2000/01/rdf-schema#comment"
+  Baab43a5bccd1 --- 6ae8cc7e55a2(["supported by"])--> B5f0353317545
+  click 6ae8cc7e55a2 "https://vocab.methodandstructure.com/ibis#supported-by"
+  B5f0353317545 --- 3f6c52b352c7(["comment"])--> Literal-3781c3ef0e98
+  click 3f6c52b352c7 "http://www.w3.org/2000/01/rdf-schema#comment"
+  Bc2a89a0c737d --- 955aee5db295(["supported by"])--> Bbdb7d70b077c
+  click 955aee5db295 "https://vocab.methodandstructure.com/ibis#supported-by"
+  B0a87a718bdec --- 8603a835a89e(["comment"])--> Literal-80f95a5bc3f9
+  click 8603a835a89e "http://www.w3.org/2000/01/rdf-schema#comment"
+  B6e13a6911ba1 --- db6e96c0804c(["opposed by"])--> B0c0e7e06fea2
+  click db6e96c0804c "https://vocab.methodandstructure.com/ibis#opposed-by"
+  B7f560c7f7519 --- cb975e07235a(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click cb975e07235a "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B9ed80b1e656d --- 435c30ad4c73(["comment"])--> Literal-4f2842ae8586
+  click 435c30ad4c73 "http://www.w3.org/2000/01/rdf-schema#comment"
+  B13e130a2e5fc --- c1435028f525(["comment"])--> Literal-5f061e5905ee
+  click c1435028f525 "http://www.w3.org/2000/01/rdf-schema#comment"
+  B01b74e8b2b40 --- 8ea7e6b500db(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click 8ea7e6b500db "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B0c0e7e06fea2 --- 475b21f084ee(["comment"])--> Literal-3734fc262561
+  click 475b21f084ee "http://www.w3.org/2000/01/rdf-schema#comment"
+  B9d94180f3b3a --- a498c16bf46f(["comment"])--> Literal-59f1d4b7b507
+  click a498c16bf46f "http://www.w3.org/2000/01/rdf-schema#comment"
+  Bc2a89a0c737d --- ae4b72a65800(["opposed by"])--> Bf89e54622707
+  click ae4b72a65800 "https://vocab.methodandstructure.com/ibis#opposed-by"
+  Bf4ba3ff94fd8 --- 79f6252823d2(["comment"])--> Literal-c9504c3f0069
+  click 79f6252823d2 "http://www.w3.org/2000/01/rdf-schema#comment"
+  Bbdb7d70b077c --- 0846499ef8d9(["comment"])--> Literal-124d00f9b9b4
+  click 0846499ef8d9 "http://www.w3.org/2000/01/rdf-schema#comment"
+  B4fd68375a00e --- 9398de53fd99(["supported by"])--> B641f043d8de7
+  click 9398de53fd99 "https://vocab.methodandstructure.com/ibis#supported-by"
+  B1a8ef6296b42 --- 6375f82db69d(["type"])--> https___vocab_methodandstructure_com_ibis_Position
+  click 6375f82db69d "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  Bdb67a4225c37 --- 986bf5762684(["opposed by"])--> B7f560c7f7519
+  click 986bf5762684 "https://vocab.methodandstructure.com/ibis#opposed-by"
+  Bc2a89a0c737d --- 537c63798d41(["supported by"])--> Bc780551a69d3
+  click 537c63798d41 "https://vocab.methodandstructure.com/ibis#supported-by"
+  B5f0353317545 --- dc6b6f957910(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click dc6b6f957910 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B8c909c337620 --- 8ab9e3c9dc1a(["comment"])--> Literal-203ce8a7fdc7
+  click 8ab9e3c9dc1a "http://www.w3.org/2000/01/rdf-schema#comment"
+  Bcf3631293047 --- 180821d808a8(["comment"])--> Literal-77a04c8cbb4f
+  click 180821d808a8 "http://www.w3.org/2000/01/rdf-schema#comment"
+  B26a7c81b7170 --- 0223c4b18ac3(["comment"])--> Literal-6d8ea9bbe404
+  click 0223c4b18ac3 "http://www.w3.org/2000/01/rdf-schema#comment"
+  B4fd68375a00e --- 229ea1b163a4(["type"])--> https___vocab_methodandstructure_com_ibis_Position
+  click 229ea1b163a4 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B0685f72fa6fc --- a428808a67b5(["comment"])--> Literal-a3d9acc223f3
+  click a428808a67b5 "http://www.w3.org/2000/01/rdf-schema#comment"
+  B7f560c7f7519 --- 7be2efb4ff07(["comment"])--> Literal-b31eaf149dee
+  click 7be2efb4ff07 "http://www.w3.org/2000/01/rdf-schema#comment"
+  Baab43a5bccd1 --- 9ad5e3f78828(["type"])--> https___vocab_methodandstructure_com_ibis_Position
+  click 9ad5e3f78828 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B4fd68375a00e --- 96d654b739be(["opposed by"])--> B12a470ae96f5
+  click 96d654b739be "https://vocab.methodandstructure.com/ibis#opposed-by"
+  B9d94180f3b3a --- 161c059ea25a(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click 161c059ea25a "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B6e13a6911ba1 --- c7a270435d6b(["type"])--> https___vocab_methodandstructure_com_ibis_Position
+  click c7a270435d6b "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B12a470ae96f5 --- 80f58e9056fc(["comment"])--> Literal-e66f98cdcb65
+  click 80f58e9056fc "http://www.w3.org/2000/01/rdf-schema#comment"
+  Bbdb7d70b077c --- 3f0e849beff8(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click 3f0e849beff8 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B1469a9e8f1bb --- a49aff00e74c(["supported by"])--> Bcf3631293047
+  click a49aff00e74c "https://vocab.methodandstructure.com/ibis#supported-by"
+  B06013c31b5c2 --- 853b23dc18e0(["response"])--> B4a2f871f02f7
+  click 853b23dc18e0 "https://vocab.methodandstructure.com/ibis#response"
+  B6e13a6911ba1 --- 30a87c2c79ba(["opposed by"])--> B26a7c81b7170
+  click 30a87c2c79ba "https://vocab.methodandstructure.com/ibis#opposed-by"
+  B26a7c81b7170 --- 0e57f5cee5a8(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click 0e57f5cee5a8 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B4a2f871f02f7 --- ffabfaf3cb08(["opposed by"])--> B40121b421666
+  click ffabfaf3cb08 "https://vocab.methodandstructure.com/ibis#opposed-by"
+  Bdb67a4225c37 --- df0ae3bbd5d4(["supported by"])--> Bf0c7423c62bc
+  click df0ae3bbd5d4 "https://vocab.methodandstructure.com/ibis#supported-by"
+  B641f043d8de7 --- dc3b09026ccd(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click dc3b09026ccd "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  Bef30dbfcc950 --- 245a02c1eef7(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click 245a02c1eef7 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  Bc2a89a0c737d --- 6ed5106e1e06(["type"])--> https___vocab_methodandstructure_com_ibis_Position
+  click 6ed5106e1e06 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B80eae73a5d4b --- da6166551cfc(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click da6166551cfc "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B20007dcd409e --- 44e4def65edc(["comment"])--> Literal-489c7cc3ef52
+  click 44e4def65edc "http://www.w3.org/2000/01/rdf-schema#comment"
+  B4a2f871f02f7 --- 468d88666d7a(["supported by"])--> Ba9eb731a9e30
+  click 468d88666d7a "https://vocab.methodandstructure.com/ibis#supported-by"
+  B13e130a2e5fc --- 1b8ca4bfebb6(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click 1b8ca4bfebb6 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B4a2f871f02f7 --- 261d6a863eab(["type"])--> https___vocab_methodandstructure_com_ibis_Position
+  click 261d6a863eab "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B1a8ef6296b42 --- cc54f5d38dfe(["opposed by"])--> Bf4ba3ff94fd8
+  click cc54f5d38dfe "https://vocab.methodandstructure.com/ibis#opposed-by"
+  B641f043d8de7 --- f4630b32ca77(["comment"])--> Literal-c6024b6ce405
+  click f4630b32ca77 "http://www.w3.org/2000/01/rdf-schema#comment"
+  B4a2f871f02f7 --- f057729a09b0(["supported by"])--> B99073f8d9343
+  click f057729a09b0 "https://vocab.methodandstructure.com/ibis#supported-by"
+  B06013c31b5c2 --- aa75c3a8e580(["response"])--> B4fd68375a00e
+  click aa75c3a8e580 "https://vocab.methodandstructure.com/ibis#response"
+  B1a8ef6296b42 --- fa1d7fd91c69(["opposed by"])--> Bc97ecab0f65d
+  click fa1d7fd91c69 "https://vocab.methodandstructure.com/ibis#opposed-by"
+  Bc780551a69d3 --- de33ec8a8dc5(["comment"])--> Literal-6ee14fa825c0
+  click de33ec8a8dc5 "http://www.w3.org/2000/01/rdf-schema#comment"
+  B20007dcd409e --- 5d653d8bcf42(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click 5d653d8bcf42 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B6e13a6911ba1 --- 6df9677aa9a5(["supported by"])--> Bef30dbfcc950
+  click 6df9677aa9a5 "https://vocab.methodandstructure.com/ibis#supported-by"
+  Ba107a6b9cb7e --- 38b3183c2f81(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click 38b3183c2f81 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  Bb357c0431c4b --- 156c726d487b(["comment"])--> Literal-9a1a7a1280c5
+  click 156c726d487b "http://www.w3.org/2000/01/rdf-schema#comment"
+  B1469a9e8f1bb --- 67103faddc96(["opposed by"])--> Ba107a6b9cb7e
+  click 67103faddc96 "https://vocab.methodandstructure.com/ibis#opposed-by"
+  Bc780551a69d3 --- c88e0d723a69(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click c88e0d723a69 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B8c909c337620 --- 1503841ff43c(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click 1503841ff43c "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B12a470ae96f5 --- d219bc0d0df9(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click d219bc0d0df9 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  Bcf3631293047 --- eea42b699c02(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click eea42b699c02 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B383231988dd4 --- dfc42cc15e2f(["type"])--> https___vocab_methodandstructure_com_ibis_Argument
+  click dfc42cc15e2f "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  Bdb67a4225c37 --- b8cd0aec489a(["supported by"])--> Bb357c0431c4b
+  click b8cd0aec489a "https://vocab.methodandstructure.com/ibis#supported-by"
+  B1a8ef6296b42 --- 3af99f5ee2fd(["supported by"])--> B01b74e8b2b40
+  click 3af99f5ee2fd "https://vocab.methodandstructure.com/ibis#supported-by"
+  Bdb67a4225c37 --- 45b36f7ac41e(["type"])--> https___vocab_methodandstructure_com_ibis_Position
+  click 45b36f7ac41e "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
+  classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
+  classDef label fill:transparent,stroke:transparent,color:#e5e7eb,stroke-width:0px;
+  classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
+  classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
+  class 196d43cbdf11,e84baee6286c,55795af7d924,e13d2533100c,f857ebc6e504,83c24ca887aa,49e96341cb63,d361934ba253,ee0fd7b9aa5f,cad56228a64c,c5b2b643ee48,09f4a8451739,e120522b7054,210abd129985,e0bb3dc849ed,00aa94c1f449,5074d83f2973,0f763fd8cded,e1baa1baad17,822dabe6be8f,95d1d031894e,49bfb3cf0009,044ec00c58b6,756f74004ad9,7fd88708111f,1453f187b416,8abdf00cb2e6,33230ee86919,cd7adf56a157,0b29cecdbdd0,5de946e63e95,db2a30ffdc4f,cac0e668291f,b1fdc897157e,c97ef3640134,38f7f74acfc0,177beaf72504,f11d571a490d,47aeff0af1ce,a6d0fb7719df,3d669a27762f,e5729fc96757,d4694e4cc39c,9f07cb7cb3b9,6ae8cc7e55a2,3f6c52b352c7,955aee5db295,8603a835a89e,db6e96c0804c,cb975e07235a,435c30ad4c73,c1435028f525,8ea7e6b500db,475b21f084ee,a498c16bf46f,ae4b72a65800,79f6252823d2,0846499ef8d9,9398de53fd99,6375f82db69d,986bf5762684,537c63798d41,dc6b6f957910,8ab9e3c9dc1a,180821d808a8,0223c4b18ac3,229ea1b163a4,a428808a67b5,7be2efb4ff07,9ad5e3f78828,96d654b739be,161c059ea25a,c7a270435d6b,80f58e9056fc,3f0e849beff8,a49aff00e74c,853b23dc18e0,30a87c2c79ba,0e57f5cee5a8,ffabfaf3cb08,df0ae3bbd5d4,dc3b09026ccd,245a02c1eef7,6ed5106e1e06,da6166551cfc,44e4def65edc,468d88666d7a,1b8ca4bfebb6,261d6a863eab,cc54f5d38dfe,f4630b32ca77,f057729a09b0,aa75c3a8e580,fa1d7fd91c69,de33ec8a8dc5,5d653d8bcf42,6df9677aa9a5,38b3183c2f81,156c726d487b,67103faddc96,c88e0d723a69,1503841ff43c,d219bc0d0df9,eea42b699c02,dfc42cc15e2f,b8cd0aec489a,3af99f5ee2fd,45b36f7ac41e predicate

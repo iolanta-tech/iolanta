@@ -1,0 +1,43 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  ibis: https://vocab.methodandstructure.com/ibis#
+  vann: http://purl.org/vocab/vann/
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+
+$id: https://vocab.methodandstructure.com/ibis#
+vann:termGroup:
+  - rdfs:label: Classes
+    $reverse:
+      rdf:type:
+        - $id: ibis:Argument
+        - $id: ibis:Entity
+        - $id: ibis:Invariant
+        - $id: ibis:Issue
+        - $id: ibis:Network
+        - $id: ibis:Position
+        - $id: ibis:State
+
+  - rdfs:label: Properties
+    $reverse:
+      rdf:type:
+        - $id: ibis:concern-of
+        - $id: ibis:concerns
+        - $id: ibis:endorsed-by
+        - $id: ibis:endorses
+        - $id: ibis:generalizes
+        - $id: ibis:implied-by
+        - $id: ibis:implies
+        - $id: ibis:opposed-by
+        - $id: ibis:opposes
+        - $id: ibis:questioned-by
+        - $id: ibis:questions
+        - $id: ibis:replaced-by
+        - $id: ibis:replaces
+        - $id: ibis:responds-to
+        - $id: ibis:response
+        - $id: ibis:specializes
+        - $id: ibis:suggested-by
+        - $id: ibis:suggests
+        - $id: ibis:supported-by
+        - $id: ibis:supports
