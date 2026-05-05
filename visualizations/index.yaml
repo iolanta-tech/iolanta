@@ -35,3 +35,9 @@ $included:
 
   - $id: https://www.nanopub.org/nschema#
     →: nschema.yamlld
+
+  - $id: https://vocab.methodandstructure.com/ibis#
+    →: ibis.yaml
+
+  - $id: https://vocab.methodandstructure.com/ibis
+    →: ibis.yaml

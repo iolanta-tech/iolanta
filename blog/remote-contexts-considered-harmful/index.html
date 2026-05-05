@@ -1243,6 +1243,8 @@
       
         
       
+        
+      
     
     
     
@@ -1303,6 +1305,34 @@
     
   
     Fallback Title
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datatypes/jsonl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JSON Lines
   
 
     
@@ -3497,6 +3527,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#pro_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pro
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contra_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contra
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3529,6 +3581,309 @@
   
 
 
+<details class="note">
+<summary>As a graph</summary>
+<pre class="mermaid"><code>graph LR
+  Bf89e54622707("Context updates require reissuing documents")
+  https___vocab_methodandstructure_com_ibis_Argument("Argument")
+  click https___vocab_methodandstructure_com_ibis_Argument "https://vocab.methodandstructure.com/ibis#Argument"
+  Bdb67a4225c37("Aggressively cache contexts")
+  B96de9af5e5f1("Cached entries may expire or differ by deployment")
+  Bb357c0431c4b("Repeat processing can survive temporary outages")
+  B9ed80b1e656d("Vetted copies need an update process")
+  B40121b421666("Shared vocabularies are cross-origin by design")
+  Ba9eb731a9e30("The origin model is widely implemented")
+  B1a8ef6296b42("JSON-LD @sri")
+  B383231988dd4("Hash travels with the context reference")
+  B1469a9e8f1bb("Content-addressed context URIs")
+  B20007dcd409e("Content-addressed context schemes have weak adoption")
+  B4fd68375a00e("Use a vetted context allowlist")
+  B13e130a2e5fc("Fits controlled processing environments")
+  Literal-3372d781aa1f[["The integrity hash is carried by the reference itself, with no separate lockfile."]]
+  B0685f72fa6fc("Shared contexts are repeated in every document")
+  Literal-7b9524c5e3d6[["Real JSON-LD documents commonly rely on shared cross-origin vocabularies such as schema.org and w3id.org."]]
+  Literal-05af7767aa1f[["Same-origin policy is already implemented by browsers."]]
+  Literal-5be342a13b79[["Updating an inline context requires reissuing every document that embeds it."]]
+  B0a87a718bdec("Fits Linked Data trust literature")
+  Bc97ecab0f65d("Imported contexts are not covered")
+  Baab43a5bccd1("Hash fragment in application/ld+json")
+  B80eae73a5d4b("The referencing document does not bind the hash")
+  Bf0c7423c62bc("Reduces repeated fetches")
+  B99073f8d9343("No external allowlist is needed")
+  B06013c31b5c2("How should JSON-LD documents avoid remote context risks?")
+  Bc2a89a0c737d("Inline contexts")
+  B9d94180f3b3a("Context servers must cooperate")
+  Bf4ba3ff94fd8("Structured context references are heavier")
+  Literal-ca2071652e15[["Remote JSON-LD contexts make document meaning depend on mutable network resources, which creates risks around changed, spoofed, unavailable, privacy-leaking, or overloaded context servers."]]
+  Literal-533bf2a00042[["The hash is supplied by the response server, not by the document that references the context."]]
+  https___vocab_methodandstructure_com_ibis_Position("Position")
+  click https___vocab_methodandstructure_com_ibis_Position "https://vocab.methodandstructure.com/ibis#Position"
+  Literal-ce0d1238a65a[["Origin policy can be described without a separate deployment-specific allowlist."]]
+  Literal-3143840d7b9c[["The proposal does not yet cover @import chains."]]
+  B4a2f871f02f7("Origin-based policy")
+  B8c909c337620("Origin checks do not validate context content")
+  Bef30dbfcc950("Already available in JSON-LD 1.1")
+  Literal-b5e33717debf[["Protected terms require no new JSON-LD syntax or future revision."]]
+  B6e13a6911ba1("JSON-LD @protected")
+  B01b74e8b2b40("Direct analogy to browser SRI")
+  Literal-04bfa4db6676[["The model is familiar because it mirrors a proven browser standard."]]
+  Literal-e73d1ece70a7[["Cache entries can expire, be evicted, or vary between processors."]]
+  Literal-080d92843927[["Caching reduces repeated requests against shared public context servers."]]
+  https___vocab_methodandstructure_com_ibis_Issue("Issue")
+  click https___vocab_methodandstructure_com_ibis_Issue "https://vocab.methodandstructure.com/ibis#Issue"
+  B0c0e7e06fea2("Does not authenticate fetched bytes")
+  Ba107a6b9cb7e("Existing context URLs must be replaced or aliased")
+  Literal-6557de704284[["Location-based context URLs such as schema.org and w3id.org would need a migration path."]]
+  B5f0353317545("No author syntax change is required")
+  Literal-3781c3ef0e98[["Hash fragments in HTTP responses are transparent to document authors."]]
+  Bbdb7d70b077c("Correct processing does not depend on loader policy")
+  Literal-80f95a5bc3f9[["Content-addressed context URIs align with approaches such as Trusty URIs and nanopublications."]]
+  B7f560c7f7519("The first fetch is still trusted")
+  Literal-4f2842ae8586[["Organizations must update and re-vet cached context copies."]]
+  Literal-5f061e5905ee[["A vetted allowlist works well for archival, reproducible, air-gapped, and privacy-sensitive processing."]]
+  Literal-3734fc262561[["Protected terms prevent some redefinitions but do not authenticate the remote context or pin its content."]]
+  Literal-59f1d4b7b507[["Existing context servers would need to emit the relevant hash information."]]
+  Literal-c9504c3f0069[["A plain context URL becomes an object with metadata, making simple @context usage less readable."]]
+  Literal-124d00f9b9b4[["Inline contexts avoid depending on cache or document-loader configuration."]]
+  B641f043d8de7("Unknown context URLs are refused")
+  Bc780551a69d3("The document carries its own term definitions")
+  Literal-203ce8a7fdc7[["Origin policy restricts who can serve a context, not what bytes the context contains or whether it remains available."]]
+  Bcf3631293047("The URI itself checks integrity")
+  Literal-77a04c8cbb4f[["Mutation produces a different content-addressed URI by construction."]]
+  B26a7c81b7170("Meaningful protection requires inline setup")
+  Literal-6d8ea9bbe404[["Key terms must be declared inline before loading later contexts, reducing the value of loading them remotely."]]
+  Literal-a3d9acc223f3[["Large shared contexts such as schema.org become verbose when embedded repeatedly."]]
+  Literal-b31eaf149dee[["Caching does not authenticate the first response or make spoofed bytes trustworthy."]]
+  B12a470ae96f5("Trust policy does not travel with the document")
+  Literal-e66f98cdcb65[["Another deployment may resolve the same context URLs differently."]]
+  Literal-489c7cc3ef52[["The ni scheme has no mainstream adoption, and IPFS adds infrastructure dependency."]]
+  Literal-c6024b6ce405[["A vetted allowlist can refuse unknown context URLs instead of fetching them."]]
+  Literal-6ee14fa825c0[["Inline contexts make the document fully carry the term definitions it depends on."]]
+  Literal-9a1a7a1280c5[["A warm cache can tolerate temporary server or network failures."]]
+  Bf89e54622707 --- 196d43cbdf11(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click 196d43cbdf11 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  Bdb67a4225c37 --- e84baee6286c(["opposed by"])--&gt; B96de9af5e5f1
+  click e84baee6286c "https://vocab.methodandstructure.com/ibis#opposed-by"
+  Bb357c0431c4b --- 55795af7d924(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click 55795af7d924 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B9ed80b1e656d --- e13d2533100c(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click e13d2533100c "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B40121b421666 --- f857ebc6e504(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click f857ebc6e504 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  Ba9eb731a9e30 --- 83c24ca887aa(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click 83c24ca887aa "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B1a8ef6296b42 --- 49e96341cb63(["supported by"])--&gt; B383231988dd4
+  click 49e96341cb63 "https://vocab.methodandstructure.com/ibis#supported-by"
+  B1469a9e8f1bb --- d361934ba253(["opposed by"])--&gt; B20007dcd409e
+  click d361934ba253 "https://vocab.methodandstructure.com/ibis#opposed-by"
+  B4fd68375a00e --- ee0fd7b9aa5f(["supported by"])--&gt; B13e130a2e5fc
+  click ee0fd7b9aa5f "https://vocab.methodandstructure.com/ibis#supported-by"
+  B383231988dd4 --- cad56228a64c(["comment"])--&gt; Literal-3372d781aa1f
+  click cad56228a64c "http://www.w3.org/2000/01/rdf-schema#comment"
+  B0685f72fa6fc --- c5b2b643ee48(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click c5b2b643ee48 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B4fd68375a00e --- 09f4a8451739(["opposed by"])--&gt; B9ed80b1e656d
+  click 09f4a8451739 "https://vocab.methodandstructure.com/ibis#opposed-by"
+  B96de9af5e5f1 --- e120522b7054(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click e120522b7054 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B40121b421666 --- 210abd129985(["comment"])--&gt; Literal-7b9524c5e3d6
+  click 210abd129985 "http://www.w3.org/2000/01/rdf-schema#comment"
+  Ba9eb731a9e30 --- e0bb3dc849ed(["comment"])--&gt; Literal-05af7767aa1f
+  click e0bb3dc849ed "http://www.w3.org/2000/01/rdf-schema#comment"
+  Bf89e54622707 --- 00aa94c1f449(["comment"])--&gt; Literal-5be342a13b79
+  click 00aa94c1f449 "http://www.w3.org/2000/01/rdf-schema#comment"
+  B1469a9e8f1bb --- 5074d83f2973(["supported by"])--&gt; B0a87a718bdec
+  click 5074d83f2973 "https://vocab.methodandstructure.com/ibis#supported-by"
+  Bc97ecab0f65d --- 0f763fd8cded(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click 0f763fd8cded "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  Baab43a5bccd1 --- e1baa1baad17(["opposed by"])--&gt; B80eae73a5d4b
+  click e1baa1baad17 "https://vocab.methodandstructure.com/ibis#opposed-by"
+  Bf0c7423c62bc --- 822dabe6be8f(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click 822dabe6be8f "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B99073f8d9343 --- 95d1d031894e(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click 95d1d031894e "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B06013c31b5c2 --- 49bfb3cf0009(["response"])--&gt; Bc2a89a0c737d
+  click 49bfb3cf0009 "https://vocab.methodandstructure.com/ibis#response"
+  B06013c31b5c2 --- 044ec00c58b6(["response"])--&gt; B1a8ef6296b42
+  click 044ec00c58b6 "https://vocab.methodandstructure.com/ibis#response"
+  Baab43a5bccd1 --- 756f74004ad9(["opposed by"])--&gt; B9d94180f3b3a
+  click 756f74004ad9 "https://vocab.methodandstructure.com/ibis#opposed-by"
+  Bf4ba3ff94fd8 --- 7fd88708111f(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click 7fd88708111f "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B06013c31b5c2 --- 1453f187b416(["comment"])--&gt; Literal-ca2071652e15
+  click 1453f187b416 "http://www.w3.org/2000/01/rdf-schema#comment"
+  B80eae73a5d4b --- 8abdf00cb2e6(["comment"])--&gt; Literal-533bf2a00042
+  click 8abdf00cb2e6 "http://www.w3.org/2000/01/rdf-schema#comment"
+  B1469a9e8f1bb --- 33230ee86919(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Position
+  click 33230ee86919 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B99073f8d9343 --- cd7adf56a157(["comment"])--&gt; Literal-ce0d1238a65a
+  click cd7adf56a157 "http://www.w3.org/2000/01/rdf-schema#comment"
+  Bc97ecab0f65d --- 0b29cecdbdd0(["comment"])--&gt; Literal-3143840d7b9c
+  click 0b29cecdbdd0 "http://www.w3.org/2000/01/rdf-schema#comment"
+  B4a2f871f02f7 --- 5de946e63e95(["opposed by"])--&gt; B8c909c337620
+  click 5de946e63e95 "https://vocab.methodandstructure.com/ibis#opposed-by"
+  B06013c31b5c2 --- db2a30ffdc4f(["response"])--&gt; Bdb67a4225c37
+  click db2a30ffdc4f "https://vocab.methodandstructure.com/ibis#response"
+  B06013c31b5c2 --- cac0e668291f(["response"])--&gt; Baab43a5bccd1
+  click cac0e668291f "https://vocab.methodandstructure.com/ibis#response"
+  Bef30dbfcc950 --- b1fdc897157e(["comment"])--&gt; Literal-b5e33717debf
+  click b1fdc897157e "http://www.w3.org/2000/01/rdf-schema#comment"
+  B06013c31b5c2 --- c97ef3640134(["response"])--&gt; B6e13a6911ba1
+  click c97ef3640134 "https://vocab.methodandstructure.com/ibis#response"
+  B06013c31b5c2 --- 38f7f74acfc0(["response"])--&gt; B1469a9e8f1bb
+  click 38f7f74acfc0 "https://vocab.methodandstructure.com/ibis#response"
+  B01b74e8b2b40 --- 177beaf72504(["comment"])--&gt; Literal-04bfa4db6676
+  click 177beaf72504 "http://www.w3.org/2000/01/rdf-schema#comment"
+  B96de9af5e5f1 --- f11d571a490d(["comment"])--&gt; Literal-e73d1ece70a7
+  click f11d571a490d "http://www.w3.org/2000/01/rdf-schema#comment"
+  B0a87a718bdec --- 47aeff0af1ce(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click 47aeff0af1ce "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  Bf0c7423c62bc --- a6d0fb7719df(["comment"])--&gt; Literal-080d92843927
+  click a6d0fb7719df "http://www.w3.org/2000/01/rdf-schema#comment"
+  B06013c31b5c2 --- 3d669a27762f(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Issue
+  click 3d669a27762f "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  Bc2a89a0c737d --- e5729fc96757(["opposed by"])--&gt; B0685f72fa6fc
+  click e5729fc96757 "https://vocab.methodandstructure.com/ibis#opposed-by"
+  B0c0e7e06fea2 --- d4694e4cc39c(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click d4694e4cc39c "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  Ba107a6b9cb7e --- 9f07cb7cb3b9(["comment"])--&gt; Literal-6557de704284
+  click 9f07cb7cb3b9 "http://www.w3.org/2000/01/rdf-schema#comment"
+  Baab43a5bccd1 --- 6ae8cc7e55a2(["supported by"])--&gt; B5f0353317545
+  click 6ae8cc7e55a2 "https://vocab.methodandstructure.com/ibis#supported-by"
+  B5f0353317545 --- 3f6c52b352c7(["comment"])--&gt; Literal-3781c3ef0e98
+  click 3f6c52b352c7 "http://www.w3.org/2000/01/rdf-schema#comment"
+  Bc2a89a0c737d --- 955aee5db295(["supported by"])--&gt; Bbdb7d70b077c
+  click 955aee5db295 "https://vocab.methodandstructure.com/ibis#supported-by"
+  B0a87a718bdec --- 8603a835a89e(["comment"])--&gt; Literal-80f95a5bc3f9
+  click 8603a835a89e "http://www.w3.org/2000/01/rdf-schema#comment"
+  B6e13a6911ba1 --- db6e96c0804c(["opposed by"])--&gt; B0c0e7e06fea2
+  click db6e96c0804c "https://vocab.methodandstructure.com/ibis#opposed-by"
+  B7f560c7f7519 --- cb975e07235a(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click cb975e07235a "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B9ed80b1e656d --- 435c30ad4c73(["comment"])--&gt; Literal-4f2842ae8586
+  click 435c30ad4c73 "http://www.w3.org/2000/01/rdf-schema#comment"
+  B13e130a2e5fc --- c1435028f525(["comment"])--&gt; Literal-5f061e5905ee
+  click c1435028f525 "http://www.w3.org/2000/01/rdf-schema#comment"
+  B01b74e8b2b40 --- 8ea7e6b500db(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click 8ea7e6b500db "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B0c0e7e06fea2 --- 475b21f084ee(["comment"])--&gt; Literal-3734fc262561
+  click 475b21f084ee "http://www.w3.org/2000/01/rdf-schema#comment"
+  B9d94180f3b3a --- a498c16bf46f(["comment"])--&gt; Literal-59f1d4b7b507
+  click a498c16bf46f "http://www.w3.org/2000/01/rdf-schema#comment"
+  Bc2a89a0c737d --- ae4b72a65800(["opposed by"])--&gt; Bf89e54622707
+  click ae4b72a65800 "https://vocab.methodandstructure.com/ibis#opposed-by"
+  Bf4ba3ff94fd8 --- 79f6252823d2(["comment"])--&gt; Literal-c9504c3f0069
+  click 79f6252823d2 "http://www.w3.org/2000/01/rdf-schema#comment"
+  Bbdb7d70b077c --- 0846499ef8d9(["comment"])--&gt; Literal-124d00f9b9b4
+  click 0846499ef8d9 "http://www.w3.org/2000/01/rdf-schema#comment"
+  B4fd68375a00e --- 9398de53fd99(["supported by"])--&gt; B641f043d8de7
+  click 9398de53fd99 "https://vocab.methodandstructure.com/ibis#supported-by"
+  B1a8ef6296b42 --- 6375f82db69d(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Position
+  click 6375f82db69d "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  Bdb67a4225c37 --- 986bf5762684(["opposed by"])--&gt; B7f560c7f7519
+  click 986bf5762684 "https://vocab.methodandstructure.com/ibis#opposed-by"
+  Bc2a89a0c737d --- 537c63798d41(["supported by"])--&gt; Bc780551a69d3
+  click 537c63798d41 "https://vocab.methodandstructure.com/ibis#supported-by"
+  B5f0353317545 --- dc6b6f957910(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click dc6b6f957910 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B8c909c337620 --- 8ab9e3c9dc1a(["comment"])--&gt; Literal-203ce8a7fdc7
+  click 8ab9e3c9dc1a "http://www.w3.org/2000/01/rdf-schema#comment"
+  Bcf3631293047 --- 180821d808a8(["comment"])--&gt; Literal-77a04c8cbb4f
+  click 180821d808a8 "http://www.w3.org/2000/01/rdf-schema#comment"
+  B26a7c81b7170 --- 0223c4b18ac3(["comment"])--&gt; Literal-6d8ea9bbe404
+  click 0223c4b18ac3 "http://www.w3.org/2000/01/rdf-schema#comment"
+  B4fd68375a00e --- 229ea1b163a4(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Position
+  click 229ea1b163a4 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B0685f72fa6fc --- a428808a67b5(["comment"])--&gt; Literal-a3d9acc223f3
+  click a428808a67b5 "http://www.w3.org/2000/01/rdf-schema#comment"
+  B7f560c7f7519 --- 7be2efb4ff07(["comment"])--&gt; Literal-b31eaf149dee
+  click 7be2efb4ff07 "http://www.w3.org/2000/01/rdf-schema#comment"
+  Baab43a5bccd1 --- 9ad5e3f78828(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Position
+  click 9ad5e3f78828 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B4fd68375a00e --- 96d654b739be(["opposed by"])--&gt; B12a470ae96f5
+  click 96d654b739be "https://vocab.methodandstructure.com/ibis#opposed-by"
+  B9d94180f3b3a --- 161c059ea25a(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click 161c059ea25a "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B6e13a6911ba1 --- c7a270435d6b(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Position
+  click c7a270435d6b "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B12a470ae96f5 --- 80f58e9056fc(["comment"])--&gt; Literal-e66f98cdcb65
+  click 80f58e9056fc "http://www.w3.org/2000/01/rdf-schema#comment"
+  Bbdb7d70b077c --- 3f0e849beff8(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click 3f0e849beff8 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B1469a9e8f1bb --- a49aff00e74c(["supported by"])--&gt; Bcf3631293047
+  click a49aff00e74c "https://vocab.methodandstructure.com/ibis#supported-by"
+  B06013c31b5c2 --- 853b23dc18e0(["response"])--&gt; B4a2f871f02f7
+  click 853b23dc18e0 "https://vocab.methodandstructure.com/ibis#response"
+  B6e13a6911ba1 --- 30a87c2c79ba(["opposed by"])--&gt; B26a7c81b7170
+  click 30a87c2c79ba "https://vocab.methodandstructure.com/ibis#opposed-by"
+  B26a7c81b7170 --- 0e57f5cee5a8(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click 0e57f5cee5a8 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B4a2f871f02f7 --- ffabfaf3cb08(["opposed by"])--&gt; B40121b421666
+  click ffabfaf3cb08 "https://vocab.methodandstructure.com/ibis#opposed-by"
+  Bdb67a4225c37 --- df0ae3bbd5d4(["supported by"])--&gt; Bf0c7423c62bc
+  click df0ae3bbd5d4 "https://vocab.methodandstructure.com/ibis#supported-by"
+  B641f043d8de7 --- dc3b09026ccd(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click dc3b09026ccd "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  Bef30dbfcc950 --- 245a02c1eef7(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click 245a02c1eef7 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  Bc2a89a0c737d --- 6ed5106e1e06(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Position
+  click 6ed5106e1e06 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B80eae73a5d4b --- da6166551cfc(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click da6166551cfc "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B20007dcd409e --- 44e4def65edc(["comment"])--&gt; Literal-489c7cc3ef52
+  click 44e4def65edc "http://www.w3.org/2000/01/rdf-schema#comment"
+  B4a2f871f02f7 --- 468d88666d7a(["supported by"])--&gt; Ba9eb731a9e30
+  click 468d88666d7a "https://vocab.methodandstructure.com/ibis#supported-by"
+  B13e130a2e5fc --- 1b8ca4bfebb6(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click 1b8ca4bfebb6 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B4a2f871f02f7 --- 261d6a863eab(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Position
+  click 261d6a863eab "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B1a8ef6296b42 --- cc54f5d38dfe(["opposed by"])--&gt; Bf4ba3ff94fd8
+  click cc54f5d38dfe "https://vocab.methodandstructure.com/ibis#opposed-by"
+  B641f043d8de7 --- f4630b32ca77(["comment"])--&gt; Literal-c6024b6ce405
+  click f4630b32ca77 "http://www.w3.org/2000/01/rdf-schema#comment"
+  B4a2f871f02f7 --- f057729a09b0(["supported by"])--&gt; B99073f8d9343
+  click f057729a09b0 "https://vocab.methodandstructure.com/ibis#supported-by"
+  B06013c31b5c2 --- aa75c3a8e580(["response"])--&gt; B4fd68375a00e
+  click aa75c3a8e580 "https://vocab.methodandstructure.com/ibis#response"
+  B1a8ef6296b42 --- fa1d7fd91c69(["opposed by"])--&gt; Bc97ecab0f65d
+  click fa1d7fd91c69 "https://vocab.methodandstructure.com/ibis#opposed-by"
+  Bc780551a69d3 --- de33ec8a8dc5(["comment"])--&gt; Literal-6ee14fa825c0
+  click de33ec8a8dc5 "http://www.w3.org/2000/01/rdf-schema#comment"
+  B20007dcd409e --- 5d653d8bcf42(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click 5d653d8bcf42 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B6e13a6911ba1 --- 6df9677aa9a5(["supported by"])--&gt; Bef30dbfcc950
+  click 6df9677aa9a5 "https://vocab.methodandstructure.com/ibis#supported-by"
+  Ba107a6b9cb7e --- 38b3183c2f81(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click 38b3183c2f81 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  Bb357c0431c4b --- 156c726d487b(["comment"])--&gt; Literal-9a1a7a1280c5
+  click 156c726d487b "http://www.w3.org/2000/01/rdf-schema#comment"
+  B1469a9e8f1bb --- 67103faddc96(["opposed by"])--&gt; Ba107a6b9cb7e
+  click 67103faddc96 "https://vocab.methodandstructure.com/ibis#opposed-by"
+  Bc780551a69d3 --- c88e0d723a69(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click c88e0d723a69 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B8c909c337620 --- 1503841ff43c(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click 1503841ff43c "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B12a470ae96f5 --- d219bc0d0df9(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click d219bc0d0df9 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  Bcf3631293047 --- eea42b699c02(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click eea42b699c02 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  B383231988dd4 --- dfc42cc15e2f(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Argument
+  click dfc42cc15e2f "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  Bdb67a4225c37 --- b8cd0aec489a(["supported by"])--&gt; Bb357c0431c4b
+  click b8cd0aec489a "https://vocab.methodandstructure.com/ibis#supported-by"
+  B1a8ef6296b42 --- 3af99f5ee2fd(["supported by"])--&gt; B01b74e8b2b40
+  click 3af99f5ee2fd "https://vocab.methodandstructure.com/ibis#supported-by"
+  Bdb67a4225c37 --- 45b36f7ac41e(["type"])--&gt; https___vocab_methodandstructure_com_ibis_Position
+  click 45b36f7ac41e "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
+  classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
+  classDef label fill:transparent,stroke:transparent,color:#e5e7eb,stroke-width:0px;
+  classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
+  classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
+  class 196d43cbdf11,e84baee6286c,55795af7d924,e13d2533100c,f857ebc6e504,83c24ca887aa,49e96341cb63,d361934ba253,ee0fd7b9aa5f,cad56228a64c,c5b2b643ee48,09f4a8451739,e120522b7054,210abd129985,e0bb3dc849ed,00aa94c1f449,5074d83f2973,0f763fd8cded,e1baa1baad17,822dabe6be8f,95d1d031894e,49bfb3cf0009,044ec00c58b6,756f74004ad9,7fd88708111f,1453f187b416,8abdf00cb2e6,33230ee86919,cd7adf56a157,0b29cecdbdd0,5de946e63e95,db2a30ffdc4f,cac0e668291f,b1fdc897157e,c97ef3640134,38f7f74acfc0,177beaf72504,f11d571a490d,47aeff0af1ce,a6d0fb7719df,3d669a27762f,e5729fc96757,d4694e4cc39c,9f07cb7cb3b9,6ae8cc7e55a2,3f6c52b352c7,955aee5db295,8603a835a89e,db6e96c0804c,cb975e07235a,435c30ad4c73,c1435028f525,8ea7e6b500db,475b21f084ee,a498c16bf46f,ae4b72a65800,79f6252823d2,0846499ef8d9,9398de53fd99,6375f82db69d,986bf5762684,537c63798d41,dc6b6f957910,8ab9e3c9dc1a,180821d808a8,0223c4b18ac3,229ea1b163a4,a428808a67b5,7be2efb4ff07,9ad5e3f78828,96d654b739be,161c059ea25a,c7a270435d6b,80f58e9056fc,3f0e849beff8,a49aff00e74c,853b23dc18e0,30a87c2c79ba,0e57f5cee5a8,ffabfaf3cb08,df0ae3bbd5d4,dc3b09026ccd,245a02c1eef7,6ed5106e1e06,da6166551cfc,44e4def65edc,468d88666d7a,1b8ca4bfebb6,261d6a863eab,cc54f5d38dfe,f4630b32ca77,f057729a09b0,aa75c3a8e580,fa1d7fd91c69,de33ec8a8dc5,5d653d8bcf42,6df9677aa9a5,38b3183c2f81,156c726d487b,67103faddc96,c88e0d723a69,1503841ff43c,d219bc0d0df9,eea42b699c02,dfc42cc15e2f,b8cd0aec489a,3af99f5ee2fd,45b36f7ac41e predicate
+</code></pre>
+</details>
 <h1 id="remote-contexts-considered-harmful-april-19-2026">Remote <code>@context</code>s considered harmful <small>April 19, 2026</small></h1>
 <h2 id="problem">Problem</h2>
 <p>A JSON-LD document with a remote context does not fully define its own meaning. Its semantics depend on bytes fetched later from another URL.</p>
@@ -3551,27 +3906,21 @@
   click http___dbpedia_org_resource_John_Lennon "http://dbpedia.org/resource/John_Lennon"
   http___dbpedia_org_resource_Cynthia_Lennon("Cynthia Lennon")
   click http___dbpedia_org_resource_Cynthia_Lennon "http://dbpedia.org/resource/Cynthia_Lennon"
-  http___dbpedia_org_resource_John_Lennon("John Lennon")
-  click http___dbpedia_org_resource_John_Lennon "http://dbpedia.org/resource/John_Lennon"
-  Literal-4649fa93775b9ab0c7a5e1bd15b6744a[["📅 1940-10-09"]]
-  http___dbpedia_org_resource_John_Lennon("John Lennon")
-  click http___dbpedia_org_resource_John_Lennon "http://dbpedia.org/resource/John_Lennon"
+  Literal-4649fa93775b[["📅 1940-10-09"]]
   http___dbpedia_org_resource_Yoko_Ono("Yoko Ono")
   click http___dbpedia_org_resource_Yoko_Ono "http://dbpedia.org/resource/Yoko_Ono"
-  http___dbpedia_org_resource_John_Lennon --- 5467d103f69601bbafb5c89daa6ba9e2(["spouse"])--&gt; http___dbpedia_org_resource_Cynthia_Lennon
-  click 5467d103f69601bbafb5c89daa6ba9e2 "http://schema.org/spouse"
-  class 5467d103f69601bbafb5c89daa6ba9e2 predicate
-  http___dbpedia_org_resource_John_Lennon --- 1759f753de49b9a729174a0162121fbc(["birthDate"])--&gt; Literal-4649fa93775b9ab0c7a5e1bd15b6744a
-  click 1759f753de49b9a729174a0162121fbc "http://schema.org/birthDate"
-  class 1759f753de49b9a729174a0162121fbc predicate
-  http___dbpedia_org_resource_John_Lennon --- 203e23da021cfaec8fe3608f1809cc89(["spouse"])--&gt; http___dbpedia_org_resource_Yoko_Ono
-  click 203e23da021cfaec8fe3608f1809cc89 "http://schema.org/spouse"
-  class 203e23da021cfaec8fe3608f1809cc89 predicate
+  http___dbpedia_org_resource_John_Lennon --- ccd6a52ef4f0(["spouse"])--&gt; http___dbpedia_org_resource_Cynthia_Lennon
+  click ccd6a52ef4f0 "http://schema.org/spouse"
+  http___dbpedia_org_resource_John_Lennon --- ece8797f1934(["birthDate"])--&gt; Literal-4649fa93775b
+  click ece8797f1934 "http://schema.org/birthDate"
+  http___dbpedia_org_resource_John_Lennon --- dc81cc5be03d(["spouse"])--&gt; http___dbpedia_org_resource_Yoko_Ono
+  click dc81cc5be03d "http://schema.org/spouse"
   classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
   classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
   classDef label fill:transparent,stroke:transparent,color:#e5e7eb,stroke-width:0px;
   classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
   classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
+  class ccd6a52ef4f0,ece8797f1934,dc81cc5be03d predicate
 </code></pre>
 </div>
 </div>
@@ -3586,7 +3935,7 @@
 </code></pre></div>
 <h2 id="what-could-go-wrong">What could go wrong?</h2>
 <p>What if the <strong>same</strong> context URL — <code>https://json-ld.org/contexts/person.jsonld</code> — returns <strong>different</strong> JSON than authors and readers expect? Nothing in <em>your</em> repository needs to change; only the bytes served at that URL change.</p>
-<p>For instance, (json-ld.org)[https://json-ld.org] has been hacked, and now it returns a hostile response which keeps the same keys yet remaps <code>born</code> → <code>schema:deathDate</code> and <code>spouse</code> → <code>schema:parent</code>.</p>
+<p>For instance, <a href="https://json-ld.org">json-ld.org</a> has been hacked, and now it returns a hostile response which keeps the same keys yet remaps <code>born</code> → <code>schema:deathDate</code> and <code>spouse</code> → <code>schema:parent</code>.</p>
 <p>This would alter the meaning of the document about John Lennon:</p>
 <div class="grid">
 <div>
@@ -3609,27 +3958,21 @@
   click http___dbpedia_org_resource_John_Lennon "http://dbpedia.org/resource/John_Lennon"
   http___dbpedia_org_resource_Cynthia_Lennon("Cynthia Lennon")
   click http___dbpedia_org_resource_Cynthia_Lennon "http://dbpedia.org/resource/Cynthia_Lennon"
-  http___dbpedia_org_resource_John_Lennon("John Lennon")
-  click http___dbpedia_org_resource_John_Lennon "http://dbpedia.org/resource/John_Lennon"
+  Literal-4649fa93775b[["📅 1940-10-09"]]
   http___dbpedia_org_resource_Yoko_Ono("Yoko Ono")
   click http___dbpedia_org_resource_Yoko_Ono "http://dbpedia.org/resource/Yoko_Ono"
-  http___dbpedia_org_resource_John_Lennon("John Lennon")
-  click http___dbpedia_org_resource_John_Lennon "http://dbpedia.org/resource/John_Lennon"
-  Literal-4649fa93775b9ab0c7a5e1bd15b6744a[["📅 1940-10-09"]]
-  http___dbpedia_org_resource_John_Lennon --- c3901357678ef1c49a4162cad338d75e(["parent"])--&gt; http___dbpedia_org_resource_Cynthia_Lennon
-  click c3901357678ef1c49a4162cad338d75e "http://schema.org/parent"
-  class c3901357678ef1c49a4162cad338d75e predicate
-  http___dbpedia_org_resource_John_Lennon --- c2555ff910625a04bf52e27e8091f553(["parent"])--&gt; http___dbpedia_org_resource_Yoko_Ono
-  click c2555ff910625a04bf52e27e8091f553 "http://schema.org/parent"
-  class c2555ff910625a04bf52e27e8091f553 predicate
-  http___dbpedia_org_resource_John_Lennon --- ae61ca3c25efd04a58be6557347dced6(["deathDate"])--&gt; Literal-4649fa93775b9ab0c7a5e1bd15b6744a
-  click ae61ca3c25efd04a58be6557347dced6 "http://schema.org/deathDate"
-  class ae61ca3c25efd04a58be6557347dced6 predicate
+  http___dbpedia_org_resource_John_Lennon --- 038343392367(["parent"])--&gt; http___dbpedia_org_resource_Cynthia_Lennon
+  click 038343392367 "http://schema.org/parent"
+  http___dbpedia_org_resource_John_Lennon --- faa2f964aa1f(["deathDate"])--&gt; Literal-4649fa93775b
+  click faa2f964aa1f "http://schema.org/deathDate"
+  http___dbpedia_org_resource_John_Lennon --- 987e5ca265cd(["parent"])--&gt; http___dbpedia_org_resource_Yoko_Ono
+  click 987e5ca265cd "http://schema.org/parent"
   classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
   classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
   classDef label fill:transparent,stroke:transparent,color:#e5e7eb,stroke-width:0px;
   classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
   classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
+  class 038343392367,faa2f964aa1f,987e5ca265cd predicate
 </code></pre>
 </div>
 </div>
@@ -3682,7 +4025,7 @@ JSON-LD active context in a way that could compromise security.</p>
 <li>
 <p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 19h1a1 1 0 0 1 1 1h7v2h-7a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1H2v-2h7a1 1 0 0 1 1-1h1v-2H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-7zM4 3h16a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1m5 4h1V5H9zm0 8h1v-2H9zM5 5v2h2V5zm0 8v2h2v-2z"/></svg></span> <strong>Server Overloaded</strong></p>
 <hr />
-<p>A context URL shared across millions of documents generates a fetch every time any processor encounters any of those documents. High-volume deployments such as ActivityPub federation, Verifiable Credential issuers, and bulk RDF pipelines can produce enormous request rates against a handful of context servers. This is precisely why the JSON-LD Best Practices <a href="https://w3c.github.io/json-ld-bp/#cache">recommend liberal cache-control headers</a> and why implementations such as <a href="https://github.com/mastodon/mastodon/pull/9412"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33s1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2"/></svg></span> mastodon/mastodon#9412</a> rather than fetching them on demand.</p>
+<p>A context URL shared across millions of documents generates a fetch every time any processor encounters any of those documents. High-volume deployments such as ActivityPub federation, Verifiable Credential issuers, and bulk RDF pipelines can produce enormous request rates against a handful of context servers. This is precisely why the JSON-LD Best Practices <a href="https://w3c.github.io/json-ld-bp/#cache">recommend liberal cache-control headers</a> and why implementations such as <a href="https://github.com/mastodon/mastodon/pull/9412"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33s1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2"/></svg></span> mastodon/mastodon#9412</a> cache contexts rather than fetching them on demand.</p>
 </li>
 </ul>
 </div>
@@ -3722,7 +4065,7 @@ JSON-LD active context in a way that could compromise security.</p>
 <td style="text-align: center;"><img alt="❌" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" title=":x:" /></td>
 </tr>
 <tr>
-<td><a href="#inline-contexts">Inline Contexts</a></td>
+<td><a href="#inline">Inline Contexts</a></td>
 <td style="text-align: center;"><img alt="✅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" title=":white_check_mark:" /></td>
 <td style="text-align: center;"><img alt="✅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" title=":white_check_mark:" /></td>
 <td style="text-align: center;"><img alt="✅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" title=":white_check_mark:" /></td>
@@ -3731,7 +4074,7 @@ JSON-LD active context in a way that could compromise security.</p>
 <td style="text-align: center;"><img alt="✅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" title=":white_check_mark:" /></td>
 </tr>
 <tr>
-<td><a href="#hash-fragment-in-applicationldjson">Hash Fragment in <code>application/ld+json</code></a></td>
+<td><a href="#hash">Hash Fragment in <code>application/ld+json</code></a></td>
 <td style="text-align: center;"><img alt="❌" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" title=":x:" /></td>
 <td style="text-align: center;"><img alt="❌" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" title=":x:" /></td>
 <td style="text-align: center;"><img alt="❌" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" title=":x:" /></td>
@@ -3740,7 +4083,7 @@ JSON-LD active context in a way that could compromise security.</p>
 <td style="text-align: center;"><img alt="❌" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" title=":x:" /></td>
 </tr>
 <tr>
-<td><a href="#content-addressed-context-uris">Content-Addressed Context URIs</a></td>
+<td><a href="#content-addressed">Content-Addressed Context URIs</a></td>
 <td style="text-align: center;"><img alt="✅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" title=":white_check_mark:" /></td>
 <td style="text-align: center;"><img alt="✅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" title=":white_check_mark:" /></td>
 <td style="text-align: center;"><img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26a0.svg" title=":warning:" /></td>
@@ -3749,7 +4092,16 @@ JSON-LD active context in a way that could compromise security.</p>
 <td style="text-align: center;"><img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26a0.svg" title=":warning:" /></td>
 </tr>
 <tr>
-<td><a href="#permanently-cache-vetted-contexts">Permanently Cache Vetted Contexts</a></td>
+<td><a href="#cache">Aggressively Cache Contexts</a></td>
+<td style="text-align: center;"><img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26a0.svg" title=":warning:" /></td>
+<td style="text-align: center;"><img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26a0.svg" title=":warning:" /></td>
+<td style="text-align: center;"><img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26a0.svg" title=":warning:" /></td>
+<td style="text-align: center;"><img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26a0.svg" title=":warning:" /></td>
+<td style="text-align: center;"><img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26a0.svg" title=":warning:" /></td>
+<td style="text-align: center;"><img alt="✅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" title=":white_check_mark:" /></td>
+</tr>
+<tr>
+<td><a href="#allowlist">Use a Vetted Context Allowlist</a></td>
 <td style="text-align: center;"><img alt="✅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" title=":white_check_mark:" /></td>
 <td style="text-align: center;"><img alt="✅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" title=":white_check_mark:" /></td>
 <td style="text-align: center;"><img alt="✅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" title=":white_check_mark:" /></td>
@@ -3758,7 +4110,7 @@ JSON-LD active context in a way that could compromise security.</p>
 <td style="text-align: center;"><img alt="✅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" title=":white_check_mark:" /></td>
 </tr>
 <tr>
-<td><a href="#origin-based-policy">Origin-Based Policy</a></td>
+<td><a href="#origin">Origin-Based Policy</a></td>
 <td style="text-align: center;"><img alt="❌" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" title=":x:" /></td>
 <td style="text-align: center;"><img alt="❌" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" title=":x:" /></td>
 <td style="text-align: center;"><img alt="❌" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" title=":x:" /></td>
@@ -3769,7 +4121,7 @@ JSON-LD active context in a way that could compromise security.</p>
 </tbody>
 </table>
 <p>The tabs below provide the example and the implementation tradeoffs for each alternative.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:7"><input checked="checked" id="sri" name="__tabbed_1" type="radio" /><input id="protected" name="__tabbed_1" type="radio" /><input id="inline-contexts" name="__tabbed_1" type="radio" /><input id="hash-fragment-in-applicationldjson" name="__tabbed_1" type="radio" /><input id="content-addressed-context-uris" name="__tabbed_1" type="radio" /><input id="permanently-cache-vetted-contexts" name="__tabbed_1" type="radio" /><input id="origin-based-policy" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="sri"><code>@sri</code></label><label for="protected"><code>@protected</code></label><label for="inline-contexts">Inline Contexts</label><label for="hash-fragment-in-applicationldjson">Hash Fragment in <code>application/ld+json</code></label><label for="content-addressed-context-uris">Content-Addressed Context URIs</label><label for="permanently-cache-vetted-contexts">Permanently Cache Vetted Contexts</label><label for="origin-based-policy">Origin-Based Policy</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:8"><input checked="checked" id="sri" name="__tabbed_1" type="radio" /><input id="protected" name="__tabbed_1" type="radio" /><input id="inline" name="__tabbed_1" type="radio" /><input id="hash" name="__tabbed_1" type="radio" /><input id="content-addressed" name="__tabbed_1" type="radio" /><input id="cache" name="__tabbed_1" type="radio" /><input id="allowlist" name="__tabbed_1" type="radio" /><input id="origin" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="sri"><code>@sri</code></label><label for="protected"><code>@protected</code></label><label for="inline">Inline</label><label for="hash">Hash</label><label for="content-addressed">Content-Addressed</label><label for="cache">Cache</label><label for="allowlist">Allowlist</label><label for="origin">Origin</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <blockquote>
@@ -4065,36 +4417,70 @@ definitions directly in the document itself.</p>
 <p>Services providing a JSON-LD Context SHOULD set HTTP cache-control headers to allow liberal caching of such contexts, and clients SHOULD attempt to use a locally cached version of these documents.</p>
 <p>— <a href="https://w3c.github.io/json-ld-bp/#cache-json-ld-contexts">JSON-LD Best Practices: Cache JSON-LD Contexts</a></p>
 </blockquote>
-<p>For the John Lennon example, that means preloading the two remote contexts it uses:</p>
+<p>Aggressive caching keeps processors from repeatedly fetching the same shared context URL. It helps most after a known-good first fetch: later runs can reuse cached bytes, tolerate temporary outages, and avoid hammering shared context servers.</p>
+<p>For PyLD, <a href="https://github.com/digitalbazaar/pyld/issues/253"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33s1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2"/></svg></span> digitalbazaar/pyld#253</a> proposes a disk-backed document loader that would persist fetched documents and honor HTTP cache metadata such as <code>Cache-Control</code>, <code>Expires</code>, <code>ETag</code>, and <code>Last-Modified</code>.</p>
 <p><div class="grid" markdown>
 <div markdown>
-<div class="highlight"><span class="filename">john-lennon-cached-loader.py</span><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pyld.jsonld</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jsonld</span>
+<div class="highlight"><span class="filename">john-lennon-context-cache-response.http</span><pre><span></span><code><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/ld+json</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">public, max-age=31536000, immutable</span>
 
-<span class="n">VETTED_CONTEXTS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;https://json-ld.org/contexts/person.jsonld&quot;</span><span class="p">:</span> <span class="p">(</span>
-        <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;person.jsonld&quot;</span>
-    <span class="p">),</span>
-    <span class="s2">&quot;https://json-ld.org/contexts/dollar-convenience.jsonld&quot;</span><span class="p">:</span> <span class="p">(</span>
-        <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;dollar-convenience.jsonld&quot;</span>
-    <span class="p">),</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="nd">&quot;@context&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;born&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nd">&quot;@id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://schema.org/birthDate&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nd">&quot;@type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;xsd:date&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
+</code></pre></div>
+</div>
+</div></p>
+<p><div class="grid" markdown>
+<div markdown></p>
+<h4 id="pro_5"><img alt="✅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" title=":white_check_mark:" /> Pro</h4>
+<ul>
+<li><strong>Server relief</strong>: Reduces repeated fetches against shared public context servers</li>
+<li><strong>Warm-cache resilience</strong>: Repeat processing can survive temporary server or network failures
+</div></li>
+</ul>
+<div markdown>
+<h4 id="contra_5"><img alt="❌" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" title=":x:" /> Contra</h4>
+<ul>
+<li><strong>First fetch still matters</strong>: A cache does not authenticate the first response or make spoofed bytes trustworthy</li>
+<li><strong>Not permanent</strong>: Cached entries may expire, be evicted, or differ between deployments</li>
+<li><strong>Limited offline privacy</strong>: Offline and privacy benefits only apply after the context is already cached locally
+</div>
+</div></li>
+</ul>
+</div>
+<div class="tabbed-block">
+<p>For air-gapped, security-hardened, reproducible, or privacy-sensitive deployments, a processor can refuse the network entirely and resolve known context URLs only from vetted local files.</p>
+<p><a href="https://github.com/digitalbazaar/pyld/pull/250"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33s1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2"/></svg></span> digitalbazaar/pyld#250</a> proposes <code>FrozenDocumentLoader</code>, which lets PyLD convert the document to RDF using only an explicit allowlist of local context files:</p>
+<p><div class="grid" markdown>
+<div markdown>
+<div class="highlight"><span class="filename">john_lennon_vetted_loader.py</span><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyld</span><span class="w"> </span><span class="kn">import</span> <span class="n">FrozenDocumentLoader</span><span class="p">,</span> <span class="n">jsonld</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">cached_loader</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">VETTED_CONTEXTS</span><span class="p">:</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="n">VETTED_CONTEXTS</span><span class="p">[</span><span class="n">url</span><span class="p">]</span>
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;contentType&quot;</span><span class="p">:</span> <span class="s2">&quot;application/ld+json&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;contextUrl&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s2">&quot;documentUrl&quot;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
-            <span class="s2">&quot;document&quot;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">read_text</span><span class="p">()),</span>
-        <span class="p">}</span>
-    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Refusing to fetch un-vetted context: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">HERE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
 
+<span class="n">loader</span> <span class="o">=</span> <span class="n">FrozenDocumentLoader</span><span class="p">(</span>
+    <span class="n">documents</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;https://json-ld.org/contexts/person.jsonld&quot;</span><span class="p">:</span> <span class="n">HERE</span> <span class="o">/</span> <span class="s2">&quot;person.jsonld&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;https://json-ld.org/contexts/dollar-convenience.jsonld&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="n">HERE</span> <span class="o">/</span> <span class="s2">&quot;dollar-convenience.jsonld&quot;</span>
+        <span class="p">),</span>
+    <span class="p">},</span>
+<span class="p">)</span>
 
-<span class="n">jsonld</span><span class="o">.</span><span class="n">set_document_loader</span><span class="p">(</span><span class="n">cached_loader</span><span class="p">)</span>
+<span class="n">document</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">((</span><span class="n">HERE</span> <span class="o">/</span> <span class="s2">&quot;john-lennon.yamlld&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+
+<span class="n">rdf_dataset</span> <span class="o">=</span> <span class="n">jsonld</span><span class="o">.</span><span class="n">to_rdf</span><span class="p">(</span>
+    <span class="n">document</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;documentLoader&quot;</span><span class="p">:</span> <span class="n">loader</span><span class="p">},</span>
+<span class="p">)</span>
 </code></pre></div>
 </div>
 <div markdown>
@@ -4130,14 +4516,15 @@ definitions directly in the document itself.</p>
 </div></p>
 <p><div class="grid" markdown>
 <div markdown></p>
-<h4 id="pro_5"><img alt="✅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" title=":white_check_mark:" /> Pro</h4>
+<h4 id="pro_6"><img alt="✅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" title=":white_check_mark:" /> Pro</h4>
 <ul>
-<li><strong>Available today</strong>: Implementable with any JSON-LD processor via a custom document loader</li>
-<li><strong>Fits controlled deployments</strong>: Works well for archival, reproducible, and air-gapped processing
+<li><strong>PyLD-managed allowlist</strong>: Uses a reusable document loader instead of custom fetch logic</li>
+<li><strong>Strict local policy</strong>: Unknown context URLs are refused instead of fetched</li>
+<li><strong>Fits controlled deployments</strong>: Works well for archival, reproducible, air-gapped, and privacy-sensitive processing
 </div></li>
 </ul>
 <div markdown>
-<h4 id="contra_5"><img alt="❌" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" title=":x:" /> Contra</h4>
+<h4 id="contra_6"><img alt="❌" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" title=":x:" /> Contra</h4>
 <ul>
 <li><strong>Operational burden</strong>: Requires an organizational process to update and re-vet cached copies</li>
 <li><strong>Policy portability gap</strong>: A document does not carry its own trust policy, so another deployment may resolve the same contexts differently
@@ -4153,14 +4540,14 @@ definitions directly in the document itself.</p>
 <p>Applied to JSON-LD context loading: a document from <code>https://example.org</code> would load same-origin contexts by default; cross-origin contexts would require explicit CORS permission. This is a rejected non-solution: it controls origin access, not context bytes or durability.</p>
 <p><div class="grid" markdown>
 <div markdown></p>
-<h4 id="pro_6"><img alt="✅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" title=":white_check_mark:" /> Pro</h4>
+<h4 id="pro_7"><img alt="✅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" title=":white_check_mark:" /> Pro</h4>
 <ul>
 <li><strong>Self-describing policy</strong>: No external configuration or allowlist is needed</li>
 <li><strong>Mature model</strong>: It is already implemented in every web browser
 </div></li>
 </ul>
 <div markdown>
-<h4 id="contra_6"><img alt="❌" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" title=":x:" /> Contra</h4>
+<h4 id="contra_7"><img alt="❌" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" title=":x:" /> Contra</h4>
 <ul>
 <li><strong>Impractical default</strong>: Most real JSON-LD usage is cross-origin by design, so shared vocabularies such as <code>schema.org</code> and <code>w3id.org</code> would be blocked without a cross-origin permission mechanism</li>
 <li><strong>Wrong layer</strong>: It restricts <em>who</em> can serve contexts, not <em>what</em> they contain; a same-origin server can still change, spoof, or lose its context
@@ -4171,7 +4558,1759 @@ definitions directly in the document itself.</p>
 </div>
 </div>
 <script type="application/ld+json">
-[]
+[
+  {
+    "@included": [
+      {
+        "@type": [
+          "https://vocab.methodandstructure.com/ibis#Issue"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+          {
+            "@value": "Remote JSON-LD contexts make document meaning depend on mutable network resources, which creates risks around changed, spoofed, unavailable, privacy-leaking, or overloaded context servers."
+          }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@value": "How should JSON-LD documents avoid remote context risks?"
+          }
+        ],
+        "https://vocab.methodandstructure.com/ibis#response": [
+          {
+            "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#sri",
+            "@type": [
+              "https://vocab.methodandstructure.com/ibis#Position"
+            ],
+            "https://vocab.methodandstructure.com/ibis#opposed-by": [
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "A plain context URL becomes an object with metadata, making simple @context usage less readable."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "Structured context references are heavier"
+                  }
+                ]
+              },
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "The proposal does not yet cover @import chains."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "Imported contexts are not covered"
+                  }
+                ]
+              }
+            ],
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@value": "JSON-LD @sri"
+              }
+            ],
+            "https://vocab.methodandstructure.com/ibis#supported-by": [
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "The model is familiar because it mirrors a proven browser standard."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "Direct analogy to browser SRI"
+                  }
+                ]
+              },
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "The integrity hash is carried by the reference itself, with no separate lockfile."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "Hash travels with the context reference"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#protected",
+            "@type": [
+              "https://vocab.methodandstructure.com/ibis#Position"
+            ],
+            "https://vocab.methodandstructure.com/ibis#opposed-by": [
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "Key terms must be declared inline before loading later contexts, reducing the value of loading them remotely."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "Meaningful protection requires inline setup"
+                  }
+                ]
+              },
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "Protected terms prevent some redefinitions but do not authenticate the remote context or pin its content."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "Does not authenticate fetched bytes"
+                  }
+                ]
+              }
+            ],
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@value": "JSON-LD @protected"
+              }
+            ],
+            "https://vocab.methodandstructure.com/ibis#supported-by": [
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "Protected terms require no new JSON-LD syntax or future revision."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "Already available in JSON-LD 1.1"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#inline-contexts",
+            "@type": [
+              "https://vocab.methodandstructure.com/ibis#Position"
+            ],
+            "https://vocab.methodandstructure.com/ibis#opposed-by": [
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "Large shared contexts such as schema.org become verbose when embedded repeatedly."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "Shared contexts are repeated in every document"
+                  }
+                ]
+              },
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "Updating an inline context requires reissuing every document that embeds it."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "Context updates require reissuing documents"
+                  }
+                ]
+              }
+            ],
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@value": "Inline contexts"
+              }
+            ],
+            "https://vocab.methodandstructure.com/ibis#supported-by": [
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "Inline contexts make the document fully carry the term definitions it depends on."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "The document carries its own term definitions"
+                  }
+                ]
+              },
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "Inline contexts avoid depending on cache or document-loader configuration."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "Correct processing does not depend on loader policy"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#hash-fragment",
+            "@type": [
+              "https://vocab.methodandstructure.com/ibis#Position"
+            ],
+            "https://vocab.methodandstructure.com/ibis#opposed-by": [
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "Existing context servers would need to emit the relevant hash information."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "Context servers must cooperate"
+                  }
+                ]
+              },
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "The hash is supplied by the response server, not by the document that references the context."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "The referencing document does not bind the hash"
+                  }
+                ]
+              }
+            ],
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@value": "Hash fragment in application/ld+json"
+              }
+            ],
+            "https://vocab.methodandstructure.com/ibis#supported-by": [
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "Hash fragments in HTTP responses are transparent to document authors."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "No author syntax change is required"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#content-addressed-context-uris",
+            "@type": [
+              "https://vocab.methodandstructure.com/ibis#Position"
+            ],
+            "https://vocab.methodandstructure.com/ibis#opposed-by": [
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "Location-based context URLs such as schema.org and w3id.org would need a migration path."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "Existing context URLs must be replaced or aliased"
+                  }
+                ]
+              },
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "The ni scheme has no mainstream adoption, and IPFS adds infrastructure dependency."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "Content-addressed context schemes have weak adoption"
+                  }
+                ]
+              }
+            ],
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@value": "Content-addressed context URIs"
+              }
+            ],
+            "https://vocab.methodandstructure.com/ibis#supported-by": [
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "Mutation produces a different content-addressed URI by construction."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "The URI itself checks integrity"
+                  }
+                ]
+              },
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "Content-addressed context URIs align with approaches such as Trusty URIs and nanopublications."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "Fits Linked Data trust literature"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#aggressive-context-caching",
+            "@type": [
+              "https://vocab.methodandstructure.com/ibis#Position"
+            ],
+            "https://vocab.methodandstructure.com/ibis#opposed-by": [
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "Caching does not authenticate the first response or make spoofed bytes trustworthy."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "The first fetch is still trusted"
+                  }
+                ]
+              },
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "Cache entries can expire, be evicted, or vary between processors."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "Cached entries may expire or differ by deployment"
+                  }
+                ]
+              }
+            ],
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@value": "Aggressively cache contexts"
+              }
+            ],
+            "https://vocab.methodandstructure.com/ibis#supported-by": [
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "Caching reduces repeated requests against shared public context servers."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "Reduces repeated fetches"
+                  }
+                ]
+              },
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "A warm cache can tolerate temporary server or network failures."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "Repeat processing can survive temporary outages"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#vetted-context-allowlist",
+            "@type": [
+              "https://vocab.methodandstructure.com/ibis#Position"
+            ],
+            "https://vocab.methodandstructure.com/ibis#opposed-by": [
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "Organizations must update and re-vet cached context copies."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "Vetted copies need an update process"
+                  }
+                ]
+              },
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "Another deployment may resolve the same context URLs differently."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "Trust policy does not travel with the document"
+                  }
+                ]
+              }
+            ],
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@value": "Use a vetted context allowlist"
+              }
+            ],
+            "https://vocab.methodandstructure.com/ibis#supported-by": [
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "A vetted allowlist can refuse unknown context URLs instead of fetching them."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "Unknown context URLs are refused"
+                  }
+                ]
+              },
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "A vetted allowlist works well for archival, reproducible, air-gapped, and privacy-sensitive processing."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "Fits controlled processing environments"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#origin-policy",
+            "@type": [
+              "https://vocab.methodandstructure.com/ibis#Position"
+            ],
+            "https://vocab.methodandstructure.com/ibis#opposed-by": [
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "Real JSON-LD documents commonly rely on shared cross-origin vocabularies such as schema.org and w3id.org."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "Shared vocabularies are cross-origin by design"
+                  }
+                ]
+              },
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "Origin policy restricts who can serve a context, not what bytes the context contains or whether it remains available."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "Origin checks do not validate context content"
+                  }
+                ]
+              }
+            ],
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@value": "Origin-based policy"
+              }
+            ],
+            "https://vocab.methodandstructure.com/ibis#supported-by": [
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "Origin policy can be described without a separate deployment-specific allowlist."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "No external allowlist is needed"
+                  }
+                ]
+              },
+              {
+                "@type": [
+                  "https://vocab.methodandstructure.com/ibis#Argument"
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#comment": [
+                  {
+                    "@value": "Same-origin policy is already implemented by browsers."
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "The origin model is widely implemented"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "http://www.w3.org/2004/02/skos/core#related": [
+          {
+            "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#comparison-dataset",
+            "@reverse": {
+              "http://purl.org/linked-data/cube#dataSet": [
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#sri"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#context-changed"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#sri"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#context-spoofed"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#sri"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#does-not-mitigate"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#context-unavailable"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#sri"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#does-not-mitigate"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#client-offline"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#sri"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#partially-mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#privacy-exposure"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#sri"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#partially-mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#server-overloaded"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#protected"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#partially-mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#context-changed"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#protected"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#partially-mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#context-spoofed"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#protected"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#does-not-mitigate"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#context-unavailable"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#protected"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#does-not-mitigate"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#client-offline"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#protected"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#does-not-mitigate"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#privacy-exposure"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#protected"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#does-not-mitigate"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#server-overloaded"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#inline-contexts"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#context-changed"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#inline-contexts"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#context-spoofed"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#inline-contexts"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#context-unavailable"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#inline-contexts"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#client-offline"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#inline-contexts"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#privacy-exposure"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#inline-contexts"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#server-overloaded"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#hash-fragment"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#does-not-mitigate"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#context-changed"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#hash-fragment"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#does-not-mitigate"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#context-spoofed"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#hash-fragment"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#does-not-mitigate"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#context-unavailable"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#hash-fragment"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#does-not-mitigate"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#client-offline"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#hash-fragment"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#does-not-mitigate"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#privacy-exposure"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#hash-fragment"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#does-not-mitigate"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#server-overloaded"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#content-addressed-context-uris"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#context-changed"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#content-addressed-context-uris"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#context-spoofed"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#content-addressed-context-uris"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#partially-mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#context-unavailable"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#content-addressed-context-uris"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#partially-mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#client-offline"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#content-addressed-context-uris"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#partially-mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#privacy-exposure"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#content-addressed-context-uris"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#partially-mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#server-overloaded"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#aggressive-context-caching"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#partially-mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#context-changed"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#aggressive-context-caching"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#partially-mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#context-spoofed"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#aggressive-context-caching"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#partially-mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#context-unavailable"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#aggressive-context-caching"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#partially-mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#client-offline"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#aggressive-context-caching"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#partially-mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#privacy-exposure"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#aggressive-context-caching"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#server-overloaded"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#vetted-context-allowlist"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#context-changed"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#vetted-context-allowlist"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#context-spoofed"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#vetted-context-allowlist"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#context-unavailable"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#vetted-context-allowlist"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#client-offline"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#vetted-context-allowlist"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#privacy-exposure"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#vetted-context-allowlist"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigates"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#server-overloaded"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#origin-policy"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#does-not-mitigate"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#context-changed"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#origin-policy"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#does-not-mitigate"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#context-spoofed"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#origin-policy"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#does-not-mitigate"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#context-unavailable"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#origin-policy"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#does-not-mitigate"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#client-offline"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#origin-policy"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#does-not-mitigate"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#privacy-exposure"
+                    }
+                  ]
+                },
+                {
+                  "@type": [
+                    "http://purl.org/linked-data/cube#Observation"
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#origin-policy"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#does-not-mitigate"
+                    }
+                  ],
+                  "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion": [
+                    {
+                      "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#server-overloaded"
+                    }
+                  ]
+                }
+              ]
+            },
+            "@type": [
+              "http://purl.org/linked-data/cube#DataSet"
+            ],
+            "http://purl.org/linked-data/cube#structure": [
+              {
+                "@type": [
+                  "http://purl.org/linked-data/cube#DataStructureDefinition"
+                ],
+                "http://purl.org/linked-data/cube#component": [
+                  {
+                    "http://purl.org/linked-data/cube#dimension": [
+                      {
+                        "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#alternative",
+                        "@type": [
+                          "http://purl.org/linked-data/cube#DimensionProperty"
+                        ],
+                        "http://www.w3.org/2000/01/rdf-schema#label": [
+                          {
+                            "@value": "alternative"
+                          }
+                        ],
+                        "http://www.w3.org/2000/01/rdf-schema#range": [
+                          {
+                            "@id": "https://vocab.methodandstructure.com/ibis#Position"
+                          }
+                        ]
+                      }
+                    ],
+                    "http://purl.org/linked-data/cube#order": [
+                      {
+                        "@value": 1
+                      }
+                    ]
+                  },
+                  {
+                    "http://purl.org/linked-data/cube#dimension": [
+                      {
+                        "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#riskCriterion",
+                        "@type": [
+                          "http://purl.org/linked-data/cube#DimensionProperty"
+                        ],
+                        "http://www.w3.org/2000/01/rdf-schema#label": [
+                          {
+                            "@value": "risk criterion"
+                          }
+                        ],
+                        "http://www.w3.org/2000/01/rdf-schema#range": [
+                          {
+                            "@id": "http://www.w3.org/2004/02/skos/core#Concept"
+                          }
+                        ]
+                      }
+                    ],
+                    "http://purl.org/linked-data/cube#order": [
+                      {
+                        "@value": 2
+                      }
+                    ]
+                  },
+                  {
+                    "http://purl.org/linked-data/cube#measure": [
+                      {
+                        "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigationRating",
+                        "@type": [
+                          "http://purl.org/linked-data/cube#MeasureProperty"
+                        ],
+                        "http://www.w3.org/2000/01/rdf-schema#label": [
+                          {
+                            "@value": "mitigation rating"
+                          }
+                        ],
+                        "http://www.w3.org/2000/01/rdf-schema#range": [
+                          {
+                            "@id": "http://www.w3.org/2004/02/skos/core#Concept"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "http://www.w3.org/2000/01/rdf-schema#label": [
+                  {
+                    "@value": "Comparison matrix structure"
+                  }
+                ]
+              }
+            ],
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@value": "Comparison of JSON-LD remote context risk mitigations"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#context-changed",
+        "@type": [
+          "http://www.w3.org/2004/02/skos/core#Concept"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@value": "Context Changed"
+          }
+        ]
+      },
+      {
+        "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#context-spoofed",
+        "@type": [
+          "http://www.w3.org/2004/02/skos/core#Concept"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@value": "Context Spoofed"
+          }
+        ]
+      },
+      {
+        "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#context-unavailable",
+        "@type": [
+          "http://www.w3.org/2004/02/skos/core#Concept"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@value": "Context Unavailable"
+          }
+        ]
+      },
+      {
+        "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#client-offline",
+        "@type": [
+          "http://www.w3.org/2004/02/skos/core#Concept"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@value": "Client Offline"
+          }
+        ]
+      },
+      {
+        "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#privacy-exposure",
+        "@type": [
+          "http://www.w3.org/2004/02/skos/core#Concept"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@value": "Privacy Exposure"
+          }
+        ]
+      },
+      {
+        "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#server-overloaded",
+        "@type": [
+          "http://www.w3.org/2004/02/skos/core#Concept"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@value": "Server Overloaded"
+          }
+        ]
+      },
+      {
+        "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#mitigates",
+        "@type": [
+          "http://www.w3.org/2004/02/skos/core#Concept"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@value": "mitigates"
+          }
+        ]
+      },
+      {
+        "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#partially-mitigates",
+        "@type": [
+          "http://www.w3.org/2004/02/skos/core#Concept"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@value": "partially or conditionally mitigates"
+          }
+        ]
+      },
+      {
+        "@id": "https://iolanta.tech/blog/remote-contexts-considered-harmful/#does-not-mitigate",
+        "@type": [
+          "http://www.w3.org/2004/02/skos/core#Concept"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@value": "does not mitigate"
+          }
+        ]
+      }
+    ]
+  }
+]
 </script>
 
 
