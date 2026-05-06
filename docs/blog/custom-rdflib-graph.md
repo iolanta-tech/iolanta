@@ -1,6 +1,7 @@
 ---
-is-blocked-by: rdflib-in-cyberspace
 title: Use a custom rdflib graph class
+date: "2024-01-21"
+tags: [decision]
 ---
 
 ## Context

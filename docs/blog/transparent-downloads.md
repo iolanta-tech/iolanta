@@ -1,7 +1,7 @@
 ---
 title: Download data transparently
-is-blocked-by: find-data-source-by-triple-template
-$id: download-data-transparently
+date: "2024-01-21"
+tags: [decision]
 ---
 
 ## Context

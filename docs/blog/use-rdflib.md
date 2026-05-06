@@ -1,6 +1,7 @@
 ---
 title: Use rdflib for querying the Cyberspace
-$id: rdflib-in-cyberspace
+date: "2024-01-21"
+tags: [decision]
 ---
 
 ## Context

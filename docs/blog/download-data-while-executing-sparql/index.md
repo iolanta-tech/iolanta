@@ -1,5 +1,7 @@
 ---
-is-blocked-by: download-data-transparently
+title: Download data while executing SPARQL
+date: "2024-01-21"
+tags: [decision]
 ---
 
 ## Context

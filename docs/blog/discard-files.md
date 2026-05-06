@@ -1,5 +1,7 @@
 ---
 title: Discard files, just use a cache
+date: "2024-01-22"
+tags: [decision]
 ---
 
 ## Context
