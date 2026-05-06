@@ -1,6 +1,7 @@
 ---
 title: Find data source by a triple template
-$id: find-data-source-by-triple-template
+date: "2024-01-20"
+tags: [decision]
 ---
 
 ## Context
