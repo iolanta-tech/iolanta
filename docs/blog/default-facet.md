@@ -1,5 +1,7 @@
 ---
 title: Use Record as a default facet
+date: "2023-12-03"
+tags: [decision]
 ---
 
 ## Context
