@@ -57,7 +57,7 @@
 
 **F02.** WPS (wemake-python-styleguide) linting errors must be fixed, not dismissed. The project uses WPS for a reason - treat all WPS errors as issues that need to be addressed. Do not dismiss linting errors as "expected" or "normal".
 
-**F03.** When running linters (`j lint`), they run against the entire project, not specific files. Fix all linting errors found, not just errors in files that were recently modified or mentioned.
+**F03.** `j lint` runs flake8/ruff only on files changed against `origin/master` (`list_changed_files()` in `jeeves_yeti_pyproject`); untracked new files are excluded until they are at least staged. Mypy, by contrast, runs project-wide and the project tolerates a baseline (CI compares PR count vs master). When validating after a refactor, check flake8 is clean on the touched files; do not treat the long mypy tail as a regression unless the count grew.
 
 **F04.** Never catch broad exceptions like `Exception` or `BaseException`. This is an antipattern that hides bugs, masks real problems, makes debugging harder, and violates the principle of catching only what you expect. Always catch specific exception types (e.g., `AttributeError`, `ValueError`, `KeyError`) that you actually expect and know how to handle. If you need to suppress a linting error about exception handling, use `# noqa` rather than changing the exception handling logic.
 
