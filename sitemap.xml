@@ -209,7 +209,7 @@
          <lastmod>2026-05-07</lastmod>
     </url>
     <url>
-         <loc>https://iolanta.tech/datatypes/mkdocs-material-insiders-markdown/</loc>
+         <loc>https://iolanta.tech/datatypes/mkdocs-material/</loc>
          <lastmod>2026-05-07</lastmod>
     </url>
     <url>
@@ -270,6 +270,10 @@
     </url>
     <url>
          <loc>https://iolanta.tech/reference/ontology/</loc>
+         <lastmod>2026-05-07</lastmod>
+    </url>
+    <url>
+         <loc>https://iolanta.tech/reference/rdfs/</loc>
          <lastmod>2026-05-07</lastmod>
     </url>
     <url>
