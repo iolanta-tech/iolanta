@@ -8,6 +8,7 @@
   rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
 
 $id: "rdfs:"
+$type: owl:Ontology
 vann:termGroup:
   - rdfs:label: Properties
     $reverse:
