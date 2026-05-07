@@ -1,0 +1,21 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  owl: http://www.w3.org/2002/07/owl#
+  iolanta: https://iolanta.tech/
+
+  $: rdfs:label
+
+  →:
+    "@type": "@id"
+    "@id": iolanta:outputs
+
+  ↦: iolanta:matches
+
+$id: pkg:pypi/iolanta#mkdocs-ontology
+$: Ontology (mkdocs-material)
+
+→: https://iolanta.tech/datatypes/mkdocs-material
+
+↦: ASK WHERE { $this a owl:Ontology }
