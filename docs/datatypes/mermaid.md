@@ -14,4 +14,4 @@ rdfs:comment: >
   into Mermaid graph syntax, enabling visualization of knowledge graphs as diagrams.
 ---
 
-{{ URIRef("https://iolanta.tech/datatypes/mermaid") | as('mkdocs-material-insiders-markdown') }}
+{{ URIRef("https://iolanta.tech/datatypes/mermaid") | as('mkdocs-material') }}
