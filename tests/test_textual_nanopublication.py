@@ -18,14 +18,14 @@ def test_nanopublication_query_declares_prefixes(monkeypatch):
     """
     monkeypatch.setattr(
         GlobalSPARQLProcessor,
-        'load',
+        "load",
         lambda _processor, _source: None,
     )
 
-    nanopublication = URIRef('https://example.org/np/RA-test')
-    assertion = URIRef('https://example.org/np/RA-test/assertion')
+    nanopublication = URIRef("https://example.org/np/RA-test")
+    assertion = URIRef("https://example.org/np/RA-test/assertion")
     created_time = Literal(
-        '2026-05-07T14:33:34.514Z',
+        "2026-05-07T14:33:34.514Z",
         datatype=XSD.dateTime,
     )
 
@@ -35,14 +35,14 @@ def test_nanopublication_query_declares_prefixes(monkeypatch):
 
     rows = iolanta.query(
         import_module(
-            'iolanta.facets.textual_nanopublication.nanopublication_widget',
+            "iolanta.facets.textual_nanopublication.nanopublication_widget",
         ).NANOPUBLICATION_QUERY,
         uri=nanopublication,
     )
 
     assert rows == [
         {
-            'assertion': assertion,
-            'created_time': created_time,
+            "assertion": assertion,
+            "created_time": created_time,
         },
     ]
