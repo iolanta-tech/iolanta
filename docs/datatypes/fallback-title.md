@@ -17,4 +17,4 @@ rdfs:comment: >
 iolanta:hasDefaultFacet: pkg:pypi/iolanta#title
 ---
 
-{{ URIRef("https://iolanta.tech/datatypes/fallback-title") | as('mkdocs-material-insiders-markdown') }} 
+{{ URIRef("https://iolanta.tech/datatypes/fallback-title") | as('mkdocs-material') }} 
