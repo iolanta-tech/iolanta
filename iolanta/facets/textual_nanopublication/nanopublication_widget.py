@@ -1,3 +1,5 @@
+"""Widgets for rendering nanopublication pages in Textual."""
+
 import funcy
 from rdflib import Literal
 from textual.containers import VerticalScroll
@@ -10,6 +12,9 @@ from iolanta.namespaces import DATATYPES, DCTERMS, NP
 from iolanta.widgets.mixin import IolantaWidgetMixin
 
 NANOPUBLICATION_QUERY = """
+PREFIX np: <http://www.nanopub.org/nschema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
 SELECT ?assertion ?author ?created_time ?retract WHERE {
     $uri np:hasAssertion ?assertion .
 
@@ -40,16 +45,24 @@ class NanopublicationScreen(IolantaWidgetMixin, VerticalScroll):
     """Nanopublication screen."""
 
     def __init__(self, uri: NotLiteralNode):
-        """Initialize."""
+        """Initialize.
+
+        Args:
+            uri: Nanopublication IRI to render.
+        """
         self.uri = uri
         super().__init__()
 
     def compose(self):
-        """Render components of the nanopublication screen."""
+        """Render components of the nanopublication screen.
+
+        Yields:
+            Textual widgets that make up the nanopublication page.
+        """
         yield PageTitle(NP.Nanopublication)
 
         row = funcy.first(
-            self.iolanta.query(   # noqa: WPS462
+            self.iolanta.query(  # noqa: WPS462
                 NANOPUBLICATION_QUERY,
                 uri=self.uri,
             ),
@@ -65,21 +78,29 @@ class NanopublicationScreen(IolantaWidgetMixin, VerticalScroll):
 
         provenance = []
         if row.get('author'):
-            provenance.extend([
-                TermWidget(DCTERMS.creator, as_datatype=DATATYPES.icon),
-                TermWidget(row['author']),
-            ])
+            provenance.extend(
+                [
+                    TermWidget(DCTERMS.creator, as_datatype=DATATYPES.icon),
+                    TermWidget(row['author']),
+                ],
+            )
 
         if row.get('created_time'):
             provenance.append(
                 TermWidget(row['created_time']),
             )
 
-        if retract := row.get('retract'):
-            provenance.extend([
-                TermWidget(Literal('Retracted by'), background_color='darkred'),
-                TermWidget(retract, background_color='darkred'),
-            ])
+        retract = row.get('retract')
+        if retract:
+            provenance.extend(
+                [
+                    TermWidget(
+                        Literal('Retracted by'),
+                        background_color='darkred',
+                    ),
+                    TermWidget(retract, background_color='darkred'),
+                ],
+            )
 
         if provenance:
             yield TermList(provenance)
