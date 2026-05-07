@@ -27,4 +27,4 @@ rdfs:comment: >
   single `source` value, never across.
 ---
 
-{{ URIRef("https://iolanta.tech/datatypes/jsonl") | as('mkdocs-material-insiders-markdown') }}
+{{ URIRef("https://iolanta.tech/datatypes/jsonl") | as('mkdocs-material') }}
