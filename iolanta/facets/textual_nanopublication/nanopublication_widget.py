@@ -72,33 +72,33 @@ class NanopublicationScreen(IolantaWidgetMixin, VerticalScroll):
             return
 
         yield self.iolanta.render(
-            row['assertion'],
-            as_datatype=DATATYPES['textual-graph-triples'],
+            row["assertion"],
+            as_datatype=DATATYPES["textual-graph-triples"],
         )
 
         provenance = []
-        if row.get('author'):
+        if row.get("author"):
             provenance.extend(
                 [
                     TermWidget(DCTERMS.creator, as_datatype=DATATYPES.icon),
-                    TermWidget(row['author']),
+                    TermWidget(row["author"]),
                 ],
             )
 
-        if row.get('created_time'):
+        if row.get("created_time"):
             provenance.append(
-                TermWidget(row['created_time']),
+                TermWidget(row["created_time"]),
             )
 
-        retract = row.get('retract')
+        retract = row.get("retract")
         if retract:
             provenance.extend(
                 [
                     TermWidget(
-                        Literal('Retracted by'),
-                        background_color='darkred',
+                        Literal("Retracted by"),
+                        background_color="darkred",
                     ),
-                    TermWidget(retract, background_color='darkred'),
+                    TermWidget(retract, background_color="darkred"),
                 ],
             )
 
