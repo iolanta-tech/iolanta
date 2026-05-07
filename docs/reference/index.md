@@ -4,7 +4,7 @@ hide: [toc, navigation]
 
 # :octicons-book-24: Reference
 
-## Iolanta Vocabulary
+## Iolanta Ontology
 
 <div class="grid cards" markdown>
 
@@ -58,5 +58,27 @@ hide: [toc, navigation]
     ---
     
     What if no facet is found to visualize this node for a given [datatype](/reference/rdf/datatype)? Specify an emergency facet to use in such cases.
+
+</div>
+
+## Ontologies Iolanta relies upon
+
+<div class="grid cards" markdown>
+
+-   :material-eye-check-outline: __[RDF](/reference/rdf/)__
+    
+    ---
+    
+    RDF base ontology.
+
+</div>
+
+<div class="grid cards" markdown>
+
+-   :material-eye-check-outline: __[RDFS](/reference/rdfs/)__
+    
+    ---
+    
+    RDF Schema.
 
 </div>
