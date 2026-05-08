@@ -2,7 +2,7 @@ nav:
   - Home: index.md
   - howto
   - Reference:
-      - Reference: reference/
+      - reference
       - Facet.md
       - matches.md
       - is-preferred-over.md
