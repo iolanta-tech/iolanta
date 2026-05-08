@@ -69,16 +69,12 @@ hide: [toc, navigation]
     
     ---
     
-    RDF base ontology.
-
-</div>
-
-<div class="grid cards" markdown>
+    RDF vocabulary (`rdf:`): properties, classes, lists, and literals.
 
 -   :material-eye-check-outline: __[RDFS](/reference/rdfs/)__
     
     ---
     
-    RDF Schema.
+    RDF Schema (`rdfs:`): classes and properties for lightweight ontologies.
 
 </div>
