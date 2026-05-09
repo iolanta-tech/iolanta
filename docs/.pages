@@ -9,6 +9,7 @@ nav:
       - outputs.md
       - when-no-facet-found.md
       - has-sub-graph.md
+      - visualizes.md
       - datatypes
   - blog
   - Plugins:
