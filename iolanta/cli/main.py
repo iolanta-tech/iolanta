@@ -1,4 +1,5 @@
 import contextlib
+import functools
 import json
 import locale
 import logging
@@ -9,6 +10,8 @@ from typing import Annotated
 
 import loguru
 import platformdirs
+from jinja2 import Environment, FileSystemLoader
+from jinja2 import TemplateError
 from documented import DocumentedError
 from rdflib import Graph, Literal, URIRef
 from rich.console import Console
@@ -17,6 +20,7 @@ from rich.table import Table
 from typer import Argument, Exit, Option, Typer
 from yarl import URL
 
+from iolanta.conversions import path_to_iri
 from iolanta.cli.models import JsonLines, LogLevel
 from iolanta.facets.errors import FacetNotFound
 from iolanta.iolanta import Iolanta
@@ -28,7 +32,8 @@ from iolanta.query_result import (
 )
 from iolanta.search.aggregator import run_search
 
-DEFAULT_LANGUAGE = locale.getlocale()[0].split("_")[0]
+_LOCALE_LANGUAGE = locale.getlocale()[0] or "en"
+DEFAULT_LANGUAGE = _LOCALE_LANGUAGE.split("_")[0]
 
 
 console = Console()
@@ -73,6 +78,160 @@ def decode_datatype(datatype: str) -> URIRef:
         return URIRef(f"https://iolanta.tech/{datatype}")
 
     return URIRef(f"https://iolanta.tech/datatypes/{datatype}")
+
+
+def as_uri(uri: object, *, base_path: Path | None = None) -> URIRef:
+    """Convert a path, string, or URIRef to a URIRef."""
+    match uri:
+        case Path() as path:
+            if not path.is_absolute() and base_path is not None:
+                path = base_path / path
+            return path_to_iri(path.absolute())
+        case URIRef() as uriref:
+            return uriref
+        case str() as uri_string:
+            if template_path := _template_path(uri_string, base_path):
+                return path_to_iri(template_path)
+            return URIRef(uri_string)
+
+    uri_type = type(uri)
+    raise NotImplementedError(f"{uri} ({uri_type.__name__}) is unknown")
+
+
+def _template_path(uri_string: str, base_path: Path | None) -> Path | None:
+    """Return a document-relative path when a template string names one."""
+    if base_path is None:
+        return None
+
+    if "://" in uri_string or uri_string.startswith("/"):
+        return None
+
+    if ":" in uri_string.split("/", maxsplit=1)[0]:
+        return None
+
+    path = (base_path / uri_string).absolute()
+    if path.exists():
+        return path
+
+    return None
+
+
+def _resolve_template_node(
+    iolanta: Iolanta,
+    uri: object,
+    *,
+    base_path: Path,
+) -> URIRef:
+    """Resolve a template value into a URIRef, expanding CURIEs where possible."""
+    node = as_uri(uri, base_path=base_path)
+    node_string = str(node)
+
+    if node_string.count(":") == 1 and "://" not in node_string:
+        with contextlib.suppress(ValueError, KeyError):
+            return URIRef(iolanta.graph.namespace_manager.expand_curie(node_string))
+
+    return node
+
+
+def _as_filter(
+    iolanta: Iolanta,
+    uri: object,
+    datatype: str,
+    *,
+    base_path: Path,
+) -> str:
+    """Render a template value as the requested datatype."""
+    return iolanta.render(
+        node=_resolve_template_node(iolanta, uri, base_path=base_path),
+        as_datatype=decode_datatype(datatype),
+    )
+
+
+def _format_cell(cell_value: object) -> str:
+    """Format a cell for Markdown table output."""
+    cell_string = str(cell_value)
+    cell_string = cell_string.replace("`", r"\`")
+    return f"`{cell_string}`"
+
+
+def _markdown_table(query_results, headers) -> str:
+    """Build a Markdown table from query results."""
+    table_lines = [
+        f"| {' | '.join(headers)} |",
+        f"| {' | '.join('---' for _ in headers)} |",
+    ]
+
+    for row in query_results:
+        row_values = [_format_cell(row.get(header, "")) for header in headers]
+        table_lines.append(f"| {' | '.join(row_values)} |")
+
+    return "\n".join(table_lines)
+
+
+def _sparql_query_from_file(
+    iolanta: Iolanta,
+    sparql_file_path: str | Path,
+    *,
+    base_path: Path,
+    **kwargs,
+) -> str:
+    """Execute a SPARQL query file and return Markdown."""
+    sparql_file_path = Path(sparql_file_path)
+    if not sparql_file_path.is_absolute():
+        sparql_file_path = base_path / sparql_file_path
+
+    query_results = iolanta.query(sparql_file_path.read_text(), **kwargs)
+
+    match query_results:
+        case bool() as boolean_result:
+            return "✅ `True`" if boolean_result else "❌ `False`"
+        case []:
+            return "_No results_"
+        case _:
+            first_row = query_results[0]
+            return _markdown_table(query_results, list(first_row.keys()))
+
+
+def render_template(
+    template_path: Path,
+    *,
+    language: str = DEFAULT_LANGUAGE,
+    log_level: LogLevel = LogLevel.ERROR,
+) -> str:
+    """Render a Jinja2 Markdown template using Iolanta helpers."""
+    logger = setup_logging(log_level)
+    source_file = template_path.absolute()
+    project_root = source_file.parent
+    iolanta = Iolanta(
+        language=Literal(language),
+        logger=logger,
+        project_root=project_root,
+    )
+    environment = Environment(
+        loader=FileSystemLoader(str(project_root)),
+        autoescape=False,
+    )
+
+    environment.filters["as"] = functools.partial(
+        _as_filter,
+        iolanta,
+        base_path=project_root,
+    )
+    environment.filters["uri"] = functools.partial(
+        as_uri,
+        base_path=project_root,
+    )
+    environment.globals["sparql"] = functools.partial(
+        _sparql_query_from_file,
+        iolanta,
+        base_path=project_root,
+    )
+    environment.globals["path_to_uri"] = path_to_iri
+    environment.globals["docs"] = project_root
+    environment.globals["iolanta"] = project_root
+    environment.globals["URIRef"] = URIRef
+
+    return environment.get_template(source_file.name).render()
 
 
 def setup_logging(log_level: LogLevel):
@@ -197,10 +356,11 @@ def render_and_return(  # noqa: WPS210, WPS231
     logger = setup_logging(log_level)
 
     # Determine Iolanta instance based on node type
+    iolanta: Iolanta
     if isinstance(node, Literal):
         # Literal nodes (e.g., from query results) are used directly
         # Use current directory as project_root for query results
-        iolanta: Iolanta = Iolanta(
+        iolanta = Iolanta(
             language=Literal(language),
             logger=logger,
             project_root=Path.cwd(),
@@ -211,13 +371,13 @@ def render_and_return(  # noqa: WPS210, WPS231
             path = Path(str(node).replace("file://", ""))
             # Load current directory (like CLI AI agents): use parent if path is a file
             project_root = path.parent if path.is_file() else path
-            iolanta: Iolanta = Iolanta(
+            iolanta = Iolanta(
                 language=Literal(language),
                 logger=logger,
                 project_root=project_root,
             )
         else:
-            iolanta: Iolanta = Iolanta(
+            iolanta = Iolanta(
                 language=Literal(language),
                 logger=logger,
             )
@@ -253,6 +413,13 @@ def render_command(  # noqa: WPS231, WPS238, WPS210, WPS211, WPS213, C901
             help="Notion to look up across linked-data search APIs.",
         ),
     ] = None,
+    render_template_path: Annotated[
+        Path | None,
+        Option(
+            "--render-template",
+            help="Jinja2 Markdown template to render.",
+        ),
+    ] = None,
     as_datatype: Annotated[
         str | None,
         Option(
@@ -268,6 +435,34 @@ def render_command(  # noqa: WPS231, WPS238, WPS210, WPS211, WPS213, C901
     log_level: LogLevel = LogLevel.ERROR,
 ):
     """Render a given URL."""
+    selected_modes = [
+        mode for mode in (url, query, search, render_template_path) if mode is not None
+    ]
+    if len(selected_modes) > 1:
+        console.print(
+            "Error: provide only one of URL, --query, --search, or --render-template",
+        )
+        raise Exit(1)
+
+    if render_template_path is not None:
+        if as_datatype is not None:
+            console.print("Error: --render-template cannot be combined with --as")
+            raise Exit(1)
+
+        try:
+            print_renderable(
+                render_template(
+                    template_path=render_template_path,
+                    language=language,
+                    log_level=log_level,
+                ),
+            )
+        except (DocumentedError, FacetNotFound, TemplateError) as error:
+            handle_error(error, log_level, use_markdown=True)
+        except OSError as error:
+            handle_error(error, log_level, use_markdown=False)
+        return
+
     if query is not None:
         # For queries, default to 'table' format
         if as_datatype is None:
@@ -322,7 +517,9 @@ def render_command(  # noqa: WPS231, WPS238, WPS210, WPS211, WPS213, C901
         return
 
     if url is None:
-        console.print("Error: URL, --query, or --search must be provided")
+        console.print(
+            "Error: URL, --query, --search, or --render-template must be provided",
+        )
         raise Exit(1)
 
     # For URLs, default to interactive mode
