@@ -3976,26 +3976,49 @@ testfixtures = "*"
 
 [[package]]
 name = "reasonable"
-version = "0.2.6"
-description = "An OWL 2 RL reasoner with reasonable performance"
+version = "0.4.0"
+description = "Python bindings for Reasonable, a reasonably fast OWL 2 RL reasoner"
 optional = false
-python-versions = "*"
+python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "reasonable-0.2.6-cp37-abi3-macosx_10_7_x86_64.whl", hash = "sha256:4aa6bf17159b96e42821cf7af6738d95330dbc4a88e09834378a28df3333c483"},
-    {file = "reasonable-0.2.6-cp37-abi3-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:f06bfde7d128f3fff653f042634f8c4e68ded0a6150e3fa398e288d993bffbd4"},
-    {file = "reasonable-0.2.6-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:76b9f9279ca06cec734ae1d46494ec1ef9a003e528ca2029856e61ed6d6221c9"},
-    {file = "reasonable-0.2.6-cp37-abi3-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:6efa7596329e0b45421b7dd10d5806021850f1e294c41371b601ac611bfbe42b"},
-    {file = "reasonable-0.2.6-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:5e6b5aea2bbf4cadcf26a8e256d76670f37848707849a9590f94d2aa1a9c2392"},
-    {file = "reasonable-0.2.6-cp37-abi3-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:f0d9c8a15404cf3e385ee74db6fb06a7f8d04511cd5b69313162fb4068053b06"},
-    {file = "reasonable-0.2.6-cp37-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:53d8d7789f47ff777930448af82b24db081af4fe84e6a1bfd5448de74bb807a6"},
-    {file = "reasonable-0.2.6-cp37-abi3-musllinux_1_2_armv7l.whl", hash = "sha256:a32e66baa6a9d95186a042cab5cb5f250e7764b79da3721ef516726a9a947580"},
-    {file = "reasonable-0.2.6-cp37-abi3-musllinux_1_2_i686.whl", hash = "sha256:995ae5061cb31a38452d68e63dc6a301658e0bb0ef4e4efb98918927c7a73fb7"},
-    {file = "reasonable-0.2.6-cp37-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:e6d066a68672c53d9d28c670839664e860a9f070c007c1318f91800b074710d4"},
-    {file = "reasonable-0.2.6-cp37-abi3-win32.whl", hash = "sha256:6a4260330d62705eb4ea49926cd007b7a9278a9cf6548079a9ea53a6f277a15d"},
-    {file = "reasonable-0.2.6-cp37-abi3-win_amd64.whl", hash = "sha256:02332c2100748106be7580059d6e0a2769022fd687175594fe65ac8935cc32b6"},
-    {file = "reasonable-0.2.6.tar.gz", hash = "sha256:5d26aeb8b6c3f566aa2ef11c308b2208ec7669a30e9113728f243024c6276205"},
+    {file = "reasonable-0.4.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:c422f23a877e794bae00b3fe3e44f3b6141a9287de2b00f469d4562df6bd3047"},
+    {file = "reasonable-0.4.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:85cf72747077121a8a3fea8bd7a44a3212d9d9552b21379bd53231a132bc7e45"},
+    {file = "reasonable-0.4.0-cp310-cp310-musllinux_1_2_aarch64.whl", hash = "sha256:526b67121675484abe656112c6cbb05622f7adbf19eb8eb5837e3fbeb811e7d7"},
+    {file = "reasonable-0.4.0-cp310-cp310-musllinux_1_2_x86_64.whl", hash = "sha256:d3fdb1397c68c032682852958aae77b22171e40dcc6f1565bee1689ba23b2653"},
+    {file = "reasonable-0.4.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:eb0a28139772b37cb16a1ad02532077f123e5c07a9b92f3bc8b41c242be1055e"},
+    {file = "reasonable-0.4.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9af94e232dc7849a91734fbedf0cf64bfa15dbb9b601cff03d1243dfe3b0eb4b"},
+    {file = "reasonable-0.4.0-cp311-cp311-musllinux_1_2_aarch64.whl", hash = "sha256:7eb9c8fbb9e44bf6f3b4c2955969bfe3981a176be852345cc4fa4d83f94c175a"},
+    {file = "reasonable-0.4.0-cp311-cp311-musllinux_1_2_x86_64.whl", hash = "sha256:572b45cee30f985b3b6d5087f81ff50ee8f487fc0c14931294371b240189dff0"},
+    {file = "reasonable-0.4.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:6ae979b6bb30052be33a3495ea5fd7c24f0fb2cd82c5e0abf130f4b563848fdc"},
+    {file = "reasonable-0.4.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:fbc59740da7e13c0da317a55c4f1db2f552bc3abccd0716c9d269a2faa48fc02"},
+    {file = "reasonable-0.4.0-cp312-cp312-musllinux_1_2_aarch64.whl", hash = "sha256:0e3de6e245b1788624c8f3c780dcde004a21856030e513bb96c6530fa0a66435"},
+    {file = "reasonable-0.4.0-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:9950ce4848b24ce81134f69c052aee820936a4a10b98ead263f2c8da0c5f3094"},
+    {file = "reasonable-0.4.0-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:92d1ab7748723aabf0efae6265b31377a67430fc9f4c1941b4d359e0ddd69b7a"},
+    {file = "reasonable-0.4.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:da46b59092b406e4d243973ee2dee7fcacec2ee4e2b9e7f3eebafbea9ea291c2"},
+    {file = "reasonable-0.4.0-cp38-cp38-musllinux_1_2_aarch64.whl", hash = "sha256:f6f5f1171e68b6f58fba4fda6e04ef408b6713865505533909f108c9f323ee83"},
+    {file = "reasonable-0.4.0-cp38-cp38-musllinux_1_2_x86_64.whl", hash = "sha256:af26d05969a534417c4f38a0afb3b5d8baef5a43367da8b735ecec88064c8948"},
+    {file = "reasonable-0.4.0-cp39-abi3-macosx_10_14_x86_64.macosx_11_0_arm64.macosx_10_14_universal2.whl", hash = "sha256:094730c83b395321dce776350555388e634ab54c62246ba246eab3d44a153875"},
+    {file = "reasonable-0.4.0-cp39-abi3-macosx_10_14_x86_64.whl", hash = "sha256:d3504e9899d5a41e0d35492f1934af7315694a2dfafcf4813a41a26926530368"},
+    {file = "reasonable-0.4.0-cp39-abi3-macosx_11_0_arm64.whl", hash = "sha256:775eadf961f6914a0a89827815b33864b22df7b0bb4fb71f0af8184039fb1472"},
+    {file = "reasonable-0.4.0-cp39-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:912fec5e4e4d90a06c9ee0f1f3be3f603c98d3249d6f3a45f94cb59c9e29446e"},
+    {file = "reasonable-0.4.0-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d5cc0ed059390192ee87eae352ded7395a9969b5fe065a87f877c6d5daeaffa8"},
+    {file = "reasonable-0.4.0-cp39-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:5bfcf036be330d0731c6cdc9327b45beac6ac5eb117aae105d88d3e3c2de5b94"},
+    {file = "reasonable-0.4.0-cp39-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:635aeac47a5da51411a334312bda7d175cb33ecf73aa0a288e86bd8f1fc808aa"},
+    {file = "reasonable-0.4.0-cp39-abi3-win_amd64.whl", hash = "sha256:9869bdda8195d6ee63f53c6199968f197400bef4944b5732161a5ff74b85f474"},
+    {file = "reasonable-0.4.0-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:8cab5e782c814344474e3847f18f8d2e287e9bdbd641f3b99a8a01228a6c3778"},
+    {file = "reasonable-0.4.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:2bc6f044f4b97ae0be90909b2c2ee1868a2284c52123261b4aacd6cf6ed56946"},
+    {file = "reasonable-0.4.0-cp39-cp39-musllinux_1_2_aarch64.whl", hash = "sha256:f235834663b8d72cf90665e2b141c7960e8ba841b216c757c86902b1c36acc5c"},
+    {file = "reasonable-0.4.0-cp39-cp39-musllinux_1_2_x86_64.whl", hash = "sha256:aa82e6aa0559497838c72402f804f0825c0ca9b07b90f099da73eb6a9e030bbb"},
+    {file = "reasonable-0.4.0-pp310-pypy310_pp73-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:8926a80e5f3b4ff7e09acf3a122fbd555cfe9fda72de54e7b0bf27897cec057a"},
+    {file = "reasonable-0.4.0-pp310-pypy310_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ab8d07d8b50b17ecd8b310cade3a59878c68c216947b3840e1513692ad5663e7"},
+    {file = "reasonable-0.4.0-pp39-pypy39_pp73-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:7bfe9fd264b6e8b8d7b44f0bbd18aae9e024349666c8a1bd4eb84a2e9ead6c3f"},
+    {file = "reasonable-0.4.0-pp39-pypy39_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:545dc6a92f6dca8d2b093673de2057833eca5c728691361f4c9529a01db78dc4"},
+    {file = "reasonable-0.4.0.tar.gz", hash = "sha256:21dff10a8f587ecce1e5c45e684eceea45dc2484e93973ff1c5ae4545d80840c"},
 ]
+
+[package.dependencies]
+rdflib = ">=6.1.1"
 
 [[package]]
 name = "referencing"
