@@ -4,6 +4,19 @@ hide: [toc, navigation]
 
 # :octicons-book-24: Reference
 
+## Tools
+
+<div class="grid cards" markdown>
+
+-   :octicons-terminal-24: __[`iolanta` CLI](/reference/cli/)__
+
+    ---
+
+    Command line interface for rendering Linked Data resources, queries, search
+    results, and Jinja2 Markdown templates.
+
+</div>
+
 ## Iolanta Ontology
 
 <div class="grid cards" markdown>
