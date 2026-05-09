@@ -8,31 +8,31 @@
       
       
       
-        <link rel="canonical" href="https://iolanta.tech/howto/nanopublish/">
+        <link rel="canonical" href="https://iolanta.tech/visualizes/">
       
       
-        <link rel="prev" href="../create-plugin/">
+        <link rel="prev" href="../has-sub-graph/">
       
       
-        <link rel="next" href="../nanopublish-with-llm/">
+        <link rel="next" href="../datatypes/fallback-title/">
       
       
         
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>Write and publish a Nanopublication - iolanta</title>
+        <title>iolanta:visualizes property - iolanta</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -51,9 +51,9 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#howto-write-and-publish-a-nanopublication" class="md-skip">
+        <a href="#iolantavisualizes-property" class="md-skip">
           Skip to content
         </a>
       
@@ -93,7 +93,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="iolanta" class="md-header__button md-logo" aria-label="iolanta" data-md-component="logo">
+    <a href=".." title="iolanta" class="md-header__button md-logo" aria-label="iolanta" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -113,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Write and publish a Nanopublication
+              iolanta:visualizes property
             
           </span>
         </div>
@@ -192,7 +192,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../.." class="md-tabs__link">
+      <a href=".." class="md-tabs__link">
         
   
   
@@ -209,13 +209,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../howto/" class="md-tabs__link">
           
   
   
@@ -233,6 +231,8 @@
   
   
   
+    
+  
   
     
     
@@ -240,11 +240,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../reference/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../reference/" class="md-tabs__link">
           
   
   
@@ -269,7 +271,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../blog/" class="md-tabs__link">
+        <a href="../blog/" class="md-tabs__link">
           
   
   
@@ -291,7 +293,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../plugins/" class="md-tabs__link">
+        <a href="../plugins/" class="md-tabs__link">
           
   
   
@@ -333,7 +335,7 @@
               
                 
               
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -344,7 +346,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="iolanta" class="md-nav__button md-logo" aria-label="iolanta" data-md-component="logo">
+    <a href=".." title="iolanta" class="md-nav__button md-logo" aria-label="iolanta" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -374,7 +376,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href=".." class="md-nav__link">
         
   
   
@@ -401,8 +403,6 @@
       
   
   
-    
-  
   
   
     
@@ -426,23 +426,20 @@
     
     
       
-        
-        
-      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../howto/" class="md-nav__link ">
               
   
   
@@ -460,13 +457,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -496,20 +493,17 @@
       
       
         
-          
-          
-        
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
         
           
-          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
             
   
   
@@ -545,7 +539,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../armenia-pm-election/assertion/" class="md-nav__link">
+      <a href="../howto/armenia-pm-election/assertion/" class="md-nav__link">
         
   
   
@@ -591,20 +585,17 @@
       
       
         
-          
-          
-        
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
         
           
-          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
             
   
   
@@ -640,7 +631,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../asteroid-mr-spock/statement/" class="md-nav__link">
+      <a href="../howto/asteroid-mr-spock/statement/" class="md-nav__link">
         
   
   
@@ -688,13 +679,10 @@
       
       
         
-          
-          
-        
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
@@ -702,7 +690,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../create-plugin/" class="md-nav__link ">
+            <a href="../howto/create-plugin/" class="md-nav__link ">
               
   
   
@@ -746,8 +734,6 @@
                 
   
   
-    
-  
   
   
     
@@ -763,21 +749,18 @@
       
       
         
-          
-          
-        
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="./" class="md-nav__link md-nav__link--active">
+            <a href="../howto/nanopublish/" class="md-nav__link ">
               
   
   
@@ -796,7 +779,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -842,13 +825,10 @@
       
       
         
-          
-          
-        
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
@@ -856,7 +836,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../nanopublish-with-llm/" class="md-nav__link ">
+            <a href="../howto/nanopublish-with-llm/" class="md-nav__link ">
               
   
   
@@ -874,7 +854,7 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_6" id="__nav_2_6_label" tabindex="">
+              <label class="md-nav__link " for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
@@ -900,7 +880,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../nanopublish-with-llm/AGENTS/" class="md-nav__link">
+      <a href="../howto/nanopublish-with-llm/AGENTS/" class="md-nav__link">
         
   
   
@@ -928,7 +908,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../nanopublish-with-llm/rhysling-crater-v0/" class="md-nav__link">
+      <a href="../howto/nanopublish-with-llm/rhysling-crater-v0/" class="md-nav__link">
         
   
   
@@ -956,7 +936,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../nanopublish-with-llm/rhysling-crater-v1/" class="md-nav__link">
+      <a href="../howto/nanopublish-with-llm/rhysling-crater-v1/" class="md-nav__link">
         
   
   
@@ -996,8 +976,10 @@
       
   
   
+    
   
   
+  
     
     
       
@@ -1023,19 +1005,22 @@
     
     
       
+        
+        
+      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
             
   
   
@@ -1053,7 +1038,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1091,10 +1076,13 @@
       
       
         
+          
+          
+        
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
@@ -1102,7 +1090,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../reference/" class="md-nav__link ">
+            <a href="../reference/" class="md-nav__link ">
               
   
   
@@ -1120,7 +1108,7 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_3_1" id="__nav_3_1_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
@@ -1146,7 +1134,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/rdf/" class="md-nav__link">
+      <a href="../reference/rdf/" class="md-nav__link">
         
   
   
@@ -1174,7 +1162,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/rdfs/" class="md-nav__link">
+      <a href="../reference/rdfs/" class="md-nav__link">
         
   
   
@@ -1260,7 +1248,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/iolanta/OutputDatatype/" class="md-nav__link">
+      <a href="../reference/iolanta/OutputDatatype/" class="md-nav__link">
         
   
   
@@ -1288,7 +1276,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/iolanta/SPARQLText/" class="md-nav__link">
+      <a href="../reference/iolanta/SPARQLText/" class="md-nav__link">
         
   
   
@@ -1347,7 +1335,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../reference/ontology/" class="md-nav__link ">
+            <a href="../reference/ontology/" class="md-nav__link ">
               
   
   
@@ -1405,7 +1393,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Facet/" class="md-nav__link">
+      <a href="../Facet/" class="md-nav__link">
         
   
   
@@ -1433,7 +1421,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../matches/" class="md-nav__link">
+      <a href="../matches/" class="md-nav__link">
         
   
   
@@ -1461,7 +1449,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../is-preferred-over/" class="md-nav__link">
+      <a href="../is-preferred-over/" class="md-nav__link">
         
   
   
@@ -1489,7 +1477,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../outputs/" class="md-nav__link">
+      <a href="../outputs/" class="md-nav__link">
         
   
   
@@ -1517,7 +1505,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../when-no-facet-found/" class="md-nav__link">
+      <a href="../when-no-facet-found/" class="md-nav__link">
         
   
   
@@ -1545,7 +1533,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../has-sub-graph/" class="md-nav__link">
+      <a href="../has-sub-graph/" class="md-nav__link">
         
   
   
@@ -1570,10 +1558,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../visualizes/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    iolanta:visualizes property
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1589,6 +1604,48 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#discovery-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Discovery flow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1619,17 +1676,20 @@
       
       
         
+          
+          
+        
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_9" >
         
           
-          <label class="md-nav__link" for="__nav_3_9" id="__nav_3_9_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3_9" id="__nav_3_9_label" tabindex="">
             
   
   
@@ -1665,7 +1725,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../datatypes/fallback-title/" class="md-nav__link">
+      <a href="../datatypes/fallback-title/" class="md-nav__link">
         
   
   
@@ -1693,7 +1753,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../datatypes/jsonl/" class="md-nav__link">
+      <a href="../datatypes/jsonl/" class="md-nav__link">
         
   
   
@@ -1721,7 +1781,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../datatypes/mermaid/" class="md-nav__link">
+      <a href="../datatypes/mermaid/" class="md-nav__link">
         
   
   
@@ -1749,7 +1809,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../datatypes/mkdocs-material/" class="md-nav__link">
+      <a href="../datatypes/mkdocs-material/" class="md-nav__link">
         
   
   
@@ -1777,7 +1837,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../datatypes/title/" class="md-nav__link">
+      <a href="../datatypes/title/" class="md-nav__link">
         
   
   
@@ -1913,7 +1973,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../blog/" class="md-nav__link ">
+            <a href="../blog/" class="md-nav__link ">
               
   
   
@@ -1957,7 +2017,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/avoid-rdfs-duplicates/" class="md-nav__link">
+      <a href="../blog/avoid-rdfs-duplicates/" class="md-nav__link">
         
   
   
@@ -1985,7 +2045,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/call-provenance-page/" class="md-nav__link">
+      <a href="../blog/call-provenance-page/" class="md-nav__link">
         
   
   
@@ -2013,7 +2073,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/communication-directions/" class="md-nav__link">
+      <a href="../blog/communication-directions/" class="md-nav__link">
         
   
   
@@ -2041,7 +2101,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/create-blog/" class="md-nav__link">
+      <a href="../blog/create-blog/" class="md-nav__link">
         
   
   
@@ -2069,7 +2129,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/custom-rdflib-graph/" class="md-nav__link">
+      <a href="../blog/custom-rdflib-graph/" class="md-nav__link">
         
   
   
@@ -2097,7 +2157,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/deagentize-social-networks/" class="md-nav__link">
+      <a href="../blog/deagentize-social-networks/" class="md-nav__link">
         
   
   
@@ -2125,7 +2185,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/default-facet/" class="md-nav__link">
+      <a href="../blog/default-facet/" class="md-nav__link">
         
   
   
@@ -2153,7 +2213,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/discard-files/" class="md-nav__link">
+      <a href="../blog/discard-files/" class="md-nav__link">
         
   
   
@@ -2181,7 +2241,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/find-data-source-by-triple-template/" class="md-nav__link">
+      <a href="../blog/find-data-source-by-triple-template/" class="md-nav__link">
         
   
   
@@ -2209,7 +2269,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/find-facets-by-sparql-templates/" class="md-nav__link">
+      <a href="../blog/find-facets-by-sparql-templates/" class="md-nav__link">
         
   
   
@@ -2237,7 +2297,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/flip-menu/" class="md-nav__link">
+      <a href="../blog/flip-menu/" class="md-nav__link">
         
   
   
@@ -2265,7 +2325,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/flip/" class="md-nav__link">
+      <a href="../blog/flip/" class="md-nav__link">
         
   
   
@@ -2293,7 +2353,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/group-terms-by/" class="md-nav__link">
+      <a href="../blog/group-terms-by/" class="md-nav__link">
         
   
   
@@ -2321,7 +2381,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/is-referenced-by/" class="md-nav__link">
+      <a href="../blog/is-referenced-by/" class="md-nav__link">
         
   
   
@@ -2349,7 +2409,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/knowledge-base-evolution/" class="md-nav__link">
+      <a href="../blog/knowledge-base-evolution/" class="md-nav__link">
         
   
   
@@ -2377,7 +2437,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/ld-is-about-speed/" class="md-nav__link">
+      <a href="../blog/ld-is-about-speed/" class="md-nav__link">
         
   
   
@@ -2405,7 +2465,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/p-for-provenance/" class="md-nav__link">
+      <a href="../blog/p-for-provenance/" class="md-nav__link">
         
   
   
@@ -2433,7 +2493,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/parse-json-ld-with-pyld/" class="md-nav__link">
+      <a href="../blog/parse-json-ld-with-pyld/" class="md-nav__link">
         
   
   
@@ -2461,7 +2521,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/popup-notification-about-syntax-errors/" class="md-nav__link">
+      <a href="../blog/popup-notification-about-syntax-errors/" class="md-nav__link">
         
   
   
@@ -2489,7 +2549,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/publish-visualization-information-for-ontologies-on/" class="md-nav__link">
+      <a href="../blog/publish-visualization-information-for-ontologies-on/" class="md-nav__link">
         
   
   
@@ -2524,7 +2584,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/rational-decisions/" class="md-nav__link">
+      <a href="../blog/rational-decisions/" class="md-nav__link">
         
   
   
@@ -2552,7 +2612,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/rdflib-sparql-loader-architecture/" class="md-nav__link">
+      <a href="../blog/rdflib-sparql-loader-architecture/" class="md-nav__link">
         
   
   
@@ -2580,7 +2640,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/render-mermaid-diagram/" class="md-nav__link">
+      <a href="../blog/render-mermaid-diagram/" class="md-nav__link">
         
   
   
@@ -2608,7 +2668,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/social-media-impeding-rationality/" class="md-nav__link">
+      <a href="../blog/social-media-impeding-rationality/" class="md-nav__link">
         
   
   
@@ -2636,7 +2696,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/title-file-type/" class="md-nav__link">
+      <a href="../blog/title-file-type/" class="md-nav__link">
         
   
   
@@ -2664,7 +2724,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/transparent-downloads/" class="md-nav__link">
+      <a href="../blog/transparent-downloads/" class="md-nav__link">
         
   
   
@@ -2692,7 +2752,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/use-rdflib/" class="md-nav__link">
+      <a href="../blog/use-rdflib/" class="md-nav__link">
         
   
   
@@ -2720,7 +2780,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/use-reasonable-as-reasoner/" class="md-nav__link">
+      <a href="../blog/use-reasonable-as-reasoner/" class="md-nav__link">
         
   
   
@@ -2748,7 +2808,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/use-vann-term-group/" class="md-nav__link">
+      <a href="../blog/use-vann-term-group/" class="md-nav__link">
         
   
   
@@ -2801,7 +2861,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../blog/2025-01-21-nanopublications/" class="md-nav__link ">
+            <a href="../blog/2025-01-21-nanopublications/" class="md-nav__link ">
               
   
   
@@ -2903,7 +2963,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/2025-01-21-nanopublications/slides/LICENSE/" class="md-nav__link">
+      <a href="../blog/2025-01-21-nanopublications/slides/LICENSE/" class="md-nav__link">
         
   
   
@@ -3101,7 +3161,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/2025-01-21-nanopublications/slides/shower/themes/material/LICENSE/" class="md-nav__link">
+      <a href="../blog/2025-01-21-nanopublications/slides/shower/themes/material/LICENSE/" class="md-nav__link">
         
   
   
@@ -3193,7 +3253,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/2025-01-21-nanopublications/slides/shower/themes/ribbon/LICENSE/" class="md-nav__link">
+      <a href="../blog/2025-01-21-nanopublications/slides/shower/themes/ribbon/LICENSE/" class="md-nav__link">
         
   
   
@@ -3284,7 +3344,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../blog/2025-03-15.writing-a-nanopublication/" class="md-nav__link ">
+            <a href="../blog/2025-03-15.writing-a-nanopublication/" class="md-nav__link ">
               
   
   
@@ -3354,7 +3414,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../blog/2026-03-15-more-rdf-mappings/" class="md-nav__link ">
+            <a href="../blog/2026-03-15-more-rdf-mappings/" class="md-nav__link ">
               
   
   
@@ -3424,7 +3484,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../blog/download-data-while-executing-sparql/" class="md-nav__link ">
+            <a href="../blog/download-data-while-executing-sparql/" class="md-nav__link ">
               
   
   
@@ -3500,7 +3560,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../blog/knowledge-graph-assignment/" class="md-nav__link ">
+            <a href="../blog/knowledge-graph-assignment/" class="md-nav__link ">
               
   
   
@@ -3570,7 +3630,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../blog/knowledge-graph-assignment/mc2/" class="md-nav__link ">
+            <a href="../blog/knowledge-graph-assignment/mc2/" class="md-nav__link ">
               
   
   
@@ -3643,7 +3703,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../blog/knowledge-graph-assignment/mc3/" class="md-nav__link ">
+            <a href="../blog/knowledge-graph-assignment/mc3/" class="md-nav__link ">
               
   
   
@@ -3716,7 +3776,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../blog/knowledge-graph-assignment/mc4/" class="md-nav__link ">
+            <a href="../blog/knowledge-graph-assignment/mc4/" class="md-nav__link ">
               
   
   
@@ -3797,7 +3857,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../blog/remote-contexts-considered-harmful/" class="md-nav__link ">
+            <a href="../blog/remote-contexts-considered-harmful/" class="md-nav__link ">
               
   
   
@@ -3909,7 +3969,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../plugins/" class="md-nav__link">
+      <a href="../plugins/" class="md-nav__link">
         
   
   
@@ -3937,7 +3997,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../roadmap/" class="md-nav__link">
+      <a href="../roadmap/" class="md-nav__link">
         
   
   
@@ -3994,38 +4054,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#knowledge-graphs" class="md-nav__link">
+  <a href="#discovery-flow" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Knowledge Graphs
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Knowledge Graphs">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#explanation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Explanation
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-is-a-nanopublication" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What is a Nanopublication?
+        Discovery flow
       
     </span>
   </a>
@@ -4033,109 +4065,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#install-prerequisites" class="md-nav__link">
+  <a href="#example" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Install Prerequisites
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#start-with-an-empty-file" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Start with an empty file
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#we-are-talking-about-yaml-ld" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        We are talking about YAML-LD
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#specify-title" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Specify title
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#it-is-hard-to-type-the-label-property" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        It is hard to type the …#label property
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#reduce-the-number-of-quotes" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Reduce the number of quotes
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#draw-the-owl" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Draw the owl!
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#make-it-a-valid-nanopublication" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Make it a valid Nanopublication
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#publish" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Publish!
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#conclusion" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Conclusion
+        Example
       
     </span>
   </a>
@@ -4161,7 +4094,7 @@
 
 
   
-    <a href="https://github.com/iolanta-tech/iolanta/edit/master/docs/howto/nanopublish/index.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/iolanta-tech/iolanta/edit/master/docs/visualizes.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -4169,271 +4102,61 @@
   
 
 
-<h1 id="howto-write-and-publish-a-nanopublication"><code>HOWTO</code> <img alt="🖋" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f58b.svg" title=":pen_fountain:" /> Write and publish a Nanopublication</h1>
-<h2 id="knowledge-graphs">Knowledge Graphs</h2>
-<p>The <a href="https://www.w3.org">W3C</a>…</p>
+<h1 id="iolantavisualizes-property"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m23.5 17-5 5-3.5-3.5 1.5-1.5 2 2 3.5-3.5zM12 9a3 3 0 0 1 3 3 3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3m0-4.5c5 0 9.27 3.11 11 7.5-.25.65-.56 1.26-.92 1.85a5.8 5.8 0 0 0-1.9-.73l.64-1.12a9.821 9.821 0 0 0-17.64 0A9.82 9.82 0 0 0 12 17.5l1.21-.07c-.14.5-.21 1.03-.21 1.57v.46l-1 .04c-5 0-9.27-3.11-11-7.5 1.73-4.39 6-7.5 11-7.5"/></svg></span> <code>iolanta:visualizes</code> <small>property</small></h1>
+<div class="grid cards">
 <ul>
-<li><a href="https://www.w3.org/groups/cg/json-ld/">JSON for Linking Data Community Group</a></li>
-<li>and <a href="https://www.w3.org/groups/wg/json-ld/">JSON-LD Working Group</a></li>
-</ul>
-<p>…have been working on a set of conventions called <strong>YAML-LD</strong>. Essentially, it is a way to write <a href="https://json-ld.org">JSON-LD</a> documents in <a href="https://yaml.org">YAML</a>. YAML-LD documents describe <em>knowledge graphs</em> — graphs of notions and relations between them.</p>
-<p>The following diagram portrays a knowledge graph describing what YAML-LD is:</p>
-<div class="grid">
-<pre class="mermaid"><code>graph LR
-  https___json-ld_github_io_yaml-ld_spec("YAML-LD")
-  click https___json-ld_github_io_yaml-ld_spec "https://json-ld.github.io/yaml-ld/spec/"
-  Literal-5cc294277266[["A set of conventions built on top of YAML, which outlines how to serialize
-  Linked Data as YAML based on JSON-LD syntax, semantics, and APIs.
-  "]]
-  https___w3id_org_fair_fip_terms_Knowledge-representation-language("Knowledge representation language")
-  click https___w3id_org_fair_fip_terms_Knowledge-representation-language "https://w3id.org/fair/fip/terms/Knowledge-representation-language"
-  https___json-ld_github_io_yaml-ld_spec --- 7a693b20ff9b(["Description"])--&gt; Literal-5cc294277266
-  click 7a693b20ff9b "http://purl.org/dc/terms/description"
-  https___json-ld_github_io_yaml-ld_spec --- f37b593f35e8(["type"])--&gt; https___w3id_org_fair_fip_terms_Knowledge-representation-language
-  click f37b593f35e8 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
-  classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
-  classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-  classDef label fill:transparent,stroke:transparent,color:#e5e7eb,stroke-width:0px;
-  classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
-  classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-  class 7a693b20ff9b,f37b593f35e8 predicate
-</code></pre>
-<div>
-<h3 id="explanation">Explanation</h3>
-<ul>
-<li>YAML-LD is a Knowledge representation language <em>(there might be other such languages in existence)</em>;</li>
-<li>YAML-LD is a set of conventions built on top of YAML, which outlines how to serialize Linked Data as YAML based on JSON-LD syntax, semantics, and APIs.</li>
+<li>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 2H2v20h2v-9h14.17l-5.5 5.5 1.41 1.42L22 12l-7.92-7.92-1.41 1.42 5.5 5.5H4z"/></svg></span> <strong>Domain</strong></p>
+<hr />
+<p><code>np:Assertion</code><br/>
+<small>An assertion graph inside a nanopublication</small></p>
+</li>
+<li>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22.08 11.04h-2V4h-7.03V2h-2.01v2H4v7.04H2v2.01h2v7.03h7.04v2h2.01v-2h7.03v-7.03h2zm-4.01 7.03h-5.02v-2.01h-2.01v2.01H6v-5.02h2.03v-2.01H6V6h5.04v2.03h2.01V6h5.02v5.04h-2.01v2.01h2.01zm-5.02-6.02a1 1 0 0 1-1 1c-.55 0-1.01-.45-1.01-1s.46-1.01 1.01-1.01 1 .46 1 1.01"/></svg></span> <strong>Range</strong></p>
+<hr />
+<p><a href="https://www.w3.org/TR/owl2-syntax/#Ontologies"><code>owl:Ontology</code></a><br/>
+<small>The ontology this assertion describes how to render</small></p>
+</li>
 </ul>
 </div>
-</div>
-<p>YAML-LD will come handy later in this tutorial, but the point is that it is a topic of knowledge, a notion, which can be described within a knowledge graph. Whatever your area of interest might be, you can use knowledge graphs to describe your domain. Examples of statements in a knowledge graph could be:</p>
-<ul>
-<li>Mosquitoes bite humans;</li>
-<li>TRAPPIST-1 system has 7 planets;</li>
-<li>Pluto is not a planet;</li>
-<li>even though <strong>John Doe</strong> says that <strong>every dinosaur is a reptile</strong>, that statement is <strong>false</strong>, because a chicken is a dinosaur and a chicken is a bird, not a reptile.</li>
-</ul>
-<p>The merits of expressing knowledge as Knowledge Graphs are numerous, but exploration of those is out of scope for this tutorial. We will proceed assuming that you and I are in agreement about that being worth our while.</p>
-<h2 id="what-is-a-nanopublication">What is a Nanopublication?</h2>
-<p>Nanopublication is a special kind of knowledge graph which contains the following subgraphs:</p>
-<ul>
-<li><strong>Assertion</strong>, describing a statement (like the one above);</li>
-<li><strong>Provenance</strong>, describing how the statement was derived;</li>
-<li><strong>Publication Info</strong>, describing when and how the nanopublication as a whole was published.</li>
-</ul>
-<p>Nanopublications are cryptographically signed and published in the decentralized <strong>Nanopublication Registry</strong>. Thus, when you or I publish a nanopublication,</p>
-<ul>
-<li>It will be irrevocably attributed to the author;</li>
-<li>It will be protected from tampering;</li>
-<li>Other authors might reference it in their work by a unique ID;</li>
-<li>It won't disappear when one single service provider goes out of service;</li>
-<li>It will be machine readable, making it easy to reuse.</li>
-</ul>
-<p>This will be yours, or mine, contribution to human knowledge.</p>
-<p>Let us begin.</p>
-<h2 id="install-prerequisites"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.14 7.5A2.86 2.86 0 0 1 22 10.36v3.78A2.86 2.86 0 0 1 19.14 17H12c0 .39.32.96.71.96H17v1.68a2.86 2.86 0 0 1-2.86 2.86H9.86A2.86 2.86 0 0 1 7 19.64v-3.75a2.85 2.85 0 0 1 2.86-2.85h5.25a2.85 2.85 0 0 0 2.85-2.86V7.5zm-4.28 11.79c-.4 0-.72.3-.72.89s.32.71.72.71a.71.71 0 0 0 .71-.71c0-.59-.32-.89-.71-.89m-10-1.79A2.86 2.86 0 0 1 2 14.64v-3.78A2.86 2.86 0 0 1 4.86 8H12c0-.39-.32-.96-.71-.96H7V5.36A2.86 2.86 0 0 1 9.86 2.5h4.28A2.86 2.86 0 0 1 17 5.36v3.75a2.85 2.85 0 0 1-2.86 2.85H8.89a2.85 2.85 0 0 0-2.85 2.86v2.68zM9.14 5.71c.4 0 .72-.3.72-.89s-.32-.71-.72-.71c-.39 0-.71.12-.71.71s.32.89.71.89"/></svg></span> Install Prerequisites</h2>
-<p>In a Python 3.10+ environment, run:</p>
-<div class="annotate highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>iolanta<span class="w"> </span>git+https://github.com/iolanta-tech/nanopub-py.git<span class="w">  </span><span class="c1"># (1)!</span>
-</code></pre></div>
-<ol>
-<li>The installation of <code>nanopub-py</code> from <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33s1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2"/></svg></span> GitHub is required: at the moment of writing, the <code>np create</code> command, which we are going to use, is not yet available in the latest <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M23.922 13.58v3.912L20.55 18.72l-.078.055.052.037 3.45-1.256.026-.036v-3.997l-.053-.036-.025.092zm-.301-7.962-3.04 1.107v3.912l3.339-1.215V5.509zm.299 7.839V9.544l-3.336 1.215v3.913zm-3.45 1.253V10.8l-3.3 1.2v3.913zm-3.436 5.286v-3.912l-3.313 1.206v3.912zm.136-3.939v3.868l3.314-1.206V14.85zm2.093 1.882c-.367.134-.663-.074-.663-.463s.296-.814.663-.947c.365-.133.662.075.662.464s-.297.814-.662.946m-6.038-8.624.365-.132-3.285-1.197-3.323 1.21.102.037 3.184 1.16zm7.282 1.349V6.751L17.17 7.965v3.913zm-3.449 1.254V8.005l-3.302 1.202v3.912zm-3.415-2.672-3.336 1.215v3.913l3.336-1.215zm-6.736 3.919 3.322 1.209v-3.913L6.907 9.252zm3.433-5.292 3.281 1.193V5.198l-3.28-1.193zm10.167-5.158L17.19 3.922v3.913l3.317-1.207zM16.95 3.903 13.724 2.73l-3.269 1.19 3.225 1.174zm-1.585.703-1.624.592v3.868l3.317-1.207V3.991zm-.391 2.778c-.367.134-.662-.074-.662-.464s.295-.813.662-.946c.366-.133.663.074.663.464s-.297.813-.663.946M10.229 18.41v-3.914l-3.322-1.209V17.2zm3.449-1.228v-3.913l-3.371 1.227v3.913zm.078-.028 3.3-1.2V12.04l-3.3 1.2zm-.078 4.063-3.371 1.227v-3.912h-.078v3.912l-3.322-1.209v-3.913l-.053-.058-.025-.06-3.336-1.21v-3.948l.034.013 3.287 1.196.015-.078-3.261-1.187 3.26-1.187v-.109L3.876 9.62l-.307-.112 3.26-1.188v.877l.079-.055V6.769l3.257 1.185.058-.061L7.084 6.75l-.102-.037 3.24-1.179v-.083L6.854 6.677v.018l-.025.018v1.523L3.44 9.47v.02l-.025.017v4.007l-3.39 1.233v.019L0 14.784v3.995l.025.037 3.4 1.237.008-.006.007.01 3.4 1.238.008-.006.006.01 3.4 1.237.014-.009.012.01 3.45-1.256.026-.037zM3.493 9.563l3.257 1.185-3.257 1.187V9.562zM3.4 19.96.078 18.752v-3.913l2.361.86.96.349zm.015-3.99-3.08-1.12-.182-.066 3.262-1.187zm3.399 5.231-3.321-1.209V16.08l3.321 1.209zM23.791 5.434l-3.21-1.17v2.338zm-3.404-2.791-3.24-1.18-3.27 1.19 3.247 1.182z"/></svg></span> PyPI version.</li>
-</ol>
-<h2 id="start-with-an-empty-file"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 13h-4c0 1.1-.9 2-2 2h-4c-1.1 0-2-.9-2-2H4l-2 5v2c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-2M6 20c-.89 0-1.34-1.08-.71-1.71S7 18.11 7 19c0 .55-.45 1-1 1m4 0c-.89 0-1.34-1.08-.71-1.71S11 18.11 11 19c0 .55-.45 1-1 1m4 0c-.89 0-1.34-1.08-.71-1.71S15 18.11 15 19c0 .55-.45 1-1 1m4 0c-.89 0-1.34-1.08-.71-1.71S19 18.11 19 19c0 .55-.45 1-1 1m0-10V3H6v7H3v2h18v-2M8 5h8v1H8m0 1h6v1H8"/></svg></span> Start with an empty file</h2>
-<p>Create a new file, called <code>yaml-ld.yamlld</code>, and run, in a separate terminal:</p>
-<div class="highlight"><pre><span></span><code>iolanta<span class="w"> </span>yaml-ld.yamlld
-</code></pre></div>
-<div class="grid">
-<div>
-<div class="highlight"><span class="filename">yaml-ld.yamlld</span><pre><span></span><code><span class="c1"># This file is empty so far ∅</span>
-</code></pre></div>
-<p>As you can see on the right, Iolanta has certain difficulties visualizing this document. Well, that's because there is nothing to visualize. The line starting from <code>#</code> is a comment in YAML, it is only written for a human reader; computer ignores it entirely.</p>
-</div>
-<p><img alt="" src="/screenshots/docs.howto.nanopublish.0.yamlld.svg" /></p>
-</div>
-<h2 id="we-are-talking-about-yaml-ld">We are talking about YAML-LD</h2>
-<p>Knowledge Graphs normally refer to things by their URLs (there are also things called URI and IRI but we will not go into that here). If you have a link which describes the notion you are talking about, you can use that link as the identifier of the notion.</p>
-<p>If the reader wants to know more, they can always open the link in their browser.</p>
-<p>For YAML-LD, we can use the address of the current YAML-LD <a href="https://json-ld.github.io/yaml-ld/spec/">specification draft</a>.</p>
-<div class="grid">
-<div>
-<div class="highlight"><span class="filename">yaml-ld.yamlld</span><pre><span></span><code><span class="s2">&quot;@id&quot;</span>:<span class="w"> </span>https://json-ld.github.io/yaml-ld/spec/
-</code></pre></div>
-<p>Here, <code>@id</code> is a keyword that <em><code>id</code>entifies</em> the thing we are going to talk about.</p>
-<div class="admonition info">
-<p class="admonition-title">Info</p>
-<p><code>"@id"</code> has to be in quotes, this is because <code>@</code> is a reserved character in YAML. More on that later.</p>
-</div>
-<p>However... Iolanta still cannot visualize this document, why is this?</p>
-</div>
-<p><img alt="" src="/screenshots/docs.howto.nanopublish.with-id.yamlld.svg" /></p>
-</div>
-<p>The problem now is that the graph we have described only has one node, but no edges, like this:</p>
-<pre class="mermaid"><code>graph TD
-  yaml_ld["json-ld.github.io/yaml-ld/spec/"]
-  click yaml_ld "https://json-ld.github.io/yaml-ld/spec/"</code></pre>
-<p>This degenerated form of a graph is still a graph, mathematically speaking, but it is not a well formed Knowledge Graph because there is no knowledge to convey about YAML-LD. We need to <em>say something about</em> the thing that we had stated, the graph has to have at least one edge.</p>
-<h2 id="specify-title">Specify title</h2>
-<div class="grid">
-<div>
-<div class="highlight"><span class="filename">yaml-ld.yamlld</span><pre><span></span><code><span class="s">&quot;@id&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://json-ld.github.io/yaml-ld/spec/</span>
-<span class="s">&quot;http://www.w3.org/2000/01/rdf-schema#label&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">YAML-LD</span>
-</code></pre></div>
-<p>And it works!</p>
-</div>
-<p><img alt="" src="/screenshots/docs.howto.nanopublish.with-label.yamlld.svg" /></p>
-</div>
-<p>This display shows what is called a <strong>triple</strong>. Here,</p>
-<ul>
-<li>YAML-LD (red) is the <em>subject</em>,</li>
-<li><code>label</code> is the <em>predicate</em>,</li>
-<li>and <code>YAML-LD</code> (black) is the <em>object</em>.</li>
-</ul>
-<p>Subject and Predicate here are clickable, since they are URLs. Object is a string, or a Literal, and is therefore not clickable.</p>
-<div class="grid">
-<div>
-<p><img alt="" src="/screenshots/json-ld.github.io.yaml-ld.spec.svg" /></p>
-<figcaption>
-<p><a href="http://www.w3.org/2000/01/rdf-schema#label">YAML-LD</a> subject</p>
-</figcaption>
-</div>
-<div>
-<p><img alt="" src="/screenshots/www.w3.org.2000.01.rdf-schema.svg" /></p>
-<figcaption>
-<p><a href="http://www.w3.org/2000/01/rdf-schema#label">Label</a> predicate</p>
-</figcaption>
-</div>
-</div>
-<p>As you can see, quite a bit of information is available about each. That's because files accessible via each of those URLs contain information about the concepts the URLs stand for.</p>
-<p>That's called <em>Linked Data</em>.</p>
-<h2 id="it-is-hard-to-type-the-label-property">It is hard to type the <code>…#label</code> property</h2>
-<p>You will rightfully exclaim:</p>
-<div class="admonition warning">
-<p class="admonition-title">Exclamation © you</p>
-<p>Are you saying I will have to type
-<div class="highlight"><pre><span></span><code>http://www.w3.org/2000/01/rdf-schema#label
-</code></pre></div>
-each time I want to specify a human readable label of something?</p>
-</div>
-<p>No, not really. Let's define a <em>context</em>.</p>
-<div class="grid">
-<div>
-<div class="highlight"><span class="filename">yaml-ld.yamlld</span><pre><span></span><code><span class="s">&quot;@context&quot;</span><span class="p p-Indicator">:</span>
-<span class="hll"><span class="w">  </span><span class="nt">rdfs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://www.w3.org/2000/01/rdf-schema#</span>
-</span>
-<span class="s">&quot;@id&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://json-ld.github.io/yaml-ld/spec/</span>
-<span class="hll"><span class="nt">rdfs:label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">YAML-LD</span>
-</span></code></pre></div>
-<p>Context is the part of the document where we describe how to interpret this document as a Knowledge Graph. In this example, we introduce a shortcut, <code>rdfs</code>, which stands for RDFS ontology. In the body of the document we can refer to that ontology using that shorthand.</p>
-<table>
-<thead>
-<tr>
-<th>Short form (CURIE)</th>
-<th>Full Form</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>rdfs:label</code></td>
-<td><code>http://www.w3.org/2000/01/rdf-schema#label</code></td>
-</tr>
-<tr>
-<td><code>rdfs:seeAlso</code></td>
-<td><code>http://www.w3.org/2000/01/rdf-schema#seeAlso</code></td>
-</tr>
-<tr>
-<td><code>rdfs:Class</code></td>
-<td><code>http://www.w3.org/2000/01/rdf-schema#Class</code></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><img alt="" src="/screenshots/docs.howto.nanopublish.with-context.yamlld.svg" /></p>
-</div>
-<h2 id="reduce-the-number-of-quotes">Reduce the number of quotes</h2>
-<div class="grid">
-<div>
-<p><div class="highlight"><span class="filename">yaml-ld.yamlld</span><pre><span></span><code><span class="s">&quot;@context&quot;</span><span class="p p-Indicator">:</span>
-<span class="hll"><span class="w">  </span><span class="s">&quot;@import&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://json-ld.org/contexts/dollar-convenience.jsonld</span>
-</span><span class="w">  </span><span class="nt">rdfs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://www.w3.org/2000/01/rdf-schema#</span>
+<p><code>iolanta:visualizes</code> links a <a href="/blog/2025-01-21-nanopublications/">nanopublication</a> assertion to the ontology whose visualization metadata it carries. The triple lives in the nanopublication's <a href="https://nanopub.net/">provenance graph</a>, not its assertion graph: the <em>assertion</em> describes how to group an ontology's terms (using <code>vann:termGroup</code>), while the <em>provenance</em> says which ontology that assertion is about.</p>
+<p>Iolanta uses <code>iolanta:visualizes</code> at render time to discover community-published visualization information for any ontology, without that information having to be bundled in the Iolanta repository. See the related ADR: <a href="/blog/publish-visualization-information-for-ontologies-on/">Publish visualization information for ontologies on …</a>.</p>
+<h2 id="discovery-flow">Discovery flow</h2>
+<p>When <a href="/Facet/"><code>MkDocsOntologyFacet</code></a> or <a href="/Facet/"><code>OntologyFacet</code></a> is asked to render an ontology <code>&lt;O&gt;</code>, it queries the public <a href="https://query.knowledgepixels.com/">Knowledge Pixels</a> nanopub registry for the most recent signed, non-invalidated, non-superseded nanopublication whose provenance asserts <code>?assertion iolanta:visualizes &lt;O&gt;</code>, and loads that nanopublication's assertion graph into the local dataset. The grouping triples (<code>vann:termGroup</code>, <code>rdfs:label</code>) then become visible to the regular ontology-rendering SPARQL.</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span> <span class="nv">?nanopub</span> <span class="k">WHERE</span> <span class="p">{</span>
+  <span class="nv">?nanopub</span> <span class="nn">np</span><span class="p">:</span><span class="nt">hasAssertion</span>       <span class="nv">?assertion</span> <span class="p">;</span>
+           <span class="nn">np</span><span class="p">:</span><span class="nt">hasProvenance</span>      <span class="nv">?provenance</span> <span class="p">;</span>
+           <span class="nn">np</span><span class="p">:</span><span class="nt">hasPublicationInfo</span> <span class="nv">?pubinfo</span> <span class="p">;</span>
+           <span class="nn">npa</span><span class="p">:</span><span class="nt">hasValidSignatureForPublicKey</span> <span class="nv">?pubkey</span> <span class="p">.</span>
 
-<span class="hll"><span class="nt">$id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://json-ld.github.io/yaml-ld/spec/</span>
-</span><span class="nt">rdfs:label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">YAML-LD</span>
-</code></pre></div>
-Here we import a context which remaps <code>@id</code> to <code>$id</code>, which does not have to be quoted in YAML.</p>
-</div>
-<p><img alt="" src="/screenshots/docs.howto.nanopublish.with-convenience-context.yamlld.svg" /></p>
-</div>
-<h2 id="draw-the-owl"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 16c.56.84 1.31 1.53 2.2 2L12 20.2 9.8 18c.89-.47 1.65-1.16 2.2-2m5-4.8a2 2 0 0 0-2 2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0-2-2m-10 0a2 2 0 0 0-2 2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0-2-2m10-2.5a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4m-10 0a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4M2.24 1c1.76 3.7.49 6.46-.69 9.2-.36.8-.55 1.63-.55 2.5a6 6 0 0 0 6 6c.21-.01.42-.02.63-.05l2.96 2.96L12 23l1.41-1.39 2.96-2.96c.21.03.42.04.63.05a6 6 0 0 0 6-6c0-.87-.19-1.7-.55-2.5C21.27 7.46 20 4.7 21.76 1c-2.64 2.06-6.4 3.69-9.76 3.7C8.64 4.69 4.88 3.06 2.24 1"/></svg></span> Draw the owl!</h2>
-<div class="grid">
-<div>
-<p>With the examples we've looked through, you will easily read the following YAML-LD statement.</p>
-<div class="highlight"><span class="filename">yaml-ld.yamlld</span><pre><span></span><code><span class="s">&quot;@context&quot;</span><span class="p p-Indicator">:</span>
-<span class="w">  </span><span class="s">&quot;@import&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://json-ld.org/contexts/dollar-convenience.jsonld</span>
-<span class="w">  </span><span class="nt">dc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://purl.org/dc/terms/</span>
-<span class="w">  </span><span class="nt">rdfs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://www.w3.org/2000/01/rdf-schema#</span>
-<span class="w">  </span><span class="nt">fip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/fair/fip/terms/</span>
+  <span class="k">GRAPH</span> <span class="nv">?provenance</span> <span class="p">{</span> <span class="nv">?assertion</span> <span class="nn">iolanta</span><span class="p">:</span><span class="nt">visualizes</span> <span class="nl">&lt;O&gt;</span> <span class="p">}</span>
+  <span class="k">GRAPH</span> <span class="nv">?pubinfo</span>    <span class="p">{</span> <span class="nv">?nanopub</span>  <span class="nn">dcterms</span><span class="p">:</span><span class="nt">created</span>     <span class="nv">?created</span> <span class="p">}</span>
 
-<span class="nt">$id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://json-ld.github.io/yaml-ld/spec/</span>
-<span class="nt">$type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fip:Knowledge-representation-language</span>
-<span class="nt">dc:description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
-<span class="w">  </span><span class="no">A set of conventions built on top of YAML, which outlines how to serialize</span>
-<span class="w">  </span><span class="no">Linked Data as YAML based on JSON-LD syntax, semantics, and APIs.</span>
-<span class="nt">rdfs:label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">YAML-LD</span>
+  <span class="k">FILTER</span> <span class="nf">NOT EXISTS</span> <span class="p">{</span>
+    <span class="nv">?invalidator</span> <span class="nn">npx</span><span class="p">:</span><span class="nt">invalidates</span> <span class="nv">?nanopub</span> <span class="p">;</span>
+                 <span class="nn">npa</span><span class="p">:</span><span class="nt">hasValidSignatureForPublicKey</span> <span class="nv">?invalidator_pubkey</span> <span class="p">.</span>
+  <span class="p">}</span>
+  <span class="k">FILTER</span> <span class="nf">NOT EXISTS</span> <span class="p">{</span>
+    <span class="nv">?newer</span> <span class="nn">npx</span><span class="p">:</span><span class="nt">supersedes</span> <span class="nv">?nanopub</span> <span class="p">;</span>
+           <span class="nn">npa</span><span class="p">:</span><span class="nt">hasValidSignatureForPublicKey</span> <span class="nv">?newer_pubkey</span> <span class="p">.</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">ORDER BY</span> <span class="k">DESC</span><span class="p">(</span><span class="nv">?created</span><span class="p">)</span>
+<span class="k">LIMIT</span> <span class="mi">1</span>
 </code></pre></div>
-<p>At any rate, Iolanta is always ready to help by visualizing it. Each of the links is clickable,
-leading you to further information about the concepts involved.</p>
-</div>
-<p><img alt="" src="/screenshots/docs.howto.nanopublish.yaml-ld.yamlld.svg" /></p>
-</div>
-<h2 id="make-it-a-valid-nanopublication"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M312 201.8c0-17.4 9.2-33.2 19.9-47C344.5 138.6 352 118.2 352 96c0-53-43-96-96-96s-96 43-96 96c0 22.1 7.5 42.5 20.1 58.8 10.7 13.8 19.9 29.6 19.9 47 0 29.9-24.3 54.2-54.2 54.2H112C50.1 256 0 306.1 0 368c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48 0-61.9-50.1-112-112-112h-33.8c-29.9 0-54.2-24.3-54.2-54.2M56 464c-13.3 0-24 10.7-24 24s10.7 24 24 24h400c13.3 0 24-10.7 24-24s-10.7-24-24-24z"/></svg></span> Make it a valid Nanopublication</h2>
-<div class="annotate highlight"><pre><span></span><code>pyld<span class="w"> </span>expand<span class="w"> </span>yaml-ld.yamlld<span class="w"> </span><span class="p">|</span><span class="w"> </span>np<span class="w"> </span>create<span class="w"> </span>--output-format<span class="w"> </span>json-ld<span class="w"> </span>from-assertion<span class="w"> </span>--input-format<span class="w"> </span>json-ld<span class="w"> </span>&gt;<span class="w"> </span>np.yaml-ld.jsonld<span class="w">    </span><span class="c1"># (1)!</span>
+<p><code>ORDER BY DESC(?created) LIMIT 1</code> is <strong>last-writer-wins</strong>: only one nanopublication per ontology is loaded so different publishers' grouping schemes never mix. To override what Iolanta picks up for a given ontology, sign and publish a newer nanopublication.</p>
+<p>The discovery code lives in <a href="https://github.com/iolanta-tech/iolanta/blob/master/iolanta/discovery/visualization_nanopublications.py"><code>iolanta/discovery/visualization_nanopublications.py</code></a>.</p>
+<h2 id="example">Example</h2>
+<p>The current grouping for the <a href="/reference/rdf/"><code>rdf:</code> namespace</a> is loaded from <a href="https://w3id.org/np/RAXhiZMoa3JldEhxcgVyp8UIJL_N0PhEJpCTRXdKl7H_Q"><code>https://w3id.org/np/RAXhiZMoa3JldEhxcgVyp8UIJL_N0PhEJpCTRXdKl7H_Q</code></a>. Its provenance graph contains, in essence:</p>
+<div class="highlight"><pre><span></span><code><span class="s">&quot;@context&quot;</span><span class="p p-Indicator">:</span>
+<span class="w">  </span><span class="nt">iolanta</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://iolanta.tech/</span>
+<span class="w">  </span><span class="nt">rdf</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://www.w3.org/1999/02/22-rdf-syntax-ns#</span>
+
+<span class="nt">$id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;_:assertion&quot;</span>
+<span class="nt">iolanta:visualizes</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">$id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;rdf:&quot;</span>
 </code></pre></div>
-<ol>
-<li>This command is fairly clumsy, I will see if I can make it easier in the future. Here, we have to convert YAML-LD to JSON-LD with <code>pyld expand</code> — since <code>nanopub-py</code> presently does not support YAML-LD. Then, we create the nanopublication with <code>np create</code> and store it in <code>np.yaml-ld.jsonld</code> file.</li>
-</ol>
-<div class="grid">
-<div>
-<p>Let's preview the nanopublication.</p>
-<div class="highlight"><span class="filename">np.yaml-ld.jsonld</span><pre><span></span><code><span class="p">[</span>
-<span class="w">  </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;@graph&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">      </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;@id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://purl.org/nanopub/temp/np/&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;@type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">          </span><span class="s2">&quot;http://www.nanopub.org/nschema#Nanopublication&quot;</span>
-<span class="w">        </span><span class="p">],</span>
-<span class="w">        </span><span class="nt">&quot;http://www.nanopub.org/nschema#hasAssertion&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">          </span><span class="p">{</span>
-</code></pre></div>
-<p>Check it out as:</p>
-<div class="highlight"><pre><span></span><code>iolanta<span class="w"> </span>np.yaml-ld.jsonld
-</code></pre></div>
-</div>
-<p><img alt="" src="/screenshots/docs.howto.nanopublish.np.yaml-ld.jsonld.svg" /></p>
-</div>
-<p>Shall we consider this nanopublication fit for the world? I guess so.</p>
-<h2 id="publish"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m13.13 22.19-1.63-3.83c1.57-.58 3.04-1.36 4.4-2.27zM5.64 12.5l-3.83-1.63 6.1-2.77C7 9.46 6.22 10.93 5.64 12.5M21.61 2.39S16.66.269 11 5.93c-2.19 2.19-3.5 4.6-4.35 6.71-.28.75-.09 1.57.46 2.13l2.13 2.12c.55.56 1.37.74 2.12.46A19.1 19.1 0 0 0 18.07 13c5.66-5.66 3.54-10.61 3.54-10.61m-7.07 7.07c-.78-.78-.78-2.05 0-2.83s2.05-.78 2.83 0c.77.78.78 2.05 0 2.83s-2.05.78-2.83 0m-5.66 7.07-1.41-1.41zM6.24 22l3.64-3.64c-.34-.09-.67-.24-.97-.45L4.83 22zM2 22h1.41l4.77-4.76-1.42-1.41L2 20.59zm0-2.83 4.09-4.08c-.21-.3-.36-.62-.45-.97L2 17.76z"/></svg></span> Publish!</h2>
-<p><div class="highlight"><pre><span></span><code>np<span class="w"> </span>publish<span class="w"> </span>--test<span class="w"> </span>np.yaml-ld.jsonld
-</code></pre></div>
-⇒</p>
-<div class="highlight"><pre><span></span><code><span class="w"> </span>🧪<span class="w"> </span>Publishing<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span><span class="nb">test</span><span class="w"> </span>server
-<span class="w"> </span>📬️<span class="w"> </span>Nanopub<span class="w"> </span>published<span class="w"> </span>at<span class="w"> </span>https://w3id.org/np/RAAnO3U0Lc56gbYHz5MZD440460c88Qfiz8cTfP58nvvs
-</code></pre></div>
-<div class="admonition info">
-<p class="admonition-title">Profile setup</p>
-<p>If you haven't yet set up your profile, you will be prompted to do so. Follow the recommendations given by the tool.</p>
-</div>
-<p>You can see your nanopub <a href="https://w3id.org/np/RAAnO3U0Lc56gbYHz5MZD440460c88Qfiz8cTfP58nvvs">published</a> now!</p>
-<p><a href="https://w3id.org/np/RAAnO3U0Lc56gbYHz5MZD440460c88Qfiz8cTfP58nvvs"><img alt="" src="published.png" /></a></p>
-<p>You can also view it with Iolanta.</p>
-<div class="highlight"><pre><span></span><code>iolanta<span class="w"> </span>https://w3id.org/np/RAAnO3U0Lc56gbYHz5MZD440460c88Qfiz8cTfP58nvvs
-</code></pre></div>
-<p><img alt="" src="/screenshots/w3id.org.np.raano3u0lc56gbyhz5mzd440460c88qfiz8ctfp58nvvs.svg" /></p>
-<h2 id="conclusion"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 9c-1.31 0-2.42.83-2.83 2H2v2h15.17c.41 1.17 1.52 2 2.83 2a3 3 0 0 0 3-3 3 3 0 0 0-3-3"/></svg></span> Conclusion</h2>
-<p>Iolanta helps visualize the nanopublication which you are writing, it helps confirm that the URLs you use are indeed resolving to Linked Data, thus connecting your new nanopublication to the existing body of semantically expressed knowledge.</p>
-<p>This way, Iolanta might help avoid mistakes and make your nanopublication more readable.</p>
-<p>YAML-LD, which we used for examples in this tutorial, provices a concise and human friendly syntax for writing Knowledge Graphs.</p>
-<p>I hope these tools will help you in your nanopublication journey.</p>
+<p>…and its assertion graph contains the <code>vann:termGroup</code> triples that produce the <em>Datatype / Language / Triples / Compound Literal / Containers / Properties / Value</em> groups visible on the <a href="/reference/rdf/">RDF reference page</a>.</p>
 <script type="application/ld+json">
 []
 </script>
@@ -4495,10 +4218,10 @@ leading you to further information about the concepts involved.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.indexes", "navigation.tabs", "navigation.tabs.sticky", "content.code.annotate", "content.action.edit", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.indexes", "navigation.tabs", "navigation.tabs.sticky", "content.code.annotate", "content.action.edit", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>
