@@ -59,6 +59,13 @@ hide: [toc, navigation]
     
     What if no facet is found to visualize this node for a given [datatype](/reference/rdf/datatype)? Specify an emergency facet to use in such cases.
 
+
+-   :material-eye-check-outline: __[`iolanta:visualizes`](/visualizes/)__
+    
+    ---
+    
+    Link a nanopublication assertion to the ontology whose visualization metadata it carries — used to discover community-published groupings at render time.
+
 </div>
 
 ## Ontologies Iolanta relies upon
