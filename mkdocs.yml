@@ -47,6 +47,9 @@ plugins:
         python:
           import:
             - https://docs.python-requests.org/en/master/objects.inv
+  - mkdocs-typer2:
+      pretty: true
+      engine: native
   - macros:
       on_error_fail: false
 
