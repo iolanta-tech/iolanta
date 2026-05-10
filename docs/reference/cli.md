@@ -59,10 +59,5 @@ Template rendering uses the template file's parent directory as
 `Iolanta.project_root`. Templates can use local YAML-LD files in that directory,
 project data, installed Iolanta facilities, and normal web loading.
 
-The v1 Jinja2 helper surface is:
-
-- `as` filter: render a node, path, or IRI as an Iolanta datatype.
-- `uri` filter: convert a path, string, or `URIRef` to `URIRef`.
-- `sparql(...)`: execute a SPARQL file and return Markdown table output.
-- `path_to_uri(...)`: convert paths to file IRIs.
-- `docs`, `iolanta`, and `URIRef` globals.
+See [`--render-template` macros & variables](/reference/render-template-macros-and-variables/)
+for the supported template surface.
