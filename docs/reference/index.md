@@ -15,6 +15,13 @@ hide: [toc, navigation]
     Command line interface for rendering Linked Data resources, queries, search
     results, and Jinja2 Markdown templates.
 
+-   :material-code-braces: __[`--render-template` macros & variables](/reference/render-template-macros-and-variables/)__
+
+    ---
+
+    Template macros and variables available when rendering Jinja2 Markdown with
+    `iolanta --render-template`.
+
 </div>
 
 ## Iolanta Ontology
