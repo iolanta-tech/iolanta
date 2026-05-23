@@ -32,8 +32,20 @@ from iolanta.query_result import (
 )
 from iolanta.search.aggregator import run_search
 
-_LOCALE_LANGUAGE = locale.getlocale()[0] or "en"
-DEFAULT_LANGUAGE = _LOCALE_LANGUAGE.split("_")[0]
+
+def _default_language(locale_name: str | None) -> str:
+    """Return a natural language code for a locale name."""
+    if locale_name is None:
+        return "en"
+
+    language = locale_name.split(".", maxsplit=1)[0]
+    if language in {"C", "POSIX"}:
+        return "en"
+
+    return language.split("_", maxsplit=1)[0]
+
+
+DEFAULT_LANGUAGE = _default_language(locale.getlocale()[0])
 
 
 console = Console()
