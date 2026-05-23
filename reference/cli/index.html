@@ -14,7 +14,7 @@
         <link rel="prev" href="../rdfs/">
       
       
-        <link rel="next" href="../iolanta/OutputDatatype/">
+        <link rel="next" href="../render-template-macros-and-variables/">
       
       
         
@@ -1074,6 +1074,8 @@
       
         
       
+        
+      
     
     
     
@@ -1279,6 +1281,34 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../render-template-macros-and-variables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    `--render-template` macros & variables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
       
@@ -1299,10 +1329,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1_6" >
         
           
-          <label class="md-nav__link" for="__nav_3_1_5" id="__nav_3_1_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3_1_6" id="__nav_3_1_6_label" tabindex="0">
             
   
   
@@ -1320,8 +1350,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_1_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_1_5">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_1_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1421,7 +1451,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1_7" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1447,8 +1477,8 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_1_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_1_6">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_1_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -4221,7 +4251,7 @@ queries, search results, and Jinja2 Markdown templates.</p>
 <td><code>--language</code></td>
 <td>Data language to prefer.</td>
 <td>No</td>
-<td><code>C</code></td>
+<td><code>en</code></td>
 </tr>
 <tr>
 <td><code>--log-level</code></td>
@@ -4266,14 +4296,8 @@ write the output to a file.</p>
 <p>Template rendering uses the template file's parent directory as
 <code>Iolanta.project_root</code>. Templates can use local YAML-LD files in that directory,
 project data, installed Iolanta facilities, and normal web loading.</p>
-<p>The v1 Jinja2 helper surface is:</p>
-<ul>
-<li><code>as</code> filter: render a node, path, or IRI as an Iolanta datatype.</li>
-<li><code>uri</code> filter: convert a path, string, or <code>URIRef</code> to <code>URIRef</code>.</li>
-<li><code>sparql(...)</code>: execute a SPARQL file and return Markdown table output.</li>
-<li><code>path_to_uri(...)</code>: convert paths to file IRIs.</li>
-<li><code>docs</code>, <code>iolanta</code>, and <code>URIRef</code> globals.</li>
-</ul>
+<p>See <a href="/reference/render-template-macros-and-variables/"><code>--render-template</code> macros &amp; variables</a>
+for the supported template surface.</p>
 <script type="application/ld+json">
 []
 </script>

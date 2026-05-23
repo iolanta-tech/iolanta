@@ -1065,6 +1065,8 @@
       
         
       
+        
+      
     
     
     
@@ -1209,6 +1211,34 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../reference/render-template-macros-and-variables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    `--render-template` macros & variables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
       
@@ -1229,10 +1259,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1_6" >
         
           
-          <label class="md-nav__link" for="__nav_3_1_5" id="__nav_3_1_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3_1_6" id="__nav_3_1_6_label" tabindex="0">
             
   
   
@@ -1250,8 +1280,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_1_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_1_5">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_1_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1351,7 +1381,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1_7" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1377,8 +1407,8 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_1_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_1_6">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_1_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -4415,23 +4445,23 @@
 <pre class="mermaid"><code>graph LR
   iolanta_Facet("Facet")
   click iolanta_Facet "iolanta:Facet"
-  http___www_w3_org_2002_07_owl_Class("Class")
-  click http___www_w3_org_2002_07_owl_Class "http://www.w3.org/2002/07/owl#Class"
   Literal-0161428b8153[["A Facet is a visualization component that transforms RDF nodes into human-readable formats.
   Facets are the core mechanism by which Iolanta makes Linked Data accessible to users.
   Each facet is designed to handle specific types of RDF nodes and render them appropriately
   for different output formats (terminal, web, etc.).
   "]]
-  iolanta_Facet --- 8ef46633b9a9(["type"])--&gt; http___www_w3_org_2002_07_owl_Class
-  click 8ef46633b9a9 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  http___www_w3_org_2002_07_owl_Class("Class")
+  click http___www_w3_org_2002_07_owl_Class "http://www.w3.org/2002/07/owl#Class"
   iolanta_Facet --- c090eaaf12fa(["comment"])--&gt; Literal-0161428b8153
   click c090eaaf12fa "http://www.w3.org/2000/01/rdf-schema#comment"
+  iolanta_Facet --- 8ef46633b9a9(["type"])--&gt; http___www_w3_org_2002_07_owl_Class
+  click 8ef46633b9a9 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
   classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
   classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
   classDef label fill:transparent,stroke:transparent,color:#e5e7eb,stroke-width:0px;
   classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
   classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-  class 8ef46633b9a9,c090eaaf12fa predicate
+  class c090eaaf12fa,8ef46633b9a9 predicate
 </code></pre>
 </div>
 </div>
@@ -4460,17 +4490,17 @@
 <pre class="mermaid"><code>graph LR
   iolanta_OutputDatatype("Output Datatype")
   click iolanta_OutputDatatype "iolanta:OutputDatatype"
+  http___www_w3_org_2000_01_rdf-schema_Datatype("Datatype")
+  click http___www_w3_org_2000_01_rdf-schema_Datatype "http://www.w3.org/2000/01/rdf-schema#Datatype"
   Literal-53d3f4c1edd7[["Output format where visualization applications render their results.
   Examples: terminal text, HTML, Mermaid diagrams.
   "]]
-  http___www_w3_org_2000_01_rdf-schema_Datatype("Datatype")
-  click http___www_w3_org_2000_01_rdf-schema_Datatype "http://www.w3.org/2000/01/rdf-schema#Datatype"
   http___www_w3_org_2002_07_owl_Class("Class")
   click http___www_w3_org_2002_07_owl_Class "http://www.w3.org/2002/07/owl#Class"
-  iolanta_OutputDatatype --- cfa6a727ad0c(["comment"])--&gt; Literal-53d3f4c1edd7
-  click cfa6a727ad0c "http://www.w3.org/2000/01/rdf-schema#comment"
   iolanta_OutputDatatype --- a6a8a72ba1b9(["subClassOf"])--&gt; http___www_w3_org_2000_01_rdf-schema_Datatype
   click a6a8a72ba1b9 "http://www.w3.org/2000/01/rdf-schema#subClassOf"
+  iolanta_OutputDatatype --- cfa6a727ad0c(["comment"])--&gt; Literal-53d3f4c1edd7
+  click cfa6a727ad0c "http://www.w3.org/2000/01/rdf-schema#comment"
   iolanta_OutputDatatype --- bab53b5875b3(["type"])--&gt; http___www_w3_org_2002_07_owl_Class
   click bab53b5875b3 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
   classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
@@ -4478,7 +4508,7 @@
   classDef label fill:transparent,stroke:transparent,color:#e5e7eb,stroke-width:0px;
   classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
   classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-  class cfa6a727ad0c,a6a8a72ba1b9,bab53b5875b3 predicate
+  class a6a8a72ba1b9,cfa6a727ad0c,bab53b5875b3 predicate
 </code></pre>
 </div>
 </div>
@@ -4503,20 +4533,20 @@
 <pre class="mermaid"><code>graph LR
   iolanta_SPARQLText("SPARQL Text")
   click iolanta_SPARQLText "iolanta:SPARQLText"
-  http___www_w3_org_2000_01_rdf-schema_Datatype("Datatype")
-  click http___www_w3_org_2000_01_rdf-schema_Datatype "http://www.w3.org/2000/01/rdf-schema#Datatype"
   http___www_w3_org_2002_07_owl_Class("Class")
   click http___www_w3_org_2002_07_owl_Class "http://www.w3.org/2002/07/owl#Class"
-  iolanta_SPARQLText --- 3b46365ebc4d(["subClassOf"])--&gt; http___www_w3_org_2000_01_rdf-schema_Datatype
-  click 3b46365ebc4d "http://www.w3.org/2000/01/rdf-schema#subClassOf"
+  http___www_w3_org_2000_01_rdf-schema_Datatype("Datatype")
+  click http___www_w3_org_2000_01_rdf-schema_Datatype "http://www.w3.org/2000/01/rdf-schema#Datatype"
   iolanta_SPARQLText --- 6e423e8a5cbd(["type"])--&gt; http___www_w3_org_2002_07_owl_Class
   click 6e423e8a5cbd "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  iolanta_SPARQLText --- 3b46365ebc4d(["subClassOf"])--&gt; http___www_w3_org_2000_01_rdf-schema_Datatype
+  click 3b46365ebc4d "http://www.w3.org/2000/01/rdf-schema#subClassOf"
   classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
   classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
   classDef label fill:transparent,stroke:transparent,color:#e5e7eb,stroke-width:0px;
   classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
   classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-  class 3b46365ebc4d,6e423e8a5cbd predicate
+  class 6e423e8a5cbd,3b46365ebc4d predicate
 </code></pre>
 </div>
 </div>
@@ -4544,24 +4574,24 @@
 <pre class="mermaid"><code>graph LR
   iolanta_matches("matches")
   click iolanta_matches "iolanta:matches"
+  iolanta_Facet("Facet")
+  click iolanta_Facet "iolanta:Facet"
   http___www_w3_org_2002_07_owl_DatatypeProperty("DatatypeProperty")
   click http___www_w3_org_2002_07_owl_DatatypeProperty "http://www.w3.org/2002/07/owl#DatatypeProperty"
   iolanta_SPARQLText("SPARQL Text")
   click iolanta_SPARQLText "iolanta:SPARQLText"
-  iolanta_Facet("Facet")
-  click iolanta_Facet "iolanta:Facet"
+  iolanta_matches --- ced4624fbf8e(["domain"])--&gt; iolanta_Facet
+  click ced4624fbf8e "http://www.w3.org/2000/01/rdf-schema#domain"
   iolanta_matches --- 7dff95a0c771(["type"])--&gt; http___www_w3_org_2002_07_owl_DatatypeProperty
   click 7dff95a0c771 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
   iolanta_matches --- 1fb9453a6bfd(["range"])--&gt; iolanta_SPARQLText
   click 1fb9453a6bfd "http://www.w3.org/2000/01/rdf-schema#range"
-  iolanta_matches --- ced4624fbf8e(["domain"])--&gt; iolanta_Facet
-  click ced4624fbf8e "http://www.w3.org/2000/01/rdf-schema#domain"
   classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
   classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
   classDef label fill:transparent,stroke:transparent,color:#e5e7eb,stroke-width:0px;
   classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
   classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-  class 7dff95a0c771,1fb9453a6bfd,ced4624fbf8e predicate
+  class ced4624fbf8e,7dff95a0c771,1fb9453a6bfd predicate
 </code></pre>
 </div>
 </div>
@@ -4589,22 +4619,22 @@
   click iolanta_outputs "iolanta:outputs"
   iolanta_Facet("Facet")
   click iolanta_Facet "iolanta:Facet"
-  iolanta_OutputDatatype("Output Datatype")
-  click iolanta_OutputDatatype "iolanta:OutputDatatype"
   http___www_w3_org_2002_07_owl_ObjectProperty("ObjectProperty")
   click http___www_w3_org_2002_07_owl_ObjectProperty "http://www.w3.org/2002/07/owl#ObjectProperty"
+  iolanta_OutputDatatype("Output Datatype")
+  click iolanta_OutputDatatype "iolanta:OutputDatatype"
   iolanta_outputs --- e5ce58eefcc6(["domain"])--&gt; iolanta_Facet
   click e5ce58eefcc6 "http://www.w3.org/2000/01/rdf-schema#domain"
-  iolanta_outputs --- 5cbb08f9224d(["range"])--&gt; iolanta_OutputDatatype
-  click 5cbb08f9224d "http://www.w3.org/2000/01/rdf-schema#range"
   iolanta_outputs --- 318dc62ce4e6(["type"])--&gt; http___www_w3_org_2002_07_owl_ObjectProperty
   click 318dc62ce4e6 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  iolanta_outputs --- 5cbb08f9224d(["range"])--&gt; iolanta_OutputDatatype
+  click 5cbb08f9224d "http://www.w3.org/2000/01/rdf-schema#range"
   classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
   classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
   classDef label fill:transparent,stroke:transparent,color:#e5e7eb,stroke-width:0px;
   classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
   classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-  class e5ce58eefcc6,5cbb08f9224d,318dc62ce4e6 predicate
+  class e5ce58eefcc6,318dc62ce4e6,5cbb08f9224d predicate
 </code></pre>
 </div>
 </div>
@@ -4785,12 +4815,12 @@
 <summary>Triples for <code>facet.yamlld</code> (too many of them)</summary>
 <p>|  this s p o  |
 |  --- --- --- ---  |
-|  <code>file:///home/runner/work/iolanta/iolanta/docs/blog/knowledge-graph-assignment/facet.yamlld</code> <code>iolanta:Facet</code> <code>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</code> <code>http://www.w3.org/2002/07/owl#Class</code>  |
 |  <code>file:///home/runner/work/iolanta/iolanta/docs/blog/knowledge-graph-assignment/facet.yamlld</code> <code>iolanta:Facet</code> <code>http://www.w3.org/2000/01/rdf-schema#label</code> <code>Facet</code>  |
 |  <code>file:///home/runner/work/iolanta/iolanta/docs/blog/knowledge-graph-assignment/facet.yamlld</code> <code>iolanta:Facet</code> <code>http://www.w3.org/2000/01/rdf-schema#comment</code> <code>A Facet is a visualization component that transforms RDF nodes into human-readable formats.
 Facets are the core mechanism by which Iolanta makes Linked Data accessible to users.
 Each facet is designed to handle specific types of RDF nodes and render them appropriately
-for different output formats (terminal, web, etc.).</code>  |</p>
+for different output formats (terminal, web, etc.).</code>  |
+|  <code>file:///home/runner/work/iolanta/iolanta/docs/blog/knowledge-graph-assignment/facet.yamlld</code> <code>iolanta:Facet</code> <code>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</code> <code>http://www.w3.org/2002/07/owl#Class</code>  |</p>
 </details>
 <p>These triples are formatted as Mermaid nodes and edges by the facet, producing the diagram, which:</p>
 <ul>
