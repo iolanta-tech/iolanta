@@ -1088,48 +1088,80 @@ tests = ["asttokens (>=2.1.0)", "coverage", "coverage-enable-subprocess", "ipyth
 
 [[package]]
 name = "fastmcp"
-version = "3.2.4"
+version = "3.4.2"
 description = "The fast, Pythonic way to build MCP servers and clients."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "fastmcp-3.2.4-py3-none-any.whl", hash = "sha256:e6c9c429171041455e47ab94bb3f83c4657622a0ec28922f6940053959bd58a9"},
-    {file = "fastmcp-3.2.4.tar.gz", hash = "sha256:083ecb75b44a4169e7fc0f632f94b781bdb0ff877c6b35b9877cbb566fd4d4d1"},
+    {file = "fastmcp-3.4.2-py3-none-any.whl", hash = "sha256:c87a62b029f0c5400ada85f683629345d2466c39169f0cb853e487b2f7308c08"},
+    {file = "fastmcp-3.4.2.tar.gz", hash = "sha256:b468722946fc467c3796a6572f7a14d93d48c014cf8fea12910245220cbbe4e1"},
 ]
 
 [package.dependencies]
-authlib = ">=1.6.5"
-cyclopts = ">=4.0.0"
-exceptiongroup = ">=1.2.2"
-griffelib = ">=2.0.0"
-httpx = ">=0.28.1,<1.0"
-jsonref = ">=1.1.0"
-jsonschema-path = ">=0.3.4"
-mcp = ">=1.24.0,<2.0"
-openapi-pydantic = ">=0.5.1"
-opentelemetry-api = ">=1.20.0"
-packaging = ">=24.0"
+fastmcp-slim = {version = "3.4.2", extras = ["client", "server"]}
+
+[package.extras]
+anthropic = ["fastmcp-slim[anthropic] (==3.4.2)"]
+apps = ["fastmcp-slim[apps] (==3.4.2)"]
+azure = ["fastmcp-slim[azure] (==3.4.2)"]
+code-mode = ["fastmcp-slim[code-mode] (==3.4.2)"]
+gemini = ["fastmcp-slim[gemini] (==3.4.2)"]
+openai = ["fastmcp-slim[openai] (==3.4.2)"]
+tasks = ["fastmcp-slim[tasks] (==3.4.2)"]
+
+[[package]]
+name = "fastmcp-slim"
+version = "3.4.2"
+description = "The dependency-slim FastMCP package."
+optional = false
+python-versions = ">=3.10"
+groups = ["main"]
+files = [
+    {file = "fastmcp_slim-3.4.2-py3-none-any.whl", hash = "sha256:bdc72492212681ca502755fa8acc0457f559295da1fc3dfc0599adc1c04b82f3"},
+    {file = "fastmcp_slim-3.4.2.tar.gz", hash = "sha256:290646e0955a516235a317151034559aa48336cb843d3f006131aedad8759bb4"},
+]
+
+[package.dependencies]
+authlib = {version = ">=1.6.11", optional = true, markers = "extra == \"client\" or extra == \"server\""}
+cyclopts = {version = ">=4.0.0", optional = true, markers = "extra == \"server\""}
+exceptiongroup = {version = ">=1.2.2", optional = true, markers = "extra == \"client\" or extra == \"server\""}
+griffelib = {version = ">=2.0.0", optional = true, markers = "extra == \"server\""}
+httpx = {version = ">=0.28.1,<1.0", optional = true, markers = "extra == \"client\" or extra == \"server\""}
+joserfc = {version = ">=1.1.0", optional = true, markers = "extra == \"server\""}
+jsonref = {version = ">=1.1.0", optional = true, markers = "extra == \"server\""}
+jsonschema-path = {version = ">=0.3.4", optional = true, markers = "extra == \"server\""}
+mcp = {version = ">=1.24.0,<2.0", optional = true, markers = "extra == \"client\" or extra == \"server\""}
+openapi-pydantic = {version = ">=0.5.1", optional = true, markers = "extra == \"server\""}
+opentelemetry-api = {version = ">=1.20.0", optional = true, markers = "extra == \"client\" or extra == \"server\""}
+packaging = {version = ">=24.0", optional = true, markers = "extra == \"server\""}
 platformdirs = ">=4.0.0"
-py-key-value-aio = {version = ">=0.4.4,<0.5.0", extras = ["filetree", "keyring", "memory"]}
+py-key-value-aio = {version = ">=0.4.4,<0.5.0", extras = ["filetree", "keyring", "memory"], optional = true, markers = "extra == \"client\" or extra == \"server\""}
 pydantic = {version = ">=2.11.7", extras = ["email"]}
-pyperclip = ">=1.9.0"
+pydantic-settings = ">=2.0.0"
+pyperclip = {version = ">=1.9.0", optional = true, markers = "extra == \"server\""}
 python-dotenv = ">=1.1.0"
-pyyaml = ">=6.0,<7.0"
+python-multipart = {version = ">=0.0.26", optional = true, markers = "extra == \"server\""}
+pyyaml = {version = ">=6.0,<7.0", optional = true, markers = "extra == \"server\""}
 rich = ">=13.9.4"
-uncalled-for = ">=0.2.0"
-uvicorn = ">=0.35"
-watchfiles = ">=1.0.0"
-websockets = ">=15.0.1"
+starlette = {version = ">=1.0.1", optional = true, markers = "extra == \"client\" or extra == \"server\""}
+typing-extensions = ">=4.0.0"
+uncalled-for = {version = ">=0.2.0", optional = true, markers = "extra == \"server\""}
+uvicorn = {version = ">=0.35", optional = true, markers = "extra == \"server\""}
+watchfiles = {version = ">=1.0.0", optional = true, markers = "extra == \"server\""}
+websockets = {version = ">=15.0.1", optional = true, markers = "extra == \"server\""}
 
 [package.extras]
 anthropic = ["anthropic (>=0.48.0)"]
 apps = ["prefab-ui (>=0.18.0)"]
 azure = ["azure-identity (>=1.16.0)", "pyjwt (>=2.12.0)"]
-code-mode = ["pydantic-monty (==0.0.11)"]
-gemini = ["google-genai (>=1.18.0)"]
+client = ["authlib (>=1.6.11)", "exceptiongroup (>=1.2.2)", "httpx (>=0.28.1,<1.0)", "mcp (>=1.24.0,<2.0)", "opentelemetry-api (>=1.20.0)", "py-key-value-aio[filetree,keyring,memory] (>=0.4.4,<0.5.0)", "starlette (>=1.0.1)"]
+code-mode = ["pydantic-monty (==0.0.17)"]
+gemini = ["google-genai (>=1.18.0)", "jsonref (>=1.1.0)"]
+mcp = ["exceptiongroup (>=1.2.2)", "httpx (>=0.28.1,<1.0)", "mcp (>=1.24.0,<2.0)", "opentelemetry-api (>=1.20.0)", "starlette (>=1.0.1)"]
 openai = ["openai (>=1.102.0)"]
-tasks = ["pydocket (>=0.19.0)"]
+server = ["authlib (>=1.6.11)", "cyclopts (>=4.0.0)", "exceptiongroup (>=1.2.2)", "griffelib (>=2.0.0)", "httpx (>=0.28.1,<1.0)", "joserfc (>=1.1.0)", "jsonref (>=1.1.0)", "jsonschema-path (>=0.3.4)", "mcp (>=1.24.0,<2.0)", "openapi-pydantic (>=0.5.1)", "opentelemetry-api (>=1.20.0)", "packaging (>=24.0)", "py-key-value-aio[filetree,keyring,memory] (>=0.4.4,<0.5.0)", "pyperclip (>=1.9.0)", "python-multipart (>=0.0.26)", "pyyaml (>=6.0,<7.0)", "starlette (>=1.0.1)", "uncalled-for (>=0.2.0)", "uvicorn (>=0.35)", "watchfiles (>=1.0.0)", "websockets (>=15.0.1)"]
+tasks = ["pydocket (>=0.20.0)"]
 
 [[package]]
 name = "filelock"
