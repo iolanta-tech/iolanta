@@ -4669,23 +4669,23 @@
 <pre class="mermaid"><code>graph LR
   http___dbpedia_org_resource_John_Lennon("John Lennon")
   click http___dbpedia_org_resource_John_Lennon "http://dbpedia.org/resource/John_Lennon"
-  Literal-4649fa93775b[["📅 1940-10-09"]]
-  http___dbpedia_org_resource_Cynthia_Lennon("Cynthia Lennon")
-  click http___dbpedia_org_resource_Cynthia_Lennon "http://dbpedia.org/resource/Cynthia_Lennon"
   http___dbpedia_org_resource_Yoko_Ono("Yoko Ono")
   click http___dbpedia_org_resource_Yoko_Ono "http://dbpedia.org/resource/Yoko_Ono"
-  http___dbpedia_org_resource_John_Lennon --- ece8797f1934(["birthDate"])--&gt; Literal-4649fa93775b
-  click ece8797f1934 "http://schema.org/birthDate"
-  http___dbpedia_org_resource_John_Lennon --- ccd6a52ef4f0(["spouse"])--&gt; http___dbpedia_org_resource_Cynthia_Lennon
-  click ccd6a52ef4f0 "http://schema.org/spouse"
+  http___dbpedia_org_resource_Cynthia_Lennon("Cynthia Lennon")
+  click http___dbpedia_org_resource_Cynthia_Lennon "http://dbpedia.org/resource/Cynthia_Lennon"
+  Literal-4649fa93775b[["📅 1940-10-09"]]
   http___dbpedia_org_resource_John_Lennon --- dc81cc5be03d(["spouse"])--&gt; http___dbpedia_org_resource_Yoko_Ono
   click dc81cc5be03d "http://schema.org/spouse"
+  http___dbpedia_org_resource_John_Lennon --- ccd6a52ef4f0(["spouse"])--&gt; http___dbpedia_org_resource_Cynthia_Lennon
+  click ccd6a52ef4f0 "http://schema.org/spouse"
+  http___dbpedia_org_resource_John_Lennon --- ece8797f1934(["birthDate"])--&gt; Literal-4649fa93775b
+  click ece8797f1934 "http://schema.org/birthDate"
   classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
   classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
   classDef label fill:transparent,stroke:transparent,color:#e5e7eb,stroke-width:0px;
   classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
   classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-  class ece8797f1934,ccd6a52ef4f0,dc81cc5be03d predicate
+  class dc81cc5be03d,ccd6a52ef4f0,ece8797f1934 predicate
 </code></pre>
 </div>
 </div>
@@ -4722,22 +4722,22 @@
   http___dbpedia_org_resource_John_Lennon("John Lennon")
   click http___dbpedia_org_resource_John_Lennon "http://dbpedia.org/resource/John_Lennon"
   Literal-4649fa93775b[["📅 1940-10-09"]]
-  http___dbpedia_org_resource_Cynthia_Lennon("Cynthia Lennon")
-  click http___dbpedia_org_resource_Cynthia_Lennon "http://dbpedia.org/resource/Cynthia_Lennon"
   http___dbpedia_org_resource_Yoko_Ono("Yoko Ono")
   click http___dbpedia_org_resource_Yoko_Ono "http://dbpedia.org/resource/Yoko_Ono"
+  http___dbpedia_org_resource_Cynthia_Lennon("Cynthia Lennon")
+  click http___dbpedia_org_resource_Cynthia_Lennon "http://dbpedia.org/resource/Cynthia_Lennon"
   http___dbpedia_org_resource_John_Lennon --- faa2f964aa1f(["deathDate"])--&gt; Literal-4649fa93775b
   click faa2f964aa1f "http://schema.org/deathDate"
-  http___dbpedia_org_resource_John_Lennon --- 038343392367(["parent"])--&gt; http___dbpedia_org_resource_Cynthia_Lennon
-  click 038343392367 "http://schema.org/parent"
   http___dbpedia_org_resource_John_Lennon --- 987e5ca265cd(["parent"])--&gt; http___dbpedia_org_resource_Yoko_Ono
   click 987e5ca265cd "http://schema.org/parent"
+  http___dbpedia_org_resource_John_Lennon --- 038343392367(["parent"])--&gt; http___dbpedia_org_resource_Cynthia_Lennon
+  click 038343392367 "http://schema.org/parent"
   classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
   classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
   classDef label fill:transparent,stroke:transparent,color:#e5e7eb,stroke-width:0px;
   classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
   classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-  class faa2f964aa1f,038343392367,987e5ca265cd predicate
+  class faa2f964aa1f,987e5ca265cd,038343392367 predicate
 </code></pre>
 </div>
 </div>
