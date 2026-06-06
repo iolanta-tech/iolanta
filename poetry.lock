@@ -4574,19 +4574,18 @@ files = [
 
 [[package]]
 name = "safety"
-version = "3.8.1"
+version = "3.7.0"
 description = "Scan dependencies for known vulnerabilities and licenses."
 optional = false
 python-versions = ">=3.9"
 groups = ["dev"]
 files = [
-    {file = "safety-3.8.1-py3-none-any.whl", hash = "sha256:953c1c3c60c873f53a6cc250b2a9c4b38bb6ef45f0625990e43f20bff916c965"},
-    {file = "safety-3.8.1.tar.gz", hash = "sha256:e646123b976bbb6707cfaacae8c926e2f886b744a60e0f410e8610a3a4eaf7be"},
+    {file = "safety-3.7.0-py3-none-any.whl", hash = "sha256:65e71db45eb832e8840e3456333d44c23927423753d5610596a09e909a66d2bf"},
+    {file = "safety-3.7.0.tar.gz", hash = "sha256:daec15a393cafc32b846b7ef93f9c952a1708863e242341ab5bde2e4beabb54e"},
 ]
 
 [package.dependencies]
 authlib = ">=1.2.0"
-certifi = "*"
 click = ">=8.0.2"
 dparse = ">=0.6.4"
 filelock = ">=3.16.1,<4.0"
@@ -4596,12 +4595,12 @@ marshmallow = ">=3.15.0"
 nltk = ">=3.9"
 packaging = ">=21.0"
 pydantic = ">=2.6.0"
+requests = "*"
 ruamel-yaml = ">=0.17.21"
 safety-schemas = "0.0.16"
 tenacity = ">=8.1.0"
 tomlkit = "*"
-truststore = {version = ">=0.10.4", markers = "python_version >= \"3.10\""}
-typer = ">=0.16.0,<0.26.0"
+typer = ">=0.16.0"
 typing-extensions = ">=4.7.1"
 
 [package.extras]
@@ -5054,32 +5053,20 @@ docs = ["myst-parser", "pydata-sphinx-theme", "sphinx"]
 test = ["argcomplete (>=3.0.3)", "mypy (>=1.7.0)", "pre-commit", "pytest (>=7.0,<8.2)", "pytest-mock", "pytest-mypy-testing"]
 
 [[package]]
-name = "truststore"
-version = "0.10.4"
-description = "Verify certificates using native system trust stores"
-optional = false
-python-versions = ">=3.10"
-groups = ["dev"]
-files = [
-    {file = "truststore-0.10.4-py3-none-any.whl", hash = "sha256:adaeaecf1cbb5f4de3b1959b42d41f6fab57b2b1666adb59e89cb0b53361d981"},
-    {file = "truststore-0.10.4.tar.gz", hash = "sha256:9d91bd436463ad5e4ee4aba766628dd6cd7010cf3e2461756b3303710eebc301"},
-]
-
-[[package]]
 name = "typer"
-version = "0.25.1"
+version = "0.26.7"
 description = "Typer, build great CLIs. Easy to code. Based on Python type hints."
 optional = false
 python-versions = ">=3.10"
 groups = ["main", "dev"]
 files = [
-    {file = "typer-0.25.1-py3-none-any.whl", hash = "sha256:75caa44ed46a03fb2dab8808753ffacdbfea88495e74c85a28c5eefcf5f39c89"},
-    {file = "typer-0.25.1.tar.gz", hash = "sha256:9616eb8853a09ffeabab1698952f33c6f29ffdbceb4eaeecf571880e8d7664cc"},
+    {file = "typer-0.26.7-py3-none-any.whl", hash = "sha256:5c87cfbc5d34491c5346ebf49c23e18d56ccb863268d3a8d592b26087c2f5e58"},
+    {file = "typer-0.26.7.tar.gz", hash = "sha256:e314a34c617e419c091b2830dda3ea1f257134ff593061a8f5b9717ab8dddb3a"},
 ]
 
 [package.dependencies]
 annotated-doc = ">=0.0.2"
-click = ">=8.2.1"
+colorama = {version = "*", markers = "platform_system == \"Windows\""}
 rich = ">=13.8.0"
 shellingham = ">=1.3.0"
 
