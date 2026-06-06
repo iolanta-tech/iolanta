@@ -3863,22 +3863,23 @@ cli = ["click (>=5.0)"]
 
 [[package]]
 name = "python-frontmatter"
-version = "1.1.0"
+version = "1.3.0"
 description = "Parse and manage posts with YAML (or other) frontmatter"
 optional = false
-python-versions = "*"
+python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "python-frontmatter-1.1.0.tar.gz", hash = "sha256:7118d2bd56af9149625745c58c9b51fb67e8d1294a0c76796dafdc72c36e5f6d"},
-    {file = "python_frontmatter-1.1.0-py3-none-any.whl", hash = "sha256:335465556358d9d0e6c98bbeb69b1c969f2a4a21360587b9873bfc3b213407c1"},
+    {file = "python_frontmatter-1.3.0-py3-none-any.whl", hash = "sha256:9f7dd9260bec99044219159a329f64f039087f9d1a2124c9442556f2fe6f82ec"},
+    {file = "python_frontmatter-1.3.0.tar.gz", hash = "sha256:acc73e477a568dc2a25c9e130c6c68ae8daa8c204c8f7e813db47d6a7280dcf2"},
 ]
 
 [package.dependencies]
-PyYAML = "*"
+pyyaml = "*"
 
 [package.extras]
 docs = ["sphinx"]
-test = ["mypy", "pyaml", "pytest", "toml", "types-PyYAML", "types-toml"]
+test = ["mypy", "pyaml", "pytest", "toml", "types-pyyaml", "types-toml"]
+toml = ["toml"]
 
 [[package]]
 name = "python-multipart"
