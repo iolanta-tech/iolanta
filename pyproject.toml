@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iolanta"
-version = "2.1.36"
+version = "2.1.38"
 description = "Semantic Web browser"
 authors = ["Anatoly Scherbakov <altaisoft@gmail.com>"]
 license = "MIT"
@@ -20,6 +20,7 @@ dominate = ">=2.6.0"
 more-itertools = ">=9.0.0"
 owlrl = ">=6.0.2"
 funcy = ">=2.0"
+docutils = ">=0.17"
 rich = ">=13.3.1"
 textual = ">=8.2.3"
 yarl = ">=1.9.4"
