@@ -45,10 +45,6 @@ REASONING_ENABLED = True
 OWL_REASONING_ENABLED = False
 
 INFERENCE_DIR = Path(__file__).parent / "inference"
-PROJECT_ROOT = Path(__file__).parents[2]
-INDICES = [  # noqa: WPS407
-    conversions.path_to_iri(PROJECT_ROOT / "docs/visualizations/index.yaml"),
-]
 
 
 def find_retractions_for(nanopublication: URIRef) -> set[URIRef]:
@@ -403,14 +399,6 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
     def __post_init__(self):
         """Note that we do not presently need OWL inference."""
         self.graph.last_not_inferred_source = None
-        self.graph._indices_loaded = False
-
-    def _maybe_load_indices(self):
-        if not self.graph._indices_loaded:
-            for index in INDICES:
-                self.load(index)
-
-            self.graph._indices_loaded = True
 
     def query(  # noqa: WPS211, WPS210, WPS231, WPS213, C901
         self,
@@ -425,8 +413,6 @@ class GlobalSPARQLProcessor(Processor):  # noqa: WPS338, WPS214
         namespaces. The given base is used to resolve relative URIs in
         the query and will be overridden by any BASE given in the query.
         """
-        self._maybe_load_indices()
-
         initBindings = initBindings or {}
         initNs = initNs or {}
 
