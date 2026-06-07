@@ -123,7 +123,7 @@ def build_docs():
 
 **A09.** Do not hand-edit generated prefix data in `iolanta/data/prefixes.yamlld`; use a separate non-generated data file for local prefix overrides.
 
-**A10.** When changing bundled visualization overlays in `docs/visualizations/`, verify Iolanta loads the local overlay files rather than the published `https://iolanta.tech/visualizations/` copies.
+**A10.** Visualization overlays in `docs/visualizations/` are published to `https://iolanta.tech/visualizations/` by MkDocs. At runtime, Iolanta discovers visualization metadata via nanopublications (`iolanta/discovery/visualization_nanopublications.py`); the local `docs/visualizations/` files are not loaded at runtime.
 
 ## Prose and documentation
 
