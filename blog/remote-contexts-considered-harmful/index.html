@@ -4643,7 +4643,6 @@
   click 45b36f7ac41e "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
   classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
   classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-  classDef label fill:transparent,stroke:transparent,color:#e5e7eb,stroke-width:0px;
   classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
   classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
   class 196d43cbdf11,e84baee6286c,55795af7d924,e13d2533100c,f857ebc6e504,83c24ca887aa,49e96341cb63,d361934ba253,ee0fd7b9aa5f,cad56228a64c,c5b2b643ee48,09f4a8451739,e120522b7054,210abd129985,e0bb3dc849ed,00aa94c1f449,5074d83f2973,0f763fd8cded,e1baa1baad17,822dabe6be8f,95d1d031894e,49bfb3cf0009,044ec00c58b6,756f74004ad9,7fd88708111f,1453f187b416,8abdf00cb2e6,33230ee86919,cd7adf56a157,0b29cecdbdd0,5de946e63e95,db2a30ffdc4f,cac0e668291f,b1fdc897157e,c97ef3640134,38f7f74acfc0,177beaf72504,f11d571a490d,47aeff0af1ce,a6d0fb7719df,3d669a27762f,e5729fc96757,d4694e4cc39c,9f07cb7cb3b9,6ae8cc7e55a2,3f6c52b352c7,955aee5db295,8603a835a89e,db6e96c0804c,cb975e07235a,435c30ad4c73,c1435028f525,8ea7e6b500db,475b21f084ee,a498c16bf46f,ae4b72a65800,79f6252823d2,0846499ef8d9,9398de53fd99,6375f82db69d,986bf5762684,537c63798d41,dc6b6f957910,8ab9e3c9dc1a,180821d808a8,0223c4b18ac3,229ea1b163a4,a428808a67b5,7be2efb4ff07,9ad5e3f78828,96d654b739be,161c059ea25a,c7a270435d6b,80f58e9056fc,3f0e849beff8,a49aff00e74c,853b23dc18e0,30a87c2c79ba,0e57f5cee5a8,ffabfaf3cb08,df0ae3bbd5d4,dc3b09026ccd,245a02c1eef7,6ed5106e1e06,da6166551cfc,44e4def65edc,468d88666d7a,1b8ca4bfebb6,261d6a863eab,cc54f5d38dfe,f4630b32ca77,f057729a09b0,aa75c3a8e580,fa1d7fd91c69,de33ec8a8dc5,5d653d8bcf42,6df9677aa9a5,38b3183c2f81,156c726d487b,67103faddc96,c88e0d723a69,1503841ff43c,d219bc0d0df9,eea42b699c02,dfc42cc15e2f,b8cd0aec489a,3af99f5ee2fd,45b36f7ac41e predicate
@@ -4669,23 +4668,22 @@
 <pre class="mermaid"><code>graph LR
   http___dbpedia_org_resource_John_Lennon("John Lennon")
   click http___dbpedia_org_resource_John_Lennon "http://dbpedia.org/resource/John_Lennon"
+  Literal-4649fa93775b[["📅 1940-10-09"]]
   http___dbpedia_org_resource_Cynthia_Lennon("Cynthia Lennon")
   click http___dbpedia_org_resource_Cynthia_Lennon "http://dbpedia.org/resource/Cynthia_Lennon"
-  Literal-4649fa93775b[["📅 1940-10-09"]]
   http___dbpedia_org_resource_Yoko_Ono("Yoko Ono")
   click http___dbpedia_org_resource_Yoko_Ono "http://dbpedia.org/resource/Yoko_Ono"
-  http___dbpedia_org_resource_John_Lennon --- ccd6a52ef4f0(["spouse"])--&gt; http___dbpedia_org_resource_Cynthia_Lennon
-  click ccd6a52ef4f0 "http://schema.org/spouse"
   http___dbpedia_org_resource_John_Lennon --- ece8797f1934(["birthDate"])--&gt; Literal-4649fa93775b
   click ece8797f1934 "http://schema.org/birthDate"
+  http___dbpedia_org_resource_John_Lennon --- ccd6a52ef4f0(["spouse"])--&gt; http___dbpedia_org_resource_Cynthia_Lennon
+  click ccd6a52ef4f0 "http://schema.org/spouse"
   http___dbpedia_org_resource_John_Lennon --- dc81cc5be03d(["spouse"])--&gt; http___dbpedia_org_resource_Yoko_Ono
   click dc81cc5be03d "http://schema.org/spouse"
   classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
   classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-  classDef label fill:transparent,stroke:transparent,color:#e5e7eb,stroke-width:0px;
   classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
   classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-  class ccd6a52ef4f0,ece8797f1934,dc81cc5be03d predicate
+  class ece8797f1934,ccd6a52ef4f0,dc81cc5be03d predicate
 </code></pre>
 </div>
 </div>
@@ -4721,23 +4719,22 @@
 <pre class="mermaid"><code>graph LR
   http___dbpedia_org_resource_John_Lennon("John Lennon")
   click http___dbpedia_org_resource_John_Lennon "http://dbpedia.org/resource/John_Lennon"
-  http___dbpedia_org_resource_Cynthia_Lennon("Cynthia Lennon")
-  click http___dbpedia_org_resource_Cynthia_Lennon "http://dbpedia.org/resource/Cynthia_Lennon"
   Literal-4649fa93775b[["📅 1940-10-09"]]
   http___dbpedia_org_resource_Yoko_Ono("Yoko Ono")
   click http___dbpedia_org_resource_Yoko_Ono "http://dbpedia.org/resource/Yoko_Ono"
-  http___dbpedia_org_resource_John_Lennon --- 038343392367(["parent"])--&gt; http___dbpedia_org_resource_Cynthia_Lennon
-  click 038343392367 "http://schema.org/parent"
+  http___dbpedia_org_resource_Cynthia_Lennon("Cynthia Lennon")
+  click http___dbpedia_org_resource_Cynthia_Lennon "http://dbpedia.org/resource/Cynthia_Lennon"
   http___dbpedia_org_resource_John_Lennon --- faa2f964aa1f(["deathDate"])--&gt; Literal-4649fa93775b
   click faa2f964aa1f "http://schema.org/deathDate"
   http___dbpedia_org_resource_John_Lennon --- 987e5ca265cd(["parent"])--&gt; http___dbpedia_org_resource_Yoko_Ono
   click 987e5ca265cd "http://schema.org/parent"
+  http___dbpedia_org_resource_John_Lennon --- 038343392367(["parent"])--&gt; http___dbpedia_org_resource_Cynthia_Lennon
+  click 038343392367 "http://schema.org/parent"
   classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
   classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-  classDef label fill:transparent,stroke:transparent,color:#e5e7eb,stroke-width:0px;
   classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
   classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-  class 038343392367,faa2f964aa1f,987e5ca265cd predicate
+  class faa2f964aa1f,987e5ca265cd,038343392367 predicate
 </code></pre>
 </div>
 </div>
@@ -5024,29 +5021,30 @@ definitions directly in the document itself.</p>
 </div>
 <div markdown>
 <pre class="mermaid"><code>graph LR
-  5f101372727c98c91391212c3a17d5ea_b0("John Lennon")
-  Literal-4649fa93775b9ab0c7a5e1bd15b6744a[["📅 1940-10-09"]]
-  5f101372727c98c91391212c3a17d5ea_b0("John Lennon")
-  http___dbpedia_org_resource_Cynthia_Lennon("Cynthia Lennon")
-  click http___dbpedia_org_resource_Cynthia_Lennon "http://dbpedia.org/resource/Cynthia_Lennon"
-  5f101372727c98c91391212c3a17d5ea_b0("John Lennon")
+  Be98757419880("John Lennon")
   http___dbpedia_org_resource_Yoko_Ono("Yoko Ono")
   click http___dbpedia_org_resource_Yoko_Ono "http://dbpedia.org/resource/Yoko_Ono"
-  5f101372727c98c91391212c3a17d5ea_b0 --- c61fa04ee4bc149ca544908066fc5320(["birthDate"])--&gt; Literal-4649fa93775b9ab0c7a5e1bd15b6744a
-  click c61fa04ee4bc149ca544908066fc5320 "http://schema.org/birthDate"
-  class c61fa04ee4bc149ca544908066fc5320 predicate
-  5f101372727c98c91391212c3a17d5ea_b0 --- 9a4226e685e7907b94de856d2f6fbda5(["spouse"])--&gt; http___dbpedia_org_resource_Cynthia_Lennon
-  click 9a4226e685e7907b94de856d2f6fbda5 "http://schema.org/spouse"
-  class 9a4226e685e7907b94de856d2f6fbda5 predicate
-  5f101372727c98c91391212c3a17d5ea_b0 --- 6c450ce6fb06a569581c81cc5107d4b3(["spouse"])--&gt; http___dbpedia_org_resource_Yoko_Ono
-  click 6c450ce6fb06a569581c81cc5107d4b3 "http://schema.org/spouse"
-  class 6c450ce6fb06a569581c81cc5107d4b3 predicate
+  http___dbpedia_org_resource_Cynthia_Lennon("Cynthia Lennon")
+  click http___dbpedia_org_resource_Cynthia_Lennon "http://dbpedia.org/resource/Cynthia_Lennon"
+  B7476fd72e886("John Lennon")
+  Literal-4649fa93775b[["📅 1940-10-09"]]
+  Be98757419880 --- c5e2fc9beae4(["spouse"])--&gt; http___dbpedia_org_resource_Yoko_Ono
+  click c5e2fc9beae4 "http://schema.org/spouse"
+  Be98757419880 --- 81b658711729(["spouse"])--&gt; http___dbpedia_org_resource_Cynthia_Lennon
+  click 81b658711729 "http://schema.org/spouse"
+  B7476fd72e886 --- 2c9b94efe0c9(["spouse"])--&gt; http___dbpedia_org_resource_Yoko_Ono
+  click 2c9b94efe0c9 "http://schema.org/spouse"
+  B7476fd72e886 --- 6ef29998a64b(["spouse"])--&gt; http___dbpedia_org_resource_Cynthia_Lennon
+  click 6ef29998a64b "http://schema.org/spouse"
+  B7476fd72e886 --- 7b8c36f5b02f(["birthDate"])--&gt; Literal-4649fa93775b
+  click 7b8c36f5b02f "http://schema.org/birthDate"
+  Be98757419880 --- eb783ca09b8e(["birthDate"])--&gt; Literal-4649fa93775b
+  click eb783ca09b8e "http://schema.org/birthDate"
   classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
   classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-  classDef label fill:transparent,stroke:transparent,color:#e5e7eb,stroke-width:0px;
   classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
   classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-
+  class c5e2fc9beae4,81b658711729,2c9b94efe0c9,6ef29998a64b,7b8c36f5b02f,eb783ca09b8e predicate
 </code></pre>
 </div>
 </div></p>
@@ -5083,30 +5081,22 @@ definitions directly in the document itself.</p>
 <pre class="mermaid"><code>graph LR
   http___dbpedia_org_resource_John_Lennon("John Lennon")
   click http___dbpedia_org_resource_John_Lennon "http://dbpedia.org/resource/John_Lennon"
-  http___dbpedia_org_resource_Yoko_Ono("Yoko Ono")
-  click http___dbpedia_org_resource_Yoko_Ono "http://dbpedia.org/resource/Yoko_Ono"
-  http___dbpedia_org_resource_John_Lennon("John Lennon")
-  click http___dbpedia_org_resource_John_Lennon "http://dbpedia.org/resource/John_Lennon"
-  Literal-4649fa93775b9ab0c7a5e1bd15b6744a[["📅 1940-10-09"]]
-  http___dbpedia_org_resource_John_Lennon("John Lennon")
-  click http___dbpedia_org_resource_John_Lennon "http://dbpedia.org/resource/John_Lennon"
   http___dbpedia_org_resource_Cynthia_Lennon("Cynthia Lennon")
   click http___dbpedia_org_resource_Cynthia_Lennon "http://dbpedia.org/resource/Cynthia_Lennon"
-  http___dbpedia_org_resource_John_Lennon --- 203e23da021cfaec8fe3608f1809cc89(["spouse"])--&gt; http___dbpedia_org_resource_Yoko_Ono
-  click 203e23da021cfaec8fe3608f1809cc89 "http://schema.org/spouse"
-  class 203e23da021cfaec8fe3608f1809cc89 predicate
-  http___dbpedia_org_resource_John_Lennon --- 1759f753de49b9a729174a0162121fbc(["birthDate"])--&gt; Literal-4649fa93775b9ab0c7a5e1bd15b6744a
-  click 1759f753de49b9a729174a0162121fbc "http://schema.org/birthDate"
-  class 1759f753de49b9a729174a0162121fbc predicate
-  http___dbpedia_org_resource_John_Lennon --- 5467d103f69601bbafb5c89daa6ba9e2(["spouse"])--&gt; http___dbpedia_org_resource_Cynthia_Lennon
-  click 5467d103f69601bbafb5c89daa6ba9e2 "http://schema.org/spouse"
-  class 5467d103f69601bbafb5c89daa6ba9e2 predicate
+  Literal-4649fa93775b[["📅 1940-10-09"]]
+  http___dbpedia_org_resource_Yoko_Ono("Yoko Ono")
+  click http___dbpedia_org_resource_Yoko_Ono "http://dbpedia.org/resource/Yoko_Ono"
+  http___dbpedia_org_resource_John_Lennon --- ccd6a52ef4f0(["spouse"])--&gt; http___dbpedia_org_resource_Cynthia_Lennon
+  click ccd6a52ef4f0 "http://schema.org/spouse"
+  http___dbpedia_org_resource_John_Lennon --- ece8797f1934(["birthDate"])--&gt; Literal-4649fa93775b
+  click ece8797f1934 "http://schema.org/birthDate"
+  http___dbpedia_org_resource_John_Lennon --- dc81cc5be03d(["spouse"])--&gt; http___dbpedia_org_resource_Yoko_Ono
+  click dc81cc5be03d "http://schema.org/spouse"
   classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
   classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-  classDef label fill:transparent,stroke:transparent,color:#e5e7eb,stroke-width:0px;
   classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
   classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-
+  class ccd6a52ef4f0,ece8797f1934,dc81cc5be03d predicate
 </code></pre>
 </div>
 </div></p>
@@ -5252,30 +5242,22 @@ definitions directly in the document itself.</p>
 <pre class="mermaid"><code>graph LR
   http___dbpedia_org_resource_John_Lennon("John Lennon")
   click http___dbpedia_org_resource_John_Lennon "http://dbpedia.org/resource/John_Lennon"
-  http___dbpedia_org_resource_Yoko_Ono("Yoko Ono")
-  click http___dbpedia_org_resource_Yoko_Ono "http://dbpedia.org/resource/Yoko_Ono"
-  http___dbpedia_org_resource_John_Lennon("John Lennon")
-  click http___dbpedia_org_resource_John_Lennon "http://dbpedia.org/resource/John_Lennon"
-  Literal-4649fa93775b9ab0c7a5e1bd15b6744a[["📅 1940-10-09"]]
-  http___dbpedia_org_resource_John_Lennon("John Lennon")
-  click http___dbpedia_org_resource_John_Lennon "http://dbpedia.org/resource/John_Lennon"
   http___dbpedia_org_resource_Cynthia_Lennon("Cynthia Lennon")
   click http___dbpedia_org_resource_Cynthia_Lennon "http://dbpedia.org/resource/Cynthia_Lennon"
-  http___dbpedia_org_resource_John_Lennon --- 203e23da021cfaec8fe3608f1809cc89(["spouse"])--&gt; http___dbpedia_org_resource_Yoko_Ono
-  click 203e23da021cfaec8fe3608f1809cc89 "http://schema.org/spouse"
-  class 203e23da021cfaec8fe3608f1809cc89 predicate
-  http___dbpedia_org_resource_John_Lennon --- 1759f753de49b9a729174a0162121fbc(["birthDate"])--&gt; Literal-4649fa93775b9ab0c7a5e1bd15b6744a
-  click 1759f753de49b9a729174a0162121fbc "http://schema.org/birthDate"
-  class 1759f753de49b9a729174a0162121fbc predicate
-  http___dbpedia_org_resource_John_Lennon --- 5467d103f69601bbafb5c89daa6ba9e2(["spouse"])--&gt; http___dbpedia_org_resource_Cynthia_Lennon
-  click 5467d103f69601bbafb5c89daa6ba9e2 "http://schema.org/spouse"
-  class 5467d103f69601bbafb5c89daa6ba9e2 predicate
+  Literal-4649fa93775b[["📅 1940-10-09"]]
+  http___dbpedia_org_resource_Yoko_Ono("Yoko Ono")
+  click http___dbpedia_org_resource_Yoko_Ono "http://dbpedia.org/resource/Yoko_Ono"
+  http___dbpedia_org_resource_John_Lennon --- ccd6a52ef4f0(["spouse"])--&gt; http___dbpedia_org_resource_Cynthia_Lennon
+  click ccd6a52ef4f0 "http://schema.org/spouse"
+  http___dbpedia_org_resource_John_Lennon --- ece8797f1934(["birthDate"])--&gt; Literal-4649fa93775b
+  click ece8797f1934 "http://schema.org/birthDate"
+  http___dbpedia_org_resource_John_Lennon --- dc81cc5be03d(["spouse"])--&gt; http___dbpedia_org_resource_Yoko_Ono
+  click dc81cc5be03d "http://schema.org/spouse"
   classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
   classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-  classDef label fill:transparent,stroke:transparent,color:#e5e7eb,stroke-width:0px;
   classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
   classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-
+  class ccd6a52ef4f0,ece8797f1934,dc81cc5be03d predicate
 </code></pre>
 </div>
 </div></p>
