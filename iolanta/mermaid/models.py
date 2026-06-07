@@ -341,7 +341,6 @@ class Diagram(Documented, BaseModel):
     {self.formatted_body}
       classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
       classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-      classDef label fill:transparent,stroke:transparent,color:#e5e7eb,stroke-width:0px;
       classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
       classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
       {self.batched_predicate_class_line}{self.formatted_tail}
