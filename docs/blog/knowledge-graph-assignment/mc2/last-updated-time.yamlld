@@ -25,6 +25,7 @@
 
 $id: iolanta:last-loaded-time
 $type: owl:DatatypeProperty
+iolanta:icon: ◷
 
 $: Last Loaded Time
 
