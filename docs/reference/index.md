@@ -28,32 +28,32 @@ hide: [toc, navigation]
 
 <div class="grid cards" markdown>
 
--   :material-eye-check-outline: __[`iolanta:Facet`](/Facet/)__
+-   👁 __[`iolanta:Facet`](/Facet/)__
     
     ---
     
     RDFS class for Iolanta Facets — the magic things which visualize pieces of Linked Data in Iolanta.
 
--   :material-format-list-bulleted: __[`iolanta:OutputDatatype`](/reference/iolanta/OutputDatatype/)__
+-   ▤ __[`iolanta:OutputDatatype`](/reference/iolanta/OutputDatatype/)__
     
     ---
     
     Output format where visualization applications render their results.
 
--   :material-code-braces: __[`iolanta:SPARQLText`](/reference/iolanta/SPARQLText/)__
+-   `{}` __[`iolanta:SPARQLText`](/reference/iolanta/SPARQLText/)__
     
     ---
     
     A datatype for representing SPARQL query text.
 
--   :material-filter-check: __[`iolanta:matches`](/matches/)__
+-   ▾ __[`iolanta:matches`](/matches/)__
     
     ---
     
     Describe what kind of nodes a given Facet can visualize.
 
 
--   :material-filter-check: __[`iolanta:has-sub-graph`](/has-sub-graph/)__
+-   ⊂ __[`iolanta:has-sub-graph`](/has-sub-graph/)__
     
     ---
     
@@ -64,6 +64,13 @@ hide: [toc, navigation]
     ---
     
     Specify that one Facet is cooler than the other.
+
+
+-   🖼️ __[`iolanta:icon`](/icon/)__
+    
+    ---
+    
+    Attach a Unicode symbol that Iolanta can use as a compact visual marker for a resource.
 
 
 -   → __[`iolanta:outputs`](/outputs/)__
@@ -80,7 +87,7 @@ hide: [toc, navigation]
     What if no facet is found to visualize this node for a given [datatype](/reference/rdf/datatype)? Specify an emergency facet to use in such cases.
 
 
--   :material-eye-check-outline: __[`iolanta:visualizes`](/visualizes/)__
+-   👁 __[`iolanta:visualizes`](/visualizes/)__
     
     ---
     
