@@ -6,6 +6,7 @@ nav:
       - Facet.md
       - matches.md
       - is-preferred-over.md
+      - icon.md
       - outputs.md
       - when-no-facet-found.md
       - has-sub-graph.md
