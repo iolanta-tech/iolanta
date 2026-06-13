@@ -4,6 +4,7 @@
 $id: https://iolanta.tech/datatypes/jsonl
 $type: iolanta:OutputDatatype
 $: JSON Lines
+iolanta:icon: "{}"
 hide: toc
 
 ⊆: xsd:string
