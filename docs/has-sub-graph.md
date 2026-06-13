@@ -1,5 +1,6 @@
 ---
 rdfs:domain: iolanta:Graph
+iolanta:icon: ⊂
 schema:rangeIncludes:
   - iolanta:Graph
 hide: [toc]
