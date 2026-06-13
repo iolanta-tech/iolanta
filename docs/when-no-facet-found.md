@@ -1,4 +1,9 @@
 ---
+"@context": context.yamlld
+
+$id: iolanta:when-no-facet-found
+iolanta:icon: 📛
+
 hide: [toc]
 ---
 
