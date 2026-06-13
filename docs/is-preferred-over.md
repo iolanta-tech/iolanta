@@ -1,4 +1,9 @@
 ---
+"@context": context.yamlld
+
+$id: iolanta:is-preferred-over
+iolanta:icon: ≼
+
 hide: [toc]
 ---
 
