@@ -6,12 +6,21 @@
   iolanta: https://iolanta.tech/
   rdfs: "http://www.w3.org/2000/01/rdf-schema#"
   rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  wdt: http://www.wikidata.org/prop/direct/
+  xsd: http://www.w3.org/2001/XMLSchema#
 
   owl:onProperty:
     "@type": "@id"
 
+  rdfs:subPropertyOf:
+    "@type": "@id"
+
+  rdfs:range:
+    "@type": "@id"
+
 $included:
   - $id: iolanta:Facet
+    iolanta:icon: 👁
     $type: owl:Class
     rdfs:subClassOf:
       $type: owl:Restriction
@@ -21,10 +30,18 @@ $included:
     label: Application capable to represent certain nodes of a semantic graph in a form suitable for certain user to interact with.
 
   - $id: iolanta:OutputDatatype
+    iolanta:icon: ▤
     $type: rdfs:Class
     label: Environment a given application lives at.
 
+  - $id: iolanta:Graph
+    iolanta:icon: ◌
+
+  - $id: iolanta:Interface
+    iolanta:icon: ▣
+
   - $id: iolanta:outputs
+    iolanta:icon: →
     $type: Property
     rdfs:domain:
       $id: iolanta:Facet
@@ -32,16 +49,41 @@ $included:
       $id: iolanta:Interface
     label: Indication that certain application supports certain range of environments.
 
+  - $id: iolanta:matches
+    iolanta:icon: ▾
+    $type: Property
+    label: Describe what kind of nodes a given Facet can visualize.
+
   - $id: iolanta:isSupportedBy
+    iolanta:icon: ←
     owl:inverseOf:
       $id: iolanta:outputs
 
+  - $id: iolanta:is-preferred-over
+    iolanta:icon: ≼
+    $type: Property
+    label: Specify that one Facet is cooler than the other.
+
   - $id: iolanta:facet
+    iolanta:icon: 👁
     rdfs:range:
       $id: iolanta:Facet
     label: Indication that a certain node can be visualized by a certain facet.
 
+  - $id: iolanta:has-sub-graph
+    iolanta:icon: ⊂
+    $type: Property
+    label: Links an RDF Graph representing a document to each other RDF Graph that was parsed from said document.
+
+  - $id: iolanta:icon
+    iolanta:icon: 🖼️
+    $type: rdf:Property
+    rdfs:subPropertyOf: wdt:P487
+    rdfs:range: xsd:string
+    label: Unicode icon used to compactly represent a resource.
+
   - $id: iolanta:isDefaultFacetOf
+    iolanta:icon: ☆
     rdfs:domain:
       $id: iolanta:Facet
     rdfs:range:
@@ -50,5 +92,25 @@ $included:
     owl:inverseOf:
       $id: iolanta:hasDefaultFacet
 
+  - $id: iolanta:hasDefaultFacet
+    iolanta:icon: ★
+
+  - $id: iolanta:hasDatatypeFacet
+    iolanta:icon: ◇
+
+  - $id: iolanta:hasFacetByPrefix
+    iolanta:icon: ⌁
+
   - $id: iolanta:hasInstanceFacet
+    iolanta:icon: ◈
     rdfs:range: iolanta:Facet
+
+  - $id: iolanta:visualizes
+    iolanta:icon: 👁
+    $type: Property
+    label: Link a nanopublication assertion to the ontology whose visualization metadata it carries.
+
+  - $id: iolanta:when-no-facet-found
+    iolanta:icon: 📛
+    $type: Property
+    label: Specify an emergency facet to use when no facet is found.
