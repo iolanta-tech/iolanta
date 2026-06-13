@@ -1,4 +1,4 @@
-SELECT ?label ?symbol ?url ?comment WHERE {
+SELECT ?label ?icon ?url ?comment WHERE {
     OPTIONAL {
         {
             $iri rdfs:label ?label .
@@ -9,7 +9,7 @@ SELECT ?label ?symbol ?url ?comment WHERE {
     }
 
     OPTIONAL {
-        $iri iolanta:symbol ?symbol .
+        $iri iolanta:icon ?icon .
     }
 
     OPTIONAL {
@@ -23,4 +23,4 @@ SELECT ?label ?symbol ?url ?comment WHERE {
     OPTIONAL {
         $iri rdfs:comment ?comment .
     }
-} ORDER BY DESC(?label) DESC(?symbol) DESC(?url) DESC(?comment)
+} ORDER BY DESC(?label) DESC(?icon) DESC(?url) DESC(?comment)
