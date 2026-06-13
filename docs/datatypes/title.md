@@ -7,6 +7,7 @@
 $id: https://iolanta.tech/datatypes/title
 $type: iolanta:OutputDatatype
 $: Title
+iolanta:icon: T
 
 rdfs:comment: >
   A short string naming something. Used in links, lists, page titles, property tables, and many other cases.
