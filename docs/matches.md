@@ -1,5 +1,6 @@
 ---
 rdfs:domain: iolanta:Facet
+iolanta:icon: ▾
 schema:rangeIncludes:
   - rdfs:Literal
 hide: [toc]
