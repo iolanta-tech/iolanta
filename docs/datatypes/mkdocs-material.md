@@ -4,6 +4,7 @@
 $id: https://iolanta.tech/datatypes/mkdocs-material
 $type: iolanta:OutputDatatype
 $: MkDocs Material Markdown
+iolanta:icon: ▣
 
 ⊆: xsd:string
 
