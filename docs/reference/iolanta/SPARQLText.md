@@ -1,4 +1,9 @@
 ---
+"@context": ../../context.yamlld
+
+$id: iolanta:SPARQLText
+iolanta:icon: "{}"
+
 rdfs:domain: iolanta:SPARQLText
 rdfs:range: rdfs:Datatype
 hide: [toc]
