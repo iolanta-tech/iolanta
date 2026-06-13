@@ -4,6 +4,7 @@
 $id: https://iolanta.tech/datatypes/mermaid
 $type: iolanta:OutputDatatype
 $: Mermaid
+iolanta:icon: Ⓜ
 hide: toc
 
 ⊆: xsd:string
