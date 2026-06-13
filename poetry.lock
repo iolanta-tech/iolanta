@@ -994,14 +994,14 @@ files = [
 
 [[package]]
 name = "docutils"
-version = "0.21.2"
+version = "0.23"
 description = "Docutils -- Python Documentation Utilities"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "docutils-0.21.2-py3-none-any.whl", hash = "sha256:dafca5b9e384f0e419294eb4d2ff9fa826435bf15f15b7bd45723e8ad76811b2"},
-    {file = "docutils-0.21.2.tar.gz", hash = "sha256:3a6b18732edf182daa3cd12775bbb338cf5691468f91eeeb109deff6ebfa986f"},
+    {file = "docutils-0.23-py3-none-any.whl", hash = "sha256:25d013af9bf23bc1c7b2b093dff4208166c53a94786c9e447808335ef1185fea"},
+    {file = "docutils-0.23.tar.gz", hash = "sha256:746f5060322511280a1e50eb76846ed6bf2342984b2ac04dc42caa1a8d78799e"},
 ]
 
 [[package]]
@@ -5661,4 +5661,4 @@ all = []
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<4.0"
-content-hash = "3d86a599720c6c26e3c9b129043fb9c39855477cb5fb0e95770356e9a558dd3f"
+content-hash = "5631bb6e72b3fcf3054fd5e63f566fe0bfd28bdae4ce39eeec609cf1ac3247c4"
