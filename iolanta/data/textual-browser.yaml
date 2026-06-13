@@ -34,15 +34,12 @@
     "@type": "@id"
 
 "@included":
-  - $id: iolanta:icon
-    $: Icon
-    ⊆: xsd:string
-
   - $id: dcterms:creator
     iolanta:icon: ©️
 
   - $id: https://iolanta.tech/datatypes/icon
     $: Icon
+    iolanta:icon: 🖼️
     iolanta:hasDefaultFacet:
       $id: pkg:pypi/iolanta#icon
       →: https://iolanta.tech/datatypes/icon
@@ -58,6 +55,7 @@
         - pkg:pypi/iolanta#textual-graph
 
   - $id: https://iolanta.tech/cli/interactive
+    iolanta:icon: ⌨
     iolanta:hasDefaultFacet: pkg:pypi/iolanta#textual-browser
 
   - $id: pkg:pypi/iolanta#textual-properties
@@ -76,6 +74,7 @@
       →: https://iolanta.tech/cli/textual
 
   - $id: https://iolanta.tech/cli/link
+    iolanta:icon: 🔗
     iolanta:hasDefaultFacet:
       $id: pkg:pypi/iolanta#textual-link
 
@@ -90,11 +89,13 @@
 
   - $id: https://iolanta.tech/datatypes/textual-graph-triples
     $: Graph Triples
+    iolanta:icon: ☷
     iolanta:hasDefaultFacet:
       $id: pkg:pypi/iolanta#textual-graph-triples
       →: https://iolanta.tech/datatypes/textual-graph-triples
 
   - $id: https://iolanta.tech/qname
+    iolanta:icon: ":"
     iolanta:hasDefaultFacet:
       $id: pkg:pypi/iolanta#qname
 
@@ -104,4 +105,5 @@
     ↦: ASK WHERE { ?subject $this ?object }
 
   - $id: https://iolanta.tech/cli/textual
+    iolanta:icon: ▌
     iolanta:when-no-facet-found: pkg:pypi/iolanta#textual-no-facet-found
