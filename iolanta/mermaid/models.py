@@ -22,6 +22,9 @@ DATATYPE_ICONS: dict[URIRef, str] = {
 # Full 32-char MD5 node ids inflate Mermaid source past common renderer limits;
 # truncated digests stay stable for a given input and collide rarely in doc-sized graphs.
 _MERMAID_ID_HASH_LEN = 12
+_MERMAID_EDGE_ID_PREFIX = "Edge_"
+_MERMAID_ID_INVALID_CHARACTERS = re.compile(r"[^0-9A-Za-z_]")
+_MERMAID_ID_PATTERN = re.compile(r"^[A-Za-z_][0-9A-Za-z_]*$")
 
 
 def _mermaid_stable_short_id(*material: str) -> str:
@@ -29,6 +32,20 @@ def _mermaid_stable_short_id(*material: str) -> str:
     return hashlib.md5("\x1f".join(material).encode()).hexdigest()[
         :_MERMAID_ID_HASH_LEN
     ]
+
+
+def _validate_mermaid_id(identifier: str) -> str:
+    """Return an identifier after validating Mermaid 11 flowchart safety."""
+    if not _MERMAID_ID_PATTERN.match(identifier):
+        raise ValueError(f"Invalid Mermaid identifier: {identifier}")
+    return identifier
+
+
+def _uri_to_mermaid_id(uri: AnyUrl) -> str:
+    """Convert a URI into a Mermaid 11 flowchart-safe identifier."""
+    raw_identifier = urllib_parse.unquote(str(uri)).strip("/")
+    identifier = _MERMAID_ID_INVALID_CHARACTERS.sub("_", raw_identifier)
+    return _validate_mermaid_id(identifier)
 
 
 def escape_label(label: str) -> str:
@@ -80,7 +97,7 @@ class MermaidAnchorNode(MermaidScalar, frozen=True):
 
     @property
     def id(self) -> str:
-        return f"Anchor_{_mermaid_stable_short_id(self.name)}"
+        return _validate_mermaid_id(f"Anchor_{_mermaid_stable_short_id(self.name)}")
 
 
 class MermaidTextNode(MermaidScalar, frozen=True):
@@ -95,7 +112,7 @@ class MermaidTextNode(MermaidScalar, frozen=True):
 
     @property
     def id(self) -> str:
-        return f"Text_{_mermaid_stable_short_id(self.name)}"
+        return _validate_mermaid_id(f"Text_{_mermaid_stable_short_id(self.name)}")
 
     @property
     def escaped_title(self) -> str:
@@ -121,7 +138,7 @@ class MermaidLabelNode(MermaidScalar, frozen=True):
 
     @property
     def id(self) -> str:
-        return f"Label_{_mermaid_stable_short_id(self.name)}"
+        return _validate_mermaid_id(f"Label_{_mermaid_stable_short_id(self.name)}")
 
     @property
     def escaped_title(self) -> str:
@@ -144,7 +161,7 @@ class MermaidHTMLNode(MermaidScalar, frozen=True):
 
     @property
     def id(self) -> str:
-        return f"Html_{_mermaid_stable_short_id(self.name)}"
+        return _validate_mermaid_id(f"Html_{_mermaid_stable_short_id(self.name)}")
 
 
 class MermaidDotNode(MermaidScalar, frozen=True):
@@ -157,7 +174,7 @@ class MermaidDotNode(MermaidScalar, frozen=True):
 
     @property
     def id(self) -> str:
-        return f"Dot_{_mermaid_stable_short_id(self.name)}"
+        return _validate_mermaid_id(f"Dot_{_mermaid_stable_short_id(self.name)}")
 
 
 class MermaidURINode(MermaidScalar, frozen=True):
@@ -179,9 +196,7 @@ class MermaidURINode(MermaidScalar, frozen=True):
 
     @property
     def id(self):
-        return re.sub(
-            r"[:\/\.#()?=&+]", "_", urllib_parse.unquote(str(self.url)).strip("/")
-        )
+        return _uri_to_mermaid_id(self.url)
 
 
 class MermaidLiteral(MermaidScalar, frozen=True):
@@ -201,7 +216,9 @@ class MermaidLiteral(MermaidScalar, frozen=True):
     def id(self) -> str:
         # Use the lexical form of the literal, not rdflib's .value (which may be empty for typed literals),
         # to ensure different texts get distinct node IDs in Mermaid.
-        return f"Literal-{_mermaid_stable_short_id(str(self.literal))}"
+        return _validate_mermaid_id(
+            f"Literal_{_mermaid_stable_short_id(str(self.literal))}",
+        )
 
 
 class MermaidBlankNode(MermaidScalar):
@@ -213,7 +230,7 @@ class MermaidBlankNode(MermaidScalar):
     @property
     def id(self) -> str:
         # rdflib blank node labels are long hex strings; hash keeps ids short and stable per n3 identity.
-        return f"B{_mermaid_stable_short_id(str(self.node))}"
+        return _validate_mermaid_id(f"B{_mermaid_stable_short_id(str(self.node))}")
 
     @property
     def escaped_title(self) -> str:
@@ -234,10 +251,13 @@ class MermaidEdge(MermaidScalar):
 
     @property
     def id(self) -> str:
-        return _mermaid_stable_short_id(
-            f"{self.source.id}",
-            str(self.predicate),
-            f"{self.target.id}",
+        return _validate_mermaid_id(
+            _MERMAID_EDGE_ID_PREFIX
+            + _mermaid_stable_short_id(
+                f"{self.source.id}",
+                str(self.predicate),
+                f"{self.target.id}",
+            ),
         )
 
     @property
@@ -258,7 +278,13 @@ class MermaidPlainEdge(MermaidScalar):
 
     @property
     def id(self) -> str:
-        return _mermaid_stable_short_id(f"{self.source.id}", f"{self.target.id}")
+        return _validate_mermaid_id(
+            _MERMAID_EDGE_ID_PREFIX
+            + _mermaid_stable_short_id(
+                f"{self.source.id}",
+                f"{self.target.id}",
+            ),
+        )
 
     @property
     def nodes(self):
@@ -273,8 +299,13 @@ class MermaidInvisibleEdge(MermaidScalar):
 
     @property
     def id(self) -> str:
-        return _mermaid_stable_short_id(
-            f"{self.source.id}", f"{self.target.id}", "invisible"
+        return _validate_mermaid_id(
+            _MERMAID_EDGE_ID_PREFIX
+            + _mermaid_stable_short_id(
+                f"{self.source.id}",
+                f"{self.target.id}",
+                "invisible",
+            ),
         )
 
     @property
@@ -290,8 +321,13 @@ class MermaidArrowEdge(MermaidScalar):
 
     @property
     def id(self) -> str:
-        return _mermaid_stable_short_id(
-            f"{self.source.id}", f"{self.target.id}", "arrow"
+        return _validate_mermaid_id(
+            _MERMAID_EDGE_ID_PREFIX
+            + _mermaid_stable_short_id(
+                f"{self.source.id}",
+                f"{self.target.id}",
+                "arrow",
+            ),
         )
 
     @property
@@ -314,7 +350,9 @@ class MermaidSubgraph(Documented, BaseModel, arbitrary_types_allowed=True, froze
 
     @property
     def id(self):
-        return f"subgraph_{_mermaid_stable_short_id(str(self.uri))}"
+        return _validate_mermaid_id(
+            f"subgraph_{_mermaid_stable_short_id(str(self.uri))}",
+        )
 
     @property
     def escaped_title(self) -> str:
