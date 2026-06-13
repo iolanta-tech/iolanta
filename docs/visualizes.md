@@ -1,4 +1,9 @@
 ---
+"@context": context.yamlld
+
+$id: iolanta:visualizes
+iolanta:icon: 👁
+
 hide: [toc]
 ---
 
