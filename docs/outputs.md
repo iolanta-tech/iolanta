@@ -4,6 +4,7 @@
 $id: iolanta:outputs
 $type: owl:ObjectProperty
 $: outputs
+iolanta:icon: →
 
 domain: iolanta:Facet
 range: iolanta:OutputDatatype
