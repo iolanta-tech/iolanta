@@ -1,4 +1,9 @@
 ---
+"@context": ../../context.yamlld
+
+$id: iolanta:OutputDatatype
+iolanta:icon: ▤
+
 rdfs:domain: iolanta:OutputDatatype
 rdfs:range: rdfs:Datatype
 hide: [toc]
