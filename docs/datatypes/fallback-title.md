@@ -7,6 +7,7 @@
 $id: https://iolanta.tech/datatypes/fallback-title
 $type: iolanta:OutputDatatype
 $: Fallback Title
+iolanta:icon: t
 
 rdfs:comment: >
   A short string naming something. Used in links, lists, page titles, property tables, and many other cases.
