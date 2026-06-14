@@ -449,6 +449,29 @@ files = [
 develop = ["aiomisc-pytest", "coveralls", "pylama[toml]", "pytest", "pytest-cov", "setuptools"]
 
 [[package]]
+name = "cashews"
+version = "7.5.0"
+description = "cache tools with async power"
+optional = false
+python-versions = ">=3.10"
+groups = ["main"]
+files = [
+    {file = "cashews-7.5.0-py3-none-any.whl", hash = "sha256:e79cb4e5cc164d8f2d2856b166d45dcc2dd8d53b95874d2c6d07dfdb1c9ac3c4"},
+    {file = "cashews-7.5.0.tar.gz", hash = "sha256:3f88b8c5ced0ea4826915a1ff67055b647252dd65ef25f4813316a6341f00b37"},
+]
+
+[package.dependencies]
+diskcache = {version = ">=5.0.0", optional = true, markers = "extra == \"diskcache\""}
+
+[package.extras]
+dill = ["dill"]
+diskcache = ["diskcache (>=5.0.0)"]
+lint = ["mypy (>=1.5.0)", "types-redis"]
+redis = ["redis (>=4.3.1,!=5.0.1)"]
+speedup = ["bitarray (<4.0.0)", "hiredis", "xxhash (<4.0.0)"]
+tests = ["hypothesis (==6.148.7)", "pytest (==9.0.2)", "pytest-asyncio (==1.3.0)", "pytest-cov (==7.0.0)", "pytest-randomly (==4.0.1)", "pytest-rerunfailures (==16.1)"]
+
+[[package]]
 name = "cattrs"
 version = "24.1.2"
 description = "Composable complex class support for attrs and dataclasses."
@@ -5661,4 +5684,4 @@ all = []
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<4.0"
-content-hash = "5631bb6e72b3fcf3054fd5e63f566fe0bfd28bdae4ce39eeec609cf1ac3247c4"
+content-hash = "7abf4eb39fdb4b08f785c0a71412a86a949fea6726661b4561ad80678a2ccd04"
