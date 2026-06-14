@@ -10,9 +10,7 @@ from rdflib import URIRef
 
 from iolanta.discovery import visualization_nanopublications as discovery
 
-FIXTURE = (
-    Path(__file__).parent / "fixtures" / "visualization_index.sparql-json"
-)
+FIXTURE = Path(__file__).parent / "fixtures" / "visualization_index.sparql-json"
 
 
 @pytest.fixture(autouse=True)
