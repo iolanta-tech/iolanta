@@ -209,6 +209,7 @@ def render_template(
     *,
     language: str = DEFAULT_LANGUAGE,
     log_level: LogLevel = LogLevel.ERROR,
+    without_visualization_cache_index: bool = False,
 ) -> str:
     """Render a Jinja2 Markdown template using Iolanta helpers."""
     logger = setup_logging(log_level)
@@ -218,6 +219,7 @@ def render_template(
         language=Literal(language),
         logger=logger,
         project_root=project_root,
+        without_visualization_cache_index=without_visualization_cache_index,
     )
     environment = Environment(
         loader=FileSystemLoader(str(project_root)),
@@ -359,6 +361,7 @@ def render_and_return(  # noqa: WPS210, WPS231
     as_datatype: str,
     language: str = DEFAULT_LANGUAGE,
     log_level: LogLevel = LogLevel.ERROR,
+    without_visualization_cache_index: bool = False,
 ):
     """
     Render a node.
@@ -376,6 +379,7 @@ def render_and_return(  # noqa: WPS210, WPS231
             language=Literal(language),
             logger=logger,
             project_root=Path.cwd(),
+            without_visualization_cache_index=without_visualization_cache_index,
         )
     elif isinstance(node, URIRef):
         # URIRef - determine project_root if it's a file:// URI
@@ -387,11 +391,13 @@ def render_and_return(  # noqa: WPS210, WPS231
                 language=Literal(language),
                 logger=logger,
                 project_root=project_root,
+                without_visualization_cache_index=without_visualization_cache_index,
             )
         else:
             iolanta = Iolanta(
                 language=Literal(language),
                 logger=logger,
+                without_visualization_cache_index=without_visualization_cache_index,
             )
     else:
         # This should never happen due to type checking, but kept for safety
@@ -444,6 +450,16 @@ def render_command(  # noqa: WPS231, WPS238, WPS210, WPS211, WPS213, C901
             help="Data language to prefer.",
         ),
     ] = DEFAULT_LANGUAGE,
+    without_visualization_cache_index: Annotated[
+        bool,
+        Option(
+            "--without-visualization-cache-index",
+            help=(
+                "Always refresh the visualization nanopub index from the "
+                "registry; still write the result to the disk cache."
+            ),
+        ),
+    ] = False,
     log_level: LogLevel = LogLevel.ERROR,
 ):
     """Render a given URL."""
@@ -467,6 +483,9 @@ def render_command(  # noqa: WPS231, WPS238, WPS210, WPS211, WPS213, C901
                     template_path=render_template_path,
                     language=language,
                     log_level=log_level,
+                    without_visualization_cache_index=(
+                        without_visualization_cache_index
+                    ),
                 ),
             )
         except (DocumentedError, FacetNotFound, TemplateError) as error:
@@ -486,6 +505,7 @@ def render_command(  # noqa: WPS231, WPS238, WPS210, WPS211, WPS213, C901
             language=Literal(language),
             logger=logger,
             project_root=Path.cwd(),
+            without_visualization_cache_index=without_visualization_cache_index,
         )
 
         try:
@@ -494,6 +514,7 @@ def render_command(  # noqa: WPS231, WPS238, WPS210, WPS211, WPS213, C901
                 as_datatype=as_datatype,
                 language=language,
                 log_level=log_level,
+                without_visualization_cache_index=without_visualization_cache_index,
             )
         except (SPARQLParseException, DocumentedError, FacetNotFound) as error:
             handle_error(error, log_level, use_markdown=True)
@@ -519,6 +540,7 @@ def render_command(  # noqa: WPS231, WPS238, WPS210, WPS211, WPS213, C901
                 as_datatype=as_datatype,
                 language=language,
                 log_level=log_level,
+                without_visualization_cache_index=without_visualization_cache_index,
             )
         except (DocumentedError, FacetNotFound) as error:
             handle_error(error, log_level, use_markdown=True)
@@ -552,6 +574,7 @@ def render_command(  # noqa: WPS231, WPS238, WPS210, WPS211, WPS213, C901
             as_datatype=as_datatype,
             language=language,
             log_level=log_level,
+            without_visualization_cache_index=without_visualization_cache_index,
         )
     except DocumentedError as error:
         handle_error(error, log_level, use_markdown=True)
