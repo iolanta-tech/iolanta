@@ -73,13 +73,11 @@ def patched_discovery(monkeypatch):
         return len(nanopub_urls)
 
     monkeypatch.setattr(
-        "iolanta.discovery.visualization_nanopublications."
-        "fetch_visualization_index",
+        "iolanta.discovery.visualization_nanopublications.fetch_visualization_index",
         fetch_visualization_index,
     )
     monkeypatch.setattr(
-        "iolanta.discovery.visualization_nanopublications."
-        "load_visualization_index",
+        "iolanta.discovery.visualization_nanopublications.load_visualization_index",
         load_visualization_index,
     )
     return fetch_calls, load_calls
@@ -133,9 +131,7 @@ def test_nested_render_does_not_reload(monkeypatch, patched_discovery):
     iolanta = Iolanta()
     mock_resolver = MagicMock()
     mock_resolver.resolve.side_effect = (
-        lambda _iri: _NestedRenderFacet
-        if render_calls["count"] == 1
-        else _LeafFacet
+        lambda _iri: _NestedRenderFacet if render_calls["count"] == 1 else _LeafFacet
     )
     iolanta.facet_resolver = mock_resolver
 
