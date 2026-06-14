@@ -4505,22 +4505,22 @@
 <pre class="mermaid"><code>graph LR
   iolanta_Facet("Facet")
   click iolanta_Facet "iolanta:Facet"
-  http___www_w3_org_2002_07_owl_Class("Class")
-  click http___www_w3_org_2002_07_owl_Class "http://www.w3.org/2002/07/owl#Class"
   Literal_0161428b8153[["A Facet is a visualization component that transforms RDF nodes into human-readable formats.
   Facets are the core mechanism by which Iolanta makes Linked Data accessible to users.
   Each facet is designed to handle specific types of RDF nodes and render them appropriately
   for different output formats (terminal, web, etc.).
   "]]
-  iolanta_Facet --- Edge_8ef46633b9a9(["∈ type"])--&gt; http___www_w3_org_2002_07_owl_Class
-  click Edge_8ef46633b9a9 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  http___www_w3_org_2002_07_owl_Class("Class")
+  click http___www_w3_org_2002_07_owl_Class "http://www.w3.org/2002/07/owl#Class"
   iolanta_Facet --- Edge_1f01064c56b1(["comment"])--&gt; Literal_0161428b8153
   click Edge_1f01064c56b1 "http://www.w3.org/2000/01/rdf-schema#comment"
+  iolanta_Facet --- Edge_8ef46633b9a9(["∈ type"])--&gt; http___www_w3_org_2002_07_owl_Class
+  click Edge_8ef46633b9a9 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
   classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
   classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
   classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
   classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-  class Edge_8ef46633b9a9,Edge_1f01064c56b1 predicate
+  class Edge_1f01064c56b1,Edge_8ef46633b9a9 predicate
 </code></pre>
 </div>
 </div>
@@ -4554,7 +4554,7 @@
   Literal_53d3f4c1edd7[["Output format where visualization applications render their results.
   Examples: terminal text, HTML, Mermaid diagrams.
   "]]
-  http___www_w3_org_2000_01_rdf_schema_Datatype("Datatype")
+  http___www_w3_org_2000_01_rdf_schema_Datatype("⊤ Datatype")
   click http___www_w3_org_2000_01_rdf_schema_Datatype "http://www.w3.org/2000/01/rdf-schema#Datatype"
   iolanta_OutputDatatype --- Edge_bab53b5875b3(["∈ type"])--&gt; http___www_w3_org_2002_07_owl_Class
   click Edge_bab53b5875b3 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
@@ -4591,19 +4591,19 @@
 <pre class="mermaid"><code>graph LR
   iolanta_SPARQLText("SPARQL Text")
   click iolanta_SPARQLText "iolanta:SPARQLText"
+  http___www_w3_org_2000_01_rdf_schema_Datatype("⊤ Datatype")
+  click http___www_w3_org_2000_01_rdf_schema_Datatype "http://www.w3.org/2000/01/rdf-schema#Datatype"
   http___www_w3_org_2002_07_owl_Class("Class")
   click http___www_w3_org_2002_07_owl_Class "http://www.w3.org/2002/07/owl#Class"
-  http___www_w3_org_2000_01_rdf_schema_Datatype("Datatype")
-  click http___www_w3_org_2000_01_rdf_schema_Datatype "http://www.w3.org/2000/01/rdf-schema#Datatype"
-  iolanta_SPARQLText --- Edge_6e423e8a5cbd(["∈ type"])--&gt; http___www_w3_org_2002_07_owl_Class
-  click Edge_6e423e8a5cbd "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
   iolanta_SPARQLText --- Edge_8f9205099227(["subClassOf"])--&gt; http___www_w3_org_2000_01_rdf_schema_Datatype
   click Edge_8f9205099227 "http://www.w3.org/2000/01/rdf-schema#subClassOf"
+  iolanta_SPARQLText --- Edge_6e423e8a5cbd(["∈ type"])--&gt; http___www_w3_org_2002_07_owl_Class
+  click Edge_6e423e8a5cbd "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
   classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
   classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
   classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
   classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-  class Edge_6e423e8a5cbd,Edge_8f9205099227 predicate
+  class Edge_8f9205099227,Edge_6e423e8a5cbd predicate
 </code></pre>
 </div>
 </div>
@@ -4631,23 +4631,23 @@
 <pre class="mermaid"><code>graph LR
   iolanta_matches("matches")
   click iolanta_matches "iolanta:matches"
+  iolanta_SPARQLText("SPARQL Text")
+  click iolanta_SPARQLText "iolanta:SPARQLText"
   http___www_w3_org_2002_07_owl_DatatypeProperty("DatatypeProperty")
   click http___www_w3_org_2002_07_owl_DatatypeProperty "http://www.w3.org/2002/07/owl#DatatypeProperty"
   iolanta_Facet("Facet")
   click iolanta_Facet "iolanta:Facet"
-  iolanta_SPARQLText("SPARQL Text")
-  click iolanta_SPARQLText "iolanta:SPARQLText"
+  iolanta_matches --- Edge_1fb9453a6bfd(["range"])--&gt; iolanta_SPARQLText
+  click Edge_1fb9453a6bfd "http://www.w3.org/2000/01/rdf-schema#range"
   iolanta_matches --- Edge_7dff95a0c771(["∈ type"])--&gt; http___www_w3_org_2002_07_owl_DatatypeProperty
   click Edge_7dff95a0c771 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
   iolanta_matches --- Edge_ced4624fbf8e(["domain"])--&gt; iolanta_Facet
   click Edge_ced4624fbf8e "http://www.w3.org/2000/01/rdf-schema#domain"
-  iolanta_matches --- Edge_1fb9453a6bfd(["range"])--&gt; iolanta_SPARQLText
-  click Edge_1fb9453a6bfd "http://www.w3.org/2000/01/rdf-schema#range"
   classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
   classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
   classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
   classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-  class Edge_7dff95a0c771,Edge_ced4624fbf8e,Edge_1fb9453a6bfd predicate
+  class Edge_1fb9453a6bfd,Edge_7dff95a0c771,Edge_ced4624fbf8e predicate
 </code></pre>
 </div>
 </div>
@@ -4673,23 +4673,23 @@
 <pre class="mermaid"><code>graph LR
   iolanta_outputs("outputs")
   click iolanta_outputs "iolanta:outputs"
-  http___www_w3_org_2002_07_owl_ObjectProperty("ObjectProperty")
-  click http___www_w3_org_2002_07_owl_ObjectProperty "http://www.w3.org/2002/07/owl#ObjectProperty"
-  iolanta_Facet("Facet")
-  click iolanta_Facet "iolanta:Facet"
   iolanta_OutputDatatype("Output Datatype")
   click iolanta_OutputDatatype "iolanta:OutputDatatype"
-  iolanta_outputs --- Edge_318dc62ce4e6(["∈ type"])--&gt; http___www_w3_org_2002_07_owl_ObjectProperty
-  click Edge_318dc62ce4e6 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
-  iolanta_outputs --- Edge_e5ce58eefcc6(["domain"])--&gt; iolanta_Facet
-  click Edge_e5ce58eefcc6 "http://www.w3.org/2000/01/rdf-schema#domain"
+  iolanta_Facet("Facet")
+  click iolanta_Facet "iolanta:Facet"
+  http___www_w3_org_2002_07_owl_ObjectProperty("ObjectProperty")
+  click http___www_w3_org_2002_07_owl_ObjectProperty "http://www.w3.org/2002/07/owl#ObjectProperty"
   iolanta_outputs --- Edge_5cbb08f9224d(["range"])--&gt; iolanta_OutputDatatype
   click Edge_5cbb08f9224d "http://www.w3.org/2000/01/rdf-schema#range"
+  iolanta_outputs --- Edge_e5ce58eefcc6(["domain"])--&gt; iolanta_Facet
+  click Edge_e5ce58eefcc6 "http://www.w3.org/2000/01/rdf-schema#domain"
+  iolanta_outputs --- Edge_318dc62ce4e6(["∈ type"])--&gt; http___www_w3_org_2002_07_owl_ObjectProperty
+  click Edge_318dc62ce4e6 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
   classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
   classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
   classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
   classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-  class Edge_318dc62ce4e6,Edge_e5ce58eefcc6,Edge_5cbb08f9224d predicate
+  class Edge_5cbb08f9224d,Edge_e5ce58eefcc6,Edge_318dc62ce4e6 predicate
 </code></pre>
 </div>
 </div>
@@ -4762,28 +4762,28 @@
 <pre class="mermaid"><code>graph LR
   https___iolanta_tech_datatypes_mermaid("Ⓜ Mermaid")
   click https___iolanta_tech_datatypes_mermaid "https://iolanta.tech/datatypes/mermaid"
-  https___iolanta_tech_OutputDatatype("▤ iolanta.tech/OutputDatatype")
-  click https___iolanta_tech_OutputDatatype "https://iolanta.tech/OutputDatatype"
   Literal_ee9b155b26d2[["Mermaid"]]
   pkg_pypi_iolanta_mermaid_graph("Mermaid Graph")
   click pkg_pypi_iolanta_mermaid_graph "pkg:pypi/iolanta#mermaid-graph"
-  Literal_e6835a48474d[["ASK WHERE { $this iolanta:has-sub-graph ?subgraph }"]]
   Literal_c68220abab4f[["ASK WHERE { GRAPH $this { ?s ?p ?o } }"]]
-  https___iolanta_tech_datatypes_mermaid --- Edge_7a5cb3e461f1(["∈ type"])--&gt; https___iolanta_tech_OutputDatatype
-  click Edge_7a5cb3e461f1 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  Literal_e6835a48474d[["ASK WHERE { $this iolanta:has-sub-graph ?subgraph }"]]
+  https___iolanta_tech_OutputDatatype("▤ iolanta.tech/OutputDatatype")
+  click https___iolanta_tech_OutputDatatype "https://iolanta.tech/OutputDatatype"
   https___iolanta_tech_datatypes_mermaid --- Edge_8660be92ee28(["label"])--&gt; Literal_ee9b155b26d2
   click Edge_8660be92ee28 "http://www.w3.org/2000/01/rdf-schema#label"
-  pkg_pypi_iolanta_mermaid_graph --- Edge_d8a450804116(["▾ iolanta.tech/matches"])--&gt; Literal_e6835a48474d
-  click Edge_d8a450804116 "https://iolanta.tech/matches"
   pkg_pypi_iolanta_mermaid_graph --- Edge_25a9735ec6fb(["▾ iolanta.tech/matches"])--&gt; Literal_c68220abab4f
   click Edge_25a9735ec6fb "https://iolanta.tech/matches"
+  pkg_pypi_iolanta_mermaid_graph --- Edge_d8a450804116(["▾ iolanta.tech/matches"])--&gt; Literal_e6835a48474d
+  click Edge_d8a450804116 "https://iolanta.tech/matches"
+  https___iolanta_tech_datatypes_mermaid --- Edge_7a5cb3e461f1(["∈ type"])--&gt; https___iolanta_tech_OutputDatatype
+  click Edge_7a5cb3e461f1 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
   pkg_pypi_iolanta_mermaid_graph --- Edge_890effb8fce0(["→ outputs"])--&gt; https___iolanta_tech_datatypes_mermaid
   click Edge_890effb8fce0 "https://iolanta.tech/outputs"
   classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
   classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
   classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
   classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-  class Edge_7a5cb3e461f1,Edge_8660be92ee28,Edge_d8a450804116,Edge_25a9735ec6fb,Edge_890effb8fce0 predicate
+  class Edge_8660be92ee28,Edge_25a9735ec6fb,Edge_d8a450804116,Edge_7a5cb3e461f1,Edge_890effb8fce0 predicate
 </code></pre>
 </div>
 </div>
@@ -4872,12 +4872,12 @@
 <summary>Triples for <code>facet.yamlld</code> (too many of them)</summary>
 <p>|  this s p o  |
 |  --- --- --- ---  |
-|  <code>file:///home/runner/work/iolanta/iolanta/docs/blog/knowledge-graph-assignment/facet.yamlld</code> <code>iolanta:Facet</code> <code>http://www.w3.org/2000/01/rdf-schema#label</code> <code>Facet</code>  |
-|  <code>file:///home/runner/work/iolanta/iolanta/docs/blog/knowledge-graph-assignment/facet.yamlld</code> <code>iolanta:Facet</code> <code>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</code> <code>http://www.w3.org/2002/07/owl#Class</code>  |
 |  <code>file:///home/runner/work/iolanta/iolanta/docs/blog/knowledge-graph-assignment/facet.yamlld</code> <code>iolanta:Facet</code> <code>http://www.w3.org/2000/01/rdf-schema#comment</code> <code>A Facet is a visualization component that transforms RDF nodes into human-readable formats.
 Facets are the core mechanism by which Iolanta makes Linked Data accessible to users.
 Each facet is designed to handle specific types of RDF nodes and render them appropriately
-for different output formats (terminal, web, etc.).</code>  |</p>
+for different output formats (terminal, web, etc.).</code>  |
+|  <code>file:///home/runner/work/iolanta/iolanta/docs/blog/knowledge-graph-assignment/facet.yamlld</code> <code>iolanta:Facet</code> <code>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</code> <code>http://www.w3.org/2002/07/owl#Class</code>  |
+|  <code>file:///home/runner/work/iolanta/iolanta/docs/blog/knowledge-graph-assignment/facet.yamlld</code> <code>iolanta:Facet</code> <code>http://www.w3.org/2000/01/rdf-schema#label</code> <code>Facet</code>  |</p>
 </details>
 <p>These triples are formatted as Mermaid nodes and edges by the facet, producing the diagram, which:</p>
 <ul>

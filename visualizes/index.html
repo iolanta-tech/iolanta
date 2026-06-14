@@ -4279,29 +4279,42 @@
 <p><code>iolanta:visualizes</code> links a <a href="/blog/2025-01-21-nanopublications/">nanopublication</a> assertion to the ontology whose visualization metadata it carries. The triple lives in the nanopublication's <a href="https://nanopub.net/">provenance graph</a>, not its assertion graph: the <em>assertion</em> describes how to group an ontology's terms (using <code>vann:termGroup</code>), while the <em>provenance</em> says which ontology that assertion is about.</p>
 <p>Iolanta uses <code>iolanta:visualizes</code> at render time to discover community-published visualization information for any ontology, without that information having to be bundled in the Iolanta repository. See the related ADR: <a href="/blog/publish-visualization-information-for-ontologies-on/">Publish visualization information for ontologies on …</a>.</p>
 <h2 id="discovery-flow">Discovery flow</h2>
-<p>When <a href="/Facet/"><code>MkDocsOntologyFacet</code></a> or <a href="/Facet/"><code>OntologyFacet</code></a> is asked to render an ontology <code>&lt;O&gt;</code>, it queries the public <a href="https://query.knowledgepixels.com/">Knowledge Pixels</a> nanopub registry for the most recent signed, non-invalidated, non-superseded nanopublication whose provenance asserts <code>?assertion iolanta:visualizes &lt;O&gt;</code>, and loads that nanopublication's assertion graph into the local dataset. The grouping triples (<code>vann:termGroup</code>, <code>rdfs:label</code>) then become visible to the regular ontology-rendering SPARQL.</p>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span> <span class="nv">?nanopub</span> <span class="k">WHERE</span> <span class="p">{</span>
-  <span class="nv">?nanopub</span> <span class="nn">np</span><span class="p">:</span><span class="nt">hasAssertion</span>       <span class="nv">?assertion</span> <span class="p">;</span>
-           <span class="nn">np</span><span class="p">:</span><span class="nt">hasProvenance</span>      <span class="nv">?provenance</span> <span class="p">;</span>
-           <span class="nn">np</span><span class="p">:</span><span class="nt">hasPublicationInfo</span> <span class="nv">?pubinfo</span> <span class="p">;</span>
-           <span class="nn">npa</span><span class="p">:</span><span class="nt">hasValidSignatureForPublicKey</span> <span class="nv">?pubkey</span> <span class="p">.</span>
+<p>On the first <a href="/reference/iolanta/"><code>Iolanta.render()</code></a> call for each <code>Iolanta</code> instance, Iolanta queries the public <a href="https://query.knowledgepixels.com/">Knowledge Pixels</a> nanopub registry for all signed, non-invalidated, non-superseded visualization nanopublications, loads their assertion graphs into the local dataset, and caches the resulting nanopub URL list for one day on disk (<a href="https://pypi.org/project/cashews/">cashews</a> <code>@cache.soft</code> under <code>~/.cache/iolanta/visualization-index/</code>). Later renders on the same instance reuse the loaded graphs; nanopub documents are HTTP-cached separately by <code>yaml-ld</code> via <code>requests-cache</code>. If a registry refresh fails, Iolanta falls back to stale cached URLs when available; otherwise it logs a warning and continues without remote visualizations. Pass <code>--without-visualization-cache-index</code> to the CLI to always refresh the URL list from the registry while still updating the disk cache. The grouping triples (<code>vann:termGroup</code>, <code>rdfs:label</code>) then become visible to the regular ontology-rendering SPARQL used by <a href="/Facet/"><code>MkDocsOntologyFacet</code></a> and <a href="/Facet/"><code>OntologyFacet</code></a>.</p>
+<div class="highlight"><pre><span></span><code><span class="k">PREFIX</span> <span class="nn">dcterms</span><span class="p">:</span> <span class="nl">&lt;http://purl.org/dc/terms/&gt;</span>
+<span class="k">PREFIX</span> <span class="nn">np</span><span class="p">:</span>      <span class="nl">&lt;http://www.nanopub.org/nschema#&gt;</span>
+<span class="k">PREFIX</span> <span class="nn">npx</span><span class="p">:</span>     <span class="nl">&lt;http://purl.org/nanopub/x/&gt;</span>
+<span class="k">PREFIX</span> <span class="nn">npa</span><span class="p">:</span>     <span class="nl">&lt;http://purl.org/nanopub/admin/&gt;</span>
+<span class="k">PREFIX</span> <span class="nn">iolanta</span><span class="p">:</span> <span class="nl">&lt;https://iolanta.tech/&gt;</span>
 
-  <span class="k">GRAPH</span> <span class="nv">?provenance</span> <span class="p">{</span> <span class="nv">?assertion</span> <span class="nn">iolanta</span><span class="p">:</span><span class="nt">visualizes</span> <span class="nl">&lt;O&gt;</span> <span class="p">}</span>
-  <span class="k">GRAPH</span> <span class="nv">?pubinfo</span>    <span class="p">{</span> <span class="nv">?nanopub</span>  <span class="nn">dcterms</span><span class="p">:</span><span class="nt">created</span>     <span class="nv">?created</span> <span class="p">}</span>
-
-  <span class="k">FILTER</span> <span class="nf">NOT EXISTS</span> <span class="p">{</span>
-    <span class="nv">?invalidator</span> <span class="nn">npx</span><span class="p">:</span><span class="nt">invalidates</span> <span class="nv">?nanopub</span> <span class="p">;</span>
-                 <span class="nn">npa</span><span class="p">:</span><span class="nt">hasValidSignatureForPublicKey</span> <span class="nv">?invalidator_pubkey</span> <span class="p">.</span>
+<span class="k">SELECT</span> <span class="k">DISTINCT</span> <span class="nv">?nanopub</span> <span class="nv">?target</span> <span class="nv">?created</span> <span class="k">WHERE</span> <span class="p">{</span>
+  <span class="k">GRAPH</span> <span class="nn">npa</span><span class="p">:</span><span class="nt">graph</span> <span class="p">{</span>
+    <span class="nv">?nanopub</span> <span class="nn">np</span><span class="p">:</span><span class="nt">hasAssertion</span> <span class="nv">?assertion</span> <span class="p">;</span>
+             <span class="nn">np</span><span class="p">:</span><span class="nt">hasProvenance</span> <span class="nv">?provenance</span> <span class="p">;</span>
+             <span class="nn">npa</span><span class="p">:</span><span class="nt">hasValidSignatureForPublicKey</span> <span class="nv">?pubkey</span> <span class="p">;</span>
+             <span class="nn">dcterms</span><span class="p">:</span><span class="nt">created</span> <span class="nv">?created</span> <span class="p">.</span>
   <span class="p">}</span>
+
+  <span class="k">GRAPH</span> <span class="nv">?provenance</span> <span class="p">{</span>
+    <span class="nv">?assertion</span> <span class="nn">iolanta</span><span class="p">:</span><span class="nt">visualizes</span> <span class="nv">?target</span> <span class="p">.</span>
+  <span class="p">}</span>
+
   <span class="k">FILTER</span> <span class="nf">NOT EXISTS</span> <span class="p">{</span>
-    <span class="nv">?newer</span> <span class="nn">npx</span><span class="p">:</span><span class="nt">supersedes</span> <span class="nv">?nanopub</span> <span class="p">;</span>
-           <span class="nn">npa</span><span class="p">:</span><span class="nt">hasValidSignatureForPublicKey</span> <span class="nv">?newer_pubkey</span> <span class="p">.</span>
+    <span class="k">GRAPH</span> <span class="nn">npa</span><span class="p">:</span><span class="nt">graph</span> <span class="p">{</span>
+      <span class="nv">?invalidator</span> <span class="nn">npx</span><span class="p">:</span><span class="nt">invalidates</span> <span class="nv">?nanopub</span> <span class="p">;</span>
+                   <span class="nn">npa</span><span class="p">:</span><span class="nt">hasValidSignatureForPublicKey</span> <span class="nv">?invalidator_pubkey</span> <span class="p">.</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">FILTER</span> <span class="nf">NOT EXISTS</span> <span class="p">{</span>
+    <span class="k">GRAPH</span> <span class="nn">npa</span><span class="p">:</span><span class="nt">graph</span> <span class="p">{</span>
+      <span class="nv">?newer</span> <span class="nn">npx</span><span class="p">:</span><span class="nt">supersedes</span> <span class="nv">?nanopub</span> <span class="p">;</span>
+             <span class="nn">npa</span><span class="p">:</span><span class="nt">hasValidSignatureForPublicKey</span> <span class="nv">?newer_pubkey</span> <span class="p">.</span>
+    <span class="p">}</span>
   <span class="p">}</span>
 <span class="p">}</span>
 <span class="k">ORDER BY</span> <span class="k">DESC</span><span class="p">(</span><span class="nv">?created</span><span class="p">)</span>
-<span class="k">LIMIT</span> <span class="mi">1</span>
 </code></pre></div>
-<p><code>ORDER BY DESC(?created) LIMIT 1</code> is <strong>last-writer-wins</strong>: only one nanopublication per ontology is loaded so different publishers' grouping schemes never mix. To override what Iolanta picks up for a given ontology, sign and publish a newer nanopublication.</p>
+<p>Iolanta loads <strong>all</strong> active matches from this index, not only the latest nanopublication per ontology. If multiple signed nanopublications visualize the same ontology, their assertion graphs are all loaded.</p>
 <p>The discovery code lives in <a href="https://github.com/iolanta-tech/iolanta/blob/master/iolanta/discovery/visualization_nanopublications.py"><code>iolanta/discovery/visualization_nanopublications.py</code></a>.</p>
 <h2 id="example">Example</h2>
 <p>The current grouping for the <a href="/reference/rdf/"><code>rdf:</code> namespace</a> is loaded from <a href="https://w3id.org/np/RAXhiZMoa3JldEhxcgVyp8UIJL_N0PhEJpCTRXdKl7H_Q"><code>https://w3id.org/np/RAXhiZMoa3JldEhxcgVyp8UIJL_N0PhEJpCTRXdKl7H_Q</code></a>. Its provenance graph contains, in essence:</p>
