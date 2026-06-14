@@ -79,6 +79,25 @@ class Mermaid(Facet[str]):
 
     META = Path(__file__).parent / "mermaid.yamlld"
 
+    def mermaid_title(self, node: NotLiteralNode) -> str:
+        """Render Mermaid label text for an RDF resource."""
+        title = str(self.render(node, as_datatype=DATATYPES.title))
+        icon_row = funcy.first(
+            self.query(  # noqa: WPS462
+                """
+                SELECT ?icon WHERE {
+                    $iri iolanta:icon ?icon .
+                }
+                """,
+                iri=node,
+            ),
+        )
+
+        if icon_row and (icon := icon_row.get("icon")):
+            return f"{icon} {title}"
+
+        return title
+
     def as_mermaid(self, node: Node):
         match node:
             case URIRef() as uri:
@@ -86,19 +105,20 @@ class Mermaid(Facet[str]):
                     return MermaidSubgraph(
                         children=[],
                         uri=uri,
-                        title=self.render(uri, as_datatype=DATATYPES.title),
+                        title=self.mermaid_title(uri),
                     )
 
                 return MermaidURINode(
                     uri=uri,
                     url=AnyUrl(uri),
-                    title=self.render(uri, as_datatype=DATATYPES.title),
+                    title=self.mermaid_title(uri),
                 )
             case Literal() as literal:
                 return MermaidLiteral(literal=literal)
             case BNode() as bnode:
                 return MermaidBlankNode(
-                    node=bnode, title=self.render(bnode, as_datatype=DATATYPES.title)
+                    node=bnode,
+                    title=self.mermaid_title(bnode),
                 )
             case unknown:
                 unknown_type = type(unknown)
@@ -111,7 +131,7 @@ class Mermaid(Facet[str]):
             MermaidEdge(
                 source=self.as_mermaid(row["s"]),
                 target=self.as_mermaid(row["o"]),
-                title=self.render(row["p"], as_datatype=DATATYPES.title),
+                title=self.mermaid_title(row["p"]),
                 predicate=row["p"],
             )
             for row in rows
@@ -140,11 +160,10 @@ class Mermaid(Facet[str]):
         for subgraph_uri in self.subgraph_uris:
             children = list(self.construct_mermaid_for_graph(subgraph_uri))
             if children:
-                title = self.render(subgraph_uri, as_datatype=DATATYPES.title)
                 yield MermaidSubgraph(
                     children=children,
                     uri=subgraph_uri,
-                    title=title,
+                    title=self.mermaid_title(subgraph_uri),
                 )
 
     def show(self) -> str:
