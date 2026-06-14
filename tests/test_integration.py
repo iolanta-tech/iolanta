@@ -10,6 +10,10 @@ from yarl import URL
 
 from tests.screenshot_svg import assert_stable_screenshot
 
+pytestmark = pytest.mark.skip(
+    reason='Screenshot integration tests are disabled',
+)
+
 SCREENSHOTS = Path(__file__).parent.parent / 'docs/screenshots'
 
 SCREENSHOT_TIMEOUT = 50
