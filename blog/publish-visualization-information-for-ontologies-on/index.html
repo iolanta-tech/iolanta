@@ -4334,7 +4334,7 @@
 
 <h1 id="publish-visualization-information-for-ontologies-on">Publish visualization information for ontologies on …</h1>
 <h2 id="context">Context</h2>
-<p>Iolanta currently has a visualization index YAML-LD file, but that index is centralized, wired into the codebase, and not usable by other publishers. Ontology publishers should be able to publish accompanying visualization information for an ontology, such as multilingual labels and VANN term groups, so Iolanta can discover and use it. The immediate target is ontology visualization data such as IBIS, while the mechanism should leave room for other resource types later.</p>
+<p>Iolanta used to load ontology visualization metadata from a bundled YAML-LD index wired into the codebase. That index was centralized and not usable by other publishers. Ontology publishers should be able to publish accompanying visualization information for an ontology, such as multilingual labels and VANN term groups, so Iolanta can discover and use it. The immediate target is ontology visualization data such as IBIS, while the mechanism should leave room for other resource types later.</p>
 <p>The solution needs to:</p>
 <ul>
 <li>Let a third-party ontology publisher publish visualization data without changing Iolanta's source tree.</li>
@@ -4369,7 +4369,7 @@
 <td>✅</td>
 <td>Iolanta package or plugin metadata</td>
 <td>✅ Local installed discovery</td>
-<td>Let installable Iolanta extensions ship visualization overlays for vocabularies they support, and keep bundled overlays as an offline fallback.</td>
+<td>Let installable Iolanta extensions ship visualization overlays for vocabularies they support. Bundled files under <code>docs/visualizations/</code> remain authoring sources published to <code>https://iolanta.tech/visualizations/</code> but are not loaded at runtime.</td>
 </tr>
 <tr>
 <td>✅</td>
@@ -4417,24 +4417,24 @@
 <td>❌</td>
 <td>Built-in centralized Iolanta visualization index as the primary mechanism</td>
 <td>✅ Iolanta-controlled discovery only</td>
-<td>This is the current implementation, but it requires Iolanta source changes and does not let other publishers participate directly.</td>
+<td>This was the previous runtime implementation. It required Iolanta source changes and did not let other publishers participate directly. Runtime discovery now queries the public nanopub registry instead.</td>
 </tr>
 </tbody>
 </table>
 <p>Each selected publication mechanism must include RDF that links the visualization data back to the ontology it describes, so Iolanta can query by ontology IRI after the publication mechanism has exposed or indexed the RDF.</p>
 <h2 id="consequences">Consequences</h2>
 <ul>
-<li>Iolanta will need a discovery layer that can gather visualization candidates from more than one mechanism and load all accepted RDF graphs.</li>
-<li>The current bundled visualization index can remain as a compatibility fallback, but not as the only publication path.</li>
+<li>Iolanta needs a discovery layer that can gather visualization candidates from more than one mechanism and load all accepted RDF graphs.</li>
+<li>Files under <code>docs/visualizations/</code> remain authoring sources and MkDocs static assets; they are not loaded at runtime. Runtime discovery uses signed visualization nanopublications from the public registry (see <a href="/visualizes/"><code>iolanta:visualizes</code></a>).</li>
 <li>Discovery and trust policy need to be separate: finding a visualization graph does not imply that Iolanta should prefer it over publisher-controlled, user-configured, or locally installed data.</li>
 </ul>
 <h4 id="implementation-steps">Implementation Steps</h4>
 <ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Define the minimum RDF shape for a visualization document that describes an ontology.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Replace the hardcoded visualization index load with a visualization discovery service.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Teach the ontology facet to use discovered visualization graphs before rendering term groups and labels.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Keep the bundled index as a fallback source while external publication mechanisms are introduced.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add regression tests using IBIS-like ontology data and an externally published visualization graph.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Define the minimum RDF shape for a visualization document that describes an ontology — documented on <a href="/visualizes/"><code>iolanta:visualizes</code></a>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Replace the hardcoded visualization index load with a visualization discovery service — <a href="https://github.com/iolanta-tech/iolanta/blob/master/iolanta/discovery/visualization_nanopublications.py"><code>iolanta/discovery/visualization_nanopublications.py</code></a> queries the Knowledge Pixels registry on the first <code>Iolanta.render()</code> per instance.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Teach the ontology facet to use discovered visualization graphs before rendering term groups and labels — assertion graphs from active visualization nanopubs are loaded into the local dataset; <a href="/Facet/"><code>MkDocsOntologyFacet</code></a> and <a href="/Facet/"><code>OntologyFacet</code></a> pick up <code>vann:termGroup</code> via the existing ontology SPARQL.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Keep bundled overlays as authoring sources while external publication mechanisms are introduced — <code>docs/visualizations/</code> is published to <code>https://iolanta.tech/visualizations/</code> but not read at runtime.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Add regression tests using IBIS-like ontology data and an externally published visualization graph — see <code>tests/discovery/</code>.</li>
 </ul>
 <script type="application/ld+json">
 []
