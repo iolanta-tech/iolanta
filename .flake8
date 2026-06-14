@@ -6,6 +6,7 @@ per-file-ignores =
     iolanta/namespaces.py:WPS115,WPS604
     jeeves/__init__.py:WPS412,WPS400,WPS202
     tests/test_integration.py:WPS202
+    tests/test_mermaid.py:WPS114,WPS118,WPS218,WPS226
     tests/kglint/test_cli.py:WPS202
     tests/facets/test_default.py:WPS202
     tests/test_apply_redirect.py:WPS202
