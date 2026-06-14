@@ -1,0 +1,28 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  ex: https://example.org/
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  schema: https://schema.org/
+  iolanta: https://iolanta.tech/
+
+$id: ex:alice
+$type: schema:Person
+schema:name: Alice
+schema:knows:
+  $id: ex:bob
+  $type: schema:Person
+  schema:name: Bob
+schema:affiliation:
+  $id: ex:acme
+  $type: schema:Organization
+  schema:name: ACME Corp
+
+$included:
+  - $id: schema:Person
+    rdfs:label: Person
+    iolanta:icon: 🧑
+
+  - $id: rdf:type
+    rdfs:label: type
+    iolanta:icon: ∈
