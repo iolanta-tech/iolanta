@@ -33,7 +33,7 @@ jobs:
         continue-on-error: true
         with:
           name: mypy-baseline
-          path: tests/artifacts
+          path: jeeves/tests/artifacts
 
       - name: Test
         shell: bash
@@ -47,6 +47,6 @@ jobs:
         uses: dorny/test-reporter@v3
         with:
           name: pytest
-          path: tests/artifacts/pytest.xml
+          path: jeeves/tests/artifacts/pytest.xml
           reporter: java-junit
           fail-on-error: true
