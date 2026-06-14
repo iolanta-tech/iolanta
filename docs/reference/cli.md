@@ -61,3 +61,7 @@ project data, installed Iolanta facilities, and normal web loading.
 
 See [`--render-template` macros & variables](/reference/render-template-macros-and-variables/)
 for the supported template surface.
+
+## Visualization discovery
+
+Pass `--without-visualization-cache-index` to refresh the visualization nanopub URL list from the [Knowledge Pixels](https://query.knowledgepixels.com/) registry on every run while still updating the disk cache. See [`iolanta:visualizes`](/visualizes/) for the full discovery flow.
