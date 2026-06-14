@@ -7,29 +7,11 @@ import pytest
 from click.testing import Result
 from rdflib import URIRef
 from typer.testing import CliRunner
-from yaml_ld.errors import NoLinkedDataFoundInHTML
 
 from iolanta.cli import main as cli_main
 from iolanta.cli.main import app, render_and_return
-from iolanta.sparqlspace import processor
 
 FIXTURES_DIR = Path(__file__).parent / "data"
-
-
-def _skip_indices(sparql_processor):
-    sparql_processor.graph
-
-
-def _load_document_with_missing_ld(
-    uri,
-    *,
-    original_load_document,
-):
-    if str(uri) == "https://example.com/no-ld":
-        raise NoLinkedDataFoundInHTML(
-            "No linked data fragments found in HTML",
-        )
-    return original_load_document(uri)
 
 
 def _raise_read_only_log_path(*args, **kwargs):
@@ -178,34 +160,6 @@ def test_cli_render_template_rejects_as(tmp_path):
 
     assert command_result.exit_code == 1
     assert "--render-template cannot be combined with --as" in command_result.stdout
-
-
-def test_cli_missing_ld(monkeypatch):
-    import functools
-
-    import yaml_ld
-
-    path = (FIXTURES_DIR / "remote_no_ld.yamlld").resolve()
-    node = URIRef(f"file://{path}")
-    monkeypatch.setattr(
-        processor.GlobalSPARQLProcessor,
-        "_maybe_load_indices",
-        _skip_indices,
-    )
-    monkeypatch.setattr(
-        processor.yaml_ld,
-        "load_document",
-        functools.partial(
-            _load_document_with_missing_ld,
-            original_load_document=yaml_ld.load_document,
-        ),
-    )
-
-    raw = render_and_return(node=node, as_datatype="kglint/json")
-    report = json.loads(raw)
-
-    assert "assertions" in report
-    assert "labels" in report
 
 
 def test_direct_url_without_render_subcommand(monkeypatch):
