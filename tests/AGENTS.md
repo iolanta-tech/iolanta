@@ -26,3 +26,7 @@ LINES=34 COLUMNS=113 FORCE_COLOR=1 textual run -c \
 - Unset or override **`NO_COLOR`** so captures match colored CI output; integration tests set **`FORCE_COLOR=1`**.
 
 **T05.** SVG naming for URLs/paths follows the same rules as `generate_screenshot` in `test_integration.py` (host, dotted path, optional fragment; local paths dotted relative to repo root).
+
+## RDF graph assertions
+
+**T06.** When asserting string literals loaded from YAML-LD or JSON-LD, use `Literal(value, datatype=XSD.string)` or compare lexical values deliberately; Iolanta loads JSON-LD string literals as `xsd:string`.
