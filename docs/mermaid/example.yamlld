@@ -1,0 +1,18 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  ex: https://example.org/
+  schema: https://schema.org/
+  iolanta: https://iolanta.tech/
+
+$id: ex:alice
+$type: schema:Person
+iolanta:icon: 🧑
+schema:name: Alice
+schema:knows:
+  $id: ex:bob
+  $type: schema:Person
+  schema:name: Bob
+schema:affiliation:
+  $id: ex:acme
+  $type: schema:Organization
+  schema:name: ACME Corp
