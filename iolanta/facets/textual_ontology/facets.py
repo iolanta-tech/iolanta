@@ -8,7 +8,6 @@ from textual.containers import Vertical
 from textual.widget import Widget
 from textual.widgets import Static
 
-from iolanta.discovery.visualization_nanopublications import load_into
 from iolanta.facets.facet import Facet
 from iolanta.facets.page_title import PageTitle
 from iolanta.facets.textual_ontology.widgets import (
@@ -67,9 +66,6 @@ class OntologyFacet(Facet[Widget]):
 
     def show(self) -> Widget:
         """Render widget."""
-        if isinstance(self.this, URIRef):
-            load_into(self.iolanta, self.this)
-
         self._log_index_and_vocabs()
 
         return Vertical(

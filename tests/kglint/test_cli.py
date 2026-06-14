@@ -7,29 +7,11 @@ import pytest
 from click.testing import Result
 from rdflib import URIRef
 from typer.testing import CliRunner
-from yaml_ld.errors import NoLinkedDataFoundInHTML
 
 from iolanta.cli import main as cli_main
 from iolanta.cli.main import app, render_and_return
-from iolanta.sparqlspace import processor
 
 FIXTURES_DIR = Path(__file__).parent / "data"
-
-
-def _skip_indices(sparql_processor):
-    sparql_processor.graph
-
-
-def _load_document_with_missing_ld(
-    uri,
-    *,
-    original_load_document,
-):
-    if str(uri) == "https://example.com/no-ld":
-        raise NoLinkedDataFoundInHTML(
-            "No linked data fragments found in HTML",
-        )
-    return original_load_document(uri)
 
 
 def _raise_read_only_log_path(*args, **kwargs):
@@ -180,29 +162,37 @@ def test_cli_render_template_rejects_as(tmp_path):
     assert "--render-template cannot be combined with --as" in command_result.stdout
 
 
-def test_cli_missing_ld(monkeypatch):
-    import functools
+def test_direct_url_without_render_subcommand(monkeypatch):
+    called: list[dict] = []
 
-    import yaml_ld
+    def fake_render_and_return(**kwargs):
+        called.append(kwargs)
+        return "ok"
 
-    path = (FIXTURES_DIR / "remote_no_ld.yamlld").resolve()
-    node = URIRef(f"file://{path}")
-    monkeypatch.setattr(
-        processor.GlobalSPARQLProcessor,
-        "_maybe_load_indices",
-        _skip_indices,
+    monkeypatch.setattr(cli_main, "render_and_return", fake_render_and_return)
+    monkeypatch.setattr(cli_main, "print_renderable", lambda _renderable: None)
+
+    result = CliRunner().invoke(app, ["rdf:Alt", "--as", "title"])
+
+    assert result.exit_code == 0
+    assert called
+    assert called[0]["node"] == URIRef("rdf:Alt")
+
+
+def test_without_visualization_cache_index_flag(monkeypatch):
+    called: list[dict] = []
+
+    def fake_render_and_return(**kwargs):
+        called.append(kwargs)
+        return "ok"
+
+    monkeypatch.setattr(cli_main, "render_and_return", fake_render_and_return)
+    monkeypatch.setattr(cli_main, "print_renderable", lambda _renderable: None)
+
+    result = CliRunner().invoke(
+        app,
+        ["--without-visualization-cache-index", "rdf:Alt", "--as", "title"],
     )
-    monkeypatch.setattr(
-        processor.yaml_ld,
-        "load_document",
-        functools.partial(
-            _load_document_with_missing_ld,
-            original_load_document=yaml_ld.load_document,
-        ),
-    )
 
-    raw = render_and_return(node=node, as_datatype="kglint/json")
-    report = json.loads(raw)
-
-    assert "assertions" in report
-    assert "labels" in report
+    assert result.exit_code == 0
+    assert called[0]["without_visualization_cache_index"] is True

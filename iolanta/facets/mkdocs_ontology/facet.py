@@ -4,10 +4,8 @@ from functools import cached_property
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader
-from rdflib import URIRef
 from rdflib.term import Node
 
-from iolanta.discovery.visualization_nanopublications import load_into
 from iolanta.facets.facet import Facet
 from iolanta.namespaces import DATATYPES
 
@@ -64,9 +62,6 @@ class MkDocsOntologyFacet(Facet[str]):
 
     def show(self) -> str:
         """Render the ontology as Markdown."""
-        if isinstance(self.this, URIRef):
-            load_into(self.iolanta, self.this)
-
         groups = list(self._build_groups())
         template = self._template_env.get_template("ontology.jinja2.md")
         return template.render(groups=groups)

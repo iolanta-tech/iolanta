@@ -32,32 +32,45 @@ Iolanta uses `iolanta:visualizes` at render time to discover community-published
 
 ## Discovery flow
 
-When [`MkDocsOntologyFacet`](/Facet/) or [`OntologyFacet`](/Facet/) is asked to render an ontology `<O>`, it queries the public [Knowledge Pixels](https://query.knowledgepixels.com/) nanopub registry for the most recent signed, non-invalidated, non-superseded nanopublication whose provenance asserts `?assertion iolanta:visualizes <O>`, and loads that nanopublication's assertion graph into the local dataset. The grouping triples (`vann:termGroup`, `rdfs:label`) then become visible to the regular ontology-rendering SPARQL.
+On the first [`Iolanta.render()`](/reference/iolanta/) call for each `Iolanta` instance, Iolanta queries the public [Knowledge Pixels](https://query.knowledgepixels.com/) nanopub registry for all signed, non-invalidated, non-superseded visualization nanopublications, loads their assertion graphs into the local dataset, and caches the resulting nanopub URL list for one day on disk ([cashews](https://pypi.org/project/cashews/) `@cache.soft` under `~/.cache/iolanta/visualization-index/`). Later renders on the same instance reuse the loaded graphs; nanopub documents are HTTP-cached separately by `yaml-ld` via `requests-cache`. If a registry refresh fails, Iolanta falls back to stale cached URLs when available; otherwise it logs a warning and continues without remote visualizations. Pass `--without-visualization-cache-index` to the CLI to always refresh the URL list from the registry while still updating the disk cache. The grouping triples (`vann:termGroup`, `rdfs:label`) then become visible to the regular ontology-rendering SPARQL used by [`MkDocsOntologyFacet`](/Facet/) and [`OntologyFacet`](/Facet/).
 
 ```sparql
-SELECT ?nanopub WHERE {
-  ?nanopub np:hasAssertion       ?assertion ;
-           np:hasProvenance      ?provenance ;
-           np:hasPublicationInfo ?pubinfo ;
-           npa:hasValidSignatureForPublicKey ?pubkey .
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX np:      <http://www.nanopub.org/nschema#>
+PREFIX npx:     <http://purl.org/nanopub/x/>
+PREFIX npa:     <http://purl.org/nanopub/admin/>
+PREFIX iolanta: <https://iolanta.tech/>
 
-  GRAPH ?provenance { ?assertion iolanta:visualizes <O> }
-  GRAPH ?pubinfo    { ?nanopub  dcterms:created     ?created }
-
-  FILTER NOT EXISTS {
-    ?invalidator npx:invalidates ?nanopub ;
-                 npa:hasValidSignatureForPublicKey ?invalidator_pubkey .
+SELECT DISTINCT ?nanopub ?target ?created WHERE {
+  GRAPH npa:graph {
+    ?nanopub np:hasAssertion ?assertion ;
+             np:hasProvenance ?provenance ;
+             npa:hasValidSignatureForPublicKey ?pubkey ;
+             dcterms:created ?created .
   }
+
+  GRAPH ?provenance {
+    ?assertion iolanta:visualizes ?target .
+  }
+
   FILTER NOT EXISTS {
-    ?newer npx:supersedes ?nanopub ;
-           npa:hasValidSignatureForPublicKey ?newer_pubkey .
+    GRAPH npa:graph {
+      ?invalidator npx:invalidates ?nanopub ;
+                   npa:hasValidSignatureForPublicKey ?invalidator_pubkey .
+    }
+  }
+
+  FILTER NOT EXISTS {
+    GRAPH npa:graph {
+      ?newer npx:supersedes ?nanopub ;
+             npa:hasValidSignatureForPublicKey ?newer_pubkey .
+    }
   }
 }
 ORDER BY DESC(?created)
-LIMIT 1
 ```
 
-`ORDER BY DESC(?created) LIMIT 1` is **last-writer-wins**: only one nanopublication per ontology is loaded so different publishers' grouping schemes never mix. To override what Iolanta picks up for a given ontology, sign and publish a newer nanopublication.
+Iolanta loads **all** active matches from this index, not only the latest nanopublication per ontology. If multiple signed nanopublications visualize the same ontology, their assertion graphs are all loaded.
 
 The discovery code lives in [`iolanta/discovery/visualization_nanopublications.py`](https://github.com/iolanta-tech/iolanta/blob/master/iolanta/discovery/visualization_nanopublications.py).
 

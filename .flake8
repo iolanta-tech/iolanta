@@ -1,5 +1,7 @@
 [flake8]
 per-file-ignores =
+    iolanta/discovery/visualization_nanopublications.py:WPS201,WPS202,WPS226,WPS210
+    iolanta/iolanta.py:WPS201,WPS203,WPS402
     iolanta/facets/textual_ontology/facets.py:WPS201
     iolanta/cli/main.py:WPS201,WPS202
     iolanta/sparqlspace/processor.py:WPS201,WPS202,WPS402
@@ -9,6 +11,8 @@ per-file-ignores =
     tests/test_mermaid.py:WPS114,WPS118,WPS218,WPS226
     tests/kglint/test_cli.py:WPS202
     tests/facets/test_default.py:WPS202
+    tests/discovery/test_visualization_index.py:WPS202,WPS118,WPS218,WPS226,WPS430,WPS420
+    tests/discovery/test_visualization_render_integration.py:WPS202,WPS226,WPS430
     tests/test_apply_redirect.py:WPS202
     iolanta/mermaid/models.py:WPS202,WPS407,WPS237,WPS338,WPS602
     iolanta/mermaid/facet.py:WPS115,WPS231
