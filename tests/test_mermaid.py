@@ -66,14 +66,64 @@ def test_rendered_mermaid_sanitizes_internal_ids(tmp_path):
     )
 
     source_node_id = "https___example_org_source_node"
-    rendered_output = Iolanta().add(source_file).render(
-        node=path_to_iri(source_file),
-        as_datatype=DATATYPES.mermaid,
+    rendered_output = (
+        Iolanta()
+        .add(source_file)
+        .render(
+            node=path_to_iri(source_file),
+            as_datatype=DATATYPES.mermaid,
+        )
     )
 
     assert "Literal-" not in rendered_output
     assert "Literal_" in rendered_output
     assert "literal value" in rendered_output
     assert f'{source_node_id}("example.org/source-node")' in rendered_output
-    assert f'click {source_node_id} "https://example.org/source-node"' in rendered_output
+    assert (
+        f'click {source_node_id} "https://example.org/source-node"' in rendered_output
+    )
     assert f"{source_node_id} --- Edge_" in rendered_output
+
+
+def test_rendered_mermaid_prepends_resource_icons(tmp_path):
+    source_file = tmp_path / "example.jsonld"
+    source_file.write_text(
+        json.dumps(
+            {
+                "@context": {
+                    "ex": "https://example.org/",
+                    "iolanta": "https://iolanta.tech/",
+                    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+                    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+                    "schema": "https://schema.org/",
+                },
+                "@id": "ex:alice",
+                "@included": [
+                    {
+                        "@id": "schema:Person",
+                        "iolanta:icon": "🧑",
+                        "rdfs:label": "Person",
+                    },
+                    {
+                        "@id": "rdf:type",
+                        "iolanta:icon": "∈",
+                        "rdfs:label": "type",
+                    },
+                ],
+                "@type": "schema:Person",
+                "schema:name": "Alice",
+            },
+        ),
+    )
+
+    rendered_output = (
+        Iolanta()
+        .add(source_file)
+        .render(
+            node=path_to_iri(source_file),
+            as_datatype=DATATYPES.mermaid,
+        )
+    )
+
+    assert "🧑 Person" in rendered_output
+    assert "∈ type" in rendered_output
