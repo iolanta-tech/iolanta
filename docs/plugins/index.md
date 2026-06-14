@@ -11,6 +11,12 @@ Iolanta plugins extend functionality with specialized features and integrations.
 
 <div class="grid cards" markdown>
 
+-   Ⓜ __[Mermaid](/mermaid/)__
+
+    ---
+
+    Render RDF graphs as Mermaid diagram syntax. Use it directly for graph visualizations or as a foundation for specialized diagram plugins.
+
 -   :octicons-project-roadmap-24:{ .lg .middle } __[Roadmap](/roadmap/)__
 
     ---
