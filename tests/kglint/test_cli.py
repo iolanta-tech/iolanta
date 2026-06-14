@@ -206,3 +206,39 @@ def test_cli_missing_ld(monkeypatch):
 
     assert "assertions" in report
     assert "labels" in report
+
+
+def test_direct_url_without_render_subcommand(monkeypatch):
+    called: list[dict] = []
+
+    def fake_render_and_return(**kwargs):
+        called.append(kwargs)
+        return "ok"
+
+    monkeypatch.setattr(cli_main, "render_and_return", fake_render_and_return)
+    monkeypatch.setattr(cli_main, "print_renderable", lambda _renderable: None)
+
+    result = CliRunner().invoke(app, ["rdf:Alt", "--as", "title"])
+
+    assert result.exit_code == 0
+    assert called
+    assert called[0]["node"] == URIRef("rdf:Alt")
+
+
+def test_without_visualization_cache_index_flag(monkeypatch):
+    called: list[dict] = []
+
+    def fake_render_and_return(**kwargs):
+        called.append(kwargs)
+        return "ok"
+
+    monkeypatch.setattr(cli_main, "render_and_return", fake_render_and_return)
+    monkeypatch.setattr(cli_main, "print_renderable", lambda _renderable: None)
+
+    result = CliRunner().invoke(
+        app,
+        ["--without-visualization-cache-index", "rdf:Alt", "--as", "title"],
+    )
+
+    assert result.exit_code == 0
+    assert called[0]["without_visualization_cache_index"] is True
