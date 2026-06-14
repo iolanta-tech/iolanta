@@ -51,7 +51,7 @@ plugins:
       pretty: true
       engine: native
   - macros:
-      on_error_fail: false
+      on_error_fail: true
 
 theme:
   name: material
