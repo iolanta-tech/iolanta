@@ -100,6 +100,8 @@ class Iolanta:  # noqa: WPS214, WPS338
     graph: ConjunctiveGraph = field(default_factory=_create_default_graph)
     force_plugins: List[Type[Plugin]] = field(default_factory=list)
 
+    without_visualization_cache_index: bool = False
+
     facet_resolver: Resolver = field(
         default_factory=functools.partial(
             SchemeDispatchResolver,
@@ -117,6 +119,16 @@ class Iolanta:  # noqa: WPS214, WPS338
 
     _facet_inference_needed: bool = field(
         default=False,
+        init=False,
+    )
+
+    _visualization_index_loaded: bool = field(
+        default=False,
+        init=False,
+    )
+
+    _visualization_index_lock: object = field(
+        default=None,
         init=False,
     )
 
@@ -333,7 +345,9 @@ class Iolanta:  # noqa: WPS214, WPS338
         )
         self.graph.bind(prefix="local", namespace=namespaces.LOCAL)
         self.graph.bind(prefix="iolanta", namespace=namespaces.IOLANTA)
-        self.graph.bind(prefix="dbr", namespace=Namespace('http://dbpedia.org/resource/'))
+        self.graph.bind(
+            prefix="dbr", namespace=Namespace("http://dbpedia.org/resource/")
+        )
 
     def bind_prefixes_from_graph(self):
         """Bind namespace prefixes declared via VANN, without overriding existing ones."""
@@ -388,6 +402,33 @@ class Iolanta:  # noqa: WPS214, WPS338
             self.add(self.project_root)
         self.bind_prefixes_from_graph()
 
+    def _ensure_visualization_index_loaded(self) -> None:
+        """Load the visualization nanopub index once per Iolanta instance."""
+        if self._visualization_index_loaded:
+            return
+        import threading
+
+        if self._visualization_index_lock is None:
+            self._visualization_index_lock = threading.Lock()
+        with self._visualization_index_lock:
+            if self._visualization_index_loaded:
+                return
+            from iolanta.discovery.visualization_nanopublications import (
+                fetch_visualization_index,
+                load_visualization_index,
+            )
+
+            urls = fetch_visualization_index(
+                use_disk_cache_read=not self.without_visualization_cache_index,
+            )
+            loaded_count = load_visualization_index(self, urls)
+            self.logger.info(
+                "Visualization index: {url_count} URLs, {loaded_count} nanopubs loaded",
+                url_count=len(urls),
+                loaded_count=loaded_count,
+            )
+            self._visualization_index_loaded = True
+
     def render(
         self,
         node: Node,
@@ -402,6 +443,8 @@ class Iolanta:  # noqa: WPS214, WPS338
 
         if isinstance(as_datatype, list):
             raise NotImplementedError("Got a list for as_datatype :(")
+
+        self._ensure_visualization_index_loaded()
 
         found = FacetFinder(
             iolanta=self,
