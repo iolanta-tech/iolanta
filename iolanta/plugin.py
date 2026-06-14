@@ -19,6 +19,8 @@ if TYPE_CHECKING:
 class Plugin(ABC):
     """Base Iolanta plugin."""
 
+    # TODO: Deprecate class-based plugins in favor of explicit facet/data
+    # metadata entry points or RDF-described bundled plugin metadata.
     iolanta: Iolanta = field(repr=False)
 
     @property
