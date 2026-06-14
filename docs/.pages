@@ -15,4 +15,5 @@ nav:
   - blog
   - Plugins:
       - Plugins: plugins/
+      - Mermaid: mermaid/
       - Roadmap: roadmap/
