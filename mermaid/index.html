@@ -4206,45 +4206,45 @@
 <div class="highlight"><pre><span></span><code>iolanta<span class="w"> </span>example.yamlld<span class="w"> </span>--as<span class="w"> </span>mermaid
 </code></pre></div>
 <pre class="mermaid"><code>graph LR
-  http___www_w3_org_1999_02_22_rdf_syntax_ns_type("∈ type")
-  click http___www_w3_org_1999_02_22_rdf_syntax_ns_type "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
-  Literal_3659f7cbbee8[["∈"]]
   https___example_org_alice("Alice")
   click https___example_org_alice "https://example.org/alice"
-  https___example_org_acme("ACME Corp")
-  click https___example_org_acme "https://example.org/acme"
   https___example_org_bob("Bob")
   click https___example_org_bob "https://example.org/bob"
   https___schema_org_Person("🧑 Person")
   click https___schema_org_Person "https://schema.org/Person"
+  Literal_b1329e756060[["🧑"]]
+  http___www_w3_org_1999_02_22_rdf_syntax_ns_type("∈ type")
+  click http___www_w3_org_1999_02_22_rdf_syntax_ns_type "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  Literal_599dcce2998a[["type"]]
+  https___example_org_acme("ACME Corp")
+  click https___example_org_acme "https://example.org/acme"
   https___schema_org_Organization("Organization")
   click https___schema_org_Organization "https://schema.org/Organization"
-  Literal_599dcce2998a[["type"]]
-  Literal_b1329e756060[["🧑"]]
   Literal_40bed7cf9b3d[["Person"]]
-  http___www_w3_org_1999_02_22_rdf_syntax_ns_type --- Edge_b23eb2d84010(["🖼️ icon"])--&gt; Literal_3659f7cbbee8
-  click Edge_b23eb2d84010 "https://iolanta.tech/icon"
-  https___example_org_alice --- Edge_9c57a8625816(["affiliation"])--&gt; https___example_org_acme
-  click Edge_9c57a8625816 "https://schema.org/affiliation"
-  https___example_org_bob --- Edge_4f42f6ad4728(["∈ type"])--&gt; https___schema_org_Person
-  click Edge_4f42f6ad4728 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
-  https___example_org_acme --- Edge_7694d8460813(["∈ type"])--&gt; https___schema_org_Organization
-  click Edge_7694d8460813 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
-  http___www_w3_org_1999_02_22_rdf_syntax_ns_type --- Edge_3dc22d788deb(["label"])--&gt; Literal_599dcce2998a
-  click Edge_3dc22d788deb "http://www.w3.org/2000/01/rdf-schema#label"
-  https___schema_org_Person --- Edge_936cc5e8ba61(["🖼️ icon"])--&gt; Literal_b1329e756060
-  click Edge_936cc5e8ba61 "https://iolanta.tech/icon"
+  Literal_3659f7cbbee8[["∈"]]
   https___example_org_alice --- Edge_e07195c8f4e7(["knows"])--&gt; https___example_org_bob
   click Edge_e07195c8f4e7 "https://schema.org/knows"
-  https___example_org_alice --- Edge_9ff3d2b6fb3f(["∈ type"])--&gt; https___schema_org_Person
-  click Edge_9ff3d2b6fb3f "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  https___schema_org_Person --- Edge_936cc5e8ba61(["🖼️ icon"])--&gt; Literal_b1329e756060
+  click Edge_936cc5e8ba61 "https://iolanta.tech/icon"
+  http___www_w3_org_1999_02_22_rdf_syntax_ns_type --- Edge_3dc22d788deb(["label"])--&gt; Literal_599dcce2998a
+  click Edge_3dc22d788deb "http://www.w3.org/2000/01/rdf-schema#label"
+  https___example_org_acme --- Edge_7694d8460813(["∈ type"])--&gt; https___schema_org_Organization
+  click Edge_7694d8460813 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
   https___schema_org_Person --- Edge_c8ec852019bc(["label"])--&gt; Literal_40bed7cf9b3d
   click Edge_c8ec852019bc "http://www.w3.org/2000/01/rdf-schema#label"
+  http___www_w3_org_1999_02_22_rdf_syntax_ns_type --- Edge_b23eb2d84010(["🖼️ icon"])--&gt; Literal_3659f7cbbee8
+  click Edge_b23eb2d84010 "https://iolanta.tech/icon"
+  https___example_org_bob --- Edge_4f42f6ad4728(["∈ type"])--&gt; https___schema_org_Person
+  click Edge_4f42f6ad4728 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  https___example_org_alice --- Edge_9ff3d2b6fb3f(["∈ type"])--&gt; https___schema_org_Person
+  click Edge_9ff3d2b6fb3f "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+  https___example_org_alice --- Edge_9c57a8625816(["affiliation"])--&gt; https___example_org_acme
+  click Edge_9c57a8625816 "https://schema.org/affiliation"
   classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
   classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
   classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
   classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-  class Edge_b23eb2d84010,Edge_9c57a8625816,Edge_4f42f6ad4728,Edge_7694d8460813,Edge_3dc22d788deb,Edge_936cc5e8ba61,Edge_e07195c8f4e7,Edge_9ff3d2b6fb3f,Edge_c8ec852019bc predicate
+  class Edge_e07195c8f4e7,Edge_936cc5e8ba61,Edge_3dc22d788deb,Edge_7694d8460813,Edge_c8ec852019bc,Edge_b23eb2d84010,Edge_4f42f6ad4728,Edge_9ff3d2b6fb3f,Edge_9c57a8625816 predicate
 </code></pre>
 <h2 id="quick-start">Quick Start</h2>
 <p>Render any YAML-LD or RDF document graph as a Mermaid diagram:</p>
