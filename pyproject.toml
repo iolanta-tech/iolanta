@@ -97,7 +97,7 @@ ipython = ">=8.28,<10.0"
 mkdocs-iolanta = { version = ">=0.1.16", markers = "python_version < '3.12'" }
 mkdocs-glightbox = ">=0.4,<0.6"
 jeeves-pr-stack = "^0.1.8"
-mkdocs-typer2 = "^0.3.0"
+mkdocs-typer2 = ">=0.3,<0.5"
 pytest-xdist = "^3.8.0"
 
 [tool.poetry.extras]
