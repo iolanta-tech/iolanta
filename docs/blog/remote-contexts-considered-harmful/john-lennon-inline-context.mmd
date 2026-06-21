@@ -1,25 +1,25 @@
 graph LR
-  Be98757419880("John Lennon")
+  Be98757419880("⬜ John Lennon")
   http___dbpedia_org_resource_Yoko_Ono("Yoko Ono")
   click http___dbpedia_org_resource_Yoko_Ono "http://dbpedia.org/resource/Yoko_Ono"
+  B7476fd72e886("⬜ John Lennon")
   http___dbpedia_org_resource_Cynthia_Lennon("Cynthia Lennon")
   click http___dbpedia_org_resource_Cynthia_Lennon "http://dbpedia.org/resource/Cynthia_Lennon"
-  B7476fd72e886("John Lennon")
-  Literal-4649fa93775b[["📅 1940-10-09"]]
-  Be98757419880 --- c5e2fc9beae4(["spouse"])--> http___dbpedia_org_resource_Yoko_Ono
-  click c5e2fc9beae4 "http://schema.org/spouse"
-  Be98757419880 --- 81b658711729(["spouse"])--> http___dbpedia_org_resource_Cynthia_Lennon
-  click 81b658711729 "http://schema.org/spouse"
-  B7476fd72e886 --- 2c9b94efe0c9(["spouse"])--> http___dbpedia_org_resource_Yoko_Ono
-  click 2c9b94efe0c9 "http://schema.org/spouse"
-  B7476fd72e886 --- 6ef29998a64b(["spouse"])--> http___dbpedia_org_resource_Cynthia_Lennon
-  click 6ef29998a64b "http://schema.org/spouse"
-  B7476fd72e886 --- 7b8c36f5b02f(["birthDate"])--> Literal-4649fa93775b
-  click 7b8c36f5b02f "http://schema.org/birthDate"
-  Be98757419880 --- eb783ca09b8e(["birthDate"])--> Literal-4649fa93775b
-  click eb783ca09b8e "http://schema.org/birthDate"
+  Literal_4649fa93775b[["📅 1940-10-09"]]
+  Be98757419880 --- Edge_c5e2fc9beae4(["spouse"])--> http___dbpedia_org_resource_Yoko_Ono
+  click Edge_c5e2fc9beae4 "http://schema.org/spouse"
+  B7476fd72e886 --- Edge_6ef29998a64b(["spouse"])--> http___dbpedia_org_resource_Cynthia_Lennon
+  click Edge_6ef29998a64b "http://schema.org/spouse"
+  Be98757419880 --- Edge_81b658711729(["spouse"])--> http___dbpedia_org_resource_Cynthia_Lennon
+  click Edge_81b658711729 "http://schema.org/spouse"
+  B7476fd72e886 --- Edge_42f74c177409(["birthDate"])--> Literal_4649fa93775b
+  click Edge_42f74c177409 "http://schema.org/birthDate"
+  B7476fd72e886 --- Edge_2c9b94efe0c9(["spouse"])--> http___dbpedia_org_resource_Yoko_Ono
+  click Edge_2c9b94efe0c9 "http://schema.org/spouse"
+  Be98757419880 --- Edge_7aecc1aef008(["birthDate"])--> Literal_4649fa93775b
+  click Edge_7aecc1aef008 "http://schema.org/birthDate"
   classDef predicate fill:#1f2233,stroke:transparent,color:#f8fafc,stroke-width:0px;
   classDef hidden fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
   classDef nanopubdot fill:#0f172a,stroke:#0f172a,color:transparent,stroke-width:2px;
   classDef transparent fill:transparent,stroke:transparent,color:transparent,stroke-width:0px;
-  class c5e2fc9beae4,81b658711729,2c9b94efe0c9,6ef29998a64b,7b8c36f5b02f,eb783ca09b8e predicate
+  class Edge_c5e2fc9beae4,Edge_6ef29998a64b,Edge_81b658711729,Edge_42f74c177409,Edge_2c9b94efe0c9,Edge_7aecc1aef008 predicate
