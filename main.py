@@ -7,9 +7,9 @@ import yaml_ld
 from mkdocs_macros.plugin import MacrosPlugin
 from rdflib import URIRef
 
+from iolanta.cli.main import decode_datatype
 from iolanta.conversions import path_to_iri
 from iolanta.iolanta import Iolanta
-from iolanta.namespaces import DATATYPES
 
 
 def as_uri(uri: Any) -> URIRef:
@@ -24,15 +24,6 @@ def as_uri(uri: Any) -> URIRef:
 
     uri_type = type(uri)
     raise NotImplementedError(f"{uri} ({uri_type.__name__}) is unknown")
-
-
-def resolve_datatype_uri(uri: str) -> URIRef:
-    """Resolve a datatype URI string to a URIRef."""
-    # If it's already a full URI, return it directly
-    if uri.startswith("http://") or uri.startswith("https://"):
-        return URIRef(uri)
-    # Otherwise, treat it as a short key in the DATATYPES namespace
-    return DATATYPES[uri]
 
 
 def sparql_query_from_file(iolanta: Iolanta, sparql_file_path: Path, **kwargs) -> str:  # noqa: WPS210
@@ -69,7 +60,7 @@ def _build_markdown_table(query_results, headers):  # noqa: WPS210
     header_parts = ["| "] + headers + [" |"]
     header_row = " ".join(header_parts)
     table_lines.append(header_row)
-    
+
     separator_count = len(headers)
     separator_parts = ["---" for _ in range(separator_count)]
     separator_row_parts = ["| "] + separator_parts + [" |"]
@@ -103,7 +94,7 @@ def _as_filter(iolanta_instance: Iolanta, uri: str, datatype: str) -> str:
     """Convert URI to specified datatype."""
     return iolanta_instance.render(
         node=as_uri(uri),
-        as_datatype=resolve_datatype_uri(datatype),
+        as_datatype=decode_datatype(datatype),
     )
 
 
@@ -116,11 +107,7 @@ def _colored_bytes(path: Path) -> str:
         color = f"hsl({hue}deg,70%,55%)"
         sep = "\n" if i % 16 == 15 else " "
         spans.append(f'<span style="color:{color}">{byte:02x}</span>{sep}')
-    return (
-        '<pre style="line-height:1.8;font-size:0.85em">'
-        + "".join(spans)
-        + "</pre>"
-    )
+    return '<pre style="line-height:1.8;font-size:0.85em">' + "".join(spans) + "</pre>"
 
 
 def define_env(env: MacrosPlugin):
