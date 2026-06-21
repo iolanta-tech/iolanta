@@ -11,13 +11,36 @@ from pydantic import AnyUrl, BaseModel
 from rdflib import BNode, Literal, URIRef
 from rdflib.namespace import XSD
 
+from iolanta.language_flags import language_flag
 from iolanta.models import NotLiteralNode  # noqa: WPS202
 
 DATATYPE_ICONS: dict[URIRef, str] = {
     XSD.date: "📅",
     XSD.dateTime: "🕐",
     XSD.boolean: "✅",
+    XSD.integer: "🔢",
 }
+
+BLANK_NODE_ICON = "⬜"
+
+
+def raw_literal_title(literal: Literal) -> str:
+    """Render a literal label for raw RDF Mermaid without Turtle syntax."""
+    if literal.language:
+        flag = language_flag(literal.language)
+        prefix = f"{flag} " if flag else ""
+        return f"{prefix}{literal}"
+
+    datatype = literal.datatype
+    if datatype is None or datatype == XSD.string:
+        return str(literal)
+
+    icon = DATATYPE_ICONS.get(datatype)
+    if icon:
+        return f"{icon} {literal}"
+
+    return str(literal)
+
 
 # Full 32-char MD5 node ids inflate Mermaid source past common renderer limits;
 # truncated digests stay stable for a given input and collide rarely in doc-sized graphs.
@@ -235,7 +258,7 @@ class MermaidBlankNode(MermaidScalar):
     @property
     def escaped_title(self) -> str:
         """Escape the title to prevent Mermaid parsing issues."""
-        return escape_label(self.title)
+        return escape_label(f"{BLANK_NODE_ICON} {self.title}")
 
 
 class MermaidEdge(MermaidScalar):
