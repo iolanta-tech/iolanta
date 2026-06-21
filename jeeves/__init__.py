@@ -1,5 +1,6 @@
 # noqa: WPS412, WPS400
 from concurrent.futures import ThreadPoolExecutor
+from dataclasses import dataclass
 import json
 import os
 from pathlib import Path
@@ -214,22 +215,77 @@ def _dump_iolanta_output(
     console.print(f"[green]Written[/green] {target}")
 
 
+_REPO_ROOT = project_directory.parent
 _REMOTE_CONTEXTS_CONSIDERED_HARMFUL_DIR = (
-    project_directory.parent / "docs/blog/remote-contexts-considered-harmful"
+    _REPO_ROOT / "docs/blog/remote-contexts-considered-harmful"
+)
+_ROADMAP_MERMAID = "https://iolanta.tech/roadmap/datatypes/mermaid"
+
+
+@dataclass(frozen=True)
+class DocsMermaidArtifact:
+    """Source file, generated `.mmd` target, and Iolanta output datatype."""
+
+    source: Path
+    target: Path
+    output_datatype: str = "mermaid"
+
+
+DOCS_MERMAID_ARTIFACTS: tuple[DocsMermaidArtifact, ...] = (
+    DocsMermaidArtifact(
+        _REPO_ROOT / "docs/mermaid/rdf-example.yamlld",
+        _REPO_ROOT / "docs/mermaid/rdf-example.mmd",
+        "mermaid/rdf",
+    ),
+    DocsMermaidArtifact(
+        _REMOTE_CONTEXTS_CONSIDERED_HARMFUL_DIR / "john-lennon.yamlld",
+        _REMOTE_CONTEXTS_CONSIDERED_HARMFUL_DIR / "john-lennon.mmd",
+    ),
+    DocsMermaidArtifact(
+        _REMOTE_CONTEXTS_CONSIDERED_HARMFUL_DIR / "john-lennon-inline-context.yamlld",
+        _REMOTE_CONTEXTS_CONSIDERED_HARMFUL_DIR / "john-lennon-inline-context.mmd",
+    ),
+    DocsMermaidArtifact(
+        _REMOTE_CONTEXTS_CONSIDERED_HARMFUL_DIR / "index.md",
+        _REMOTE_CONTEXTS_CONSIDERED_HARMFUL_DIR / "index.mmd",
+    ),
+    DocsMermaidArtifact(
+        _REPO_ROOT / "docs/roadmap/iolanta-development-roadmap.yamlld",
+        _REPO_ROOT / "docs/roadmap/roadmap.mmd",
+        _ROADMAP_MERMAID,
+    ),
 )
 
 
-def generate_remote_contexts_index_mmd():
-    """Regenerate `index.mmd` (Mermaid) from `index.md` for the remote-contexts post."""
-    blog = _REMOTE_CONTEXTS_CONSIDERED_HARMFUL_DIR
-    _dump_iolanta_output(blog / "index.md", blog / "index.mmd")
+def generate_docs_mermaid():
+    """Regenerate all committed `.mmd` files included by MkDocs snippets.
+
+    Artifacts:
+    - docs/mermaid/rdf-example.mmd (from rdf-example.yamlld, mermaid/rdf)
+    - docs/blog/remote-contexts-considered-harmful/john-lennon.mmd
+    - docs/blog/remote-contexts-considered-harmful/john-lennon-inline-context.mmd
+    - docs/blog/remote-contexts-considered-harmful/index.mmd
+    - docs/roadmap/roadmap.mmd (from iolanta-development-roadmap.yamlld)
+    """
+    with ThreadPoolExecutor() as executor:
+        futures = (
+            executor.submit(
+                _dump_iolanta_output,
+                artifact.source,
+                artifact.target,
+                artifact.output_datatype,
+            )
+            for artifact in DOCS_MERMAID_ARTIFACTS
+        )
+        for future in futures:
+            future.result()
 
 
 def generate_remote_contexts_considered_harmful_artifacts():
     """Regenerate all derived outputs for `remote-contexts-considered-harmful`."""
     directory = _REMOTE_CONTEXTS_CONSIDERED_HARMFUL_DIR
 
-    tasks = (
+    pyld_tasks = (
         lambda: dump_pyld_output(
             directory / "john-lennon-protected.yamlld",
             directory / "john-lennon-protected-result.txt",
@@ -242,22 +298,12 @@ def generate_remote_contexts_considered_harmful_artifacts():
             directory / "john-lennon-content-addressed.yamlld",
             directory / "john-lennon-content-addressed-result.txt",
         ),
-        lambda: _dump_iolanta_output(
-            directory / "john-lennon-inline-context.yamlld",
-            directory / "john-lennon-inline-context.mmd",
-        ),
-        lambda: _dump_iolanta_output(
-            directory / "john-lennon.yamlld",
-            directory / "john-lennon.mmd",
-        ),
-        lambda: _dump_iolanta_output(
-            directory / "index.md",
-            directory / "index.mmd",
-        ),
     )
 
     with ThreadPoolExecutor() as executor:
-        for future in (executor.submit(task) for task in tasks):
+        pyld_futures = (executor.submit(task) for task in pyld_tasks)
+        mermaid_future = executor.submit(generate_docs_mermaid)
+        for future in (*pyld_futures, mermaid_future):
             future.result()
 
 
@@ -336,13 +382,13 @@ def refresh_search_fixtures(notion: str = "Isaac Asimov"):
         console.print("[green]Refreshed[/green] dbpedia_asimov.json")
 
         sparql_query = (
-            'PREFIX search: <http://www.openrdf.org/contrib/lucenesail#>\n'
-            'SELECT DISTINCT ?subj ?score WHERE {\n'
-            '  ?subj search:matches [\n'
+            "PREFIX search: <http://www.openrdf.org/contrib/lucenesail#>\n"
+            "SELECT DISTINCT ?subj ?score WHERE {\n"
+            "  ?subj search:matches [\n"
             f'    search:query "{notion}" ;\n'
-            '    search:score ?score\n'
-            '  ] .\n'
-            '} ORDER BY DESC(?score) LIMIT 10'
+            "    search:score ?score\n"
+            "  ] .\n"
+            "} ORDER BY DESC(?score) LIMIT 10"
         )
         nanopub_response = session.get(
             "https://query.knowledgepixels.com/repo/text",
