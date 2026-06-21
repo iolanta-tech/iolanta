@@ -1,0 +1,24 @@
+"@context":
+  ex: https://example.org/
+  schema: https://schema.org/
+  xsd: http://www.w3.org/2001/XMLSchema#
+  ex:profile:
+    "@type": "@id"
+  ex:born:
+    "@type": xsd:date
+  ex:score:
+    "@type": xsd:integer
+  ex:active:
+    "@type": xsd:boolean
+  ex:note:
+    "@language": en
+
+"@id": ex:alice
+schema:name: Alice
+ex:profile:
+  "@id": _:profile
+  ex:nickname: Ally
+  ex:born: 2026-06-21
+  ex:score: 42
+  ex:active: true
+  ex:note: Hello
