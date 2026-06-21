@@ -30,3 +30,7 @@ LINES=34 COLUMNS=113 FORCE_COLOR=1 textual run -c \
 ## RDF graph assertions
 
 **T06.** When asserting string literals loaded from YAML-LD or JSON-LD, use `Literal(value, datatype=XSD.string)` or compare lexical values deliberately; Iolanta loads JSON-LD string literals as `xsd:string`.
+
+## Linting in tests
+
+**F09.** In tests, prefer repeated string literals over helper constants introduced only to satisfy string-reuse lint rules. If satisfying a lint rule would require structural refactoring, API changes, or other non-local reshaping, stop and ask first. In tests, prefer a targeted `# noqa` over abstractions created only to silence the linter.
