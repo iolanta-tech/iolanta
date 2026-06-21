@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iolanta"
-version = "2.1.41"
+version = "2.1.42"
 description = "Semantic Web browser"
 authors = ["Anatoly Scherbakov <altaisoft@gmail.com>"]
 license = "MIT"
@@ -67,6 +67,7 @@ boolean = "iolanta.facets.generic:BoolLiteral"
 title-foaf-person = "iolanta.facets.foaf_person_title:FOAFPersonTitle"
 title-prov-value = "iolanta.facets.prov_value_title:ProvValueTitle"
 mermaid-graph = "iolanta.mermaid.facet:Mermaid"
+mermaid-rdf = "iolanta.mermaid.raw_rdf.facet:RawRDFMermaid"
 mermaid-nanopublication = "iolanta.facets.mermaid_nanopublication:NanopublicationMermaidFacet"
 mermaid-roadmap = "iolanta.facets.mermaid_roadmap.facet:MermaidRoadmap"
 rich-declension-table = "iolanta.declension.facet:RichDeclensionTable"
