@@ -8,12 +8,13 @@ per-file-ignores =
     iolanta/namespaces.py:WPS115,WPS604
     jeeves/__init__.py:WPS412,WPS400,WPS202
     tests/test_integration.py:WPS202
-    tests/test_mermaid.py:WPS114,WPS118,WPS218,WPS226
+    tests/test_mermaid.py:WPS114,WPS118,WPS202,WPS218,WPS226
     tests/kglint/test_cli.py:WPS202
     tests/facets/test_default.py:WPS202
     tests/discovery/test_visualization_index.py:WPS202,WPS118,WPS218,WPS226,WPS430,WPS420
     tests/discovery/test_visualization_render_integration.py:WPS202,WPS226,WPS430
     tests/test_apply_redirect.py:WPS202
     iolanta/mermaid/models.py:WPS202,WPS407,WPS237,WPS338,WPS602
+    iolanta/language_flags.py:WPS407
     iolanta/mermaid/facet.py:WPS115,WPS231
     iolanta/cli/models.py:WPS110
