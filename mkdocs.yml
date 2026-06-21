@@ -7,6 +7,7 @@ copyright: Copyright © 2026 iolanta.tech
 
 exclude_docs: |
   superpowers/
+  **/AGENTS.md
 
 markdown_extensions:
   - admonition
@@ -64,6 +65,7 @@ theme:
     - navigation.indexes
     - navigation.tabs
     - navigation.tabs.sticky
+    - navigation.prune
     - content.code.annotate
     - content.action.edit
     - content.code.copy
