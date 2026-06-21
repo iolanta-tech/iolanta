@@ -1,8 +1,6 @@
 ---
 title: Mermaid
-hide:
-  - toc
-  - navigation
+hide: [toc]
 ---
 
 # Ⓜ Mermaid <small>Plugin</small>
@@ -21,15 +19,7 @@ iolanta example.yamlld --as mermaid
 {{ (docs / 'mermaid/example.yamlld') | as('mermaid') }}
 ```
 
-## Quick Start
-
-Render any YAML-LD or RDF document graph as a Mermaid diagram:
-
-```shell
-iolanta path/to/document.yamlld --as mermaid
-```
-
-## Datatype
+## Renderers
 
 The plugin outputs [`https://iolanta.tech/datatypes/mermaid`](/datatypes/mermaid/), an `iolanta:OutputDatatype` for Mermaid diagram syntax.
 
@@ -44,6 +34,12 @@ Roadmap rendering specializes this output datatype as [`https://iolanta.tech/roa
     ---
 
     Generic RDF graph renderer for `https://iolanta.tech/datatypes/mermaid`.
+
+-   Ⓜ __`pkg:pypi/iolanta#mermaid-rdf`__
+
+    ---
+
+    Exact RDF triple renderer for `https://iolanta.tech/mermaid/rdf`.
 
 -   ◌ __`pkg:pypi/iolanta#mermaid-nanopublication`__
 
