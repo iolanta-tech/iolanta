@@ -8,6 +8,7 @@ from rich.console import Console
 from rich.table import Table
 
 from iolanta.cli.pretty_print import render_literal_value
+from iolanta.language_flags import language_flag
 from iolanta.models import ComputedQName
 from iolanta.query_result import QueryResult, SelectResult
 
@@ -20,22 +21,22 @@ def pretty_print_value(rdflib_value: Union[URIRef, Literal, BNode]) -> str:
 @pretty_print_value.instance(type(None))
 def _pretty_print_none(none_value):
     """Format None."""
-    return f'∅ {none_value}'
+    return f"∅ {none_value}"
 
 
 @pretty_print_value.instance(URIRef)
 def _pretty_print_value_uri_ref(uriref: URIRef):
     """Format URI Ref."""
-    return f'🔗 {uriref}'
+    return f"🔗 {uriref}"
 
 
 @pretty_print_value.instance(ComputedQName)
 def _pretty_print_value_uri_ref(qname: ComputedQName):
     """Format QName."""
     return (
-        f'🔗 [link={qname.namespace_url}]'
-        f'[blue]{qname.namespace_name}[/blue][/link]:'
-        f'{qname.term}'
+        f"🔗 [link={qname.namespace_url}]"
+        f"[blue]{qname.namespace_name}[/blue][/link]:"
+        f"{qname.term}"
     )
 
 
@@ -45,13 +46,9 @@ def _pretty_print_literal(literal: Literal):
     rendered_value = render_literal_value(literal.toPython())
 
     if literal.language:
-        formatted_language = {
-            'ru': '🇷🇺',
-            'en': '🇺🇸',
-            'ua': '🇺🇦',
-        }[literal.language]
-
-        return f'{formatted_language} {rendered_value}'
+        flag = language_flag(literal.language)
+        if flag:
+            return f"{flag} {rendered_value}"
 
     return rendered_value
 
@@ -59,7 +56,7 @@ def _pretty_print_literal(literal: Literal):
 @pretty_print_value.instance(BNode)
 def _pretty_print_bnode(bnode: BNode):
     """Print a blank node."""
-    return f'😶 {bnode}'
+    return f"😶 {bnode}"
 
 
 @typeclass
@@ -103,9 +100,9 @@ def _pretty_construct(graph: Graph):
         return
 
     table = Table(
-        'Subject',
-        'Predicate',
-        'Object',
+        "Subject",
+        "Predicate",
+        "Object",
         show_header=True,
         header_style="bold magenta",
     )
