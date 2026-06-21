@@ -1,0 +1,31 @@
+"@context":
+  "@import": https://json-ld.org/contexts/dollar-convenience.jsonld
+  iolanta: https://iolanta.tech/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+
+  $: rdfs:label
+  →:
+    "@type": "@id"
+    "@id": iolanta:outputs
+  ⊆:
+    "@type": "@id"
+    "@id": rdfs:subClassOf
+  ↦:
+    "@id": iolanta:matches
+    "@type": iolanta:SPARQLText
+
+$id: pkg:pypi/iolanta#mermaid-rdf
+$: RDF Mermaid
+
+→:
+  $id: https://iolanta.tech/mermaid/rdf
+  $: RDF Mermaid
+  $type: iolanta:OutputDatatype
+  iolanta:icon: Ⓜ
+  ⊆: xsd:string
+  rdfs:comment: Mermaid diagram of every triple in the loaded graph without external label lookups or collapsing annotation triples into node text.
+
+↦:
+  - ASK WHERE { GRAPH $this { ?s ?p ?o } }
+  - ASK WHERE { $this iolanta:has-sub-graph ?subgraph }
