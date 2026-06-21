@@ -4,6 +4,10 @@
 
 Use the `commit` skill when creating git commits.
 
+## GitHub issues
+
+**G00.** Do not prefix issue titles with conventional-commit types (`feat:`, `fix:`, etc.). Use plain descriptive titles (e.g. `RDF plugin — term output datatype (mermaid/rdf delegation)`).
+
 ## Environment
 
 **D04.** Run Python and MkDocs through direnv: `direnv exec . python …`, `direnv exec . mkdocs …`. Do not call `.venv/bin/python` directly — the venv is not set up correctly outside direnv's environment.
