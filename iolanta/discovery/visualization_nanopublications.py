@@ -41,6 +41,11 @@ ENDPOINT = "https://query.knowledgepixels.com/repo/full"
 
 DEFAULT_TIMEOUT = 10.0
 DEFAULT_CACHE_DIR = Path.home() / ".cache" / "iolanta" / "visualization-index"
+# TODO(cache): Make visualization cache setup lazy and configurable.
+# Move setup_visualization_cache() out of module import so importing this module
+# does not open SQLite. Derive the default directory with
+# platformdirs.user_cache_path("iolanta") / "visualization-index", and let
+# tests pass an isolated cache directory per test or worker.
 SOFT_CACHE_TTL = "1d"
 SparqlBinding = dict[str, dict[str, str]]
 
