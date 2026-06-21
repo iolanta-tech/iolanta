@@ -1,0 +1,1 @@
+"""Raw RDF Mermaid renderer."""
