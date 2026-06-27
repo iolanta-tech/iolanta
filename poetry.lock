@@ -2889,14 +2889,14 @@ files = [
 
 [[package]]
 name = "nanopub"
-version = "2.2.0"
+version = "2.2.2"
 description = "Python client for Nanopublications"
 optional = false
 python-versions = "<4.0.0,>=3.12.0"
 groups = ["main"]
 files = [
-    {file = "nanopub-2.2.0-py3-none-any.whl", hash = "sha256:cb0e89678d732076fe77f01acee790a3a1d6b3b4941e7d67cbb3390d1be74a90"},
-    {file = "nanopub-2.2.0.tar.gz", hash = "sha256:3ec25574d766deed65c849562bb21b23f48fc55463119ebffe41d324eae6d188"},
+    {file = "nanopub-2.2.2-py3-none-any.whl", hash = "sha256:6bfdf46de17f4b8c92427323feec0cf92d9923f98200800aed475c1fb7b445de"},
+    {file = "nanopub-2.2.2.tar.gz", hash = "sha256:086e9b49fe24bfc67bedaf108a74008f6e50a9af9ad66b6364250f00cfbdd30e"},
 ]
 
 [package.dependencies]
