@@ -32,7 +32,7 @@ loguru = ">=0.7.3"
 cashews = {version = ">=7.5.0", extras = ["diskcache"]}
 watchfiles = ">=1.0.4"
 packageurl-python = ">=0.17.5"
-fastmcp = ">=2.12.4,<4.0.0"
+fastmcp = ">=2.12.4,<5.0.0"
 nanopub = "^2.1.0"
 
 [tool.poetry.scripts]
