@@ -376,14 +376,14 @@ lxml = ["lxml"]
 
 [[package]]
 name = "boltons"
-version = "26.1.0"
+version = "26.2.0"
 description = "When they're not builtins, they're boltons."
 optional = false
 python-versions = ">=3.7"
 groups = ["main"]
 files = [
-    {file = "boltons-26.1.0-py3-none-any.whl", hash = "sha256:1d966b165805b83600b31af9f0db672e3b3313d9de438e22708a94ac5f4c93de"},
-    {file = "boltons-26.1.0.tar.gz", hash = "sha256:5764468aba493b15995ed17f46a16789023f123ca2a62d491a9ce825c1cbe26c"},
+    {file = "boltons-26.2.0-py3-none-any.whl", hash = "sha256:41942cbce440211bbcf2487ccdc356964ad674f95a01068b8a0dd7a1d1fed036"},
+    {file = "boltons-26.2.0.tar.gz", hash = "sha256:d39cfd15c1a1c3bd4d705c82252fa9edb8e4f5e8cc039f8e39afac7b1b47e92c"},
 ]
 
 [[package]]
