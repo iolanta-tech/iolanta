@@ -1113,38 +1113,38 @@ tests = ["asttokens (>=2.1.0)", "coverage", "coverage-enable-subprocess", "ipyth
 
 [[package]]
 name = "fastmcp"
-version = "4.0.3"
+version = "4.0.4"
 description = "The fast, Pythonic way to build MCP servers and clients."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "fastmcp-4.0.3-py3-none-any.whl", hash = "sha256:f743f43193e1daf606e6497a9dddba5bbaad7df7957a98fd093716ecf4458b99"},
-    {file = "fastmcp-4.0.3.tar.gz", hash = "sha256:0dd50baf070105ee4436c245f087ac3c047e655c32d9e783de16d0bf15783a98"},
+    {file = "fastmcp-4.0.4-py3-none-any.whl", hash = "sha256:989313f2be6c3277e55cc32d28e74b80641d5d7aadbd3618f4ace38cc7178ff5"},
+    {file = "fastmcp-4.0.4.tar.gz", hash = "sha256:1ba4809c5072f18647474e6d49583d7c7cfca7d41bd7d86a5f653a7aababe496"},
 ]
 
 [package.dependencies]
-fastmcp-slim = {version = "4.0.3", extras = ["client", "server"]}
+fastmcp-slim = {version = "4.0.4", extras = ["client", "server"]}
 
 [package.extras]
-anthropic = ["fastmcp-slim[anthropic] (==4.0.3)"]
-apps = ["fastmcp-slim[apps] (==4.0.3)"]
-azure = ["fastmcp-slim[azure] (==4.0.3)"]
-code-mode = ["fastmcp-slim[code-mode] (==4.0.3)"]
-gemini = ["fastmcp-slim[gemini] (==4.0.3)"]
-openai = ["fastmcp-slim[openai] (==4.0.3)"]
-tasks = ["fastmcp-tasks (==4.0.3)"]
+anthropic = ["fastmcp-slim[anthropic] (==4.0.4)"]
+apps = ["fastmcp-slim[apps] (==4.0.4)"]
+azure = ["fastmcp-slim[azure] (==4.0.4)"]
+code-mode = ["fastmcp-slim[code-mode] (==4.0.4)"]
+gemini = ["fastmcp-slim[gemini] (==4.0.4)"]
+openai = ["fastmcp-slim[openai] (==4.0.4)"]
+tasks = ["fastmcp-tasks (==4.0.4)"]
 
 [[package]]
 name = "fastmcp-slim"
-version = "4.0.3"
+version = "4.0.4"
 description = "The dependency-slim FastMCP package."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "fastmcp_slim-4.0.3-py3-none-any.whl", hash = "sha256:3756ed4bd9f82f40adaf51974b7cdd1463ab6b9f479cf69b69b2692969312b87"},
-    {file = "fastmcp_slim-4.0.3.tar.gz", hash = "sha256:3ce04a82b82cc41ccb12bb3bb366cfd65b52bc797b8fee332a75da9d480f9b74"},
+    {file = "fastmcp_slim-4.0.4-py3-none-any.whl", hash = "sha256:125d9a9384f65ea44d9dcacf4922ea90112f0338e90cc21e5d6f01ec14cbaef5"},
+    {file = "fastmcp_slim-4.0.4.tar.gz", hash = "sha256:117ffce5719ba5ad2c4ca923176709dd50233717d22c0124c084a4c85925818f"},
 ]
 
 [package.dependencies]
@@ -1178,11 +1178,11 @@ watchfiles = {version = ">=1.0.0", optional = true, markers = "extra == \"server
 websockets = {version = ">=15.0.1", optional = true, markers = "extra == \"server\""}
 
 [package.extras]
-anthropic = ["anthropic (>=0.48.0,<1)"]
+anthropic = ["anthropic (>=0.48.0,<2)"]
 apps = ["prefab-ui (>=0.18.0)"]
 azure = ["azure-identity (>=1.16.0)", "pyjwt (>=2.12.0)"]
 client = ["authlib (>=1.6.11)", "exceptiongroup (>=1.2.2)", "httpx2 (>=2.5.0)", "mcp (>=2.0.0,<3.0.0)", "opentelemetry-api (>=1.28.0)", "py-key-value-aio[filetree,keyring,memory] (>=0.4.4,<0.5.0)", "starlette (>=1.0.1)"]
-code-mode = ["pydantic-monty (==0.0.18)"]
+code-mode = ["pydantic-monty (==0.0.21)"]
 gemini = ["google-genai (>=1.18.0)", "jsonref (>=1.1.0)"]
 mcp = ["exceptiongroup (>=1.2.2)", "httpx2 (>=2.5.0)", "mcp (>=2.0.0,<3.0.0)", "opentelemetry-api (>=1.28.0)", "starlette (>=1.0.1)"]
 openai = ["openai (>=1.102.0)"]
