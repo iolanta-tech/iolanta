@@ -1,6 +1,8 @@
 PREFIX vs: <https://www.w3.org/2003/06/sw-vocab-status/ns#>
 
-SELECT DISTINCT ?term ?group ?comment ?status WHERE {
+PREFIX iolanta: <https://iolanta.tech/>
+
+SELECT DISTINCT ?term ?group ?comment ?status ?icon WHERE {
     ?term rdfs:isDefinedBy $iri .
     FILTER (?term != $iri)
 
@@ -16,5 +18,10 @@ SELECT DISTINCT ?term ?group ?comment ?status WHERE {
     OPTIONAL {
         ?term vs:term_status ?status .
     }
+
+    OPTIONAL {
+        ?term iolanta:icon ?icon .
+        FILTER(isLiteral(?icon))
+    }
 }
-ORDER BY (!BOUND(?group)) ?group ?term
+ORDER BY (!BOUND(?group)) ?group ?term COALESCE(STR(?icon), "")
