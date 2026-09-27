@@ -111,4 +111,10 @@ hide: [toc, navigation]
     
     RDF Schema (`rdfs:`): classes and properties for lightweight ontologies.
 
+-   :material-eye-check-outline: __[OWL](/reference/owl/)__
+    
+    ---
+    
+    Web Ontology Language (`owl:`): classes, properties, and restrictions.
+
 </div>
