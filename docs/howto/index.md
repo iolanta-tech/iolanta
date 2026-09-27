@@ -1,4 +1,5 @@
 ---
+title: Howto
 hide: [toc, navigation]
 ---
 
