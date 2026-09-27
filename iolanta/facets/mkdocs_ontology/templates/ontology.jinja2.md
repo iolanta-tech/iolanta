@@ -6,7 +6,7 @@
 <div class="grid cards" markdown>
 
 {% for term in group.terms %}
--   __[{{ term.title }}]({{ term.uri }})__
+-   {% if term.icon %}<span aria-hidden="true">{{ term.icon | e }}</span> {% endif %}__[{{ term.title }}]({{ term.uri }})__
 {% if term.comment %}
 
     ---

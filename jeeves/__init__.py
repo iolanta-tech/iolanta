@@ -47,6 +47,7 @@ def serve():
     The site will be available at http://localhost:9841
     """
     sh.mkdocs.serve(
+        "--livereload",
         "-a",
         "localhost:6451",
         _fg=True,

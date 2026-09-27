@@ -26,13 +26,16 @@ class _Term:
     uri: str
     title: str
     comment: str | None
+    icon: str | None
 
 
 def _row_node(row: dict[str, object], key: str) -> Node:
     """Extract an RDF node from a SPARQL row, raising on type mismatch."""
     candidate = row[key]
     if not isinstance(candidate, Node):
-        raise TypeError(f"Expected RDF Node for `{key}`, got {type(candidate)}")
+        raise TypeError(
+            f"Expected RDF Node for `{key}`, got {type(candidate)}",
+        )
     return candidate
 
 
@@ -55,10 +58,20 @@ def _comment_text(row: dict[str, object]) -> str | None:
     return str(comment_literal)
 
 
+def _icon_text(row: dict[str, object]) -> str | None:
+    """Return the icon from a row as a `str`, or `None` if absent."""
+    icon_literal = row.get("icon")
+    if icon_literal is None:
+        return None
+    return str(icon_literal)
+
+
 class MkDocsOntologyFacet(Facet[str]):
     """Render an `owl:Ontology` as Material for MkDocs Markdown."""
 
-    META = Path(__file__).parent / "data" / "mkdocs_ontology.yamlld"  # noqa: WPS115
+    META = (  # noqa: WPS115
+        Path(__file__).parent / "data" / "mkdocs_ontology.yamlld"
+    )
 
     def show(self) -> str:
         """Render the ontology as Markdown."""
@@ -101,6 +114,7 @@ class MkDocsOntologyFacet(Facet[str]):
             uri=str(term_node),
             title=str(self.render(term_node, as_datatype=DATATYPES.title)),
             comment=_comment_text(row),
+            icon=_icon_text(row),
         )
 
     def _group_title_for_row(self, row: dict[str, object]) -> str | None:

@@ -1,19 +1,2 @@
-nav:
-  - Home: index.md
-  - howto
-  - Reference:
-      - reference
-      - Facet.md
-      - matches.md
-      - is-preferred-over.md
-      - icon.md
-      - outputs.md
-      - when-no-facet-found.md
-      - has-sub-graph.md
-      - visualizes.md
-      - datatypes
-  - blog
-  - Plugins:
-      - plugins
-      - mermaid
-      - roadmap
+# Top-level nav is in mkdocs.yml so the Ontologies group can
+# mix pages from docs/ and docs/reference/ without moving files.
