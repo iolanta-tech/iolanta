@@ -34,6 +34,44 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
 
+nav:
+  - Home: index.md
+  - Howto:
+      - ... | glob=howto/**
+  - Reference:
+      - reference/index.md
+      - Ontologies:
+          - Iolanta:
+              - Facet.md
+              - matches.md
+              - is-preferred-over.md
+              - icon.md
+              - outputs.md
+              - when-no-facet-found.md
+              - has-sub-graph.md
+              - visualizes.md
+              - reference/iolanta/OutputDatatype.md
+              - reference/iolanta/SPARQLText.md
+              - reference/ontology/index.md
+          - RDF: reference/rdf.md
+          - RDFS: reference/rdfs.md
+          - OWL: reference/owl.md
+      - Tools:
+          - reference/cli.md
+          - reference/render-template-macros-and-variables.md
+      - Datatypes:
+          - datatypes/fallback-title.md
+          - datatypes/jsonl.md
+          - datatypes/title.md
+          - datatypes/mermaid.md
+          - datatypes/mkdocs-material.md
+  - Blog:
+      - ... | glob=blog/**
+  - Plugins:
+      - ... | glob=plugins/**
+      - ... | glob=mermaid/**
+      - ... | glob=roadmap/**
+
 plugins:
   - search
   - awesome-pages
