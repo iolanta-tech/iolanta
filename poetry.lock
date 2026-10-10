@@ -1113,39 +1113,39 @@ tests = ["asttokens (>=2.1.0)", "coverage", "coverage-enable-subprocess", "ipyth
 
 [[package]]
 name = "fastmcp"
-version = "4.0.10"
+version = "4.0.11"
 description = "The fast, Pythonic way to build MCP servers and clients."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "fastmcp-4.0.10-py3-none-any.whl", hash = "sha256:1f8462e3d97394a637e1b0f1eaea0002da661c8d98000ad43f0aa3fa1ff523e8"},
-    {file = "fastmcp-4.0.10.tar.gz", hash = "sha256:64539631a7dc5873a1c7a44089b2f7b3395dea3ca857e9f81bfe9665a59038d5"},
+    {file = "fastmcp-4.0.11-py3-none-any.whl", hash = "sha256:defbc5f2566a702f45817d1acead120dfa8127d60b1c1512b3200232ead13a44"},
+    {file = "fastmcp-4.0.11.tar.gz", hash = "sha256:55fc7b8e25d4f8365818ba93f7008d1b6e646ce7fe8ae49342687243ccbef9f2"},
 ]
 
 [package.dependencies]
-fastmcp-slim = {version = "4.0.10", extras = ["client", "server"]}
+fastmcp-slim = {version = "4.0.11", extras = ["client", "server"]}
 
 [package.extras]
-anthropic = ["fastmcp-slim[anthropic] (==4.0.10)"]
-apps = ["fastmcp-slim[apps] (==4.0.10)"]
-azure = ["fastmcp-slim[azure] (==4.0.10)"]
-code-mode = ["fastmcp-slim[code-mode] (==4.0.10)"]
-gemini = ["fastmcp-slim[gemini] (==4.0.10)"]
-jev = ["fastmcp-slim[jev] (==4.0.10)"]
-openai = ["fastmcp-slim[openai] (==4.0.10)"]
-tasks = ["fastmcp-tasks (==4.0.10)"]
+anthropic = ["fastmcp-slim[anthropic] (==4.0.11)"]
+apps = ["fastmcp-slim[apps] (==4.0.11)"]
+azure = ["fastmcp-slim[azure] (==4.0.11)"]
+code-mode = ["fastmcp-slim[code-mode] (==4.0.11)"]
+gemini = ["fastmcp-slim[gemini] (==4.0.11)"]
+jev = ["fastmcp-slim[jev] (==4.0.11)"]
+openai = ["fastmcp-slim[openai] (==4.0.11)"]
+tasks = ["fastmcp-tasks (==4.0.11)"]
 
 [[package]]
 name = "fastmcp-slim"
-version = "4.0.10"
+version = "4.0.11"
 description = "The dependency-slim FastMCP package."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "fastmcp_slim-4.0.10-py3-none-any.whl", hash = "sha256:c2abd40302b8f06b0291413cf537d57bc0f171b5fd98af5cfef3b2b6b506122f"},
-    {file = "fastmcp_slim-4.0.10.tar.gz", hash = "sha256:d22b423f93ad945bf65d446a1689ff84be7b91dfd9b6f23c5013f4b2fe9776a7"},
+    {file = "fastmcp_slim-4.0.11-py3-none-any.whl", hash = "sha256:524905197e318d934908594f16fedea559d44dd682bd763d40f3556233a2b1d9"},
+    {file = "fastmcp_slim-4.0.11.tar.gz", hash = "sha256:9152aac74d8837bc37576f5f3d83f17567250a9dfcd8187133c43faaaa9dd06f"},
 ]
 
 [package.dependencies]
