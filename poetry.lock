@@ -1046,14 +1046,14 @@ files = [
 
 [[package]]
 name = "dominate"
-version = "2.9.1"
+version = "3.1.0"
 description = "Dominate is a Python library for creating and manipulating HTML documents using an elegant DOM API."
 optional = false
-python-versions = ">=3.4"
+python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "dominate-2.9.1-py2.py3-none-any.whl", hash = "sha256:cb7b6b79d33b15ae0a6e87856b984879927c7c2ebb29522df4c75b28ffd9b989"},
-    {file = "dominate-2.9.1.tar.gz", hash = "sha256:558284687d9b8aae1904e3d6051ad132dd4a8c0cf551b37ea4e7e42a31d19dc4"},
+    {file = "dominate-3.1.0-py3-none-any.whl", hash = "sha256:a395d37ca3f0e37e96a86a108c6b8951459a019109aa8abae1eab887a18b6f70"},
+    {file = "dominate-3.1.0.tar.gz", hash = "sha256:926989c819db2fe91e590590a2902183685edd94829c8cfba5fd71af57c1a982"},
 ]
 
 [[package]]
